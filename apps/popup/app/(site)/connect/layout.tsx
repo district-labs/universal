@@ -37,30 +37,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     <MenuIcon className="size-6" />
                   </span>
                 </SheetTrigger>
-                <SheetContent className="w-full h-full">
+                <SheetContent className="w-full h-full" side={"bottom"}>
                   <SheetHeader>
-                    <SheetTitle>Information</SheetTitle>
+                    <SheetTitle className='text-3xl font-bold'>Universal Wallet</SheetTitle>
                   </SheetHeader>
                   <div className="flex flex-col gap-y-4 mt-4">
-                    {/* <Button className='w-full'>Onchain</Button> */}
-                    <Link href="/info/actions">
-                      <Button variant={'outline'} className="w-full">
-                        Actions
-                      </Button>
-                    </Link>
-                    <Button variant={'outline'} className="w-full">
-                      Identity
-                    </Button>
-                    <Button variant={'outline'} className="w-full">
-                      Permissions
-                    </Button>
-                    <p className="text-center text-xs">
-                      Universal Wallet is designed to make your digital life
-                      better.
+                    <p className="text-center text-normal">
+                      Discover What's Possible
                     </p>
                     <p className="text-center text-xs">
-                      Control your digital assets, identity, and relationships
-                      with ease.
+                       Secure your digital assets. <br/> Own
+                      your digital identity. <br/> Connect with the world.
                     </p>
                   </div>
                 </SheetContent>
@@ -76,14 +63,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <span className="text-xs flex items-start gap-x-1">
             <Link
               target="blank"
-              href="https://www.districtlabs.xyz/terms-of-service"
+              href="https://www.districtlabs.com/terms-of-service"
             >
               Terms of Service
             </Link>
             |
             <Link
               target="blank"
-              href="https://www.districtlabs.xyz/terms-of-service"
+              href="https://www.districtlabs.com/privacy-policy"
             >
               Privacy Policy
             </Link>

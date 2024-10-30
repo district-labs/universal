@@ -63,11 +63,11 @@ function SignMessage() {
       <Card className="p-5 pt-8">
         <CardContent className="gap-x-4 flex flex-col md:flex-row gap-y-4 text-center md:text-left">
           <div className="flex-1">
-            <h3 className="font-bold text-3xl mb-4">Sign Message</h3>
+            <h3 className="font-bold text-3xl mb-4">Message</h3>
             <p className="text-xs">
-              Sign a message using your wallet. This message will be signed with
-              your wallet's private key and can be verified by anyone with your
-              public key.
+              Sign a message using your personal smart wallet. This message will
+              be signed with your wallet's private key and can be publicly
+              verified.
             </p>
           </div>
           <div className="flex-1 flex items-center justify-center">
@@ -97,11 +97,11 @@ function SignTypedData() {
       <Card className="p-5 pt-8">
         <CardContent className="gap-x-4 flex flex-col md:flex-row gap-y-4 text-center md:text-left">
           <div className="flex-1">
-            <h3 className="font-bold text-3xl mb-4">Sign Typed Data</h3>
+            <h3 className="font-bold text-3xl mb-4">Typed Data</h3>
             <p className="text-xs">
-              Sign a typed data (EIP-712) object using your wallet. This data
-              will be signed with your wallet's private key and can be verified
-              by anyone with your public key.
+              Sign a typed data (EIP-712) object using your personal smart
+              wallet. This data will be signed with your wallet's private key
+              and can be publicly verified.
             </p>
           </div>
           <div className="flex-1 flex items-center justify-center">
@@ -110,15 +110,15 @@ function SignTypedData() {
                 signTypedData({
                   message: {
                     from: {
-                      name: 'Cow',
-                      wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
+                      name: 'Alice',
+                      wallet: '0x0000000000000000000000000000000000000000',
                     },
                     to: {
                       name: 'Bob',
                       wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
                     },
                     contents:
-                      'Pellentesque tempor ipsum id orci cursus, a convallis diam dapibus. Sed bibendum leo sit amet commodo dignissim. Integer maximus blandit rhoncus. Morbi fringilla id dui id eleifend. Mauris et facilisis sapien. Quisque pellentesque dolor tempor tristique ultricies. Integer arcu erat, placerat eget turpis eget, ultricies pulvinar ante. Nunc vulputate aliquet lacus, eu luctus elit aliquet euismod. Fusce non fringilla sem.',
+                      'Pellentesque tempor ipsum id orci cursus, a convallis diam dapibus. Sed bibendum leo sit amet commodo dignissim.',
                     tags: ['urgent', 'confidential'],
                   },
                   primaryType: 'Mail',
@@ -193,7 +193,7 @@ function SendTransaction() {
       <Card className="p-5 pt-8">
         <CardContent className="gap-x-4 flex flex-col md:flex-row gap-y-4 text-center md:text-left">
           <div className="flex-1">
-            <h3 className="font-bold text-3xl mb-4">Sign Transaction</h3>
+            <h3 className="font-bold text-3xl mb-4">Transaction</h3>
             <p className="text-xs">
               Sign a transaction to mint an NFT using your personal smart
               wallet. This transaction will be signed with your wallet's private
@@ -332,8 +332,8 @@ function AddChain() {
       <Card className="p-5 pt-8">
         <CardContent className="gap-x-4 flex flex-col md:flex-row gap-y-4 text-center md:text-left">
           <div className="flex-1">
-            <h3 className="font-bold text-3xl mb-4">Unsuported Methods</h3>
-            <h3 className="font-bold text-lg mb-4">Add Chain</h3>
+            <h3 className="font-bold text-3xl mb-4">Unsupported Methods</h3>
+            <h3 className="font-bold text-lg mb-4">Watch Asset, Add Chain</h3>
             <p className="text-xs">
               Currently not supported by the Universal Wallet SDK.
             </p>
@@ -352,7 +352,7 @@ function AddChain() {
                 });
               }}
             >
-              Watch Asset
+              Watch Asset (Example)
             </Button>
           </div>
         </CardContent>
