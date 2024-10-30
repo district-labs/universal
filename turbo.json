@@ -1,0 +1,29 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    }
+  },
+  "globalEnv": [
+    "DATABASE_URL",
+    "NEXT_PUBLIC_WC_PROJECT_ID",
+    "SHOPIFY_STORE_DOMAIN",
+    "SHOPIFY_STOREFRONT_ACCESS_TOKEN",
+    "SHOPIFY_PRIMARY_PRODUCT",
+    "NEXT_PUBLIC_DISTRICT_ROUTER_FACTORY_ADDRESS",
+    "NEXT_PUBLIC_ERC20_MINT_ADDRESS",
+    "NEXT_PUBLIC_DISTRICT_ROUTER_ADDRESS",
+    "VITE_DISTRICT_API_URL"
+  ]
+}

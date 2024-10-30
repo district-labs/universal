@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "allowJs": false,
+    "declaration": true,
+    "sourceMap": false,
+  },
+  "include": ["src"],
+  "exclude": ["dist", "build", "**/*.test.*", "mocks"]
+}

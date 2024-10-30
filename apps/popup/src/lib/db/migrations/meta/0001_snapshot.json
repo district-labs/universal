@@ -1,0 +1,46 @@
+{
+  "id": "d1f0f0a0-2ede-4230-b84f-1911d6c17170",
+  "prevId": "b965d313-d957-4c56-96b5-984613c5f846",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.initial_owners": {
+      "name": "initial_owners",
+      "schema": "",
+      "columns": {
+        "publicKey": {
+          "name": "publicKey",
+          "type": "varchar(130)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "credentialId": {
+          "name": "credentialId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "smartContractAddress": {
+          "name": "smartContractAddress",
+          "type": "varchar(42)",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
