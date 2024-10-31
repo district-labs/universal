@@ -1,20 +1,25 @@
 import { createConfig, http } from 'wagmi';
 import { baseSepolia } from 'wagmi/chains';
-import { universalWallet } from 'universal-wallet-connector';
-import { coinbaseWallet } from 'wagmi/connectors';
+import { connectorsForWallets } from '@rainbow-me/rainbowkit';
+import { coinbaseWallet } from '@rainbow-me/rainbowkit/wallets';
+import { universalWalletRainbowkit } from 'universal-wallet-connector';
+
+const connectors = connectorsForWallets(
+  [
+    {
+      groupName: 'Recommended',
+      wallets: [universalWalletRainbowkit, coinbaseWallet],
+    },
+  ],
+  {
+    appName: 'Universal Wallet',
+    projectId: 'YOUR_PROJECT_ID',
+  },
+);
 
 export const wagmiConfig = createConfig({
   chains: [baseSepolia],
-  connectors: [
-    coinbaseWallet({
-      appName: 'Universal Wallet',
-      preference: 'smartWalletOnly',
-    }),
-    // @ts-expect-error
-    universalWallet({
-      appName: 'Universal Wallet',
-    }),
-  ],
+  connectors,
   transports: {
     [baseSepolia.id]: http(),
   },
