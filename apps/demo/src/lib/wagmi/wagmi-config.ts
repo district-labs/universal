@@ -12,7 +12,7 @@ const connectors = connectorsForWallets(
     },
   ],
   {
-    appName: 'My RainbowKit App',
+    appName: 'Universal Wallet',
     projectId: 'YOUR_PROJECT_ID',
   },
 );
