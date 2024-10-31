@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener';
 import { toWebAuthnAccount } from 'viem/account-abstraction';
 import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
-import { toHybridDelegatorAccount } from '@/lib/account-abstraction/account-adapters/to-hybrid-delegator-account';
+import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
 import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useState } from 'react';
 
@@ -38,7 +38,7 @@ export function useSendCalls() {
         },
       });
 
-      const account = await toHybridDelegatorAccount({
+      const account = await toUniversalAccount({
         client: bundlerClient.client,
         owners: [owner],
       });

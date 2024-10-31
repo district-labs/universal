@@ -27,6 +27,7 @@ import {
   encodePacked,
   stringToHex,
   pad,
+  toPrefixedMessage,
 } from 'viem';
 import {
   type WebAuthnAccount,
@@ -69,7 +70,7 @@ export type CoinbaseSmartAccountImplementation = Assign<
 const factoryAddress = '0xE9ccAef3b9B22866d9FE4e76DBe59887B9B01BD4';
 
 /**
- * @description Create a Hybrid Delegator Account.
+ * @description Create a Universal Wallet Account.
  *
  * @param parameters - {@link ToCoinbaseSmartAccountParameters}
  * @returns Coinbase Smart Account. {@link ToCoinbaseSmartAccountReturnType}
@@ -84,7 +85,7 @@ const factoryAddress = '0xE9ccAef3b9B22866d9FE4e76DBe59887B9B01BD4';
  *   owners: [privateKeyToAccount('0x...')],
  * })
  */
-export async function toHybridDelegatorAccount(
+export async function toUniversalAccount(
   parameters: ToCoinbaseSmartAccountParameters,
 ): Promise<ToCoinbaseSmartAccountReturnType> {
   const { client, owners, nonce = 0n } = parameters;
@@ -98,7 +99,6 @@ export async function toHybridDelegatorAccount(
   } as const;
   const factory = {
     abi: factoryAbi,
-    // Setup define hybrid Delegator factory address
     address: factoryAddress,
   } as const;
 
@@ -210,7 +210,7 @@ export async function toHybridDelegatorAccount(
     async signMessage(parameters) {
       const { message } = parameters;
 
-      const hash = hashMessage(message);
+      const hash = hashMessage(toPrefixedMessage(message));
 
       const signature = await sign({ hash, owner });
       const wrappedSig = wrapSignature({
