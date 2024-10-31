@@ -25,7 +25,7 @@ export async function POST(
   );
 
   if (!response.ok) {
-    throw new Error('Error inserting initial owner');
+    return new Response(response.statusText, { status: response.status });
   }
 
   return new Response(JSON.stringify(await response.json()), { status: 200 });
