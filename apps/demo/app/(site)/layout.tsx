@@ -22,20 +22,32 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <div className="col-span-2 lg:col-span-6">
               <Link href="/" className="flex items-center">
                 <CircleIcon className="size-6 text-emerald-500 dark:text-emerald-100" />
-                <span className="ml-2 text-xl font-semibold hidden lg:inline-block">
+                <span className="ml-2 text-lg font-semibold hidden lg:inline-block">
                   {siteConfig.name}
                 </span>
               </Link>
             </div>
             <div className="flex-1 flex items-center space-x-2 justify-end lg:col-span-6 col-span-10">
               <div className="flex items-center gap-x-2">
-                <Link href="https://github.com/district-labs/universal-smart-wallet">
-                  <Button variant={"outline"} className='rounded-full font-bold'>
+                <Link
+                  href="https://github.com/district-labs/universal-smart-wallet"
+                  target="_external"
+                >
+                  <Button
+                    variant={'outline'}
+                    className="rounded-full font-bold"
+                  >
                     Smart Contracts
                   </Button>
                 </Link>
-                <Link href="https://github.com/district-labs/universal-sdk" target='_external'>
-                  <Button variant={"outline"} className='rounded-full font-bold'>
+                <Link
+                  href="https://github.com/district-labs/universal-sdk"
+                  target="_external"
+                >
+                  <Button
+                    variant={'outline'}
+                    className="rounded-full font-bold"
+                  >
                     SDK
                   </Button>
                 </Link>
