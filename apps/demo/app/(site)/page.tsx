@@ -1,9 +1,10 @@
 'use client';
+import { Address } from '@/components/onchain/address';
 import { ConnectSmartWalletButton } from '@/components/onchain/connect-smart-wallet-button';
-import { Button } from '@/components/ui/button';
+import { TransactionHash } from '@/components/onchain/transaction-hash';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { useState } from 'react';
-import { Hex, erc20Abi, zeroAddress } from 'viem';
+import { cn } from '@/lib/utils';
 import { base, baseSepolia } from 'viem/chains';
 
 import {
@@ -26,9 +27,14 @@ export default function HomePage() {
       <h1 className="text-3xl font-bold">Discover What's Possible</h1>
       {address && (
         <div className="w-full max-w-screen-md">
-          <Button size={'lg'} className="w-full rounded-full">
-            {address}
-          </Button>
+          <Address
+            className={cn(
+              buttonVariants({ size: 'lg' }),
+              'w-full rounded-full',
+            )}
+            address={address}
+            isLink
+          />
           <div className="mt-4 flex flex-col gap-y-4">
             <Disconnect />
             <SendTransaction />
@@ -36,7 +42,6 @@ export default function HomePage() {
             <SignTypedData />
             <WriteContracts />
             <AddChain />
-            {/* <ReadMethods /> */}
             {/* <SwitchChain /> */}
           </div>
         </div>
@@ -219,7 +224,11 @@ function SendTransaction() {
           <CardFooter>
             <div className="w-full break-words">
               <span className="font-bold">Transaction Hash:</span> <br />
-              {writeContractData}
+              <TransactionHash
+                isLink
+                className={cn(buttonVariants({ variant: 'link' }))}
+                hash={writeContractData}
+              />
             </div>
           </CardFooter>
         )}
@@ -357,34 +366,6 @@ function AddChain() {
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
-}
-
-function ReadMethods() {
-  const chainId = useChainId();
-  const { data: walletClient, error } = useWalletClient();
-  const [signature, setSignature] = useState<Hex>();
-
-  return (
-    <div>
-      <div>Sig: {signature}</div>
-      <div>Error: {error && JSON.stringify(error, null, 2)}</div>
-      {chainId === base.id && (
-        <Button
-          onClick={async () => {
-            if (!walletClient) return;
-            const sig = await walletClient.sendTransaction({
-              to: zeroAddress,
-              value: 0n,
-              data: '0x12',
-            });
-            setSignature(sig);
-          }}
-        >
-          Send Tx
-        </Button>
-      )}
     </div>
   );
 }
