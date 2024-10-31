@@ -3,7 +3,7 @@ import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useQuery } from '@tanstack/react-query';
 import { toWebAuthnAccount } from 'viem/account-abstraction';
-import { toHybridDelegatorAccount } from '../account-adapters/to-hybrid-delegator-account';
+import { toUniversalAccount } from '../account-adapters/to-universal-account';
 import { formatEther } from 'viem';
 import { getEthPrice } from '@/lib/defi-llama/actions/get-eth-price';
 import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
@@ -48,7 +48,7 @@ export function useEstimateUserOpPrice() {
         },
       });
 
-      const account = await toHybridDelegatorAccount({
+      const account = await toUniversalAccount({
         client: bundlerClient.client,
         owners: [owner],
       });

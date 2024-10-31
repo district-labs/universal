@@ -2,7 +2,7 @@ import { useAccountState } from '@/lib/state/use-account-state';
 import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { toWebAuthnAccount } from 'viem/account-abstraction';
-import { toHybridDelegatorAccount } from '@/lib/account-abstraction/account-adapters/to-hybrid-delegator-account';
+import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
 import { useQuery } from '@tanstack/react-query';
 import { simulateUserOpAssetChanges } from '../actions/simulate-user-op-asset-changes';
 import { getErc721Metadata } from '@/lib/web3/get-erc721-metadata';
@@ -45,7 +45,7 @@ export function useEstimateUserOpAssetChanges() {
         },
       });
 
-      const account = await toHybridDelegatorAccount({
+      const account = await toUniversalAccount({
         client: bundlerClient!.client,
         owners: [owner],
       });

@@ -55,8 +55,8 @@ const config: Config = {
     },
   },
   plugins: [
-    require("tailwindcss-react-aria-components"),
-    require("tailwindcss-animate"),
+    require('tailwindcss-react-aria-components'),
+    require('tailwindcss-animate'),
   ],
 };
 

@@ -8,7 +8,7 @@ import {
   toWebAuthnAccount,
 } from 'viem/account-abstraction';
 
-import { toHybridDelegatorAccount } from '@/lib/account-abstraction/account-adapters/to-hybrid-delegator-account';
+import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
 import { useAccountState } from '@/lib/state/use-account-state';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useSaveCredential } from '@/lib/pop-up/hooks/use-save-credential';
@@ -68,7 +68,7 @@ export default function Page() {
             const owner = toWebAuthnAccount({
               credential,
             });
-            const account = await toHybridDelegatorAccount({
+            const account = await toUniversalAccount({
               client: bundlerClient.client,
               owners: [owner],
             });

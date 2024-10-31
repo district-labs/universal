@@ -37,17 +37,19 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     <MenuIcon className="size-6" />
                   </span>
                 </SheetTrigger>
-                <SheetContent className="w-full h-full" side={"bottom"}>
+                <SheetContent className="w-full h-full" side={'bottom'}>
                   <SheetHeader>
-                    <SheetTitle className='text-3xl font-bold'>Universal Wallet</SheetTitle>
+                    <SheetTitle className="text-3xl font-bold">
+                      Universal Wallet
+                    </SheetTitle>
                   </SheetHeader>
                   <div className="flex flex-col gap-y-4 mt-4">
                     <p className="text-center text-normal">
                       Discover What's Possible
                     </p>
                     <p className="text-center text-xs">
-                       Secure your digital assets. <br/> Own
-                      your digital identity. <br/> Connect with the world.
+                      Secure your digital assets. <br /> Own your digital
+                      identity. <br /> Connect with the world.
                     </p>
                   </div>
                 </SheetContent>
