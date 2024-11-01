@@ -6,31 +6,26 @@ import {
 import { basePublicClient, baseSepoliaPublicClient } from './public-client';
 import { base, baseSepolia } from 'viem/chains';
 import { http } from 'viem';
-import { env } from '@/env';
+
+function getBundlerUrl(chain: Chain) {
+  return `/api/bundler/${chain.id}`;
+}
 
 export const baseBundlerClient = createBundlerClient({
   client: basePublicClient,
   chain: base,
-  transport: http(
-    `https://api.pimlico.io/v2/${base.id}/rpc?apikey=${env.NEXT_PUBLIC_PIMLICO_API_KEY}`,
-  ),
+  transport: http(getBundlerUrl(base)),
   paymaster: createPaymasterClient({
-    transport: http(
-      `https://api.pimlico.io/v2/${base.id}/rpc?apikey=${env.NEXT_PUBLIC_PIMLICO_API_KEY}`,
-    ),
+    transport: http(getBundlerUrl(base)),
   }),
 });
 
 export const baseSepoliaBundlerClient = createBundlerClient({
   client: baseSepoliaPublicClient,
   chain: baseSepolia,
-  transport: http(
-    `https://api.pimlico.io/v2/${baseSepolia.id}/rpc?apikey=${env.NEXT_PUBLIC_PIMLICO_API_KEY}`,
-  ),
+  transport: http(getBundlerUrl(baseSepolia)),
   paymaster: createPaymasterClient({
-    transport: http(
-      `https://api.pimlico.io/v2/${baseSepolia.id}/rpc?apikey=${env.NEXT_PUBLIC_PIMLICO_API_KEY}`,
-    ),
+    transport: http(getBundlerUrl(baseSepolia)),
   }),
 });
 
