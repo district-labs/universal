@@ -6,8 +6,8 @@ import {
   ChainNotConfiguredError,
   type Connector,
   createConnector,
-  type CreateConnectorFn,
-} from "@wagmi/core";
+} from "wagmi";
+
 import type { Mutable, Omit } from "@wagmi/core/internal";
 
 import {
@@ -32,9 +32,8 @@ type Provider = ProviderInterface & {
 
 universalWallet.type = "universalWallet" as const;
 export function universalWallet(
-  parameters: UniversalWalletParameters = {},
-): CreateConnectorFn<Provider, Record<string, unknown>, Record<string, unknown>> {
-
+  parameters: UniversalWalletParameters = {} as any
+) {
   let sdk: UniversalWalletSDK | undefined;
   let walletProvider: Provider | undefined;
 
@@ -235,4 +234,5 @@ export function universalWallet(
       }
     },
   }))
+
 }

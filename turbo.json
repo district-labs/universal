@@ -5,20 +5,13 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**"]
-    },
-    "universal-wallet-sdk#build": {
-      "dependsOn": []
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "universal-wallet-connector#build": {
       "dependsOn": ["universal-wallet-sdk#build"]
     },
     "lint": {
       "dependsOn": ["^lint"]
-    },
-    "dev": {
-      "cache": false,
-      "persistent": true
     }
   },
   "globalEnv": [

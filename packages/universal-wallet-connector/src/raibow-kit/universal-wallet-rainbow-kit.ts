@@ -1,4 +1,4 @@
-import { type CreateConnectorFn, createConnector } from 'wagmi';
+import { createConnector } from 'wagmi';
 import {
   universalWallet as universalConnector,
   type UniversalWalletParameters,
@@ -23,8 +23,7 @@ export const universalWalletRainbowkit: UniversalWallet = ({
     iconAccent: '#fff',
     iconBackground: '#fff',
     createConnector: (walletDetails: WalletDetailsParams) => {
-      // @ts-expect-error
-      const connector: CreateConnectorFn = universalConnector({
+      const connector = universalConnector({
         appName,
         appLogoUrl,
       });
