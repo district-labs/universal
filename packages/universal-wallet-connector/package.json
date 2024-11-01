@@ -1,6 +1,6 @@
 {
   "name": "universal-wallet-connector",
-  "description": "Collection of connectors for Wagmi",
+  "description": "Connectors for the Universal Smart Wallet",
   "version": "0.0.1",
   "license": "MIT",
   "files": [
@@ -30,9 +30,9 @@
     "test:build": "publint --strict && attw --pack --ignore-rules cjs-resolves-to-esm"
   },
   "peerDependencies": {
-    "@wagmi/core": "latest",
+    "wagmi": "2.12.11",
     "typescript": ">=5.0.4",
-    "viem": "2.x"
+    "viem": "^2.21.6"
   },
   "peerDependenciesMeta": {
     "typescript": {
@@ -41,9 +41,5 @@
   },
   "dependencies": {
     "universal-wallet-sdk": "workspace:*"
-  },
-  "devDependencies": {
-    "@wagmi/core": "latest",
-    "msw": "^2.4.9"
   }
 }
