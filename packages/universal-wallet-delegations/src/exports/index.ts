@@ -1,4 +1,5 @@
 // biome-ignore lint/performance/noBarrelFile: entrypoint module
+export { useSignErc20TransferDelegation } from "../actions/use-sign-erc20-transfer.js";
 export { delegationManagerAbi } from "../abis/delegation-manager-abi.js";
 export { eip712DelegationTypes } from "../delegation/eip712-delegation-type.js";
 export { encodeDelegations } from "../delegation/encode-delegations.js";

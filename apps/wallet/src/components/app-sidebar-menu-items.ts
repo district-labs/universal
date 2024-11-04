@@ -34,7 +34,7 @@ export const itemsCore = [
 
 export const itemsFinance = [
   {
-    title: 'Payment Cards',
+    title: 'Debit Authorizations',
     url: '/finance/payments',
     icon: Banknote,
   },
@@ -43,11 +43,6 @@ export const itemsFinance = [
     url: '/finance/subscriptions',
     icon: Calendar,
   },
-  // {
-  //   title: 'Universal Cards',
-  //   url: '/finance/cards',
-  //   icon: CreditCard,
-  // },
 ];
 
 export const itemsIdentity = [

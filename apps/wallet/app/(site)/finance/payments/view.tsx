@@ -1,147 +1,144 @@
 'use client';
 
-import { useState } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Address, zeroAddress } from 'viem';
+import { useAccount } from 'wagmi';
+import { z } from 'zod';
+
+import { addressSchema, coercedNumberSchema } from '@/lib/validation/utils';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
-import DebitCard from '@/components/finance/debit-card';
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { SelectToken } from '@/components/select/select-token';
+import { ConnectButton } from '@/components/onchain/connect-button';
+import { Card, CardContent } from '@/components/ui/card';
+import { DebitCard } from 'universal-wallet-ui';
+import { useChainId } from 'wagmi';
+import { Button } from '@/components/ui/button';
+import { useSignErc20TransferDelegation } from 'universal-wallet-delegations';
 
-// Import the DebitCard component from its dedicated file
-
-// Define the form data structure
-interface FormData {
-  recipient: string;
-  token: string;
-  amount: string;
-}
-
-// Mock token list
-const tokenList = [
-  { address: '0x1', symbol: 'USDC', name: 'USD Coin' },
-  { address: '0x2', symbol: 'ETH', name: 'Ethereum' },
-  { address: '0x3', symbol: 'USDT', name: 'Tether' },
-];
-
-const getTokenSymbol = (tokenAddress: string) => {
-  if (tokenAddress === 'custom') return 'CUSTOM';
-  const selectedToken = tokenList.find((t) => t.address === tokenAddress);
-  return selectedToken ? selectedToken.symbol : 'TOKEN';
-};
+const formSchema = z.object({
+  delegate: addressSchema,
+  token: addressSchema,
+  name: z.string(),
+  symbol: z.string(),
+  decimals: coercedNumberSchema.min(1),
+  amount: coercedNumberSchema.min(1),
+});
 
 export function FinanceCardView() {
-  const { control, handleSubmit, watch } = useForm<FormData>({
-    defaultValues: {
-      recipient: '',
-      token: '',
-      amount: '',
-    },
+  const { signDelegation, delegationSignature } =
+    useSignErc20TransferDelegation();
+  const { address } = useAccount();
+  const chainId = useChainId();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
   });
 
-  const [customToken, setCustomToken] = useState('');
+  const data = form.watch();
 
-  const { amount, token } = watch(['amount', 'token']);
-
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-    // Handle form submission here
-  };
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    signDelegation({
+      chainId: chainId,
+      delegate: data.delegate,
+      delegator: address as Address,
+      erc20: data.token,
+      decimals: data.decimals,
+      amount: data?.amount?.toString(),
+    });
+  }
 
   return (
     <div className="container mx-auto p-0">
-      <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         {/* Preview Section */}
-        <Card className="bg-neutral-100 border-none shadow-none p-8">
-          <CardContent className="flex justify-center  h-full p-0">
+        <Card className="bg-neutral-100 border-none shadow-none p-8 order-2">
+          <CardContent className="flex justify-center items-center h-full p-0">
             <DebitCard
-              amount={amount || '0'}
-              tokenAddress={token === 'custom' ? customToken : token}
-              chainId={1} // Assuming Ethereum mainnet, adjust as needed
-              tokenSymbol={getTokenSymbol(token)}
+              to={data.delegate as Address}
+              amount={data?.amount?.toString() || '0'}
+              tokenAddress={data.token}
+              chainId={chainId}
+              name={data.name}
+              symbol={data.symbol}
             />
           </CardContent>
         </Card>
         {/* Form Section */}
-        <Card className="bg-transparent border-none shadow-none">
-          <CardHeader>
-            <CardTitle>Send Tokens</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="recipient">Recipient Address</Label>
-                <Controller
-                  name="recipient"
-                  control={control}
-                  rules={{ required: 'Recipient address is required' }}
-                  render={({ field }) => (
-                    <Input id="recipient" placeholder="0x..." {...field} />
-                  )}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="token">Token</Label>
-                <Controller
-                  name="token"
-                  control={control}
-                  rules={{ required: 'Token is required' }}
-                  render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a token" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {tokenList.map((token) => (
-                          <SelectItem key={token.address} value={token.address}>
-                            {token.symbol} - {token.name}
-                          </SelectItem>
-                        ))}
-                        <SelectItem value="custom">Custom Token</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-                {token === 'custom' && (
-                  <Input
-                    placeholder="Enter custom token address"
-                    value={customToken}
-                    onChange={(e) => setCustomToken(e.target.value)}
-                    className="mt-2"
-                  />
+        <Card className="bg-transparent border-none shadow-none p-4">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-4 w-full"
+            >
+              <FormField
+                control={form.control}
+                name="delegate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>To</FormLabel>
+                    <FormControl>
+                      <Input placeholder={zeroAddress} {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      The address that will be allowed to spend the token.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="amount">Amount</Label>
-                <Controller
-                  name="amount"
-                  control={control}
-                  rules={{ required: 'Amount is required' }}
-                  render={({ field }) => (
-                    <Input
-                      id="amount"
-                      type="number"
-                      placeholder="0.00"
-                      {...field}
+              />
+              <FormField
+                control={form.control}
+                name="token"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Token</FormLabel>
+                    <SelectToken
+                      value={field.value}
+                      onValueChange={({ address, decimals, name, symbol }) => {
+                        field.onChange(address);
+                        form.setValue('decimals', decimals);
+                        form.setValue('name', name);
+                        form.setValue('symbol', symbol);
+                      }}
                     />
-                  )}
-                />
-              </div>
+                    <FormDescription>
+                      Token to accept payment in.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Amount</FormLabel>
+                    <FormControl>
+                      <Input {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      The amount of token that the delegate will be allowed to
+                      spend.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {address && <Button type="submit">Approve</Button>}
 
-              <Button type="submit" className="w-full">
-                Send Tokens
-              </Button>
+              {!address && <ConnectButton>Connect </ConnectButton>}
             </form>
-          </CardContent>
+          </Form>
         </Card>
       </div>
     </div>

@@ -1,14 +1,14 @@
-import { zeroAddress, type Address } from 'viem';
-import { anvil, baseSepolia } from 'viem/chains';
+import { type Address } from 'viem';
+import { baseSepolia } from 'viem/chains';
 
 export const delegationFrameworkDeployments: {
   [chainId: number]: {
     [key: string]: Address;
   };
 } = {
-  [anvil.id as number]: {
-    delegationManager: zeroAddress,
-  },
+  // [anvil.id as number]: {
+  //   delegationManager: zeroAddress,
+  // },
   [baseSepolia.id as number]: {
     erc20Mintable: '0x4C8Be898BdE148aE6f9B0AF86e7D2b5a0558A7d0',
     delegationManager: '0x56D56e07e3d6Ee5a24e30203A37a0a460f42D7A3',
