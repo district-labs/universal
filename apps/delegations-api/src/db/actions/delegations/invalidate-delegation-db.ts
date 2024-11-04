@@ -1,5 +1,5 @@
-import { db } from "@/db/index.js";
-import { delegations as delegationsDb } from "@/db/schema.js";
+import { db } from "../../index.js";
+import { delegations as delegationsDb } from "../../schema.js";
 import { eq } from "drizzle-orm";
 
 export function invalidateDelegationDb({ hash }: { hash: string }) {

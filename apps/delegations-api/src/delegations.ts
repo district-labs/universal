@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
-import { getDelegationsDb } from "@/db/actions/delegations/get-delegations-db.js";
+import { getDelegationsDb } from "./db/actions/delegations/get-delegations-db.js";
 import type { SelectDelegationDb } from "./db/schema.js";
 import { insertDelegationDb } from "./db/actions/delegations/insert-delegation-db.js";
 import { invalidateDelegationDb } from "./db/actions/delegations/invalidate-delegation-db.js";

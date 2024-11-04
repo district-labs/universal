@@ -1,4 +1,4 @@
-import { db } from "@/db/index.js";
+import { db } from "../../index.js";
 
 export function getDelegationsDb({ hash }: { hash: string }) {
   return db.query.delegations.findFirst({

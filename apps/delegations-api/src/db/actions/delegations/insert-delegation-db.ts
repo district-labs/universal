@@ -1,10 +1,10 @@
-import { db } from "@/db/index.js";
+import { db } from "../../index.js";
 import {
   type InsertDelegationDb,
   type InsertCaveatDb,
   caveats as caveatsDb,
   delegations as delegationsDb,
-} from "@/db/schema.js";
+} from "../../schema.js";
 
 type InsertDelegationDbParams = InsertDelegationDb & {
   caveats: Omit<InsertCaveatDb, "id" | "delegationHash">[];
