@@ -4,8 +4,9 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
+    "format": "turbo format",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "start": "turbo start"
   },
   "resolutions": {
     "wagmi": "2.12.11"

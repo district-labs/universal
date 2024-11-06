@@ -33,7 +33,7 @@ export function useSignTypedDataV4() {
         return;
       }
 
-      if(!bundlerClient?.client) {
+      if (!bundlerClient?.client) {
         return;
       }
 

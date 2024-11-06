@@ -26,10 +26,12 @@ export default function RootProvider({ children }: RootProviderProps) {
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider>
-            <DelegationsApiClientProvider url={env.NEXT_PUBLIC_DELEGATIONS_API_URL}>
+            <DelegationsApiClientProvider
+              url={env.NEXT_PUBLIC_DELEGATIONS_API_URL}
+            >
               {children}
             </DelegationsApiClientProvider>
-            </RainbowKitProvider>
+          </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </ThemeProvider>

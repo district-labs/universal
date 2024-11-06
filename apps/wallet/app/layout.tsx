@@ -3,7 +3,6 @@ import './globals.css';
 import { ReactNode } from 'react';
 import { env } from '@/env';
 
-
 import { siteConfig } from './config';
 import { fontSans } from './fonts';
 import { cn } from '@/lib/utils';

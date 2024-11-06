@@ -7,14 +7,24 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
-    "universal-wallet-connector#build": {
-      "dependsOn": ["universal-wallet-sdk#build"]
+    "dev": {
+      "dependsOn": ["^dev"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "format": {
+      "dependsOn": ["^format"]
     },
     "lint": {
       "dependsOn": ["^lint"]
+    },
+    "start": {
+      "dependsOn": ["^start"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "universal-wallet-connector#build": {
+      "dependsOn": ["universal-wallet-sdk#build"]
     }
-  },
-  "globalEnv": [
-    "DATABASE_URL"
-  ]
+  }
 }

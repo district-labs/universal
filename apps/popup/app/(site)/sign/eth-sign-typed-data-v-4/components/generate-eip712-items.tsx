@@ -1,7 +1,7 @@
-import { RowBasic } from "@/components/row-basic";
-import { cn } from "@/lib/utils";
-import { useMemo } from "react";
-import { TypedDataDefinition } from "viem";
+import { RowBasic } from '@/components/row-basic';
+import { cn } from '@/lib/utils';
+import { useMemo } from 'react';
+import { TypedDataDefinition } from 'viem';
 
 type GenerateEip712Items = React.HTMLAttributes<HTMLElement> & {
   data: TypedDataDefinition['message'];
@@ -44,7 +44,9 @@ const GenerateEip712Items = ({ className, data }: GenerateEip712Items) => {
                 {item.map((val, i) => {
                   return (
                     <>
-                      {typeof val === 'object' && <GenerateEip712Items data={val} />}
+                      {typeof val === 'object' && (
+                        <GenerateEip712Items data={val} />
+                      )}
                       {typeof val === 'string' && (
                         <span className="mr-2">{val}</span>
                       )}

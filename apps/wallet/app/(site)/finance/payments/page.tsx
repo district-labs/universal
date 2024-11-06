@@ -65,16 +65,21 @@ export default function FinanceCardsPage() {
                 <div>
                   <h3 className="font-bold text-lg">How It Works</h3>
                   <p>
-                    The Universal Credit prototype utilizes a powerful new way to share
-                    permissions between onchain accounts.
+                    The Universal Credit prototype utilizes a powerful new way
+                    to share permissions between onchain accounts.
                   </p>
                   <ol className="list-decimal list-inside pl-4 mb-4">
                     <li>Connect Universal Wallet.</li>
                     <li>Mint GEMs on Base Sepolia.</li>
-                    <li>Sign an offchain authorization to approve a P2P credit line.</li>
+                    <li>
+                      Sign an offchain authorization to approve a P2P credit
+                      line.
+                    </li>
                   </ol>
-                  <p className=''>
-                    <span className='font-bold'>That's it!</span> Now the credit line is established and the receiving party can claim the GEMs. 
+                  <p className="">
+                    <span className="font-bold">That's it!</span> Now the credit
+                    line is established and the receiving party can claim the
+                    GEMs.
                   </p>
                 </div>
               </Card>

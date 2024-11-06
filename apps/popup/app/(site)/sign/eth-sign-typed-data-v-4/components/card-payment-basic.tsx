@@ -12,7 +12,11 @@ type CardPaymentBasic = React.HTMLAttributes<HTMLElement> & {
   chainId: number;
 };
 
-const CardPaymentBasic = ({ className, typedData, chainId }: CardPaymentBasic) => {
+const CardPaymentBasic = ({
+  className,
+  typedData,
+  chainId,
+}: CardPaymentBasic) => {
   const data = React.useMemo(() => {
     const formattedTerms = decodeEnforcerERC20TransferAmount(
       typedData.caveats[0].terms,
@@ -29,7 +33,7 @@ const CardPaymentBasic = ({ className, typedData, chainId }: CardPaymentBasic) =
         symbol: 'UNK',
         decimals: 18,
       };
-    };
+    }
     return {
       to: typedData.delegate,
       token: formattedTerms[0] as Address,
@@ -59,7 +63,7 @@ const CardPaymentBasic = ({ className, typedData, chainId }: CardPaymentBasic) =
           label="Amount"
           value={formatUnits(BigInt(data.amount), data.decimals)}
         />
-        <RowBasic label="Expiration" value={"Never"} />
+        <RowBasic label="Expiration" value={'Never'} />
       </div>
     </div>
   );

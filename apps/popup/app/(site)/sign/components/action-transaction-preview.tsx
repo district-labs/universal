@@ -19,7 +19,7 @@ export function ActionTransactionPreview({
   const { accountState } = useAccountState();
   const { data, isLoading, isError, error } = useEstimateUserOpAssetChanges();
 
-  console.log(error, isError, 'errorerror')
+  console.log(error, isError, 'errorerror');
 
   const assets = useMemo(() => {
     if (!data) return null;

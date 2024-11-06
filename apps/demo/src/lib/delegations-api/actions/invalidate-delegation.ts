@@ -1,8 +1,8 @@
-import type { Hex } from "viem";
-import { delegationsAPiClient } from "../client";
+import type { Hex } from 'viem';
+import { delegationsAPiClient } from '../client';
 
 export async function invalidateDelegation(hash: Hex) {
-  const res = await delegationsAPiClient.delegations.invalidate[":hash"].$patch(
+  const res = await delegationsAPiClient.delegations.invalidate[':hash'].$patch(
     {
       param: { hash },
     },
