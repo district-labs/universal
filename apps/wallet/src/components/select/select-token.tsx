@@ -8,42 +8,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-type Token = {
-  address: string;
-  name: string;
-  symbol: string;
-  img: string;
-  decimals: number;
-};
-
-const TOKENS: Token[] = [
-  {
-    address: '0x25a00587cEe81a29db94e47E9B4b618439FC5E6f',
-    name: 'USD Test',
-    symbol: 'USD',
-    decimals: 18,
-    img: '/images/erc20/usdc.png',
-  },
-  {
-    address: '0xb80aaFbE600329Eee68E55A46565412946EEC57F',
-    name: 'Emerald Gems',
-    symbol: 'GEM',
-    decimals: 18,
-    img: '/images/erc20/gem.png',
-  },
-];
+import { tokenDeployments, findToken, Token } from 'universal-wallet-data';
 
 type SelectTokenProps = {
+  chainId: number;
   onValueChange?: (token: Token) => void;
   value: string;
 };
 
-export function SelectToken({ onValueChange, value }: SelectTokenProps) {
+export function SelectToken({
+  onValueChange,
+  value,
+  chainId,
+}: SelectTokenProps) {
   return (
     <Select
       onValueChange={(value) => {
-        const selectedToken = TOKENS.find((token) => token.address === value);
+        const selectedToken = findToken(chainId, value);
         onValueChange?.(selectedToken!);
       }}
       value={value}
@@ -54,7 +35,7 @@ export function SelectToken({ onValueChange, value }: SelectTokenProps) {
         </SelectTrigger>
       </FormControl>
       <SelectContent>
-        {TOKENS.map((token) => (
+        {tokenDeployments[chainId].map((token) => (
           <SelectItem key={token.address} value={token.address}>
             <div className="flex items-center gap-x-4">
               <Image

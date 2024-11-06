@@ -1,4 +1,4 @@
-import { keccak256, toHex } from 'viem';
+import { keccak256, toHex, type Hex } from 'viem';
 
 // Delegation constants
 export const ANY_DELEGATE = '0x0000000000000000000000000000000000000a11';
@@ -6,11 +6,12 @@ export const ROOT_AUTHORITY =
   '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
 
 // Execution Modes
-export const BATCH_EXECUTION_MODE =
-  '0x0100000000000000000000000000000000000000000000000000000000000000';
-export const SINGLE_EXECUTION_MODE =
-  '0x0000000000000000000000000000000000000000000000000000000000000000';
-
+export const BATCH_EXECUTION_MODE = [
+  "0x0100000000000000000000000000000000000000000000000000000000000000" as Hex,
+]
+export const SINGLE_EXECUTION_MODE = [
+  "0x0000000000000000000000000000000000000000000000000000000000000000" as Hex,
+]
 export const EMPTY_ARGS = '0x';
 export const EMPTY_SIGNATURE = '0x';
 export const SALT = BigInt(0);

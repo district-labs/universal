@@ -1,10 +1,8 @@
 'use client';
+import { useAccount, useChainId } from 'wagmi';
 import { ConnectButton } from '@/components/onchain/connect-button';
-import { ConnectSmartWalletButton } from '@/components/onchain/connect-smart-wallet-button';
 import { OnchainAssetsTable } from '@/components/tables/onchain-assets-table';
 import { Card } from '@/components/ui/card';
-
-import { useAccount, useChainId } from 'wagmi';
 
 export default function AssetsPage() {
   const { address } = useAccount();

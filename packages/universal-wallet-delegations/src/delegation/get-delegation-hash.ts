@@ -1,4 +1,4 @@
-import { encodeAbiParameters, encodePacked, keccak256 } from 'viem';
+import { concatHex, encodeAbiParameters, keccak256 } from 'viem';
 
 import { CAVEAT_TYPEHASH, DELEGATION_TYPEHASH } from '../constants.js';
 import type { Caveat, Delegation } from '../types.js';
@@ -31,11 +31,10 @@ export function getDelegationHash(delegation: Delegation) {
 }
 
 export function getCaveatArrayPacketHash(caveats: Caveat[]) {
-  const caveatPacketHashes = caveats.map((caveat) =>
-    getCaveatPacketHash(caveat),
-  );
-  const encodedPacketHashes = encodePacked(['bytes32[]'], [caveatPacketHashes]);
-  return keccak256(encodedPacketHashes);
+  const caveatPacketHashes = caveats.map((caveat) => getCaveatPacketHash(caveat));
+  // Concatenate the bytes32 hashes directly
+  const concatenatedHashes = concatHex(caveatPacketHashes);
+  return keccak256(concatenatedHashes);
 }
 
 export function getCaveatPacketHash(caveat: Caveat) {

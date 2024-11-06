@@ -17,6 +17,7 @@
     "noUnusedParameters": true, // Not enabled by default in `strict` mode.
     "useDefineForClassFields": true, // Not enabled by default in `strict` mode unless we bump `target` to ES2022.
     "useUnknownInCatchVariables": true,
+    "jsx": "react-jsx",
 
     // JavaScript support
     "allowJs": false,

@@ -6,7 +6,7 @@ export function encodeDelegations(delegations: Delegation[]): Hex {
   return encodeAbiParameters(
     [
       {
-        name: 'delegation',
+        name: '_delegation',
         type: 'tuple[]',
         internalType: 'struct Delegation',
         components: [

@@ -1,18 +1,15 @@
 import { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
-import { CircleIcon, Menu } from 'lucide-react';
-import { siteConfig } from 'app/config';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/app-sidebar';
-import { ConnectSmartWalletButton } from '@/components/onchain/connect-smart-wallet-button';
 import { ConnectButton } from '@/components/onchain/connect-button';
+
 interface RootLayoutProps {
   children: ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+
   return (
     <>
       <div className="relative flex min-h-screen flex-col">

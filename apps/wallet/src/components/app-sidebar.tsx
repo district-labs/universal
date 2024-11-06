@@ -25,7 +25,6 @@ import { siteConfig } from 'app/config';
 import Link from 'next/link';
 import { LinkComponent } from './ui/link-component';
 import {
-  itemsActions,
   itemsCore,
   itemsFinance,
   itemsIdentity,
@@ -92,26 +91,6 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {itemsIdentity.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <LinkComponent href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </LinkComponent>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>Actions</SidebarGroupLabel>
-          <SidebarGroupAction>
-            <Coins /> <span className="sr-only">Actions</span>
-          </SidebarGroupAction>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {itemsActions.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <LinkComponent href={item.url}>

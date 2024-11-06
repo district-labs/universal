@@ -34,6 +34,7 @@
     "@tanstack/react-table": "^8.17.3",
     "class-variance-authority": "^0.7.0",
     "cmdk": "1.0.0",
+    "hono": "^4.6.8",
     "lucide-react": "^0.446.0",
     "next": "^14.2.5",
     "next-themes": "^0.3.0",

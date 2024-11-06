@@ -60,6 +60,7 @@ export const ConnectButton = ({
               if (!connected || !displayProfile) {
                 return (
                   <Button
+                    type="button"
                     variant={props?.variant}
                     size={props?.size}
                     rounded={props?.rounded}
@@ -74,6 +75,7 @@ export const ConnectButton = ({
               if (chain.unsupported) {
                 return (
                   <Button
+                    type="button"
                     variant="destructive"
                     size={props?.size}
                     rounded={props?.rounded}
@@ -87,6 +89,7 @@ export const ConnectButton = ({
               return (
                 <div className="flex w-full items-center gap-x-2">
                   <Button
+                    type="button"
                     variant={'outline'}
                     className="flex w-full gap-x-1 text-sm"
                     onClick={onClick ?? openAccountModal}
@@ -96,6 +99,7 @@ export const ConnectButton = ({
                     </div>
                   </Button>
                   <Button
+                    type="button"
                     variant={'outline'}
                     onClick={onClick ?? openChainModal}
                   >

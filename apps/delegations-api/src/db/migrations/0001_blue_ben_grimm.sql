@@ -1,0 +1,1 @@
+ALTER TABLE "delegations" ADD COLUMN "isValid" boolean DEFAULT true NOT NULL;

@@ -60,6 +60,7 @@ export function useSendTransaction() {
       setIsLoadingUserOp(true);
       const { receipt } = await bundlerClient.waitForUserOperationReceipt({
         hash: userOp,
+  
       });
 
       sendMessageToOpener({

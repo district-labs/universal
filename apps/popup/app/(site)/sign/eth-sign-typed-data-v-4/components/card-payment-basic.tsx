@@ -5,6 +5,7 @@ import { Address, decodeAbiParameters, formatUnits } from 'viem';
 import { DebitCard } from 'universal-wallet-ui';
 import { findToken } from 'universal-wallet-data';
 import { RowBasic } from '@/components/row-basic';
+import { decodeEnforcerERC20TransferAmount } from 'universal-wallet-delegations';
 
 type CardPaymentBasic = React.HTMLAttributes<HTMLElement> & {
   typedData: Delegation;
@@ -13,11 +14,7 @@ type CardPaymentBasic = React.HTMLAttributes<HTMLElement> & {
 
 const CardPaymentBasic = ({ className, typedData, chainId }: CardPaymentBasic) => {
   const data = React.useMemo(() => {
-    const formattedTerms = decodeAbiParameters(
-      [
-        { name: 'token', type: 'address' },
-        { name: 'amount', type: 'uint255' },
-      ],
+    const formattedTerms = decodeEnforcerERC20TransferAmount(
       typedData.caveats[0].terms,
     );
 
@@ -27,7 +24,7 @@ const CardPaymentBasic = ({ className, typedData, chainId }: CardPaymentBasic) =
       return {
         to: typedData.delegate,
         token: formattedTerms[0] as Address,
-        amount: formattedTerms[1] as number,
+        amount: formattedTerms[1],
         name: 'Unknown',
         symbol: 'UNK',
         decimals: 18,
@@ -36,7 +33,7 @@ const CardPaymentBasic = ({ className, typedData, chainId }: CardPaymentBasic) =
     return {
       to: typedData.delegate,
       token: formattedTerms[0] as Address,
-      amount: formattedTerms[1] as number,
+      amount: formattedTerms[1],
       name: token.name,
       symbol: token.symbol,
       decimals: token.decimals,
