@@ -1,6 +1,7 @@
 ![!Universal Wallet](./banner.png)
 
 # Universal Wallet
+
 Universal Wallet is an Open Source Browser Based Wallet for Ethereum Smart Wallets powered by PassKeys.
 
 [Demo](https://demo.districtlabs.com)
