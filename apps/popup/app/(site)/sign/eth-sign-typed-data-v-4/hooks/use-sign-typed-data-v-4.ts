@@ -9,6 +9,7 @@ import { useMemo } from 'react';
 import { deserialize } from 'wagmi';
 import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
 import { useBundlerClient } from '@/lib/state/use-bundler-client';
+import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
 
 export function useSignTypedDataV4() {
   const { accountState } = useAccountState();
@@ -33,17 +34,23 @@ export function useSignTypedDataV4() {
         return;
       }
 
-      const { accountState, message, sessionState } = params;
+      const { accountState, bundlerClient, message, sessionState } = params;
       const { credentialId, publicKey } = accountState;
 
-      const account = toWebAuthnAccount({
+      const owner = toWebAuthnAccount({
         credential: {
           id: credentialId,
           publicKey: publicKey,
         },
       });
 
-      const { signature } = await account.signTypedData(typedData);
+      const account = await toUniversalAccount({
+        client: bundlerClient.client,
+        owners: [owner],
+      });
+
+
+      const signature = await account.signTypedData(typedData);
 
       sendMessageToOpener({
         value: signature,

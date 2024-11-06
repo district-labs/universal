@@ -8,6 +8,7 @@ import { Hex, fromHex } from 'viem';
 import { useMemo } from 'react';
 import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
 import { useBundlerClient } from '@/lib/state/use-bundler-client';
+import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
 
 export function useSignMessage() {
   const { accountState } = useAccountState();
@@ -38,17 +39,22 @@ export function useSignMessage() {
         return;
       }
 
-      const { accountState, message, sessionState } = params;
+      const { accountState, bundlerClient, message, sessionState } = params;
       const { credentialId, publicKey } = accountState;
 
-      const account = toWebAuthnAccount({
+      const owner = toWebAuthnAccount({
         credential: {
           id: credentialId,
           publicKey: publicKey,
         },
       });
 
-      const { signature } = await account.signMessage({
+      const account = await toUniversalAccount({
+        client: bundlerClient.client,
+        owners: [owner],
+      });
+
+      const signature = await account.signMessage({
         message: {
           raw: messageHash,
         },
