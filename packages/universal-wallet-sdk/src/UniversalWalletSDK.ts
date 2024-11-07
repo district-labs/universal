@@ -1,13 +1,10 @@
-import { LogoType, walletLogo } from "./assets/wallet-logo";
-import { UniversalWalletProvider } from "./UniversalWalletProvider";
-import {
-  AppMetadata,
-  ProviderInterface,
-} from "./core/provider/interface";
-import { LIB_VERSION } from "./version";
-import { ScopedLocalStorage } from ":core/storage/ScopedLocalStorage";
-import { getFavicon } from ":core/type/util";
-import { checkCrossOriginOpenerPolicy } from ":util/crossOriginOpenerPolicy";
+import { LogoType, walletLogo } from './assets/wallet-logo';
+import { AppMetadata, ProviderInterface } from './core/provider/interface';
+import { UniversalWalletProvider } from './UniversalWalletProvider';
+import { LIB_VERSION } from './version';
+import { ScopedLocalStorage } from ':core/storage/ScopedLocalStorage';
+import { getFavicon } from ':core/type/util';
+import { checkCrossOriginOpenerPolicy } from ':util/crossOriginOpenerPolicy';
 
 // for backwards compatibility
 type UniversalWalletSDKOptions = Partial<AppMetadata>;
@@ -23,7 +20,7 @@ export class UniversalWalletSDK {
 
   constructor(metadata: Readonly<UniversalWalletSDKOptions>) {
     this.metadata = {
-      appName: metadata.appName || "Dapp",
+      appName: metadata.appName || 'Dapp',
       appLogoUrl: metadata.appLogoUrl || getFavicon(),
       appChainIds: metadata.appChainIds || [],
     };
@@ -33,13 +30,11 @@ export class UniversalWalletSDK {
 
   public makeWeb3Provider(): ProviderInterface {
     const params = { metadata: this.metadata };
-    return (
-      new UniversalWalletProvider(params)
-    );
+    return new UniversalWalletProvider(params);
   }
 
   /**
-   * Official Coinbase Wallet logo for developers to use on their frontend
+   * Universal Wallet logo for developers to use on their frontend
    * @param type Type of wallet logo: "standard" | "circle" | "text" | "textWithLogo" | "textLight" | "textWithLogoLight"
    * @param width Width of the logo (Optional)
    * @returns SVG Data URI
@@ -49,8 +44,8 @@ export class UniversalWalletSDK {
   }
 
   private storeLatestVersion() {
-    const versionStorage = new ScopedLocalStorage("UNWSDK");
-    versionStorage.setItem("VERSION", LIB_VERSION);
+    const versionStorage = new ScopedLocalStorage('UNWSDK');
+    versionStorage.setItem('VERSION', LIB_VERSION);
   }
 
   private checkCrossOriginOpenerPolicy() {

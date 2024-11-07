@@ -1,11 +1,9 @@
-import { Message } from "./Message";
+import { Message } from './Message';
 
 export interface ConfigMessage extends Message {
   event: ConfigEvent;
 }
 
-export type ConfigEvent =
-  | "PopupLoaded"
-  | "PopupUnload";
+export type ConfigEvent = 'PopupLoaded' | 'PopupUnload';
 
-export type SignerType = "scw";
+export type SignerType = 'scw';

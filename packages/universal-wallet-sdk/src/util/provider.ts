@@ -1,26 +1,20 @@
-import { LIB_VERSION } from "../version";
-import { standardErrors } from ":core/error";
-import {
-  ProviderInterface,
-  RequestArguments,
-} from ":core/provider/interface";
+import { LIB_VERSION } from '../version';
+import { standardErrors } from ':core/error';
+import { ProviderInterface, RequestArguments } from ':core/provider/interface';
 
-export async function fetchRPCRequest(
-  request: RequestArguments,
-  rpcUrl: string,
-) {
+export async function fetchRPCRequest(request: RequestArguments, rpcUrl: string) {
   const requestBody = {
     ...request,
-    jsonrpc: "2.0",
+    jsonrpc: '2.0',
     id: crypto.randomUUID(),
   };
   const res = await window.fetch(rpcUrl, {
-    method: "POST",
+    method: 'POST',
     body: JSON.stringify(requestBody),
-    mode: "cors",
+    mode: 'cors',
     headers: {
-      "Content-Type": "application/json",
-      "X-Cbw-Sdk-Version": LIB_VERSION,
+      'Content-Type': 'application/json',
+      'X-Unvsw-Sdk-Version': LIB_VERSION,
     },
   });
   const { result, error } = await res.json();
@@ -28,14 +22,14 @@ export async function fetchRPCRequest(
   return result;
 }
 
-export interface CBWindow {
-  top: CBWindow;
-  ethereum?: CBInjectedProvider;
-  universalWalletExtension?: CBInjectedProvider;
+export interface UNVWindow {
+  top: UNVWindow;
+  ethereum?: UNVInjectedProvider;
+  universalWalletExtension?: UNVInjectedProvider;
 }
 
-export interface CBInjectedProvider extends ProviderInterface {
-  isCoinbaseBrowser?: boolean;
+export interface UNVInjectedProvider extends ProviderInterface {
+  isUniversalBrowser?: boolean;
   setAppInfo?: (...args: unknown[]) => unknown;
 }
 
@@ -45,19 +39,17 @@ export interface CBInjectedProvider extends ProviderInterface {
  * @param args The request arguments to validate.
  * @returns An error object if the arguments are invalid, otherwise undefined.
  */
-export function checkErrorForInvalidRequestArgs(
-  args: unknown,
-): asserts args is RequestArguments {
-  if (!args || typeof args !== "object" || Array.isArray(args)) {
+export function checkErrorForInvalidRequestArgs(args: unknown): asserts args is RequestArguments {
+  if (!args || typeof args !== 'object' || Array.isArray(args)) {
     throw standardErrors.rpc.invalidParams({
-      message: "Expected a single, non-array, object argument.",
+      message: 'Expected a single, non-array, object argument.',
       data: args,
     });
   }
 
   const { method, params } = args as RequestArguments;
 
-  if (typeof method !== "string" || method.length === 0) {
+  if (typeof method !== 'string' || method.length === 0) {
     throw standardErrors.rpc.invalidParams({
       message: "'args.method' must be a non-empty string.",
       data: args,
@@ -67,7 +59,7 @@ export function checkErrorForInvalidRequestArgs(
   if (
     params !== undefined &&
     !Array.isArray(params) &&
-    (typeof params !== "object" || params === null)
+    (typeof params !== 'object' || params === null)
   ) {
     throw standardErrors.rpc.invalidParams({
       message: "'args.params' must be an object or array if provided.",
@@ -76,10 +68,10 @@ export function checkErrorForInvalidRequestArgs(
   }
 
   switch (method) {
-    case "eth_sign":
-    case "eth_signTypedData_v2":
-    case "eth_subscribe":
-    case "eth_unsubscribe":
+    case 'eth_sign':
+    case 'eth_signTypedData_v2':
+    case 'eth_subscribe':
+    case 'eth_unsubscribe':
       throw standardErrors.provider.unsupportedMethod();
   }
 }

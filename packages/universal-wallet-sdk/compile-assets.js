@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-// Copyright (c) 2018-2023 Coinbase, Inc. <https://www.coinbase.com/>
+// Copyright (c) 2018-2023 District Labs, Inc. <https://www.districtlabs.com/>
 
 require('dotenv').config();
 const fs = require('fs');

@@ -1,4 +1,4 @@
-import { EventEmitter } from "eventemitter3";
+import { EventEmitter } from 'eventemitter3';
 
 export interface RequestArguments {
   readonly method: string;
@@ -22,24 +22,16 @@ type ProviderEventMap = {
   accountsChanged: string[];
 };
 
-export class ProviderEventEmitter extends EventEmitter<
-  keyof ProviderEventMap
-> { }
+export class ProviderEventEmitter extends EventEmitter<keyof ProviderEventMap> {}
 
 export interface ProviderInterface extends ProviderEventEmitter {
   request(args: RequestArguments): Promise<unknown>;
   disconnect(): Promise<void>;
-  emit<K extends keyof ProviderEventMap>(
-    event: K,
-    ...args: [ProviderEventMap[K]]
-  ): boolean;
-  on<K extends keyof ProviderEventMap>(
-    event: K,
-    listener: (_: ProviderEventMap[K]) => void,
-  ): this;
+  emit<K extends keyof ProviderEventMap>(event: K, ...args: [ProviderEventMap[K]]): boolean;
+  on<K extends keyof ProviderEventMap>(event: K, listener: (_: ProviderEventMap[K]) => void): this;
 }
 
-export type ProviderEventCallback = ProviderInterface["emit"];
+export type ProviderEventCallback = ProviderInterface['emit'];
 
 export interface AppMetadata {
   /** Application name */
@@ -52,13 +44,13 @@ export interface AppMetadata {
 
 export type Attribution =
   | {
-    auto: boolean;
-    dataSuffix?: never;
-  }
+      auto: boolean;
+      dataSuffix?: never;
+    }
   | {
-    auto?: never;
-    dataSuffix: `0x${string}`;
-  };
+      auto?: never;
+      dataSuffix: `0x${string}`;
+    };
 
 export interface ConstructorOptions {
   metadata: AppMetadata;

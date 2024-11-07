@@ -1,13 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { standardErrors } from "../error";
-import {
-  AddressString,
-  BigIntString,
-  HexString,
-  IntNumber,
-  RegExpString,
-} from ".";
+import { standardErrors } from '../error';
+import { AddressString, BigIntString, HexString, IntNumber, RegExpString } from '.';
 
 const INT_STRING_REGEX = /^[0-9]*$/;
 const HEXADECIMAL_STRING_REGEX = /^[a-f0-9]*$/;
@@ -20,20 +14,15 @@ export function randomBytesHex(length: number): string {
 }
 
 export function uint8ArrayToHex(value: Uint8Array) {
-  return [...value].map((b) => b.toString(16).padStart(2, "0")).join("");
+  return [...value].map((b) => b.toString(16).padStart(2, '0')).join('');
 }
 
 export function hexStringToUint8Array(hexString: string): Uint8Array {
-  return new Uint8Array(
-    hexString.match(/.{1,2}/g)!.map((byte) => Number.parseInt(byte, 16)),
-  );
+  return new Uint8Array(hexString.match(/.{1,2}/g)!.map((byte) => Number.parseInt(byte, 16)));
 }
 
-export function hexStringFromBuffer(
-  buf: Buffer,
-  includePrefix = false,
-): HexString {
-  const hex = buf.toString("hex");
+export function hexStringFromBuffer(buf: Buffer, includePrefix = false): HexString {
+  const hex = buf.toString('hex');
   return HexString(includePrefix ? `0x${hex}` : hex);
 }
 
@@ -54,7 +43,7 @@ export function hexStringFromNumber(num: number): HexString {
 }
 
 export function has0xPrefix(str: string): boolean {
-  return str.startsWith("0x") || str.startsWith("0X");
+  return str.startsWith('0x') || str.startsWith('0X');
 }
 
 export function strip0x(hex: string): string {
@@ -72,32 +61,24 @@ export function prepend0x(hex: string): string {
 }
 
 export function isHexString(hex: unknown): hex is HexString {
-  if (typeof hex !== "string") {
+  if (typeof hex !== 'string') {
     return false;
   }
   const s = strip0x(hex).toLowerCase();
   return HEXADECIMAL_STRING_REGEX.test(s);
 }
 
-export function ensureHexString(
-  hex: unknown,
-  includePrefix = false,
-): HexString {
-  if (typeof hex === "string") {
+export function ensureHexString(hex: unknown, includePrefix = false): HexString {
+  if (typeof hex === 'string') {
     const s = strip0x(hex).toLowerCase();
     if (HEXADECIMAL_STRING_REGEX.test(s)) {
       return HexString(includePrefix ? `0x${s}` : s);
     }
   }
-  throw standardErrors.rpc.invalidParams(
-    `"${String(hex)}" is not a hexadecimal string`,
-  );
+  throw standardErrors.rpc.invalidParams(`"${String(hex)}" is not a hexadecimal string`);
 }
 
-export function ensureEvenLengthHexString(
-  hex: unknown,
-  includePrefix = false,
-): HexString {
+export function ensureEvenLengthHexString(hex: unknown, includePrefix = false): HexString {
   let h = ensureHexString(hex, false);
   if (h.length % 2 === 1) {
     h = HexString(`0${h}`);
@@ -106,36 +87,34 @@ export function ensureEvenLengthHexString(
 }
 
 export function ensureAddressString(str: unknown): AddressString {
-  if (typeof str === "string") {
+  if (typeof str === 'string') {
     const s = strip0x(str).toLowerCase();
     if (isHexString(s) && s.length === 40) {
       return AddressString(prepend0x(s));
     }
   }
-  throw standardErrors.rpc.invalidParams(
-    `Invalid Ethereum address: ${String(str)}`,
-  );
+  throw standardErrors.rpc.invalidParams(`Invalid Ethereum address: ${String(str)}`);
 }
 
 export function ensureBuffer(str: unknown): Buffer {
   if (Buffer.isBuffer(str)) {
     return str;
   }
-  if (typeof str === "string") {
+  if (typeof str === 'string') {
     if (isHexString(str)) {
       const s = ensureEvenLengthHexString(str, false);
-      return Buffer.from(s, "hex");
+      return Buffer.from(s, 'hex');
     }
-    return Buffer.from(str, "utf8");
+    return Buffer.from(str, 'utf8');
   }
   throw standardErrors.rpc.invalidParams(`Not binary data: ${String(str)}`);
 }
 
 export function ensureIntNumber(num: unknown): IntNumber {
-  if (typeof num === "number" && Number.isInteger(num)) {
+  if (typeof num === 'number' && Number.isInteger(num)) {
     return IntNumber(num);
   }
-  if (typeof num === "string") {
+  if (typeof num === 'string') {
     if (INT_STRING_REGEX.test(num)) {
       return IntNumber(Number(num));
     }
@@ -154,13 +133,13 @@ export function ensureRegExpString(regExp: unknown): RegExpString {
 }
 
 export function ensureBigInt(val: unknown): bigint {
-  if (val !== null && (typeof val === "bigint" || isBigNumber(val))) {
+  if (val !== null && (typeof val === 'bigint' || isBigNumber(val))) {
     return BigInt((val as any).toString(10));
   }
-  if (typeof val === "number") {
+  if (typeof val === 'number') {
     return BigInt(ensureIntNumber(val));
   }
-  if (typeof val === "string") {
+  if (typeof val === 'string') {
     if (INT_STRING_REGEX.test(val)) {
       return BigInt(val);
     }
@@ -172,28 +151,23 @@ export function ensureBigInt(val: unknown): bigint {
 }
 
 export function ensureParsedJSONObject<T extends object>(val: unknown): T {
-  if (typeof val === "string") {
+  if (typeof val === 'string') {
     return JSON.parse(val) as T;
   }
 
-  if (typeof val === "object") {
+  if (typeof val === 'object') {
     return val as T;
   }
 
-  throw standardErrors.rpc.invalidParams(
-    `Not a JSON string or an object: ${String(val)}`,
-  );
+  throw standardErrors.rpc.invalidParams(`Not a JSON string or an object: ${String(val)}`);
 }
 
 export function isBigNumber(val: unknown): boolean {
-  if (val == null || typeof (val as any).constructor !== "function") {
+  if (val == null || typeof (val as any).constructor !== 'function') {
     return false;
   }
   const { constructor } = val as any;
-  return (
-    typeof constructor.config === "function" &&
-    typeof constructor.EUCLID === "number"
-  );
+  return typeof constructor.config === 'function' && typeof constructor.EUCLID === 'number';
 }
 
 export function range(start: number, stop: number): number[] {
@@ -208,29 +182,19 @@ export function getFavicon(): string | null {
     document.querySelector('link[rel="shortcut icon"]');
 
   const { protocol, host } = document.location;
-  const href = el ? el.getAttribute("href") : null;
-  if (!href || href.startsWith("javascript:") || href.startsWith("vbscript:")) {
+  const href = el ? el.getAttribute('href') : null;
+  if (!href || href.startsWith('javascript:') || href.startsWith('vbscript:')) {
     return `${protocol}//${host}/favicon.ico`; // fallback
   }
-  if (
-    href.startsWith("http://") ||
-    href.startsWith("https://") ||
-    href.startsWith("data:")
-  ) {
+  if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('data:')) {
     return href;
   }
-  if (href.startsWith("//")) {
+  if (href.startsWith('//')) {
     return protocol + href;
   }
   return `${protocol}//${host}${href}`;
 }
 
-export function areAddressArraysEqual(
-  arr1: AddressString[],
-  arr2: AddressString[],
-): boolean {
-  return (
-    arr1.length === arr2.length &&
-    arr1.every((value, index) => value === arr2[index])
-  );
+export function areAddressArraysEqual(arr1: AddressString[], arr2: AddressString[]): boolean {
+  return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
 }

@@ -1,30 +1,30 @@
-import { ScopedLocalStorage } from ":core/storage/ScopedLocalStorage";
+import { ScopedLocalStorage } from ':core/storage/ScopedLocalStorage';
 import {
   deriveSharedSecret,
   exportKeyToHexString,
   generateKeyPair,
   importKeyFromHexString,
-} from ":util/cipher";
+} from ':util/cipher';
 
 interface StorageItem {
   storageKey: string;
-  keyType: "public" | "private";
+  keyType: 'public' | 'private';
 }
 const OWN_PRIVATE_KEY = {
-  storageKey: "ownPrivateKey",
-  keyType: "private",
+  storageKey: 'ownPrivateKey',
+  keyType: 'private',
 } as const;
 const OWN_PUBLIC_KEY = {
-  storageKey: "ownPublicKey",
-  keyType: "public",
+  storageKey: 'ownPublicKey',
+  keyType: 'public',
 } as const;
 const PEER_PUBLIC_KEY = {
-  storageKey: "peerPublicKey",
-  keyType: "public",
+  storageKey: 'peerPublicKey',
+  keyType: 'public',
 } as const;
 
 export class SCWKeyManager {
-  private readonly storage = new ScopedLocalStorage("UNWSDK", "SCWKeyManager");
+  private readonly storage = new ScopedLocalStorage('UNWSDK', 'SCWKeyManager');
   private ownPrivateKey: CryptoKey | null = null;
   private ownPublicKey: CryptoKey | null = null;
   private peerPublicKey: CryptoKey | null = null;
@@ -86,10 +86,7 @@ export class SCWKeyManager {
 
     if (this.sharedSecret === null) {
       if (this.ownPrivateKey === null || this.peerPublicKey === null) return;
-      this.sharedSecret = await deriveSharedSecret(
-        this.ownPrivateKey,
-        this.peerPublicKey,
-      );
+      this.sharedSecret = await deriveSharedSecret(this.ownPrivateKey, this.peerPublicKey);
     }
   }
 

@@ -1,7 +1,7 @@
-import { closePopup, openPopup } from "./web";
-import { standardErrors } from ":core/error";
+import { closePopup, openPopup } from './web';
+import { standardErrors } from ':core/error';
 
-describe("PopupManager", () => {
+describe('PopupManager', () => {
   beforeAll(() => {
     global.window = Object.create(window);
     Object.defineProperties(window, {
@@ -18,8 +18,8 @@ describe("PopupManager", () => {
     jest.clearAllMocks();
   });
 
-  it("should open a popup with correct settings and focus it", () => {
-    const url = new URL("https://example.com");
+  it('should open a popup with correct settings and focus it', () => {
+    const url = new URL('https://example.com');
     (window.open as jest.Mock).mockReturnValue({ focus: jest.fn() });
 
     const popup = openPopup(url);
@@ -27,21 +27,21 @@ describe("PopupManager", () => {
     expect(window.open).toHaveBeenNthCalledWith(
       1,
       url,
-      "Smart Wallet",
-      "width=420, height=540, left=302, top=114",
+      'Smart Wallet',
+      'width=420, height=540, left=302, top=114'
     );
     expect(popup.focus).toHaveBeenCalledTimes(1);
   });
 
-  it("should throw an error if popup fails to open", () => {
+  it('should throw an error if popup fails to open', () => {
     (window.open as jest.Mock).mockReturnValue(null);
 
-    expect(() => openPopup(new URL("https://example.com"))).toThrow(
-      standardErrors.rpc.internal("Pop up window failed to open"),
+    expect(() => openPopup(new URL('https://example.com'))).toThrow(
+      standardErrors.rpc.internal('Pop up window failed to open')
     );
   });
 
-  it("should close an open popup window", () => {
+  it('should close an open popup window', () => {
     const mockPopup = { close: jest.fn(), closed: false } as any as Window;
 
     closePopup(mockPopup);

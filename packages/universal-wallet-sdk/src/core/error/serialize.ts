@@ -1,10 +1,7 @@
-import {
-  isErrorResponse,
-  Web3Response,
-} from "../type";
-import { LIB_VERSION } from "../../version";
-import { standardErrorCodes } from "./constants";
-import { serialize } from "./utils";
+import { LIB_VERSION } from '../../version';
+import { isErrorResponse, Web3Response } from '../type';
+import { standardErrorCodes } from './constants';
+import { serialize } from './utils';
 
 /**
  * Serializes an error to a format that is compatible with the Ethereum JSON RPC error format.
@@ -16,12 +13,10 @@ export function serializeError(error: unknown) {
     shouldIncludeStack: true,
   });
 
-  const docUrl = new URL(
-    "https://docs.cloud.coinbase.com/wallet-sdk/docs/errors",
-  );
-  docUrl.searchParams.set("version", LIB_VERSION);
-  docUrl.searchParams.set("code", serialized.code.toString());
-  docUrl.searchParams.set("message", serialized.message);
+  const docUrl = new URL('https://docs.cloud.coinbase.com/wallet-sdk/docs/errors');
+  docUrl.searchParams.set('version', LIB_VERSION);
+  docUrl.searchParams.set('code', serialized.code.toString());
+  docUrl.searchParams.set('message', serialized.message);
 
   return {
     ...serialized,
@@ -33,7 +28,7 @@ export function serializeError(error: unknown) {
  * Converts an error to a serializable object.
  */
 function getErrorObject(error: string | Web3Response | unknown) {
-  if (typeof error === "string") {
+  if (typeof error === 'string') {
     return {
       message: error,
       code: standardErrorCodes.rpc.internal,

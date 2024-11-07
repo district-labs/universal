@@ -1,50 +1,47 @@
-import { EncryptedData, RPCRequest, RPCResponse } from ":core/message";
-import { hexStringToUint8Array, uint8ArrayToHex } from ":core/type/util";
+import { EncryptedData, RPCRequest, RPCResponse } from ':core/message';
+import { hexStringToUint8Array, uint8ArrayToHex } from ':core/type/util';
 
 export type CryptoKeyType = CryptoKey;
 
 export async function generateKeyPair(): Promise<CryptoKeyPair> {
   return crypto.subtle.generateKey(
     {
-      name: "ECDH",
-      namedCurve: "P-256",
+      name: 'ECDH',
+      namedCurve: 'P-256',
     },
     true,
-    ["deriveKey"],
+    ['deriveKey']
   );
 }
 
 export async function deriveSharedSecret(
   ownPrivateKey: CryptoKey,
-  peerPublicKey: CryptoKey,
+  peerPublicKey: CryptoKey
 ): Promise<CryptoKey> {
   return crypto.subtle.deriveKey(
     {
-      name: "ECDH",
+      name: 'ECDH',
       public: peerPublicKey,
     },
     ownPrivateKey,
     {
-      name: "AES-GCM",
+      name: 'AES-GCM',
       length: 256,
     },
     false,
-    ["encrypt", "decrypt"],
+    ['encrypt', 'decrypt']
   );
 }
 
-export async function encrypt(
-  sharedSecret: CryptoKey,
-  plainText: string,
-): Promise<EncryptedData> {
+export async function encrypt(sharedSecret: CryptoKey, plainText: string): Promise<EncryptedData> {
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const cipherText = await crypto.subtle.encrypt(
     {
-      name: "AES-GCM",
+      name: 'AES-GCM',
       iv,
     },
     sharedSecret,
-    new TextEncoder().encode(plainText),
+    new TextEncoder().encode(plainText)
   );
 
   return { iv, cipherText };
@@ -52,32 +49,32 @@ export async function encrypt(
 
 export async function decrypt(
   sharedSecret: CryptoKey,
-  { iv, cipherText }: EncryptedData,
+  { iv, cipherText }: EncryptedData
 ): Promise<string> {
   const plainText = await crypto.subtle.decrypt(
     {
-      name: "AES-GCM",
+      name: 'AES-GCM',
       iv,
     },
     sharedSecret,
-    cipherText,
+    cipherText
   );
 
   return new TextDecoder().decode(plainText);
 }
 
-function getFormat(keyType: "public" | "private") {
+function getFormat(keyType: 'public' | 'private') {
   switch (keyType) {
-    case "public":
-      return "spki";
-    case "private":
-      return "pkcs8";
+    case 'public':
+      return 'spki';
+    case 'private':
+      return 'pkcs8';
   }
 }
 
 export async function exportKeyToHexString(
-  type: "public" | "private",
-  key: CryptoKey,
+  type: 'public' | 'private',
+  key: CryptoKey
 ): Promise<string> {
   const format = getFormat(type);
   const exported = await crypto.subtle.exportKey(format, key);
@@ -85,8 +82,8 @@ export async function exportKeyToHexString(
 }
 
 export async function importKeyFromHexString(
-  type: "public" | "private",
-  hexString: string,
+  type: 'public' | 'private',
+  hexString: string
 ): Promise<CryptoKey> {
   const format = getFormat(type);
   const arrayBuffer = hexStringToUint8Array(hexString).buffer;
@@ -94,17 +91,17 @@ export async function importKeyFromHexString(
     format,
     arrayBuffer,
     {
-      name: "ECDH",
-      namedCurve: "P-256",
+      name: 'ECDH',
+      namedCurve: 'P-256',
     },
     true,
-    type === "private" ? ["deriveKey"] : [],
+    type === 'private' ? ['deriveKey'] : []
   );
 }
 
 export async function encryptContent(
   content: RPCRequest | RPCResponse,
-  sharedSecret: CryptoKey,
+  sharedSecret: CryptoKey
 ): Promise<EncryptedData> {
   const serialized = JSON.stringify(content, (_, value) => {
     if (!(value instanceof Error)) return value;
@@ -120,7 +117,7 @@ export async function encryptContent(
 
 export async function decryptContent<R extends RPCRequest | RPCResponse>(
   encryptedData: EncryptedData,
-  sharedSecret: CryptoKey,
+  sharedSecret: CryptoKey
 ): Promise<R> {
   return JSON.parse(await decrypt(sharedSecret, encryptedData));
 }

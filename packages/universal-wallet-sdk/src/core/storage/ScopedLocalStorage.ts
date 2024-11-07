@@ -1,8 +1,8 @@
 export class ScopedLocalStorage {
   constructor(
-    private scope: "UNWSDK",
-    private module?: string,
-  ) { }
+    private scope: 'UNWSDK',
+    private module?: string
+  ) {}
 
   storeObject<T>(key: string, item: T) {
     this.setItem(key, JSON.stringify(item));
@@ -26,11 +26,11 @@ export class ScopedLocalStorage {
   }
 
   public clear(): void {
-    const prefix = this.scopedKey("");
+    const prefix = this.scopedKey('');
     const keysToRemove: string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
-      if (typeof key === "string" && key.startsWith(prefix)) {
+      if (typeof key === 'string' && key.startsWith(prefix)) {
         keysToRemove.push(key);
       }
     }
@@ -38,10 +38,10 @@ export class ScopedLocalStorage {
   }
 
   scopedKey(key: string): string {
-    return `-${this.scope}${this.module ? `:${this.module}` : ""}:${key}`;
+    return `-${this.scope}${this.module ? `:${this.module}` : ''}:${key}`;
   }
 
   static clearAll() {
-    new ScopedLocalStorage("UNWSDK").clear();
+    new ScopedLocalStorage('UNWSDK').clear();
   }
 }

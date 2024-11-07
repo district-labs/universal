@@ -1,4 +1,4 @@
-import { SerializedEthereumRpcError } from ":core/error";
+import { SerializedEthereumRpcError } from ':core/error';
 
 export type RPCResponse = {
   result:

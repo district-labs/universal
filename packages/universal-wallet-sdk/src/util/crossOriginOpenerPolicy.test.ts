@@ -1,12 +1,12 @@
-import { checkCrossOriginOpenerPolicy } from "./crossOriginOpenerPolicy";
+import { checkCrossOriginOpenerPolicy } from './crossOriginOpenerPolicy';
 
-describe("checkCrossOriginOpenerPolicy", () => {
+describe('checkCrossOriginOpenerPolicy', () => {
   beforeEach(() => {
     // Clear all mocks before each test
     jest.clearAllMocks();
   });
 
-  it("should not run if window is undefined", () => {
+  it('should not run if window is undefined', () => {
     const originalWindow = global.window;
     // @ts-expect-error delete window property
     delete global.window;
@@ -17,7 +17,7 @@ describe("checkCrossOriginOpenerPolicy", () => {
     global.window = originalWindow;
   });
 
-  it("should fetch the current origin", async () => {
+  it('should fetch the current origin', async () => {
     global.fetch = jest.fn().mockResolvedValue({
       headers: {
         get: jest.fn().mockReturnValue(null),
@@ -29,13 +29,11 @@ describe("checkCrossOriginOpenerPolicy", () => {
     expect(global.fetch).toHaveBeenCalledWith(window.location.origin, {});
   });
 
-  it("should log an error if Cross-Origin-Opener-Policy is same-origin", async () => {
-    const consoleErrorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+  it('should log an error if Cross-Origin-Opener-Policy is same-origin', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     global.fetch = jest.fn().mockResolvedValue({
       headers: {
-        get: jest.fn().mockReturnValue("same-origin"),
+        get: jest.fn().mockReturnValue('same-origin'),
       },
     });
 
@@ -43,19 +41,17 @@ describe("checkCrossOriginOpenerPolicy", () => {
 
     expect(consoleErrorSpy).toHaveBeenCalledWith(
       expect.stringContaining(
-        "Coinbase Wallet SDK requires the Cross-Origin-Opener-Policy header to not be set to 'same-origin'.",
-      ),
+        "Universal Wallet SDK requires the Cross-Origin-Opener-Policy header to not be set to 'same-origin'."
+      )
     );
     consoleErrorSpy.mockRestore();
   });
 
-  it("should not log an error if Cross-Origin-Opener-Policy is not same-origin", async () => {
-    const consoleErrorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+  it('should not log an error if Cross-Origin-Opener-Policy is not same-origin', async () => {
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     global.fetch = jest.fn().mockResolvedValue({
       headers: {
-        get: jest.fn().mockReturnValue("unsafe-none"),
+        get: jest.fn().mockReturnValue('unsafe-none'),
       },
     });
 
