@@ -72,7 +72,7 @@ export default function FinanceCardsPage() {
                     <li>Connect Universal Wallet.</li>
                     <li>Mint GEMs on Base Sepolia.</li>
                     <li>
-                      Sign an offchain authorization to approve a P2P credit
+                      Sign an offchain authorization to approve a peer-to-peer credit
                       line.
                     </li>
                   </ol>
