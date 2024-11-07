@@ -33,11 +33,7 @@ export function useSignTypedDataV4() {
         return;
       }
 
-      if (!bundlerClient?.client) {
-        return;
-      }
-
-      const { accountState, message, sessionState } = params;
+      const { accountState, bundlerClient, message, sessionState } = params;
       const { credentialId, publicKey } = accountState;
 
       const owner = toWebAuthnAccount({
