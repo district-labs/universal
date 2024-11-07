@@ -66,7 +66,8 @@ export default function HomePage() {
               to explore and experiment with what's available.
             </p>
             <p>
-              <span className='font-bold'>Everything is Open Source.</span> With a MIT license wherever possible.
+              <span className="font-bold">Everything is Open Source.</span> With
+              a MIT license wherever possible.
             </p>
             <ul className="list-disc list-inside pl-4 mb-4">
               <li>
@@ -85,19 +86,22 @@ export default function HomePage() {
                 </LinkComponent>
               </li>
             </ul>
-            <p className=''>
-              Send use a {' '}
+            <p className="">
+              Send use a{' '}
               <LinkComponent href="https://x.com/KamesGeraghty">
                 message on X
               </LinkComponent>{' '}
               to learn more, contribute and get involved.
             </p>
-            <p className=''>
-              <p className=''>
-                The Universal Wallet uses the <LinkComponent href="https://github.com/MetaMask/delegation-framework">
-                MetaMask Delegation Framework
-              </LinkComponent>  for advanced onchain authorizations and permissions.
-                We highly recommend reviewing those smart contracts to understand the full potential of Universal.
+            <p className="">
+              <p className="">
+                The Universal Wallet uses the{' '}
+                <LinkComponent href="https://github.com/MetaMask/delegation-framework">
+                  MetaMask Delegation Framework
+                </LinkComponent>{' '}
+                for advanced onchain authorizations and permissions. We highly
+                recommend reviewing those smart contracts to understand the full
+                potential of Universal.
               </p>
             </p>
           </Card>

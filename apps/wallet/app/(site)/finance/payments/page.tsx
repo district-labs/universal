@@ -43,7 +43,10 @@ export default function FinanceCardsPage() {
               <TabsContent value="account" className="p-0">
                 <Card className="flex justify-between items-center w-full mb-4 p-4">
                   <div>
-                    <span><span className='font-bold'>Universal Credit</span> | Start Playing the Game</span>
+                    <span>
+                      <span className="font-bold">Universal Credit</span> |
+                      Start Playing the Game
+                    </span>
                   </div>
                   <div className="flex items-center gap-x-3">
                     <ERC20Mint

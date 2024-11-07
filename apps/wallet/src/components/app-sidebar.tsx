@@ -42,7 +42,7 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent className="px-2">
         <SidebarGroup>
-          <SidebarGroupLabel className='text-sm'>Dashboard</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sm">Dashboard</SidebarGroupLabel>
           <SidebarGroupAction>
             <Earth /> <span className="sr-only">Core</span>
           </SidebarGroupAction>
@@ -62,7 +62,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel className='text-sm'>Finance</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sm">Finance</SidebarGroupLabel>
           <SidebarGroupAction>
             <SmartphoneNfc /> <span className="sr-only">Identity</span>
           </SidebarGroupAction>
@@ -82,7 +82,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup>
-          <SidebarGroupLabel className='text-sm'>Identity</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sm">Identity</SidebarGroupLabel>
           <SidebarGroupAction>
             <Fingerprint /> <span className="sr-only">Identity</span>
           </SidebarGroupAction>
@@ -103,7 +103,7 @@ export function AppSidebar() {
         </SidebarGroup>
         <hr className="my-1" />
         <SidebarGroup>
-          <SidebarGroupLabel className='text-sm'>Testing</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-sm">Testing</SidebarGroupLabel>
           <SidebarGroupAction>
             <FlaskConical /> <span className="sr-only">Testing</span>
           </SidebarGroupAction>
@@ -124,7 +124,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="p-4 border-t-2">
-        <div className='flex flow-row items-center gap-x-2'>
+        <div className="flex flow-row items-center gap-x-2">
           <LinkComponent
             className="text-xs font-bold"
             href="https://github.com/district-labs/"
