@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { Delegation } from '@/lib/delegation-framework/types';
-import { Address, decodeAbiParameters, formatUnits } from 'viem';
+import { Address, formatUnits } from 'viem';
 import { DebitCard } from 'universal-wallet-ui';
 import { findToken } from 'universal-wallet-data';
 import { RowBasic } from '@/components/row-basic';
@@ -48,6 +48,7 @@ const CardPaymentBasic = ({
     <div className={cn(className)}>
       <div className="pb-6">
         <DebitCard
+          color="green"
           amount={formatUnits(BigInt(data.amount), 18).toString()}
           tokenAddress={data.token}
           chainId={chainId}

@@ -16,10 +16,10 @@ export default function HomePage() {
               <div className="order-1 md:order-2 flex items-center gap-x-4 p-8 text-center md:w-1/2 md:p-20 md:text-left">
                 <div className="flex flex-col gap-y-5 justify-center items-center w-full">
                   <div className="text-center md:text-center">
-                    <h3 className="text-3xl font-black text-emerald-500 dark:text-emerald-400 md:text-5xl">
+                    <h3 className="text-4xl font-black text-emerald-500 dark:text-emerald-400 md:text-5xl">
                       Universal Wallet
                     </h3>
-                    <h3 className="text-5xl font-black text-emerald-600 dark:text-emerald-400 md:text-3xl">
+                    <h3 className="text-2xl font-black text-emerald-600 dark:text-emerald-400 md:text-3xl">
                       Discover What's Possible
                     </h3>
                   </div>
@@ -42,7 +42,7 @@ export default function HomePage() {
                     </ConnectButton>
                   </IsWalletDisconnected>
                   <IsWalletConnected>
-                    <span className="font-bold">Discover What's Possible</span>
+                    <span className="font-bold">Build. Create. Explore.</span>
                   </IsWalletConnected>
                 </div>
               </div>
@@ -52,19 +52,21 @@ export default function HomePage() {
             <p className="font-bold">
               Universal is a place to discover what's possible.
             </p>
-            <p className="">
+            <p>
               To push the boundaries, innovate, and create.{' '}
               <span className="font-bold">To build the future.</span>
             </p>
-            <p className="">
+            <p>
               Our efforts are entirely focused around the intersection of smart
               wallets, identity, permission, authorizations, and making the
               onchain user experience great.
             </p>
-            <p className="">
+            <p>
               The Universal stack is in early development, but we encourage you
-              to explore and experiment with what's available. We're excited to
-              see what you create!
+              to explore and experiment with what's available.
+            </p>
+            <p>
+              <span className='font-bold'>Everything is Open Source.</span> With a MIT license wherever possible.
             </p>
             <ul className="list-disc list-inside pl-4 mb-4">
               <li>
@@ -83,11 +85,21 @@ export default function HomePage() {
                 </LinkComponent>
               </li>
             </ul>
-            Join us on{' '}
-            <LinkComponent href="https://discord.gg/district">
-              Discord
-            </LinkComponent>{' '}
-            to learn more, contribute and get involved.
+            <p className=''>
+              Send use a {' '}
+              <LinkComponent href="https://x.com/KamesGeraghty">
+                message on X
+              </LinkComponent>{' '}
+              to learn more, contribute and get involved.
+            </p>
+            <p className=''>
+              <p className=''>
+                The Universal Wallet uses the <LinkComponent href="https://github.com/MetaMask/delegation-framework">
+                MetaMask Delegation Framework
+              </LinkComponent>  for advanced onchain authorizations and permissions.
+                We highly recommend reviewing those smart contracts to understand the full potential of Universal.
+              </p>
+            </p>
           </Card>
         </div>
       </div>

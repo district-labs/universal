@@ -81,6 +81,7 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
     <Card key={delegation.hash} className={className}>
       <CardHeader className="bg-neutral-100">
         <DebitCard
+          color="green"
           to={delegation.delegate}
           amount={data.amountFormatted}
           name={data.name}

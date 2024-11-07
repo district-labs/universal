@@ -2,9 +2,7 @@ import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 
 export const env = createEnv({
-  server: {
-
-  },
+  server: {},
   client: {
     NEXT_PUBLIC_SITE_URL: z.string().url().default('http://localhost:3001'),
     NEXT_PUBLIC_DELEGATIONS_API_URL: z

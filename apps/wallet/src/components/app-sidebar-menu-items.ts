@@ -1,8 +1,8 @@
-import { Banknote, FolderKanban, Search } from 'lucide-react';
+import { Banknote, IdCard, Search } from 'lucide-react';
 
 export const itemsCore = [
   {
-    title: 'Dashboard',
+    title: 'Overview',
     url: '/',
     icon: Search,
   },
@@ -20,7 +20,7 @@ export const itemsIdentity = [
   {
     title: 'Manage',
     url: '/identity/manage',
-    icon: FolderKanban,
+    icon: IdCard,
   },
 ];
 
