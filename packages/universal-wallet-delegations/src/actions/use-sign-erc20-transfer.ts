@@ -49,7 +49,7 @@ export function useSignErc20TransferDelegation() {
             caveats: [
             {   
                 enforcerType: 'ERC20TransferAmount',
-                enforcer: delegationFrameworkDeployments[chainId].enforcerERC20TransferAmount as Address,
+                enforcer: delegationFrameworkDeployments[chainId].ERC20TransferAmountEnforcer as Address,
                 terms: encodeEnforcerERC20TransferAmount({
                     token: erc20,
                     amount: amount,
@@ -66,7 +66,7 @@ export function useSignErc20TransferDelegation() {
             name: 'DelegationManager',
             version: '1',
             chainId: chainId,
-            verifyingContract: delegationFrameworkDeployments[chainId].delegationManager,
+            verifyingContract: delegationFrameworkDeployments[chainId].DelegationManager,
         },
         message: {
             delegate: delegate,
@@ -75,7 +75,7 @@ export function useSignErc20TransferDelegation() {
             salt: salt,
             caveats: [
             {
-                enforcer: delegationFrameworkDeployments[chainId].enforcerERC20TransferAmount as Address,
+                enforcer: delegationFrameworkDeployments[chainId].ERC20TransferAmountEnforcer as Address,
                 terms: encodeEnforcerERC20TransferAmount({
                     token: erc20,
                     amount: amount,
@@ -119,7 +119,7 @@ export function useSignErc20TransferDelegation() {
             name: 'DelegationManager',
             version: '1',
             chainId: chainId,
-            verifyingContract: delegationFrameworkDeployments[chainId].delegationManager,
+            verifyingContract: delegationFrameworkDeployments[chainId].DelegationManager,
         },
         message: {
             delegate: delegate,
@@ -128,7 +128,7 @@ export function useSignErc20TransferDelegation() {
             salt: salt,
             caveats: [
             {
-                enforcer: delegationFrameworkDeployments[chainId].enforcerERC20TransferAmount as Address,
+                enforcer: delegationFrameworkDeployments[chainId].ERC20TransferAmountEnforcer as Address,
                 terms: encodeEnforcerERC20TransferAmount({
                     token: erc20,
                     amount: amount,
@@ -148,7 +148,7 @@ export function useSignErc20TransferDelegation() {
         caveats: [
         {
             enforcerType: 'ERC20TransferAmount',
-            enforcer: delegationFrameworkDeployments[chainId].enforcerERC20TransferAmount as Address,
+            enforcer: delegationFrameworkDeployments[chainId].ERC20TransferAmountEnforcer as Address,
             terms: encodeEnforcerERC20TransferAmount({
                 token: erc20,
                 amount: amount,
@@ -162,7 +162,7 @@ export function useSignErc20TransferDelegation() {
     setDelegation(_delegation);
     mutate({
         ..._delegation,
-        verifyingContract: delegationFrameworkDeployments[chainId].delegationManager as Address,
+        verifyingContract: delegationFrameworkDeployments[chainId].DelegationManager as Address,
         type: 'DebitAuthorization',
         hash: getDelegationHash({
             ..._delegation,
