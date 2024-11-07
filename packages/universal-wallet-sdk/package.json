@@ -1,5 +1,6 @@
 {
   "name": "universal-wallet-sdk",
+  "author": "District Labs, Inc <districtlabs.com>",
   "version": "0.0.1",
   "keywords": [
     "eth",

@@ -1,5 +1,6 @@
 {
   "name": "universal-wallet-delegations",
+  "author": "District Labs, Inc <districtlabs.com>",
   "description": "Delegation framework library for Universal Wallet",
   "version": "0.0.0",
   "license": "MIT",
