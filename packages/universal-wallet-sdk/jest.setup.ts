@@ -1,7 +1,7 @@
-import "@testing-library/jest-dom";
+import '@testing-library/jest-dom';
 
-import { Crypto } from "@peculiar/webcrypto";
-import { TextDecoder, TextEncoder } from "util";
+import { Crypto } from '@peculiar/webcrypto';
+import { TextDecoder, TextEncoder } from 'util';
 
 global.crypto = new Crypto();
 

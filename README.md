@@ -1,6 +1,7 @@
 ![!Universal Wallet](./banner.png)
 
 # Universal Wallet
+
 Universal Wallet is an Open Source Browser Based Wallet for Ethereum Smart Wallets powered by PassKeys.
 
 [Demo](https://demo.districtlabs.com)
@@ -15,13 +16,9 @@ The SDK is designed to work with the [Universal Wallet]() smart contracts.
 
 ## Usage
 
-### Build
-
-To build all apps and packages, run the following command:
-
-```bash
-pnpm build
-```
+1. Setup the Universal Wallet Popup environment variables.
+2. Setup the Delegations API environment variables.
+3. Setup the Universal Wallet Dashboard environment variables.
 
 ### Develop
 
@@ -29,6 +26,15 @@ To develop all apps and packages, run the following command:
 
 ```bash
 pnpm dev
+```
+
+
+### Build
+
+To build all apps and packages, run the following command:
+
+```bash
+pnpm build
 ```
 
 ## Core Contributors

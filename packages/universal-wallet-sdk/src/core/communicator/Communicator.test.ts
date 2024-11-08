@@ -1,24 +1,18 @@
-import { AppMetadata, Preference } from "src/index";
+import { AppMetadata, Preference } from 'src/index';
 
-import { LIB_VERSION } from "../../version";
-import { Message, MessageID } from "../message";
-import { Communicator } from "./Communicator";
-import { WALLET_URL } from ":core/constants";
-import { openPopup } from ":util/web";
+import { LIB_VERSION } from '../../version';
+import { Message, MessageID } from '../message';
+import { Communicator } from './Communicator';
+import { WALLET_URL } from ':core/constants';
+import { openPopup } from ':util/web';
 
-jest.mock(":util/web", () => ({
+jest.mock(':util/web', () => ({
   openPopup: jest.fn(),
 }));
 
 // Dispatches a message event to simulate postMessage calls from the popup
-function dispatchMessageEvent({
-  data,
-  origin,
-}: {
-  data: Record<string, any>;
-  origin: string;
-}) {
-  const messageEvent = new MessageEvent("message", {
+function dispatchMessageEvent({ data, origin }: { data: Record<string, any>; origin: string }) {
+  const messageEvent = new MessageEvent('message', {
     data,
     origin,
   });
@@ -26,7 +20,7 @@ function dispatchMessageEvent({
 }
 
 const popupLoadedMessage = {
-  data: { event: "PopupLoaded" },
+  data: { event: 'PopupLoaded' },
 };
 
 /**
@@ -46,23 +40,23 @@ function queueMessageEvent({
   setTimeout(() => dispatchMessageEvent({ data, origin }), 200);
 }
 
-const addEventListenerSpy = jest.spyOn(window, "addEventListener");
-const removeEventListenerSpy = jest.spyOn(window, "removeEventListener");
+const addEventListenerSpy = jest.spyOn(window, 'addEventListener');
+const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener');
 
 const appMetadata: AppMetadata = {
-  appName: "Test App",
+  appName: 'Test App',
   appLogoUrl: null,
   appChainIds: [1],
 };
 
-const preference: Preference = { keysUrl: WALLET_URL, options: "all" };
+const preference: Preference = { keysUrl: WALLET_URL, options: 'all' };
 
-describe("Communicator", () => {
+describe('Communicator', () => {
   let urlOrigin: string;
   let communicator: Communicator;
   let mockPopup: Pick<
-    Exclude<Communicator["popup"], null>,
-    "postMessage" | "close" | "closed" | "focus"
+    Exclude<Communicator['popup'], null>,
+    'postMessage' | 'close' | 'closed' | 'focus'
   >;
 
   beforeEach(() => {
@@ -85,11 +79,11 @@ describe("Communicator", () => {
     (openPopup as jest.Mock).mockImplementation(() => mockPopup);
   });
 
-  describe("onMessage", () => {
-    it("should add and remove event listener", async () => {
+  describe('onMessage', () => {
+    it('should add and remove event listener', async () => {
       const mockRequest: Message = {
-        requestId: "mock-request-id-1-2",
-        data: "test",
+        requestId: 'mock-request-id-1-2',
+        data: 'test',
       };
 
       queueMessageEvent({ data: mockRequest });
@@ -102,10 +96,10 @@ describe("Communicator", () => {
     });
   });
 
-  describe("postRequestAndWaitForResponse", () => {
-    it("should post a message to the popup window and wait for response", async () => {
+  describe('postRequestAndWaitForResponse', () => {
+    it('should post a message to the popup window and wait for response', async () => {
       const mockRequest: Message & { id: MessageID } = {
-        id: "mock-request-id-1-2",
+        id: 'mock-request-id-1-2',
         data: {},
       };
 
@@ -116,8 +110,7 @@ describe("Communicator", () => {
         },
       });
 
-      const response =
-        await communicator.postRequestAndWaitForResponse(mockRequest);
+      const response = await communicator.postRequestAndWaitForResponse(mockRequest);
 
       expect(mockPopup.postMessage).toHaveBeenNthCalledWith(
         1,
@@ -128,13 +121,9 @@ describe("Communicator", () => {
             preference,
           },
         },
-        urlOrigin,
+        urlOrigin
       );
-      expect(mockPopup.postMessage).toHaveBeenNthCalledWith(
-        2,
-        mockRequest,
-        urlOrigin,
-      );
+      expect(mockPopup.postMessage).toHaveBeenNthCalledWith(2, mockRequest, urlOrigin);
 
       expect(response).toEqual({
         requestId: mockRequest.id,
@@ -142,10 +131,10 @@ describe("Communicator", () => {
     });
   });
 
-  describe("postMessage", () => {
-    it("should post a response to the popup window", async () => {
+  describe('postMessage', () => {
+    it('should post a response to the popup window', async () => {
       const mockResponse: Message = {
-        requestId: "mock-request-id-1-2",
+        requestId: 'mock-request-id-1-2',
         data: {},
       };
 
@@ -162,18 +151,14 @@ describe("Communicator", () => {
             preference,
           },
         },
-        urlOrigin,
+        urlOrigin
       );
-      expect(mockPopup.postMessage).toHaveBeenNthCalledWith(
-        2,
-        mockResponse,
-        urlOrigin,
-      );
+      expect(mockPopup.postMessage).toHaveBeenNthCalledWith(2, mockResponse, urlOrigin);
     });
   });
 
-  describe("waitForPopupLoaded", () => {
-    it("should open a popup window and finish handshake", async () => {
+  describe('waitForPopupLoaded', () => {
+    it('should open a popup window and finish handshake', async () => {
       queueMessageEvent(popupLoadedMessage);
 
       const popup = await communicator.waitForPopupLoaded();
@@ -188,12 +173,12 @@ describe("Communicator", () => {
             preference,
           },
         },
-        urlOrigin,
+        urlOrigin
       );
       expect(popup).toBeTruthy();
     });
 
-    it("should re-focus and return the existing popup window if one is already open.", async () => {
+    it('should re-focus and return the existing popup window if one is already open.', async () => {
       mockPopup = {
         postMessage: jest.fn(),
         close: jest.fn(),
@@ -209,7 +194,7 @@ describe("Communicator", () => {
       expect(openPopup).toHaveBeenCalledTimes(1);
     });
 
-    it("should open a popup window if an existing one is defined but closed", async () => {
+    it('should open a popup window if an existing one is defined but closed', async () => {
       mockPopup = {
         postMessage: jest.fn(),
         close: jest.fn(),

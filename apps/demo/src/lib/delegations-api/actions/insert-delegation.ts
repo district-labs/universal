@@ -1,8 +1,8 @@
-import { delegationsAPiClient } from "../client";
+import { delegationsAPiClient } from '../client';
 
 type InsertDelegationParams = Parameters<
   typeof delegationsAPiClient.delegations.$post
->[0]["json"];
+>[0]['json'];
 
 export async function insertDelegation(params: InsertDelegationParams) {
   const res = await delegationsAPiClient.delegations.$post({

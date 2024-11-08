@@ -18,12 +18,14 @@ export function insertDelegationDb({
     // Insert the delegation
     await tx.insert(delegationsDb).values(delegation).returning();
 
-    const caveatsWithDelegationHash = caveats.map((caveat) => ({
-      ...caveat,
-      delegationHash: delegation.hash,
-    }));
+    if(caveats.length > 0) {
+      const caveatsWithDelegationHash = caveats.map((caveat) => ({
+        ...caveat,
+        delegationHash: delegation.hash,
+      }));
 
-    // Insert the caveats
-    await tx.insert(caveatsDb).values(caveatsWithDelegationHash).returning();
+      // Insert the caveats
+      await tx.insert(caveatsDb).values(caveatsWithDelegationHash).returning();
+    }
   });
 }

@@ -1,17 +1,4 @@
-import { Hono } from "hono";
-import { serve } from "@hono/node-server";
-import { delegationsRouter } from "./delegations.js";
-
-const app = new Hono();
-
-const appRouter = app.route("/delegations", delegationsRouter);
-
-export type AppRouter = typeof appRouter;
-
-const port = 8787;
-console.log(`Server is running on http://localhost:${port}`);
-
-serve({
-  fetch: app.fetch,
-  port,
-});
+import { app, appRouter } from "./app.js";
+type AppRouter = typeof appRouter;
+import type { InsertDelegationDb } from "./db/schema.js";
+export {app, AppRouter, InsertDelegationDb}

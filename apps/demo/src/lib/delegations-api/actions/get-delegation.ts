@@ -1,8 +1,8 @@
-import type { Hex } from "viem";
-import { delegationsAPiClient } from "../client";
+import type { Hex } from 'viem';
+import { delegationsAPiClient } from '../client';
 
 export async function getDelegation(hash: Hex) {
-  const res = await delegationsAPiClient.delegations[":hash"].$get({
+  const res = await delegationsAPiClient.delegations[':hash'].$get({
     param: { hash },
   });
 

@@ -4,7 +4,7 @@ import { useSessionState } from '@/lib/state/use-session-state';
 import { useMutation } from '@tanstack/react-query';
 import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener';
 import { toWebAuthnAccount } from 'viem/account-abstraction';
-import type { TypedDataDefinition } from 'viem';
+import { type TypedDataDefinition } from 'viem';
 import { useMemo } from 'react';
 import { deserialize } from 'wagmi';
 import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
@@ -26,7 +26,6 @@ export function useSignTypedDataV4() {
   );
 
   const params = { accountState, message, sessionState, bundlerClient };
-
   const { mutate, mutateAsync, ...rest } = useMutation({
     mutationKey: ['sign-typed-data-v4'],
     mutationFn: async () => {
@@ -48,7 +47,6 @@ export function useSignTypedDataV4() {
         client: bundlerClient.client,
         owners: [owner],
       });
-
 
       const signature = await account.signTypedData(typedData);
 

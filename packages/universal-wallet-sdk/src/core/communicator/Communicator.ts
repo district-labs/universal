@@ -1,10 +1,10 @@
-import { LIB_VERSION } from "../../version";
-import { ConfigMessage } from "../message/ConfigMessage.js";
-import { Message, MessageID } from "../message/Message.js";
-import { WALLET_URL } from ":core/constants.js";
-import { standardErrors } from ":core/error/errors.js";
-import { AppMetadata } from ":core/provider/interface.js";
-import { closePopup, openPopup } from ":util/web.js";
+import { LIB_VERSION } from '../../version';
+import { ConfigMessage } from '../message/ConfigMessage.js';
+import { Message, MessageID } from '../message/Message.js';
+import { WALLET_URL } from ':core/constants.js';
+import { standardErrors } from ':core/error/errors.js';
+import { AppMetadata } from ':core/provider/interface.js';
+import { closePopup, openPopup } from ':util/web.js';
 
 export type CommunicatorOptions = {
   url?: string;
@@ -24,15 +24,9 @@ export class Communicator {
   private readonly metadata: AppMetadata;
   private readonly url: URL;
   private popup: Window | null = null;
-  private listeners = new Map<
-    (_: MessageEvent) => void,
-    { reject: (_: Error) => void }
-  >();
+  private listeners = new Map<(_: MessageEvent) => void, { reject: (_: Error) => void }>();
 
-  constructor({
-    url = WALLET_URL,
-    metadata,
-  }: CommunicatorOptions) {
+  constructor({ url = WALLET_URL, metadata }: CommunicatorOptions) {
     this.url = new URL(url);
     this.metadata = metadata;
   }
@@ -49,7 +43,7 @@ export class Communicator {
    * Posts a request to the popup window and waits for a response
    */
   postRequestAndWaitForResponse = async <M extends Message>(
-    request: Message & { id: MessageID },
+    request: Message & { id: MessageID }
   ): Promise<M> => {
     const responsePromise = this.onMessage<M>(({ requestId }) => {
       return requestId === request.id;
@@ -61,9 +55,7 @@ export class Communicator {
   /**
    * Listens for messages from the popup window that match a given predicate.
    */
-  onMessage = async <M extends Message>(
-    predicate: (_: Partial<M>) => boolean,
-  ): Promise<M> => {
+  onMessage = async <M extends Message>(predicate: (_: Partial<M>) => boolean): Promise<M> => {
     return new Promise((resolve, reject) => {
       const listener = (event: MessageEvent<M>) => {
         if (event.origin !== this.url.origin) return; // origin validation
@@ -71,12 +63,12 @@ export class Communicator {
         const message = event.data;
         if (predicate(message)) {
           resolve(message);
-          window.removeEventListener("message", listener);
+          window.removeEventListener('message', listener);
           this.listeners.delete(listener);
         }
       };
 
-      window.addEventListener("message", listener);
+      window.addEventListener('message', listener);
       this.listeners.set(listener, { reject });
     });
   };
@@ -90,8 +82,8 @@ export class Communicator {
     this.popup = null;
 
     this.listeners.forEach(({ reject }, listener) => {
-      reject(standardErrors.provider.userRejectedRequest("Request rejected"));
-      window.removeEventListener("message", listener);
+      reject(standardErrors.provider.userRejectedRequest('Request rejected'));
+      window.removeEventListener('message', listener);
     });
     this.listeners.clear();
   };
@@ -108,11 +100,11 @@ export class Communicator {
 
     this.popup = openPopup(this.url);
 
-    this.onMessage<ConfigMessage>(({ event }) => event === "PopupUnload")
+    this.onMessage<ConfigMessage>(({ event }) => event === 'PopupUnload')
       .then(this.disconnect)
-      .catch(() => { });
+      .catch(() => {});
 
-    return this.onMessage<ConfigMessage>(({ event }) => event === "PopupLoaded")
+    return this.onMessage<ConfigMessage>(({ event }) => event === 'PopupLoaded')
       .then((message) => {
         this.postMessage({
           requestId: message.id,

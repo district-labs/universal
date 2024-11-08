@@ -1,10 +1,9 @@
-import { standardErrorCodes } from "./constants";
-import { getMessageFromCode } from "./utils";
+import { standardErrorCodes } from './constants';
+import { getMessageFromCode } from './utils';
 
 export const standardErrors = {
   rpc: {
-    parse: <T>(arg?: EthErrorsArg<T>) =>
-      getEthJsonRpcError(standardErrorCodes.rpc.parse, arg),
+    parse: <T>(arg?: EthErrorsArg<T>) => getEthJsonRpcError(standardErrorCodes.rpc.parse, arg),
 
     invalidRequest: <T>(arg?: EthErrorsArg<T>) =>
       getEthJsonRpcError(standardErrorCodes.rpc.invalidRequest, arg),
@@ -19,16 +18,12 @@ export const standardErrors = {
       getEthJsonRpcError(standardErrorCodes.rpc.internal, arg),
 
     server: <T>(opts: ServerErrorOptions<T>) => {
-      if (!opts || typeof opts !== "object" || Array.isArray(opts)) {
-        throw new Error(
-          "Ethereum RPC Server errors must provide single object argument.",
-        );
+      if (!opts || typeof opts !== 'object' || Array.isArray(opts)) {
+        throw new Error('Ethereum RPC Server errors must provide single object argument.');
       }
       const { code } = opts;
       if (!Number.isInteger(code) || code > -32005 || code < -32099) {
-        throw new Error(
-          '"code" must be an integer such that: -32099 <= code <= -32005',
-        );
+        throw new Error('"code" must be an integer such that: -32099 <= code <= -32005');
       }
       return getEthJsonRpcError(code, opts);
     },
@@ -54,10 +49,7 @@ export const standardErrors = {
 
   provider: {
     userRejectedRequest: <T>(arg?: EthErrorsArg<T>) => {
-      return getEthProviderError(
-        standardErrorCodes.provider.userRejectedRequest,
-        arg,
-      );
+      return getEthProviderError(standardErrorCodes.provider.userRejectedRequest, arg);
     },
 
     unauthorized: <T>(arg?: EthErrorsArg<T>) => {
@@ -65,10 +57,7 @@ export const standardErrors = {
     },
 
     unsupportedMethod: <T>(arg?: EthErrorsArg<T>) => {
-      return getEthProviderError(
-        standardErrorCodes.provider.unsupportedMethod,
-        arg,
-      );
+      return getEthProviderError(standardErrorCodes.provider.unsupportedMethod, arg);
     },
 
     disconnected: <T>(arg?: EthErrorsArg<T>) => {
@@ -76,29 +65,21 @@ export const standardErrors = {
     },
 
     chainDisconnected: <T>(arg?: EthErrorsArg<T>) => {
-      return getEthProviderError(
-        standardErrorCodes.provider.chainDisconnected,
-        arg,
-      );
+      return getEthProviderError(standardErrorCodes.provider.chainDisconnected, arg);
     },
 
     unsupportedChain: <T>(arg?: EthErrorsArg<T>) => {
-      return getEthProviderError(
-        standardErrorCodes.provider.unsupportedChain,
-        arg,
-      );
+      return getEthProviderError(standardErrorCodes.provider.unsupportedChain, arg);
     },
 
     custom: <T>(opts: CustomErrorArg<T>) => {
-      if (!opts || typeof opts !== "object" || Array.isArray(opts)) {
-        throw new Error(
-          "Ethereum Provider custom errors must provide single object argument.",
-        );
+      if (!opts || typeof opts !== 'object' || Array.isArray(opts)) {
+        throw new Error('Ethereum Provider custom errors must provide single object argument.');
       }
 
       const { code, message, data } = opts;
 
-      if (!message || typeof message !== "string") {
+      if (!message || typeof message !== 'string') {
         throw new Error('"message" must be a nonempty string');
       }
       return new EthereumProviderError(code, message, data);
@@ -108,35 +89,25 @@ export const standardErrors = {
 
 // Internal
 
-function getEthJsonRpcError<T>(
-  code: number,
-  arg?: EthErrorsArg<T>,
-): EthereumRpcError<T> {
+function getEthJsonRpcError<T>(code: number, arg?: EthErrorsArg<T>): EthereumRpcError<T> {
   const [message, data] = parseOpts(arg);
   return new EthereumRpcError(code, message || getMessageFromCode(code), data);
 }
 
-function getEthProviderError<T>(
-  code: number,
-  arg?: EthErrorsArg<T>,
-): EthereumProviderError<T> {
+function getEthProviderError<T>(code: number, arg?: EthErrorsArg<T>): EthereumProviderError<T> {
   const [message, data] = parseOpts(arg);
-  return new EthereumProviderError(
-    code,
-    message || getMessageFromCode(code),
-    data,
-  );
+  return new EthereumProviderError(code, message || getMessageFromCode(code), data);
 }
 
 function parseOpts<T>(arg?: EthErrorsArg<T>): [string?, T?] {
   if (arg) {
-    if (typeof arg === "string") {
+    if (typeof arg === 'string') {
       return [arg];
-    } else if (typeof arg === "object" && !Array.isArray(arg)) {
+    } else if (typeof arg === 'object' && !Array.isArray(arg)) {
       const { message, data } = arg;
 
-      if (message && typeof message !== "string") {
-        throw new Error("Must specify string message.");
+      if (message && typeof message !== 'string') {
+        throw new Error('Must specify string message.');
       }
       return [message || undefined, data];
     }
@@ -166,7 +137,7 @@ class EthereumRpcError<T> extends Error {
     if (!Number.isInteger(code)) {
       throw new Error('"code" must be an integer.');
     }
-    if (!message || typeof message !== "string") {
+    if (!message || typeof message !== 'string') {
       throw new Error('"message" must be a nonempty string.');
     }
 
@@ -185,9 +156,7 @@ class EthereumProviderError<T> extends EthereumRpcError<T> {
    */
   constructor(code: number, message: string, data?: T) {
     if (!isValidEthProviderCode(code)) {
-      throw new Error(
-        '"code" must be an integer such that: 1000 <= code <= 4999',
-      );
+      throw new Error('"code" must be an integer such that: 1000 <= code <= 4999');
     }
 
     super(code, message, data);

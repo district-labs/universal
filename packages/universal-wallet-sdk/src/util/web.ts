@@ -1,4 +1,4 @@
-import { standardErrors } from ":core/error";
+import { standardErrors } from ':core/error';
 
 const POPUP_WIDTH = 420;
 const POPUP_HEIGHT = 540;
@@ -11,12 +11,12 @@ export function openPopup(url: URL): Window {
 
   const popup = window.open(
     url,
-    "Smart Wallet",
-    `width=${POPUP_WIDTH}, height=${POPUP_HEIGHT}, left=${left}, top=${top}`,
+    'Smart Wallet',
+    `width=${POPUP_WIDTH}, height=${POPUP_HEIGHT}, left=${left}, top=${top}`
   );
   popup?.focus();
   if (!popup) {
-    throw standardErrors.rpc.internal("Pop up window failed to open");
+    throw standardErrors.rpc.internal('Pop up window failed to open');
   }
   return popup;
 }

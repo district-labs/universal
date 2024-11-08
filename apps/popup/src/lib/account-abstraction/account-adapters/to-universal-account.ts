@@ -67,7 +67,7 @@ export type CoinbaseSmartAccountImplementation = Assign<
   }
 >;
 
-const factoryAddress = '0xE9ccAef3b9B22866d9FE4e76DBe59887B9B01BD4';
+const factoryAddress = '0x6456c9F0B987b71e1c47c34F1A95aB6eED8DA2f0';
 
 /**
  * @description Create a Universal Wallet Account.

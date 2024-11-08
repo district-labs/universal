@@ -17,7 +17,9 @@ export function ActionTransactionPreview({
   className,
 }: ActionTransactionPreview) {
   const { accountState } = useAccountState();
-  const { data, isLoading, isError } = useEstimateUserOpAssetChanges();
+  const { data, isLoading, isError, error } = useEstimateUserOpAssetChanges();
+
+  console.log(error, isError, 'errorerror');
 
   const assets = useMemo(() => {
     if (!data) return null;

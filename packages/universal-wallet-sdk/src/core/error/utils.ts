@@ -1,8 +1,8 @@
-import { errorValues, standardErrorCodes } from "./constants";
+import { errorValues, standardErrorCodes } from './constants';
 
-const FALLBACK_MESSAGE = "Unspecified error message.";
+const FALLBACK_MESSAGE = 'Unspecified error message.';
 
-export const JSON_RPC_SERVER_ERROR_MESSAGE = "Unspecified server error.";
+export const JSON_RPC_SERVER_ERROR_MESSAGE = 'Unspecified server error.';
 
 type ErrorValueKey = keyof typeof errorValues;
 
@@ -12,7 +12,7 @@ type ErrorValueKey = keyof typeof errorValues;
  */
 export function getMessageFromCode(
   code: number | undefined,
-  fallbackMessage: string = FALLBACK_MESSAGE,
+  fallbackMessage: string = FALLBACK_MESSAGE
 ): string {
   if (code && Number.isInteger(code)) {
     const codeString = code.toString();
@@ -51,7 +51,7 @@ export function isValidCode(code: number): boolean {
  * Returns the error code from an error object.
  */
 export function getErrorCode(error: unknown): number | undefined {
-  if (typeof error === "number") {
+  if (typeof error === 'number') {
     return error;
   } else if (isErrorWithCode(error)) {
     return error.code ?? error.errorCode;
@@ -67,10 +67,10 @@ interface ErrorWithCode {
 
 function isErrorWithCode(error: unknown): error is ErrorWithCode {
   return (
-    typeof error === "object" &&
+    typeof error === 'object' &&
     error !== null &&
-    (typeof (error as ErrorWithCode).code === "number" ||
-      typeof (error as ErrorWithCode).errorCode === "number")
+    (typeof (error as ErrorWithCode).code === 'number' ||
+      typeof (error as ErrorWithCode).errorCode === 'number')
   );
 }
 
@@ -90,46 +90,40 @@ export interface SerializedEthereumRpcError {
 
 export function serialize(
   error: unknown,
-  { shouldIncludeStack = false } = {},
+  { shouldIncludeStack = false } = {}
 ): SerializedEthereumRpcError {
   const serialized: Partial<SerializedEthereumRpcError> = {};
 
   if (
     error &&
-    typeof error === "object" &&
+    typeof error === 'object' &&
     !Array.isArray(error) &&
-    hasKey(error as Record<string, unknown>, "code") &&
+    hasKey(error as Record<string, unknown>, 'code') &&
     isValidCode((error as SerializedEthereumRpcError).code)
   ) {
     const _error = error as Partial<SerializedEthereumRpcError>;
     serialized.code = _error.code;
 
-    if (_error.message && typeof _error.message === "string") {
+    if (_error.message && typeof _error.message === 'string') {
       serialized.message = _error.message;
 
-      if (hasKey(_error, "data")) {
+      if (hasKey(_error, 'data')) {
         serialized.data = _error.data;
       }
     } else {
-      serialized.message = getMessageFromCode(
-        (serialized as SerializedEthereumRpcError).code,
-      );
+      serialized.message = getMessageFromCode((serialized as SerializedEthereumRpcError).code);
 
       serialized.data = { originalError: assignOriginalError(error) };
     }
   } else {
     serialized.code = standardErrorCodes.rpc.internal;
 
-    serialized.message = hasStringProperty(error, "message")
-      ? error.message
-      : FALLBACK_MESSAGE;
+    serialized.message = hasStringProperty(error, 'message') ? error.message : FALLBACK_MESSAGE;
     serialized.data = { originalError: assignOriginalError(error) };
   }
 
   if (shouldIncludeStack) {
-    serialized.stack = hasStringProperty(error, "stack")
-      ? error.stack
-      : undefined;
+    serialized.stack = hasStringProperty(error, 'stack') ? error.stack : undefined;
   }
   return serialized as SerializedEthereumRpcError;
 }
@@ -141,7 +135,7 @@ function isJsonRpcServerError(code: number): boolean {
 }
 
 function assignOriginalError(error: unknown): unknown {
-  if (error && typeof error === "object" && !Array.isArray(error)) {
+  if (error && typeof error === 'object' && !Array.isArray(error)) {
     return Object.assign({}, error);
   }
   return error;
@@ -153,9 +147,6 @@ function hasKey(obj: Record<string, unknown>, key: string) {
 
 function hasStringProperty<T>(obj: unknown, prop: keyof T): obj is T {
   return (
-    typeof obj === "object" &&
-    obj !== null &&
-    prop in obj &&
-    typeof (obj as T)[prop] === "string"
+    typeof obj === 'object' && obj !== null && prop in obj && typeof (obj as T)[prop] === 'string'
   );
 }

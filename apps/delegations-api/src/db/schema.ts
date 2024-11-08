@@ -23,6 +23,8 @@ const bigIntColumn = () => bigint({ mode: "number" });
 // Table
 export const delegations = pgTable("delegations", {
   hash: bytes32Column().primaryKey(),
+  verifyingContract: addressColumn().notNull(),
+  type: varchar({ length: 256 }).notNull(),
   delegator: addressColumn().notNull(),
   chainId: integer().notNull().default(baseSepolia.id),
   delegate: addressColumn().notNull(),
