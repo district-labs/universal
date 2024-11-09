@@ -14,7 +14,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <div className="relative flex min-h-screen flex-col">
         <SidebarProvider>
           <AppSidebar />
-          <div className="flex-1">
+          <div className="flex flex-col flex-1">
             <header
               className={cn(
                 'top-0 z-50 w-full border-b-2 bg-background text-foreground transition-all',
@@ -25,7 +25,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <ConnectButton rounded={'full'} />
               </div>
             </header>
-            <main className="flex flex-1 flex-col justify-center z-10 relative">
+            <main className="flex flex-1 flex-col z-10 relative">
               {children}
             </main>
           </div>
