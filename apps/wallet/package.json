@@ -42,6 +42,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.1",
+    "universal-identity-sdk": "workspace:*",
     "universal-wallet-connector": "workspace:*",
     "universal-wallet-data": "workspace:*",
     "universal-wallet-delegations": "workspace:*",

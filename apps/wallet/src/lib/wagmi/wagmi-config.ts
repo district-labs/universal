@@ -24,3 +24,10 @@ export const wagmiConfig = createConfig({
     [baseSepolia.id]: http(),
   },
 });
+
+export const baseConfig = createConfig({
+  chains: [baseSepolia],
+  transports: {
+    [baseSepolia.id]: http(),
+  },
+});
