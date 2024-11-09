@@ -138,12 +138,11 @@ function ViewCreate() {
 
             <hr className="border-neutral-200 my-4" />
             <IsUniversalWallet>
-
-            {address && (
-              <Button className="w-full" type="submit">
-                Authorize Credit Line
-              </Button>
-            )}
+              {address && (
+                <Button className="w-full" type="submit">
+                  Authorize Credit Line
+                </Button>
+              )}
             </IsUniversalWallet>
             <IsNotUniversalWallet>
               <Button className="w-full" type="submit" disabled>

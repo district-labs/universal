@@ -83,7 +83,7 @@ function ViewTransfer() {
             parseUnits(data.amount.toString(), data.decimals),
           ],
         },
-      ]
+      ],
     });
   }
 
@@ -143,11 +143,13 @@ function ViewTransfer() {
         />
         <hr className="border-neutral-200 my-4" />
         {address && (
-          <div className=''>
+          <div className="">
             <Button className="w-full" type="submit" size={'lg'}>
               Send
             </Button>
-            <p className='text-sm mt-2 text-center'>Testnet tokens will be automatically minted during transfer.</p>
+            <p className="text-sm mt-2 text-center">
+              Testnet tokens will be automatically minted during transfer.
+            </p>
           </div>
         )}
 

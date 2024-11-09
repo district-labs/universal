@@ -18,7 +18,7 @@ export default function FinanceCardsPage() {
                 variant={'outline'}
                 className="mx-auto mb-4 font-bold text-center rounded-full pl-4 pr-3"
               >
-                <span className=''>Transfer</span>
+                <span className="">Transfer</span>
                 <ArrowUp className="ml-4" />
               </Button>
             </span>
