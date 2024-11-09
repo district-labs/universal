@@ -24,6 +24,8 @@ import { DebitCard } from 'universal-wallet-ui';
 import { useChainId } from 'wagmi';
 import { Button } from '@/components/ui/button';
 import { useSignErc20TransferDelegation } from 'universal-wallet-delegations';
+import { IsUniversalWallet } from '@/components/onchain/is-universal-wallet';
+import { IsNotUniversalWallet } from '@/components/onchain/is-not-universal-wallet';
 
 const formSchema = z.object({
   delegate: addressSchema,
@@ -135,11 +137,19 @@ function ViewCreate() {
             />
 
             <hr className="border-neutral-200 my-4" />
+            <IsUniversalWallet>
+
             {address && (
               <Button className="w-full" type="submit">
                 Authorize Credit Line
               </Button>
             )}
+            </IsUniversalWallet>
+            <IsNotUniversalWallet>
+              <Button className="w-full" type="submit" disabled>
+                Connect Universal Wallet
+              </Button>
+            </IsNotUniversalWallet>
 
             {!address && (
               <ConnectButton classNameConnect="w-full" className="w-full">

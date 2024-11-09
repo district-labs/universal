@@ -18,18 +18,8 @@ export default function FinanceCardsPage() {
   const { address } = useAccount();
   return (
     <>
-      <IsNotUniversalWallet>
-        <section>
-          <div className="w-full flex flex-col items-center justify-center py-10">
-            <h3 className="font-bold text-2xl">Connect Universal Wallet</h3>
-            <p className="text-center">
-              To access the Universal Trust network, connect with a Universal
-              Wallet.
-            </p>
-          </div>
-        </section>
-      </IsNotUniversalWallet>
-      <IsUniversalWallet>
+    
+
         <section>
           <Tabs defaultValue="account" className="w-full">
             <div className="bg-neutral-100 w-full p-3 px-8 sticky top-0 flex ">
@@ -113,7 +103,6 @@ export default function FinanceCardsPage() {
             </div>
           </Tabs>
         </section>
-      </IsUniversalWallet>
     </>
   );
 }

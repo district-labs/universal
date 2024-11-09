@@ -75,6 +75,7 @@ export function useSendCalls() {
   const isValid = validateMessageParams(params) && !!calls;
 
   return {
+    from: message?.sender,
     sendCalls: isValid ? mutate : undefined,
     sendCallsAsync: isValid ? mutateAsync : undefined,
     calls,
