@@ -81,7 +81,7 @@ export function ActionTransactionPreview({
     return (
       <div
         className={cn(
-          'w-full p-8 py-10 border-neutral-200 bg-neutral-100 border-t-2 flex items-center justify-center flex-col',
+          'w-full px-6 py-10 border-neutral-200 bg-neutral-100 border-t-2 flex items-center justify-center flex-col',
           className,
         )}
       >
@@ -111,7 +111,7 @@ export function ActionTransactionPreview({
       )}
     >
       <div className="flex-1 w-full">
-        <div className="max-h-[220px] overflow-auto p-3">
+        <div className="max-h-[220px] overflow-auto pt-4">
           <AssetList
             assets={erc20assets}
             smartContractAddress={accountState!.smartContractAddress}
@@ -157,7 +157,7 @@ const AssetList = ({
   smartContractAddress: Address;
 }) =>
   assets.length > 0 && (
-    <div className="px-5 flex w-full text-lg font-bold flex-col gap-y-0.5">
+    <div className="px-5 flex w-full text-lg font-bold flex-col gap-y-1.5">
       {assets.map(
         ({ to, name, symbol, amount, assetType, contractAddress }) => {
           const equalAddress = isEqualAddress(to, smartContractAddress);

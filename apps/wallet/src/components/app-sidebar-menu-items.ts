@@ -1,4 +1,4 @@
-import { Banknote, IdCard, Search } from 'lucide-react';
+import { ArrowLeftRight, Banknote, IdCard, Search } from 'lucide-react';
 
 export const itemsCore = [
   {
@@ -10,8 +10,13 @@ export const itemsCore = [
 
 export const itemsFinance = [
   {
+    title: 'Send/Receive',
+    url: '/finance/transfers',
+    icon: ArrowLeftRight,
+  },
+  {
     title: 'Debit/Credit',
-    url: '/finance/payments',
+    url: '/finance/authorizations',
     icon: Banknote,
   },
 ];

@@ -13,10 +13,14 @@ import { ActionTransactionPreview } from '../components/action-transaction-previ
 import { ActionTransactionNetwork } from '../components/action-transaction-network';
 import { ActionTransactionFeeEstimate } from '../components/action-transaction-fee-estimate';
 import { useSendCalls } from './hooks/use-send-calls';
+import { ActionTransactionNetworkSimplified } from '../components/action-transaction-network-simplified';
+import { EthAmountFormatted } from '@/components/onchain/eth-formatted';
+import { type Address as AddressType } from 'viem';
 
 export default function PersonalSignPage() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
-  const { sendCalls, calls, isLoadingSendTx, isLoadingUserOp } = useSendCalls();
+  const { sendCalls, calls, isLoadingSendTx, isLoadingUserOp, from } =
+    useSendCalls();
 
   if (!calls) {
     return <div>Invalid Transactions</div>;
@@ -36,36 +40,47 @@ export default function PersonalSignPage() {
         </span>
       </ActionRequestHeader>
       <ActionRequestMain className="pt-6 px-0">
-        <div className="px-6 mb-2">
-          {viewModeAdvanced === false && (
-            <div className="w-full flex flex-col gap-y-4">
-              <Row label="Total Transactions" value={`${calls.length}`} />
+        {viewModeAdvanced === false && (
+          <>
+            <div className="w-full flex flex-col gap-y-4 px-6 mb-0 pb-5">
               <Row
-                label="Network Fee (est.)"
-                value={<ActionTransactionFeeEstimate />}
+                label="Network"
+                value={<ActionTransactionNetworkSimplified />}
               />
-              <Row label="Network" value={<ActionTransactionNetwork />} />
             </div>
-          )}
-          {viewModeAdvanced === true && (
-            <div className="w-full flex flex-col gap-y-4 max-w-full overflow-auto">
-              {calls.map((call: any, index: number) => (
-                <div key={index} className="bg-neutral-100 p-4 rounded-md">
-                  <Row
-                    label="Interacting With"
-                    value={<Address truncate={true} address={call.to} />}
-                  />
-                </div>
-              ))}
-              <div className="bg-neutral-100 rounded-lg flex-1 p-4 text-xs w-fit">
-                <pre className="break-words">
-                  {JSON.stringify(calls, null, 2)}
-                </pre>
+            <ActionTransactionPreview className="text-center flex-1" />
+          </>
+        )}
+        {viewModeAdvanced === true && (
+          <div className="w-full flex flex-col gap-y-4 max-w-full px-4 overflow-auto">
+            <Row label="Total Transactions" value={`${calls.length}`} />
+            <Row label="Network" value={<ActionTransactionNetwork />} />
+            <Row
+              label="Price (Fee est)"
+              value={<ActionTransactionFeeEstimate />}
+            />
+            <Row
+              label="Wallet (From)"
+              value={<Address truncate={true} address={from as AddressType} />}
+            />
+            <Row
+              label="ETH Amount (Value)"
+              value={<EthAmountFormatted amount={calls.value} />}
+            />
+            <hr className="border-neutral-200" />
+            {calls.map((call: any, index: number) => (
+              <div key={index} className="bg-neutral-100 p-4 rounded-md">
+                <Row
+                  label="Interacting With"
+                  value={<Address truncate={true} address={call.to} />}
+                />
               </div>
+            ))}
+            <div className="bg-neutral-100 rounded-lg flex-1 p-4 text-xs w-auto overflow-auto mb-4">
+              <pre className="font-mono text-xs pb-4">{`${JSON.stringify(calls, null, 2)}`}</pre>
             </div>
-          )}
-        </div>
-        <ActionTransactionPreview className="text-center flex-1" />
+          </div>
+        )}
       </ActionRequestMain>
       <ActionRequestFooter>
         <Button

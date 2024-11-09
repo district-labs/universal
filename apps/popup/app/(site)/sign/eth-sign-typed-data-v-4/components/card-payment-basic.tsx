@@ -59,7 +59,7 @@ const CardPaymentBasic = ({
       </div>
       <div className="flex flex-col gap-y-2">
         <RowBasic label="To" value={data.to} />
-        <RowBasic label="Asset" value={data.token} />
+        <RowBasic label="Asset" value={`${data.symbol} (${data.name})`} />
         <RowBasic
           label="Amount"
           value={formatUnits(BigInt(data.amount), data.decimals)}
