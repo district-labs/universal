@@ -23,7 +23,7 @@ export default function FinanceCardsPage() {
           <div className="w-full flex flex-col items-center justify-center py-10">
             <h3 className="font-bold text-2xl">Connect Universal Wallet</h3>
             <p className="text-center">
-              To access the Universal Credit prototype, connect with a Universal
+              To access the Universal Trust network, connect with a Universal
               Wallet.
             </p>
           </div>
@@ -41,11 +41,11 @@ export default function FinanceCardsPage() {
             </div>
             <div className="px-8 pt-4">
               <TabsContent value="account" className="p-0">
-                <Card className="flex justify-between items-center w-full mb-4 p-4">
+                <Card className="flex flex-col md:flex-row justify-between items-center w-full mb-4 p-4 gap-y-4">
                   <div>
                     <span>
-                      <span className="font-bold">Universal Credit</span> |
-                      Start Playing the Game
+                      <span className="font-bold">Universal Trust</span> | Start
+                      Playing the Game
                     </span>
                   </div>
                   <div className="flex items-center gap-x-3">
@@ -81,8 +81,8 @@ export default function FinanceCardsPage() {
                   <div>
                     <h3 className="font-bold text-lg">How It Works</h3>
                     <p>
-                      The Universal Credit prototype utilizes a powerful new way
-                      to share permissions between onchain accounts.
+                      The Universal Trust network utilizes a powerful new way to
+                      share permissions between onchain accounts.
                     </p>
                     <ol className="list-decimal list-inside pl-4 mb-4">
                       <li>Connect Universal Wallet.</li>

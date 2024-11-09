@@ -8,13 +8,14 @@ import {
   boolean,
   varchar,
 } from "drizzle-orm/pg-core";
+import type { Address, Hex } from 'viem';
 import { baseSepolia } from "viem/chains";
 
 // Utils
-const addressColumn = () => varchar({ length: 42 });
-const bytes32Column = () => varchar({ length: 66 });
-const bytesColumn = () => text();
-const bigIntColumn = () => bigint({ mode: "number" });
+const addressColumn = () => varchar({ length: 42 }).$type<Address>();
+const bytes32Column = () => varchar({ length: 66 }).$type<Hex>();
+const bytesColumn = () => text().$type<Hex>();
+const bigIntColumn = () => bigint({ mode: "number" }).$type<bigint>();
 
 // ----------------------------------------------
 // Delegations
@@ -38,10 +39,6 @@ export const delegations = pgTable("delegations", {
 export const delegationsRelations = relations(delegations, ({ many }) => ({
   caveats: many(caveats),
 }));
-
-// Types
-export type InsertDelegationDb = typeof delegations.$inferInsert;
-export type SelectDelegationDb = typeof delegations.$inferSelect;
 
 // ----------------------------------------------
 // Caveats
@@ -68,5 +65,10 @@ export const caveatsRelations = relations(caveats, ({ one }) => ({
 }));
 
 // Types
+export type InsertDelegationDb = typeof delegations.$inferInsert;
+export type SelectDelegationDb = typeof delegations.$inferSelect;
 export type InsertCaveatDb = typeof caveats.$inferInsert;
 export type SelectCaveatDb = typeof caveats.$inferSelect;
+export type DelegationDb = SelectDelegationDb & {
+  caveats: SelectCaveatDb[];
+};

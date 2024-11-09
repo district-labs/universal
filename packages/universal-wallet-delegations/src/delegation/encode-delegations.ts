@@ -1,8 +1,9 @@
 import { encodeAbiParameters, type Hex } from 'viem';
 
 import { type Delegation } from '../types.js';
+import type { DelegationDb } from 'delegations-api';
 
-export function encodeDelegations(delegations: Delegation[]): Hex {
+export function encodeDelegations(delegations: Delegation[] | DelegationDb[]): Hex {
   return encodeAbiParameters(
     [
       {

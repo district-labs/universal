@@ -22,10 +22,8 @@ const DelegationParsedView = ({
     if (typedData.caveats.length === 1) {
       switch (typedData.caveats[0].enforcer) {
         case delegationFrameworkDeployments[chainId]
-          .enforcerERC20TransferAmount:
-          return 'CardPayment';
-        case delegationFrameworkDeployments[chainId]
-          .enforcerNativeTokenTransferAmount:
+          .ERC20TransferAmountEnforcer:
+        case delegationFrameworkDeployments[chainId].NativeTokenPaymentEnforcer:
           return 'CardPayment';
         default:
           return 'Default';

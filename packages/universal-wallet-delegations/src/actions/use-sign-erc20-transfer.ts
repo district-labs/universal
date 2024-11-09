@@ -45,7 +45,7 @@ export function useSignErc20TransferDelegation() {
             delegate: delegate,
             delegator: delegator,
             authority: ROOT_AUTHORITY,
-            salt: Number(salt),
+            salt: salt,
             caveats: [
             {   
                 enforcerType: 'ERC20TransferAmount',
@@ -144,7 +144,7 @@ export function useSignErc20TransferDelegation() {
         delegate: delegate as Address,
         delegator: delegator as Address,
         authority: ROOT_AUTHORITY as Hex,
-        salt: Number(salt),
+        salt: salt.toString(),
         caveats: [
         {
             enforcerType: 'ERC20TransferAmount',
@@ -164,6 +164,7 @@ export function useSignErc20TransferDelegation() {
         ..._delegation,
         verifyingContract: delegationFrameworkDeployments[chainId].DelegationManager as Address,
         type: 'DebitAuthorization',
+        signature: signature,
         hash: getDelegationHash({
             ..._delegation,
             salt: BigInt(salt)

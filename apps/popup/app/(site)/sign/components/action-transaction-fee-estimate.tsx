@@ -22,5 +22,12 @@ export function ActionTransactionFeeEstimate({
     return <Skeleton className={cn('w-14 h-5', className)} />;
   }
 
-  return <div className={cn(className)}>${formatNumber(data)}</div>;
+  return (
+    <div className={cn(className)}>
+      <span className="line-through	text-primary/60">
+        ${formatNumber(data)}
+      </span>{' '}
+      | <span className="text-emerald-700">FREE</span>
+    </div>
+  );
 }

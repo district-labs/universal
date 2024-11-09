@@ -1,18 +1,12 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 import {
-  ANY_DELEGATE,
-  decodeEnforcerERC20TransferAmount,
   useDelegationExecute,
+  useDelegationStatus,
+  useErc20TransferAmountEnforcer,
   useGetDelegationByDelegateAndType,
 } from 'universal-wallet-delegations';
-import {
-  Address,
-  encodeFunctionData,
-  erc20Abi,
-  formatUnits,
-  zeroAddress,
-} from 'viem';
+import { Address, encodeFunctionData, erc20Abi } from 'viem';
 import {
   Card,
   CardContent,
@@ -21,7 +15,6 @@ import {
 } from '@/components/ui/card';
 import { RowBasic } from '@/components/row-basic';
 import { DebitCard } from 'universal-wallet-ui';
-import { findToken } from 'universal-wallet-data';
 import { Button } from '@/components/ui/button';
 import { useAccount } from 'wagmi';
 
@@ -31,7 +24,6 @@ type ViewReceived = React.HTMLAttributes<HTMLElement> & {
 
 const ViewReceived = ({ className, delegate }: ViewReceived) => {
   const { data } = useGetDelegationByDelegateAndType({
-    // address: '0x0000000000000000000000000000000000000a11',
     address: delegate,
     type: 'DebitAuthorization',
   });
@@ -48,7 +40,9 @@ const ViewReceived = ({ className, delegate }: ViewReceived) => {
       )}
     >
       {data.map((delegation) => {
-        return <CardAuthorization delegation={delegation} />;
+        return (
+          <CardAuthorization key={delegation.hash} delegation={delegation} />
+        );
       })}
     </div>
   );
@@ -61,45 +55,18 @@ type CardAuthorization = React.HTMLAttributes<HTMLElement> & {
 const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
   const { address } = useAccount();
   const execute = useDelegationExecute();
+  const { data: status } = useDelegationStatus({
+    delegationManager: delegation.verifyingContract,
+    delegation: delegation,
+  });
 
-  const data = React.useMemo(() => {
-    if (delegation.caveats.length === 0) {
-      return {
-        to: ANY_DELEGATE,
-        token: zeroAddress as Address,
-        amount: 0,
-        amountFormatted: '0',
-        name: 'Unknown',
-        symbol: 'UNK',
-        decimals: 18,
-      };
-    }
-    const decodedTerms = decodeEnforcerERC20TransferAmount(
-      delegation.caveats[0].terms,
-    );
-    const token = findToken(delegation.chainId, decodedTerms[0] as Address);
-    if (!token) {
-      // TODO: handle unknown token by fetching token data
-      return {
-        to: delegation.delegate,
-        token: decodedTerms[0] as Address,
-        amount: decodedTerms[1],
-        amountFormatted: formatUnits(BigInt(decodedTerms[1]), 18),
-        name: 'Unknown',
-        symbol: 'UNK',
-        decimals: 18,
-      };
-    }
-    return {
-      to: delegation.delegate,
-      token: decodedTerms[0] as Address,
-      amount: decodedTerms[1],
-      amountFormatted: formatUnits(BigInt(decodedTerms[1]), token.decimals),
-      name: token.name,
-      symbol: token.symbol,
-      decimals: token.decimals,
-    };
-  }, [delegation]);
+  const { data: enforcerData } = useErc20TransferAmountEnforcer({
+    delegationManager: delegation.verifyingContract,
+    address: delegation.caveats[0].enforcer,
+    delegation: delegation,
+  });
+
+  if (!enforcerData) return null;
 
   return (
     <Card key={delegation.hash} className={className}>
@@ -107,39 +74,60 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
         <DebitCard
           color="green"
           to={delegation.delegate}
-          amount={data.amountFormatted}
-          name={data.name}
-          symbol={data.symbol}
+          amount={enforcerData.amountFormatted}
+          name={enforcerData.name}
+          symbol={enforcerData.symbol}
         />
       </CardHeader>
-      <CardContent className="border-t-2 pt-4 flex flex-col gap-y-2">
+      <CardContent className="border-t-2 pt-4 flex flex-col gap-y-3">
+        <RowBasic label="Status" value={!!status ? 'Disabled' : 'Active'} />
         <RowBasic label="From" value={delegation.delegator} />
-        <RowBasic label="To" value={delegation.delegate} />
-        <RowBasic label="Asset" value={`${data.symbol} (${data.name})`} />
-        <RowBasic label="Amount" value={data.amountFormatted} />
-        <RowBasic label="Expiration" value={'Never'} />
+        <RowBasic
+          label="Asset"
+          value={`${enforcerData.symbol} (${enforcerData.name})`}
+        />
+        <RowBasic
+          label="Spent/Total"
+          value={`${enforcerData?.spentFormatted}/${enforcerData?.amountFormatted}`}
+        />
       </CardContent>
       <CardFooter className="border-t-2 pt-4">
         <Button
           className="w-full"
           rounded={'full'}
+          variant={
+            enforcerData.spendLimitReached
+              ? 'default'
+              : !!status
+                ? 'outline'
+                : 'emerald'
+          }
           onClick={() => {
-            execute({
-              delegationManager: delegation.verifyingContract,
-              delegation: delegation,
-              executions: {
-                target: data.token,
-                calldata: encodeFunctionData({
-                  abi: erc20Abi,
-                  functionName: 'transfer',
-                  args: [address as Address, BigInt(data.amount)],
-                }),
-                value: BigInt(0),
-              },
-            });
+            !status &&
+              !enforcerData.spendLimitReached &&
+              execute({
+                delegationManager: delegation.verifyingContract,
+                delegation: delegation,
+                executions: {
+                  target: enforcerData.token,
+                  calldata: encodeFunctionData({
+                    abi: erc20Abi,
+                    functionName: 'transfer',
+                    args: [
+                      address as Address,
+                      BigInt(enforcerData.amount as bigint),
+                    ],
+                  }),
+                  value: BigInt(0),
+                },
+              });
           }}
         >
-          Claim
+          {enforcerData.spendLimitReached
+            ? 'Spend Limit Reached'
+            : !!status
+              ? 'Disabled'
+              : 'Claim Credit'}
         </Button>
       </CardFooter>
     </Card>

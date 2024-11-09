@@ -13,5 +13,5 @@ export const ActionTransactionNetwork = ({
     () => chains.find(({ id }) => message?.chainId === id),
     [message],
   );
-  return <div className={cn(className)}>{chain?.name}</div>;
+  return <div className={cn(className)}>Ethereum | {chain?.name}</div>;
 };
