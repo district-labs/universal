@@ -1,12 +1,13 @@
 'use client';
 import { useWriteContract } from "wagmi"
-import { delegationManagerAbi } from "../abis/delegation-manager-abi.js"
-import { encodeDelegations } from "../delegation/encode-delegations.js"
+import { delegationManagerAbi } from "../../abis/delegation-manager-abi.js"
+import { encodeDelegations } from "../../delegation/encode-delegations.js"
 
-import { SINGLE_EXECUTION_MODE } from "../constants.js"
-import type { Delegation, Execution } from "../types.js"
+import { SINGLE_EXECUTION_MODE } from "../../constants.js"
+import type { Delegation, Execution } from "../../types.js"
 import type { Address } from "viem"
-import { encodeSingleExecution } from "../execution/encode-single-execution.js"
+import { encodeSingleExecution } from "../../execution/encode-single-execution.js"
+import type { DelegationDb } from "delegations-api";
 
 export function useDelegationExecute() {
     const { writeContract } = useWriteContract()
@@ -17,7 +18,7 @@ export function useDelegationExecute() {
         executions
     }:{
         delegationManager: Address,
-        delegation: Delegation,
+        delegation: Delegation | DelegationDb,
         executions: Execution
     }) => {
         const permissionContext = [encodeDelegations([delegation])]

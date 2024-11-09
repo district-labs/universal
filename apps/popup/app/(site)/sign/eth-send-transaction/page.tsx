@@ -12,11 +12,23 @@ import { ActionTransactionPreview } from '../components/action-transaction-previ
 import { ActionTransactionFeeEstimate } from '../components/action-transaction-fee-estimate';
 import { ActionTransactionNetwork } from '../components/action-transaction-network';
 import { useSendTransaction } from './hooks/use-send-transaction';
+import { useEstimateUserOpAssetChanges } from '@/lib/alchemy/hooks/use-simulate-user-op-asset-changes';
+import { ActionTransactionNetworkSimplified } from '../components/action-transaction-network-simplified';
 
 export default function PersonalSignPage() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
-  const { sendTransaction, txParams, isLoadingSendTx, isLoadingUserOp } =
-    useSendTransaction();
+  const {
+    data,
+    isLoading: isLoadingEstimate,
+    isError: isErrorEstimate,
+  } = useEstimateUserOpAssetChanges();
+  const {
+    sendTransaction,
+    txParams,
+    isLoadingSendTx,
+    isLoadingUserOp,
+    isError,
+  } = useSendTransaction();
 
   if (!txParams) {
     return <div>Invalid Transaction</div>;
@@ -40,14 +52,13 @@ export default function PersonalSignPage() {
           <>
             <div className="w-full flex flex-col gap-y-4 px-6 mb-0 pb-5">
               <Row
+                label="Blockchain"
+                value={<ActionTransactionNetworkSimplified />}
+              />
+              <Row
                 label="Application"
                 value={<Address truncate={true} address={txParams.to} />}
               />
-              <Row
-                label="Network Fee (est.)"
-                value={<ActionTransactionFeeEstimate />}
-              />
-              <Row label="Network" value={<ActionTransactionNetwork />} />
             </div>
             <ActionTransactionPreview className="text-center flex-1" />
           </>
@@ -55,20 +66,28 @@ export default function PersonalSignPage() {
         {viewModeAdvanced === true && (
           <div className="w-full flex flex-col gap-y-4 px-6">
             <Row
-              label="From"
-              value={<Address truncate={true} address={txParams.from} />}
+              label="Blockchain (Network)"
+              value={<ActionTransactionNetwork />}
             />
             <Row
-              label="To"
+              label="Price (Fee est)"
+              value={<ActionTransactionFeeEstimate />}
+            />
+            <Row
+              label="Application (To)"
               value={<Address truncate={true} address={txParams.to} />}
             />
             <Row
-              label="Value"
+              label="Wallet (From)"
+              value={<Address truncate={true} address={txParams.from} />}
+            />
+            <Row
+              label="ETH Amount (Value)"
               value={<EthAmountFormatted amount={txParams.value} />}
             />
             <hr className="border-neutral-300" />
-            <div className="break-words text-sm">
-              {txParams.value && txParams.data}
+            <div className="break-words text-xs max-h-[140px] bg-neutral-100 rounded-md p-4 shadow-inner overflow-auto">
+              {txParams.data}
             </div>
           </div>
         )}
@@ -77,7 +96,13 @@ export default function PersonalSignPage() {
         <Button
           className="flex-1 w-full rounded-full"
           size={'lg'}
-          disabled={!sendTransaction || isLoadingUserOp || isLoadingSendTx}
+          disabled={
+            isLoadingEstimate ||
+            isErrorEstimate ||
+            !sendTransaction ||
+            isLoadingUserOp ||
+            isLoadingSendTx
+          }
           onClick={() => sendTransaction?.()}
         >
           {isLoadingUserOp

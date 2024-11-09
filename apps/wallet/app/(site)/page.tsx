@@ -87,7 +87,7 @@ export default function HomePage() {
               </li>
             </ul>
             <p className="">
-              Send use a{' '}
+              Send us a{' '}
               <LinkComponent href="https://x.com/KamesGeraghty">
                 message on X
               </LinkComponent>{' '}
