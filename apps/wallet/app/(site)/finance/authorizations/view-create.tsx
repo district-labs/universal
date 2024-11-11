@@ -58,10 +58,10 @@ function ViewCreate() {
   }
 
   return (
-    <div className='grid w-full grid-cols-1 gap-6 md:grid-cols-2'>
+    <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
       {/* Preview Section */}
-      <Card className='order-2 w-full border-none bg-neutral-100 p-8 shadow-none'>
-        <CardContent className='flex h-full items-center justify-center p-0'>
+      <Card className="order-2 w-full border-none bg-neutral-100 p-8 shadow-none">
+        <CardContent className="flex h-full items-center justify-center p-0">
           <DebitCard
             color="green"
             to={data.delegate as Address}
@@ -74,11 +74,11 @@ function ViewCreate() {
         </CardContent>
       </Card>
       {/* Form Section */}
-      <Card className='border-none bg-transparent p-4 shadow-none'>
+      <Card className="border-none bg-transparent p-4 shadow-none">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className='w-full space-y-4'
+            className="w-full space-y-4"
           >
             <FormField
               control={form.control}
@@ -136,7 +136,7 @@ function ViewCreate() {
               )}
             />
 
-            <hr className='my-4 border-neutral-200' />
+            <hr className="my-4 border-neutral-200" />
             <IsUniversalWallet>
               {address && (
                 <Button className="w-full" type="submit">

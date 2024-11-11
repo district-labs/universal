@@ -1,15 +1,21 @@
+import { cn } from '@/lib/utils';
 import type * as React from 'react';
 import type { Address } from 'viem';
 import { useWriteContract } from 'wagmi';
-import { cn } from '@/lib/utils';
 
-type ERC20Mint = React.HTMLAttributes<HTMLElement> & {
+export type ERC20Mint = React.HTMLAttributes<HTMLElement> & {
   address: Address;
   to?: Address;
   amount: bigint;
 };
 
-const ERC20Mint = ({ children, className, address, to, amount }: ERC20Mint) => {
+export const ERC20Mint = ({
+  children,
+  className,
+  address,
+  to,
+  amount,
+}: ERC20Mint) => {
   const classes = cn(className);
   const { writeContract } = useWriteContract();
   return (
@@ -39,4 +45,3 @@ const ERC20Mint = ({ children, className, address, to, amount }: ERC20Mint) => {
     </span>
   );
 };
-export { ERC20Mint };

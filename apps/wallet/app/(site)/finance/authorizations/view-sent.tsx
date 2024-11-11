@@ -1,5 +1,13 @@
-import type * as React from 'react';
+import { RowBasic } from '@/components/row-basic';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import type * as React from 'react';
 import {
   type DelegationDb,
   useDelegationStatus,
@@ -8,22 +16,14 @@ import {
   useErc20TransferAmountEnforcer,
   useGetDelegationByDelegatorAndType,
 } from 'universal-delegations-sdk';
-import type { Address } from 'viem';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from '@/components/ui/card';
-import { RowBasic } from '@/components/row-basic';
 import { DebitCard } from 'universal-wallet-ui';
-import { Button } from '@/components/ui/button';
+import type { Address } from 'viem';
 
-type ViewSent = React.HTMLAttributes<HTMLElement> & {
+export type ViewSent = React.HTMLAttributes<HTMLElement> & {
   delegator: Address;
 };
 
-const ViewSent = ({ className, delegator }: ViewSent) => {
+export const ViewSent = ({ className, delegator }: ViewSent) => {
   const { data } = useGetDelegationByDelegatorAndType({
     address: delegator,
     type: 'DebitAuthorization',
@@ -74,7 +74,9 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
     delegation: delegation,
   });
 
-  if (!enforcerData) return null;
+  if (!enforcerData) {
+    return null;
+  }
 
   return (
     <Card key={delegation.hash} className={className}>
@@ -87,8 +89,8 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
           symbol={enforcerData.symbol}
         />
       </CardHeader>
-      <CardContent className='flex flex-col gap-y-3 border-t-2 pt-4'>
-        <RowBasic label="Status" value={!!status ? 'Disabled' : 'Active'} />
+      <CardContent className="flex flex-col gap-y-3 border-t-2 pt-4">
+        <RowBasic label="Status" value={status ? 'Disabled' : 'Active'} />
         <RowBasic label="To" value={delegation.delegate} />
         <RowBasic
           label="Asset"
@@ -101,19 +103,17 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
         />
       </CardContent>
       <CardFooter className="border-t-2 pt-4">
-        <div className='flex w-full flex-col gap-y-2'>
+        <div className="flex w-full flex-col gap-y-2">
           <Button
-            onClick={!!status ? enable : disable}
+            onClick={status ? enable : disable}
             className="w-full"
             rounded={'full'}
-            variant={!!status ? 'emerald' : 'destructive'}
+            variant={status ? 'emerald' : 'destructive'}
           >
-            {!!status ? 'Re-activate Credit Line' : 'Disable Credit Line'}
+            {status ? 'Re-activate Credit Line' : 'Disable Credit Line'}
           </Button>
         </div>
       </CardFooter>
     </Card>
   );
 };
-
-export type { ViewSent };

@@ -50,7 +50,7 @@ export const ConnectButton = ({
           (!authenticationStatus || authenticationStatus === 'authenticated');
 
         const handleConnectClick = () => {
-          onConnectClick && onConnectClick();
+          onConnectClick?.();
           openConnectModal();
         };
 

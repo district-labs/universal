@@ -10,7 +10,8 @@ import { getPublicClientFromList } from "../viem/index.js";
 function validateSignature(did: PostDid) {
 	const publicClient = getPublicClientFromList(did.chainId);
 
-	if(!universalDeployments?.[did.chainId]?.resolver) throw new Error("Invalid chainId");
+	if (!universalDeployments?.[did.chainId]?.resolver)
+		throw new Error("Invalid chainId");
 
 	return publicClient.verifyTypedData({
 		address: did.address,

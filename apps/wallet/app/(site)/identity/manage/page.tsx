@@ -28,7 +28,9 @@ export default function IdentityManagePage() {
   }>();
 
   useEffect(() => {
-    if (!client || !address || !chainId) return;
+    if (!client || !address || !chainId) {
+      return;
+    }
     resolveDid(client, {
       resolver: universalDeployments[chainId as number].resolver,
       address: address,
@@ -53,9 +55,9 @@ export default function IdentityManagePage() {
           )}
         >
           <div className="mt-10 mb-6 w-full">
-            <Card className='content mx-auto mb-5 grid w-full max-w-screen-lg grid-cols-6 p-4'>
+            <Card className="content mx-auto mb-5 grid w-full max-w-screen-lg grid-cols-6 p-4">
               <div className="col-span-4 p-4">
-                <h3 className='mb-2 font-bold text-3xl text-neutral-600'>
+                <h3 className="mb-2 font-bold text-3xl text-neutral-600">
                   Universal Identity
                 </h3>
                 <p className="font-bold">Your wallet can be so much more.</p>
@@ -86,12 +88,12 @@ export default function IdentityManagePage() {
               </div>
             </Card>
 
-            <div className='mx-auto flex w-full max-w-screen-lg items-center justify-between gap-x-2 '>
+            <div className="mx-auto flex w-full max-w-screen-lg items-center justify-between gap-x-2 ">
               <h3 className="font-bold text-lg">Supports All Wallet Types</h3>
               <div className="flex items-center gap-x-3">
                 {WALLET_SUPPORT.map((wallet) => (
                   <Image
-                    className='rounded-md p-0.5 shadow-lg'
+                    className="rounded-md p-0.5 shadow-lg"
                     key={wallet.name}
                     src={wallet.url}
                     alt={wallet.name}
@@ -104,9 +106,9 @@ export default function IdentityManagePage() {
           </div>
 
           {document && address && (
-            <div className='flex h-full w-full max-w-full flex-1 flex-col items-center justify-center overflow-auto bg-neutral-100 p-8 text-sm'>
-              <div className='w-full max-w-screen-lg'>
-                <div className='mb-4 flex w-full items-center justify-between'>
+            <div className="flex h-full w-full max-w-full flex-1 flex-col items-center justify-center overflow-auto bg-neutral-100 p-8 text-sm">
+              <div className="w-full max-w-screen-lg">
+                <div className="mb-4 flex w-full items-center justify-between">
                   <h3 className="font-bold text-xl">
                     Claim Your Universal Identity
                   </h3>
@@ -139,9 +141,9 @@ export default function IdentityManagePage() {
                     </Button>
                   </div>
                 </div>
-                <Card className='w-full p-5'>
-                  <h3 className='mb-2 font-bold text-lg'>Identifier</h3>
-                  <span className='mt-2 block font-bold'>
+                <Card className="w-full p-5">
+                  <h3 className="mb-2 font-bold text-lg">Identifier</h3>
+                  <span className="mt-2 block font-bold">
                     dis:uis:<span className="text-emerald-600">{'84532'}</span>:
                     <span className="text-blue-600">
                       0x832C9b300de8a7fABeDA6A30AE498d623004CfcB
@@ -149,14 +151,14 @@ export default function IdentityManagePage() {
                     :<span className="text-pink-600">{address}</span>
                   </span>
                 </Card>
-                <Card className='mt-4 w-full p-5'>
-                  <h3 className='mb-2 font-bold text-lg'>Document</h3>
-                  <pre className='w-auto pb-4 font-mono text-xs'>{`${JSON.stringify(document.data, null, 2)}`}</pre>
+                <Card className="mt-4 w-full p-5">
+                  <h3 className="mb-2 font-bold text-lg">Document</h3>
+                  <pre className="w-auto pb-4 font-mono text-xs">{`${JSON.stringify(document.data, null, 2)}`}</pre>
                 </Card>
-                <div className='mt-4 grid grid-cols-3 gap-x-5'>
+                <div className="mt-4 grid grid-cols-3 gap-x-5">
                   <Card className="p-5">
-                    <Circle className='mb-4 text-emerald-400' size={32} />
-                    <h3 className='mb-2 font-bold text-lg'>
+                    <Circle className="mb-4 text-emerald-400" size={32} />
+                    <h3 className="mb-2 font-bold text-lg">
                       Managed by District
                     </h3>
                     <p className="text-xs">
@@ -165,16 +167,16 @@ export default function IdentityManagePage() {
                     </p>
                   </Card>
                   <Card className="p-5">
-                    <Circle className='mb-4 text-blue-400' size={32} />
-                    <h3 className='mb-2 font-bold text-lg'>Secured by Base</h3>
+                    <Circle className="mb-4 text-blue-400" size={32} />
+                    <h3 className="mb-2 font-bold text-lg">Secured by Base</h3>
                     <p className="text-xs">
                       Your identity is anchored to Base Sepolia. An Ethereum L2
                       managed by Coinbase.
                     </p>
                   </Card>
                   <Card className="p-5">
-                    <Circle className='mb-4 text-pink-400' size={32} />
-                    <h3 className='mb-2 font-bold text-lg'>
+                    <Circle className="mb-4 text-pink-400" size={32} />
+                    <h3 className="mb-2 font-bold text-lg">
                       Controlled By You
                     </h3>
                     <p className="text-xs">
@@ -183,10 +185,10 @@ export default function IdentityManagePage() {
                     </p>
                   </Card>
                 </div>
-                <div className='mt-4 grid grid-cols-3 gap-x-5'>
-                  <Card className='content col-span-2 p-8'>
+                <div className="mt-4 grid grid-cols-3 gap-x-5">
+                  <Card className="content col-span-2 p-8">
                     {/* <Circle className='text-blue-400 mb-4' size={32} /> */}
-                    <h3 className='mb-2 font-bold text-3xl text-neutral-600'>
+                    <h3 className="mb-2 font-bold text-3xl text-neutral-600">
                       How It Works
                     </h3>
                     <p className="">
@@ -202,7 +204,7 @@ export default function IdentityManagePage() {
                       <span className="font-bold">self-sovereignty</span>.
                     </p>
                   </Card>
-                  <Card className='flex items-center justify-center p-5'>
+                  <Card className="flex items-center justify-center p-5">
                     <Image
                       src="/images/qr-id-dark.png"
                       alt="qr-id-dark"

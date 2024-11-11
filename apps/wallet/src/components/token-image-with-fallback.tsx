@@ -42,7 +42,9 @@ const TokenImageWithFallback = ({
     );
   }, [symbol, classes]);
 
-  if (!imgUri) return fallbackRender;
+  if (!imgUri) {
+    return fallbackRender;
+  }
 
   return imgError ? (
     fallbackRender

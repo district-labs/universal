@@ -1,7 +1,4 @@
-import {
-	pgTable,
-	text,
-  } from "drizzle-orm/pg-core";
+import { pgTable, text } from "drizzle-orm/pg-core";
 // ----------------------------------------------
 // DIDs
 // ----------------------------------------------

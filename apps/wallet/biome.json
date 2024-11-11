@@ -26,6 +26,9 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "a11y": {
+        "useKeyWithClickEvents": "off"
+      },
       "correctness": {
         "noConstantMathMinMaxClamp": "error",
         "noNodejsModules": "error",

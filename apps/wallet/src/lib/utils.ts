@@ -24,7 +24,9 @@ export function trimFormattedBalance(
     return '0';
   }
   const [integer, decimal] = balance.split('.');
-  if (!decimal) return integer;
+  if (!decimal) {
+    return integer;
+  }
 
   const trimmedDecimal = decimal.slice(0, decimals);
   return `${integer}.${trimmedDecimal}`;
@@ -38,9 +40,15 @@ export function formatPercent(
   input: number | string | undefined,
   decimals = 2,
 ) {
-  if (input === undefined || input === null) return '0';
-  if (typeof input === 'string') input = Number.parseFloat(input);
-  if (isNaN(input)) return '0.00%';
+  if (input === undefined || input === null) {
+    return '0';
+  }
+  if (typeof input === 'string') {
+    input = Number.parseFloat(input);
+  }
+  if (Number.isNaN(input)) {
+    return '0.00%';
+  }
   const formattedPercent = `${(input * 100).toFixed(decimals)}%`;
 
   return formattedPercent === '0.00%' && input > 0
@@ -127,7 +135,8 @@ export function formatTokenPrice({
     return 'N/A';
   }
 
-  const amountFloat = typeof amount === 'string' ? Number.parseFloat(amount) : amount;
+  const amountFloat =
+    typeof amount === 'string' ? Number.parseFloat(amount) : amount;
   return formatNumber(
     price === undefined ? Number(value) : amountFloat * Number(price),
     decimals,
@@ -162,7 +171,9 @@ export function chunkArray<T>({ array, size }: { array: T[]; size: number }) {
  * Also trims whitespaces.
  */
 export function isEqualAddress(a: string | undefined, b: string | undefined) {
-  if (typeof a !== 'string' || typeof b !== 'string') return false;
+  if (typeof a !== 'string' || typeof b !== 'string') {
+    return false;
+  }
   return a.trim().toLowerCase() === b.trim().toLowerCase();
 }
 
@@ -232,7 +243,9 @@ export function getErrorMessage(error: unknown): string {
 }
 
 export function formatIpfsGatewayUrl(image: string | undefined) {
-  if (typeof image === 'undefined') return '/images/protocols/unknown.png';
+  if (typeof image === 'undefined') {
+    return '/images/protocols/unknown.png';
+  }
 
   return image.replace('ipfs://', 'https://ipfs.io/ipfs/');
 }

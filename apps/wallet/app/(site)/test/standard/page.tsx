@@ -23,7 +23,7 @@ export default function HomePage() {
   const { address } = useAccount();
 
   return (
-    <div className='mt-0 flex w-full flex-col items-center justify-center gap-y-4 px-10 py-14 lg:px-20'>
+    <div className="mt-0 flex w-full flex-col items-center justify-center gap-y-4 px-10 py-14 lg:px-20">
       {address && (
         <div className="w-full max-w-screen-md">
           <div className="mt-4 flex flex-col gap-y-4">
@@ -55,16 +55,16 @@ function SignMessage() {
   return (
     <>
       <Card className="p-5 pt-8">
-        <CardContent className='flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left'>
+        <CardContent className="flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left">
           <div className="flex-1">
-            <h3 className='mb-4 font-bold text-3xl'>Message</h3>
+            <h3 className="mb-4 font-bold text-3xl">Message</h3>
             <p className="text-xs">
               Sign a message using your personal smart wallet. This message will
               be signed with your wallet's private key and can be publicly
               verified.
             </p>
           </div>
-          <div className='flex flex-1 items-center justify-center'>
+          <div className="flex flex-1 items-center justify-center">
             <Button onClick={() => signMessage({ message: message })}>
               Sign Message
             </Button>
@@ -89,16 +89,16 @@ function SignTypedData() {
   return (
     <>
       <Card className="p-5 pt-8">
-        <CardContent className='flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left'>
+        <CardContent className="flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left">
           <div className="flex-1">
-            <h3 className='mb-4 font-bold text-3xl'>Typed Data</h3>
+            <h3 className="mb-4 font-bold text-3xl">Typed Data</h3>
             <p className="text-xs">
               Sign a typed data (EIP-712) object using your personal smart
               wallet. This data will be signed with your wallet's private key
               and can be publicly verified.
             </p>
           </div>
-          <div className='flex flex-1 items-center justify-center'>
+          <div className="flex flex-1 items-center justify-center">
             <Button
               onClick={() =>
                 signTypedData({
@@ -185,16 +185,16 @@ function SendTransaction() {
   return (
     <>
       <Card className="p-5 pt-8">
-        <CardContent className='flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left'>
+        <CardContent className="flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left">
           <div className="flex-1">
-            <h3 className='mb-4 font-bold text-3xl'>Transaction</h3>
+            <h3 className="mb-4 font-bold text-3xl">Transaction</h3>
             <p className="text-xs">
               Sign a transaction to mint an NFT using your personal smart
               wallet. This transaction will be signed with your wallet's private
               key and executed onchain.
             </p>
           </div>
-          <div className='flex flex-1 items-center justify-center'>
+          <div className="flex flex-1 items-center justify-center">
             <Button
               onClick={() =>
                 writeContract({
@@ -263,17 +263,17 @@ function WriteContracts() {
   return (
     <>
       <Card className="p-5 pt-8">
-        <CardContent className='flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left'>
+        <CardContent className="flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left">
           <div className="flex-1">
-            <h3 className='mb-4 font-bold text-3xl'>Batch Transactions</h3>
+            <h3 className="mb-4 font-bold text-3xl">Batch Transactions</h3>
             <p className="text-xs">
               Execute multiple transactions in a single batch using your
               personal smart wallet. These transactions will be signed with your
               wallet's private key and executed onchain.
             </p>
           </div>
-          <div className='flex flex-1 items-center justify-center'>
-            <div className='flex flex-col items-center justify-center gap-y-2'>
+          <div className="flex flex-1 items-center justify-center">
+            <div className="flex flex-col items-center justify-center gap-y-2">
               <Button
                 onClick={() =>
                   writeContracts({
@@ -328,18 +328,20 @@ function AddChain() {
   return (
     <div>
       <Card className="p-5 pt-8">
-        <CardContent className='flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left'>
+        <CardContent className="flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left">
           <div className="flex-1">
-            <h3 className='mb-4 font-bold text-3xl'>Unsupported Methods</h3>
-            <h3 className='mb-4 font-bold text-lg'>Watch Asset, Add Chain</h3>
+            <h3 className="mb-4 font-bold text-3xl">Unsupported Methods</h3>
+            <h3 className="mb-4 font-bold text-lg">Watch Asset, Add Chain</h3>
             <p className="text-xs">
               Currently not supported by the Universal Wallet SDK.
             </p>
           </div>
-          <div className='flex flex-1 items-center justify-center'>
+          <div className="flex flex-1 items-center justify-center">
             <Button
               onClick={async () => {
-                if (!walletClient) return;
+                if (!walletClient) {
+                  return;
+                }
                 await walletClient.watchAsset({
                   type: 'ERC20',
                   options: {

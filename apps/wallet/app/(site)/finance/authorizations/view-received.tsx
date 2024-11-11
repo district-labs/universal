@@ -66,7 +66,9 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
     delegation: delegation,
   });
 
-  if (!enforcerData) return null;
+  if (!enforcerData) {
+    return null;
+  }
 
   return (
     <Card key={delegation.hash} className={className}>
@@ -79,8 +81,8 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
           symbol={enforcerData.symbol}
         />
       </CardHeader>
-      <CardContent className='flex flex-col gap-y-3 border-t-2 pt-4'>
-        <RowBasic label="Status" value={!!status ? 'Disabled' : 'Active'} />
+      <CardContent className="flex flex-col gap-y-3 border-t-2 pt-4">
+        <RowBasic label="Status" value={status ? 'Disabled' : 'Active'} />
         <RowBasic label="From" value={delegation.delegator} />
         <RowBasic
           label="Asset"
@@ -98,7 +100,7 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
           variant={
             enforcerData.spendLimitReached
               ? 'default'
-              : !!status
+              : status
                 ? 'outline'
                 : 'emerald'
           }
@@ -125,7 +127,7 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
         >
           {enforcerData.spendLimitReached
             ? 'Spend Limit Reached'
-            : !!status
+            : status
               ? 'Disabled'
               : 'Claim Credit'}
         </Button>

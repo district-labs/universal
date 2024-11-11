@@ -41,7 +41,7 @@ export function SelectToken({
               <Image
                 className="rounded-full shadow-lg"
                 src={token.img}
-                alt={token.name + ' ' + token.symbol}
+                alt={`${token.name} ${token.symbol}`}
                 width={24}
                 height={24}
               />

@@ -31,8 +31,8 @@ export function QRCodeRender({
       setQrValue(`ethereum:${address}`);
       setLogoUrl('/images/qr-id-dark.png');
     }
-      setIsValid(true);
-      setQrValue(`ethereum:${address}`);
+    setIsValid(true);
+    setQrValue(`ethereum:${address}`);
   }, [address]);
 
   if (!isValid) {

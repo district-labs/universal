@@ -35,7 +35,7 @@ export function AppSidebar() {
       <SidebarHeader className="p-4">
         <Link href="/" className="flex items-center">
           <CircleIcon className="size-6 text-emerald-500 dark:text-emerald-100" />
-          <span className='ml-2 hidden font-semibold text-lg lg:inline-block'>
+          <span className="ml-2 hidden font-semibold text-lg lg:inline-block">
             {siteConfig.name}
           </span>
         </Link>
@@ -123,10 +123,10 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className='border-t-2 p-4'>
-        <div className='flow-row flex items-center gap-x-2'>
+      <SidebarFooter className="border-t-2 p-4">
+        <div className="flow-row flex items-center gap-x-2">
           <LinkComponent
-            className='font-bold text-xs'
+            className="font-bold text-xs"
             href="https://github.com/district-labs/"
           >
             Github
