@@ -4,21 +4,20 @@ import { useEffect, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { isAddress, zeroAddress } from 'viem';
 
-interface QRCodeEthereumAddress {
+interface QRCodeRender {
   address?: string;
   size?: number;
-  logoUrl?: string;
   logoSize?: number;
   className?: string;
 }
 
-export function QRCodeEthereumAddress({
+export function QRCodeRender({
   address = zeroAddress,
   size = 256,
-  logoUrl = '/images/eth-qr.png',
   logoSize = 46,
   className,
-}: QRCodeEthereumAddress) {
+}: QRCodeRender) {
+  const [logoUrl, setLogoUrl] = useState('/images/eth-qr.png');
   const [isValid, setIsValid] = useState(false);
   const [qrValue, setQrValue] = useState('');
 
@@ -26,9 +25,15 @@ export function QRCodeEthereumAddress({
     if (isAddress(address)) {
       setIsValid(true);
       setQrValue(`ethereum:${address}`);
-    } else {
-      setIsValid(false);
-      console.error('Invalid Ethereum address');
+      setLogoUrl('/images/eth-qr.png');
+    } else if (address.startsWith('did:uis')) {
+      setIsValid(true);
+      setQrValue(`ethereum:${address}`);
+      setLogoUrl('/images/qr-id-dark.png');
+    }
+    {
+      setIsValid(true);
+      setQrValue(`ethereum:${address}`);
     }
   }, [address]);
 
@@ -42,6 +47,8 @@ export function QRCodeEthereumAddress({
       value={qrValue}
       size={size} // Account for padding
       level="H" // Highest error correction for logo overlay
+      bgColor="#FFF"
+      fgColor="#3e3e3e"
       imageSettings={{
         src: logoUrl,
         x: undefined,
@@ -50,7 +57,7 @@ export function QRCodeEthereumAddress({
         width: logoSize,
         excavate: true,
       }}
-      style={{ borderRadius: '0.45rem' }}
+      style={{ borderRadius: '0.45rem', backgroundColor: '#3e3e3e' }}
     />
   );
 }

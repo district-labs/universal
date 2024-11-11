@@ -6,10 +6,10 @@ import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 // Table
 export const dids = sqliteTable("dids", {
-  address: text().primaryKey(),
-  identifier: text().notNull(),
-  document: text().notNull(),
-  signature: text().notNull(),
+	address: text().primaryKey(),
+	identifier: text().notNull(),
+	document: text().notNull(),
+	signature: text().notNull(),
 });
 
 // Types

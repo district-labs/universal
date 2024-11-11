@@ -6,7 +6,7 @@ import { ViewCreate } from './view-create';
 import { ViewSent } from './view-sent';
 import { ViewReceived } from './view-received';
 import { ERC20Balance } from '@/components/onchain/erc20-balance';
-import { tokenDeployments } from 'universal-wallet-data';
+import { tokenDeployments } from 'universal-data';
 import { Address, parseUnits } from 'viem';
 import { ERC20Mint } from '@/components/onchain/erc20-mint-button';
 import { Button } from '@/components/ui/button';

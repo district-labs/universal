@@ -2,7 +2,7 @@
 import { useAccount } from 'wagmi';
 import { ViewTransfer } from './view-transfer';
 import { Card } from '@/components/ui/card';
-import { QRCodeEthereumAddress } from '@/components/qr-code-address';
+import { QRCodeRender } from '@/components/qr-code-address';
 import { Button } from '@/components/ui/button';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 
@@ -41,7 +41,7 @@ export default function FinanceCardsPage() {
             </span>
             <div className="flex flex-col items-center justify-center flex-1">
               <Card className="p-4">
-                <QRCodeEthereumAddress
+                <QRCodeRender
                   address={address}
                   className="size-48 lg:size-auto"
                 />

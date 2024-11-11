@@ -3,9 +3,9 @@ import { cn } from '@/lib/utils';
 import { Delegation } from '@/lib/delegation-framework/types';
 import { Address, formatUnits } from 'viem';
 import { DebitCard } from 'universal-wallet-ui';
-import { findToken } from 'universal-wallet-data';
+import { findToken } from 'universal-data';
 import { RowBasic } from '@/components/row-basic';
-import { decodeEnforcerERC20TransferAmount } from 'universal-wallet-delegations';
+import { decodeEnforcerERC20TransferAmount } from 'universal-delegations-sdk';
 
 type CardPaymentBasic = React.HTMLAttributes<HTMLElement> & {
   typedData: Delegation;

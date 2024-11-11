@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { tokenDeployments, findToken, Token } from 'universal-wallet-data';
+import { tokenDeployments, findToken, Token } from 'universal-data';
 
 type SelectTokenProps = {
   chainId: number;

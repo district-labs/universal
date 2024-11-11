@@ -7,7 +7,7 @@ import {
   useEnableDelegation,
   useErc20TransferAmountEnforcer,
   useGetDelegationByDelegatorAndType,
-} from 'universal-wallet-delegations';
+} from 'universal-delegations-sdk';
 import { Address } from 'viem';
 import {
   Card,

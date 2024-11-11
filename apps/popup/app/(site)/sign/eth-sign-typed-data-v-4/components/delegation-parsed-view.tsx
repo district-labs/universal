@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { Delegation } from '@/lib/delegation-framework/types';
-import { delegationFrameworkDeployments } from 'universal-wallet-delegations';
+import { delegationFrameworkDeployments } from 'universal-delegations-sdk';
 import { Chain } from 'viem';
 import { CardPaymentBasic } from './card-payment-basic';
 

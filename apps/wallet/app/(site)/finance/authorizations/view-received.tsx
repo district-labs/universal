@@ -5,7 +5,7 @@ import {
   useDelegationStatus,
   useErc20TransferAmountEnforcer,
   useGetDelegationByDelegateAndType,
-} from 'universal-wallet-delegations';
+} from 'universal-delegations-sdk';
 import { Address, encodeFunctionData, erc20Abi } from 'viem';
 import {
   Card,

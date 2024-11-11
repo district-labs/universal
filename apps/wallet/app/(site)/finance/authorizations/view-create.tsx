@@ -23,7 +23,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { DebitCard } from 'universal-wallet-ui';
 import { useChainId } from 'wagmi';
 import { Button } from '@/components/ui/button';
-import { useSignErc20TransferDelegation } from 'universal-wallet-delegations';
+import { useSignErc20TransferDelegation } from 'universal-delegations-sdk';
 import { IsUniversalWallet } from '@/components/onchain/is-universal-wallet';
 import { IsNotUniversalWallet } from '@/components/onchain/is-not-universal-wallet';
 

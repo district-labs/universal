@@ -16,7 +16,7 @@ Connect a PostgreSQL database by setting the `DELEGATIONS_DATABASE_URL` environm
 
 ```bash
 # Example
-DELEGATIONS_DATABASE_URL="postgresql://localhost:5432/delegations-api"
+DELEGATIONS_DATABASE_URL="postgresql://localhost:5432/api-delegations"
 ```
 
 
