@@ -1,19 +1,19 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { QRCodeRender } from '@/components/qr-code-address';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { useAccount, usePublicClient } from 'wagmi';
+import { Circle } from 'lucide-react';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { universalDeployments } from 'universal-data';
 import {
   constructDidDocument,
   constructDidIdentifier,
   resolveDid,
   useDidSign,
 } from 'universal-identity-sdk';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { QRCodeRender } from '@/components/qr-code-address';
-import Image from 'next/image';
-import { Circle } from 'lucide-react';
-import { universalDeployments } from 'universal-data';
+import { useAccount, usePublicClient } from 'wagmi';
 import { WALLET_SUPPORT } from './data';
 
 export default function IdentityManagePage() {
@@ -45,6 +45,8 @@ export default function IdentityManagePage() {
         return;
       });
   }, [client, address, chainId]);
+
+  console.log(document, 'document')
 
   return (
     <section>

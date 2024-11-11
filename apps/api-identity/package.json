@@ -53,6 +53,7 @@
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "^1.8.0",
 		"@types/node": "^20.11.17",
 		"@types/pg": "^8.11.10",
 		"dotenv": "^16.4.5",

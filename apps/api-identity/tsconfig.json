@@ -8,6 +8,6 @@
 		"types": ["node"],
 		"jsx": "react-jsx",
 		"jsxImportSource": "hono/jsx",
-		"exclude": ["dist/types/lib/viem/clients.d.ts"]
-	}
+	},
+	
 }
