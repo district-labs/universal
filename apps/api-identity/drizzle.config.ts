@@ -1,15 +1,15 @@
 import "dotenv/config";
-import { defineConfig } from "drizzle-kit";
+import type { Config } from "drizzle-kit";
 
-if (!process.env.DB_FILE_NAME) {
-	throw new Error("DB_FILE_NAME is not defined");
+if(!process.env.DATABASE_URL) {
+	throw new Error("DATABASE_URL environment variable is not set");
 }
 
-export default defineConfig({
+export default {
 	out: "./src/lib/db/drizzle",
 	schema: "./src/lib/db/schema.ts",
-	dialect: "sqlite",
+	dialect: "postgresql",
 	dbCredentials: {
-		url: process.env.DB_FILE_NAME,
+		url: process.env.DATABASE_URL,
 	},
-});
+} satisfies Config;

@@ -48,6 +48,7 @@
 		"postgres": "^3.4.5",
 		"ts-node": "^10.9.2",
 		"tsconfig-paths": "^4.2.0",
+		"universal-data": "workspace:*",
 		"viem": "^2.21.41",
 		"zod": "^3.23.8"
 	},

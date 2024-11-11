@@ -5,6 +5,7 @@ import { selectDidDb } from "../lib/db/actions/select-did-db.js";
 import type { SelectDidDb } from "../lib/db/schema.js";
 import { encodeDidResponse } from "../lib/did/utils.js";
 import { validateDidMiddleware } from "../lib/middleware/validate-did-middleware.js";
+import { getIdentifier } from "../lib/get-identifier.js";
 
 type StatusCode = 200 | 404 | 500;
 
@@ -24,6 +25,8 @@ const didRouter = new Hono()
 				return c.json({ data }, status);
 			}
 
+			// We use 500 to indicate that the DID and following the EIP-3668
+			// should try another URL to resolve the DID.
 			status = 500;
 			const data = encodeDidResponse({
 				signature: toHex(""),
@@ -41,19 +44,19 @@ const didRouter = new Hono()
 	})
 	.post("/", validateDidMiddleware, async (c) => {
 		const did = c.req.valid("json");
-		const document = JSON.stringify(did.document);
-
+		const identifier = await getIdentifier(did);
 		try {
 			await insertDidDb({
-				...did,
-				document,
+				address: did.address,
+				document: did.document,
+				signature: did.signature,
+				identifier,
 			});
 		} catch (error) {
 			const errorMessage =
 				error instanceof Error ? error.message : "Error inserting DID";
 			return c.json({ error: errorMessage }, 500);
 		}
-
 		return c.json({ ok: true, message: "DID inserted" }, 201);
 	});
 

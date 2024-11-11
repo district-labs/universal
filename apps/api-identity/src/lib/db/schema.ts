@@ -1,11 +1,13 @@
-import { sqliteTable, text } from "drizzle-orm/sqlite-core";
-
+import {
+	pgTable,
+	text,
+  } from "drizzle-orm/pg-core";
 // ----------------------------------------------
 // DIDs
 // ----------------------------------------------
 
 // Table
-export const dids = sqliteTable("dids", {
+export const dids = pgTable("dids", {
 	address: text().primaryKey(),
 	identifier: text().notNull(),
 	document: text().notNull(),

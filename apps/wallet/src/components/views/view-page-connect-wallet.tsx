@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { cn } from '@/lib/utils';
 import { ConnectButton } from '../onchain/connect-button';
 import { useAccount } from 'wagmi';
@@ -22,4 +22,4 @@ const ViewPageConnectWallet = ({
 
   return <>{children}</>;
 };
-export { ViewPageConnectWallet };
+export type { ViewPageConnectWallet };

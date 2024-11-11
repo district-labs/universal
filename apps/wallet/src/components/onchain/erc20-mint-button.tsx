@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Address } from 'viem';
+import type * as React from 'react';
+import type { Address } from 'viem';
 import { useWriteContract } from 'wagmi';
 import { cn } from '@/lib/utils';
 

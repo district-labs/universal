@@ -43,7 +43,6 @@
   "dependencies": {
     "api-delegations": "workspace:*",
     "hono": "^4.6.8",
-    "universal-data": "workspace:*",
-    "universal-wallet-sdk": "workspace:*"
+    "universal-data": "workspace:*"
   }
 }

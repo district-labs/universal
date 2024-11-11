@@ -21,14 +21,12 @@ export const didDocumentSchema = z
 	})
 	.strict();
 
-// Endpoint Schemas
-
-export type PostDid = z.infer<typeof postDidSchema>;
-
 export const postDidSchema = z.object({
 	address: addressSchema,
-	identifier: addressSchema,
 	chainId: chainIdSchema,
-	document: didDocumentSchema,
+	document: z.string(),
 	signature: hexSchema,
 });
+
+// Endpoint Schemas
+export type PostDid = z.infer<typeof postDidSchema>;

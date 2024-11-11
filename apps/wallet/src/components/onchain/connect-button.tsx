@@ -1,13 +1,13 @@
 'use client';
 
-import { type HTMLAttributes } from 'react';
+import type { HTMLAttributes } from 'react';
 import Image from 'next/image';
 import { ConnectButton as ConnectButtonRainbowkit } from '@rainbow-me/rainbowkit';
-import { VariantProps } from 'class-variance-authority';
+import type { VariantProps } from 'class-variance-authority';
 
 import { truncateEthAddress } from '@/lib/utils';
 
-import { Button, buttonVariants } from '../ui/button';
+import { Button, type buttonVariants } from '../ui/button';
 
 interface ConnectButtonProps
   extends HTMLAttributes<HTMLDivElement>,

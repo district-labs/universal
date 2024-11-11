@@ -10,6 +10,6 @@ app.use(
 		allowMethods: ["GET", "POST", "PUT", "DELETE"],
 	}),
 );
+
 const appRouter = app.route("/", didRouter);
-export type AppRouter = typeof appRouter;
 export { app, appRouter };

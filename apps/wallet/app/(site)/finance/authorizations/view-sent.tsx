@@ -1,14 +1,14 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { cn } from '@/lib/utils';
 import {
-  DelegationDb,
+  type DelegationDb,
   useDelegationStatus,
   useDisableDelegation,
   useEnableDelegation,
   useErc20TransferAmountEnforcer,
   useGetDelegationByDelegatorAndType,
 } from 'universal-delegations-sdk';
-import { Address } from 'viem';
+import type { Address } from 'viem';
 import {
   Card,
   CardContent,
@@ -37,7 +37,7 @@ const ViewSent = ({ className, delegator }: ViewSent) => {
     <div
       className={cn(
         className,
-        'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10',
+        'grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-3',
       )}
     >
       {data.map((delegation) => {
@@ -87,7 +87,7 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
           symbol={enforcerData.symbol}
         />
       </CardHeader>
-      <CardContent className="border-t-2 pt-4 flex flex-col gap-y-3">
+      <CardContent className='flex flex-col gap-y-3 border-t-2 pt-4'>
         <RowBasic label="Status" value={!!status ? 'Disabled' : 'Active'} />
         <RowBasic label="To" value={delegation.delegate} />
         <RowBasic
@@ -101,7 +101,7 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
         />
       </CardContent>
       <CardFooter className="border-t-2 pt-4">
-        <div className="w-full flex flex-col gap-y-2">
+        <div className='flex w-full flex-col gap-y-2'>
           <Button
             onClick={!!status ? enable : disable}
             className="w-full"
@@ -116,4 +116,4 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
   );
 };
 
-export { ViewSent };
+export type { ViewSent };

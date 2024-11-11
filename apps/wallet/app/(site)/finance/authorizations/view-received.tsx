@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { cn } from '@/lib/utils';
 import {
   useDelegationExecute,
@@ -6,7 +6,7 @@ import {
   useErc20TransferAmountEnforcer,
   useGetDelegationByDelegateAndType,
 } from 'universal-delegations-sdk';
-import { Address, encodeFunctionData, erc20Abi } from 'viem';
+import { type Address, encodeFunctionData, erc20Abi } from 'viem';
 import {
   Card,
   CardContent,
@@ -36,7 +36,7 @@ const ViewReceived = ({ className, delegate }: ViewReceived) => {
     <div
       className={cn(
         className,
-        'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10',
+        'grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-3',
       )}
     >
       {data.map((delegation) => {
@@ -79,7 +79,7 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
           symbol={enforcerData.symbol}
         />
       </CardHeader>
-      <CardContent className="border-t-2 pt-4 flex flex-col gap-y-3">
+      <CardContent className='flex flex-col gap-y-3 border-t-2 pt-4'>
         <RowBasic label="Status" value={!!status ? 'Disabled' : 'Active'} />
         <RowBasic label="From" value={delegation.delegator} />
         <RowBasic

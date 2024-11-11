@@ -35,7 +35,10 @@
         "useArrayLiterals": "error"
       },
       "nursery": {
-        "useSortedClasses": "error"
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "safe"
+        }
       },
       "style": {
         "noImplicitBoolean": "error",

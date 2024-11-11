@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { cn } from '@/lib/utils';
 import { isAddress } from 'viem';
 import { Address } from './onchain/address';
@@ -23,7 +23,7 @@ const RowBasic = ({ label, value }: RowBasic) => {
         {label}
       </span>
       <span
-        className={cn('text-sm font-bold', {
+        className={cn('font-bold text-sm', {
           'font-normal': value.length > 20 && !isAddress(value),
         })}
       >
@@ -33,4 +33,4 @@ const RowBasic = ({ label, value }: RowBasic) => {
   );
 };
 
-export { RowBasic };
+export type { RowBasic };

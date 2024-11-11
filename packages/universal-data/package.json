@@ -1,6 +1,6 @@
 {
   "name": "universal-data",
-  "description": "Shared data for the Universal Wallet",
+  "description": "Shared data for the Universal stack.",
   "version": "0.0.0",
   "license": "MIT",
   "files": [

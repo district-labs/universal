@@ -1,14 +1,10 @@
 import {
   Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, FileText } from 'lucide-react';
-import React, { ElementType } from 'react';
+import { FileText } from 'lucide-react';
+import type React from 'react';
 import { LinkComponent } from '@/components/ui/link-component';
 
 interface GradientCardProps {
@@ -28,13 +24,13 @@ export function CardDashboard(
 ) {
   return (
     <LinkComponent href={link}>
-      <Card className="w-full overflow-hidden transition-all duration-300 hover:shadow-lg relative">
+      <Card className='relative w-full overflow-hidden transition-all duration-300 hover:shadow-lg'>
         <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 opacity-30" />
         <CardHeader className="relative">
-          <div className="absolute top-4 right-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 text-white p-1 shadow-md">
+          <div className='absolute top-4 right-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 p-1 text-white shadow-md'>
             <Icon className="size-5" />
           </div>
-          <CardTitle className="text-xl font-bold text-gray-800">
+          <CardTitle className='font-bold text-gray-800 text-xl'>
             {title}
           </CardTitle>
           {/* <CardDescription className="text-sm text-gray-600">{description}</CardDescription> */}

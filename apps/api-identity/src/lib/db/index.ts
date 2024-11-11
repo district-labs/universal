@@ -1,11 +1,11 @@
 import "dotenv/config";
-import { createClient } from "@libsql/client";
-import { drizzle } from "drizzle-orm/libsql";
+import postgres from "postgres";
+import { drizzle } from "drizzle-orm/postgres-js";
 import * as schema from "./schema.js";
 
-if (!process.env.DB_FILE_NAME) {
-	throw new Error("DB_FILE_NAME is not defined");
+if (!process.env.DATABASE_URL) {
+	throw new Error("DATABASE_URL environment variable is not set");
 }
 
-const client = createClient({ url: process.env.DB_FILE_NAME });
+const client = postgres(process.env.DATABASE_URL);
 export const db = drizzle({ client, schema });

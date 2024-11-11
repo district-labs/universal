@@ -1,4 +1,6 @@
 export { publicActionsUis } from "../actions/public-uis.js";
+export * from "../api/client.js";
+export * from "../api/hooks/insert-universal-did.js";
 export * from "../actions/resolve-did.js";
 export * from "../actions/sign-did-document.js";
 export * from "../hooks/use-did-sign.js";

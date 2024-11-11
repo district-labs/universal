@@ -1,5 +1,5 @@
 'use client';
-import * as React from 'react';
+import type * as React from 'react';
 import { cn } from '@/lib/utils';
 import { useAccount } from 'wagmi';
 
@@ -14,4 +14,4 @@ const IsNotUniversalWallet = ({
 
   return <div className={cn(className)}>{children}</div>;
 };
-export { IsNotUniversalWallet };
+export type { IsNotUniversalWallet };

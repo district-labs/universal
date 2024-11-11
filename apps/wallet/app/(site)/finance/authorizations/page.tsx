@@ -7,12 +7,10 @@ import { ViewSent } from './view-sent';
 import { ViewReceived } from './view-received';
 import { ERC20Balance } from '@/components/onchain/erc20-balance';
 import { tokenDeployments } from 'universal-data';
-import { Address, parseUnits } from 'viem';
+import { type Address, parseUnits } from 'viem';
 import { ERC20Mint } from '@/components/onchain/erc20-mint-button';
 import { Button } from '@/components/ui/button';
 import { ViewPageConnectWallet } from '@/components/views/view-page-connect-wallet';
-import { IsUniversalWallet } from '@/components/onchain/is-universal-wallet';
-import { IsNotUniversalWallet } from '@/components/onchain/is-not-universal-wallet';
 
 export default function FinanceCardsPage() {
   const { address } = useAccount();
@@ -20,7 +18,7 @@ export default function FinanceCardsPage() {
     <>
       <section>
         <Tabs defaultValue="account" className="w-full">
-          <div className="bg-neutral-100 w-full p-3 px-8 sticky top-0 flex ">
+          <div className='sticky top-0 flex w-full bg-neutral-100 p-3 px-8 '>
             <TabsList className="max-w-screen-sm">
               <TabsTrigger value="account">Create</TabsTrigger>
               <TabsTrigger value="debit">Debit</TabsTrigger>
@@ -29,7 +27,7 @@ export default function FinanceCardsPage() {
           </div>
           <div className="px-8 pt-4">
             <TabsContent value="account" className="p-0">
-              <Card className="flex flex-col md:flex-row justify-between items-center w-full mb-4 p-4 gap-y-4">
+              <Card className='mb-4 flex w-full flex-col items-center justify-between gap-y-4 p-4 md:flex-row'>
                 <div>
                   <span>
                     <span className="font-bold">Universal Trust</span> | Start
@@ -50,7 +48,7 @@ export default function FinanceCardsPage() {
                       Mint 100 GEM
                     </Button>
                   </ERC20Mint>
-                  <div className="flex items-center gap-x-2 rounded-full border-2 dark:border-neutral-600 px-4 py-2 font-black text-emerald-600">
+                  <div className='flex items-center gap-x-2 rounded-full border-2 px-4 py-2 font-black text-emerald-600 dark:border-neutral-600'>
                     <ERC20Balance
                       address={tokenDeployments[84532][0].address as Address}
                       account={address}
@@ -62,17 +60,17 @@ export default function FinanceCardsPage() {
                   </div>
                 </div>
               </Card>
-              <Card className="p-0 max-w-screen-xls mx-auto">
+              <Card className='mx-auto max-w-screen-xls p-0'>
                 <ViewCreate />
               </Card>
-              <Card className="mt-4 p-4  w-full mx-auto content">
+              <Card className='content mx-auto mt-4 w-full p-4'>
                 <div>
                   <h3 className="font-bold text-lg">How It Works</h3>
                   <p>
                     The Universal Trust network utilizes a powerful new way to
                     share permissions between onchain accounts.
                   </p>
-                  <ol className="list-decimal list-inside pl-4 mb-4">
+                  <ol className='mb-4 list-inside list-decimal pl-4'>
                     <li>Connect Universal Wallet.</li>
                     <li>Mint GEMs on Base Sepolia.</li>
                     <li>
@@ -89,12 +87,12 @@ export default function FinanceCardsPage() {
               </Card>
             </TabsContent>
             <TabsContent value="debit">
-              <ViewPageConnectWallet className="w-full h-auto flex items-center justify-center">
+              <ViewPageConnectWallet className='flex h-auto w-full items-center justify-center'>
                 {address && <ViewSent delegator={address} />}
               </ViewPageConnectWallet>
             </TabsContent>
             <TabsContent value="credit">
-              <ViewPageConnectWallet className="w-full h-auto flex items-center justify-center">
+              <ViewPageConnectWallet className='flex h-auto w-full items-center justify-center'>
                 {address && <ViewReceived delegate={address} />}
               </ViewPageConnectWallet>
             </TabsContent>

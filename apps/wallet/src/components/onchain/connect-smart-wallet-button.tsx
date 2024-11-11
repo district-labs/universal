@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import type * as React from 'react';
 
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { cn } from '@/lib/utils';
@@ -24,4 +24,4 @@ const ConnectSmartWalletButton = ({
     </Button>
   );
 };
-export { ConnectSmartWalletButton };
+export type { ConnectSmartWalletButton };

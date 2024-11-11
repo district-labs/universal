@@ -2,6 +2,7 @@ import {
   ArrowLeftRight,
   Banknote,
   IdCard,
+  LayoutDashboard,
   Search,
   TicketCheck,
 } from 'lucide-react';
@@ -10,7 +11,7 @@ export const itemsCore = [
   {
     title: 'Overview',
     url: '/',
-    icon: Search,
+    icon: LayoutDashboard,
   },
 ];
 
@@ -29,7 +30,7 @@ export const itemsFinance = [
 
 export const itemsIdentity = [
   {
-    title: 'Overview',
+    title: 'Manage',
     url: '/identity/manage',
     icon: IdCard,
   },
@@ -37,6 +38,11 @@ export const itemsIdentity = [
     title: 'Credentials',
     url: '/identity/credentials',
     icon: TicketCheck,
+  },
+  {
+    title: 'Search',
+    url: '/identity/search',
+    icon: Search,
   },
 ];
 

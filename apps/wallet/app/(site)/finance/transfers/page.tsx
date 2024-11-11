@@ -11,35 +11,35 @@ export default function FinanceCardsPage() {
   return (
     <>
       <section className="h-full">
-        <div className="w-full h-full flex flex-col lg:flex-row items-center lg:justify-center">
-          <div className="bg-neutral-100 w-full flex flex-col lg:h-full py-6 order-2 lg:order-1">
+        <div className='flex h-full w-full flex-col items-center lg:flex-row lg:justify-center'>
+          <div className='order-2 flex w-full flex-col bg-neutral-100 py-6 lg:order-1 lg:h-full'>
             <span className="mx-auto">
               <Button
                 variant={'outline'}
-                className="mx-auto mb-4 font-bold text-center rounded-full pl-4 pr-3"
+                className='mx-auto mb-4 rounded-full pr-3 pl-4 text-center font-bold'
               >
                 <span className="">Transfer</span>
                 <ArrowUp className="ml-4" />
               </Button>
             </span>
-            <div className="flex flex-col items-center justify-center flex-1 px-12">
-              <Card className="p-4 w-full">
+            <div className='flex flex-1 flex-col items-center justify-center px-12'>
+              <Card className='w-full p-4'>
                 <ViewTransfer />
               </Card>
             </div>
           </div>
-          <div className="w-full flex flex-col lg:h-full py-6 order-1 lg:order-2 lg:border-l-2">
+          <div className='order-1 flex w-full flex-col py-6 lg:order-2 lg:h-full lg:border-l-2'>
             {/* <h1 className="lg:text-3xl mb-4 font-bold text-center">Receive</h1> */}
             <span className="mx-auto">
               <Button
                 variant={'outline'}
-                className="mx-auto mb-4 font-bold text-center rounded-full pl-4 pr-3"
+                className='mx-auto mb-4 rounded-full pr-3 pl-4 text-center font-bold'
               >
                 Receive
                 <ArrowDown className="ml-4" />
               </Button>
             </span>
-            <div className="flex flex-col items-center justify-center flex-1">
+            <div className='flex flex-1 flex-col items-center justify-center'>
               <Card className="p-4">
                 <QRCodeRender
                   address={address}

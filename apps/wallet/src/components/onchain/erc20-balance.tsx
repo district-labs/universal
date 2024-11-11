@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { Address, erc20Abi, formatUnits } from 'viem';
+import type * as React from 'react';
+import { type Address, erc20Abi, formatUnits } from 'viem';
 import { useReadContract } from 'wagmi';
 
 import { cn } from '@/lib/utils';
@@ -26,4 +26,4 @@ const ERC20Balance = ({ className, address, account }: ERC20Balance) => {
 
   return <span className={classes}>{formatUnits(data, 18)}</span>;
 };
-export { ERC20Balance };
+export type { ERC20Balance };

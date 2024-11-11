@@ -31,6 +31,10 @@
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate"
 	},
+	"dependencies": {
+		"api-identity": "workspace:*",
+		"universal-data": "workspace:*"
+	},
 	"peerDependencies": {
 		"wagmi": "2.x",
 		"typescript": ">=5.0.4",
