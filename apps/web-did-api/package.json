@@ -18,7 +18,6 @@
     "@veramo/key-manager": "^6.0.0",
     "@veramo/kms-local": "^6.0.0",
     "dotenv": "^16.4.5",
-    "ethr-did-resolver": "^11.0.2",
     "hono": "^4.6.9",
     "pg": "^8.13.1",
     "typeorm": "^0.3.20",

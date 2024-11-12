@@ -567,9 +567,6 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.5
-      ethr-did-resolver:
-        specifier: ^11.0.2
-        version: 11.0.2(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       hono:
         specifier: ^4.6.9
         version: 4.6.9
@@ -5941,9 +5938,6 @@ packages:
 
   ethr-did-resolver@10.1.5:
     resolution: {integrity: sha512-wVCKhF6qQo2IewH9ui4lRBixbvT/A6szZFQoJkfvjP6EU/3MSb4KOP5QNpM37zmFU/rQGjHNt7bF13fNcmZ6wQ==}
-
-  ethr-did-resolver@11.0.2:
-    resolution: {integrity: sha512-xvJqOX0M23LjiDs3gusHMMHP9U0N0ZwBesmABzci5XzPJOk52MgCygfRx09PZLrVsoZVEjValmHJBle3vPrtmQ==}
 
   ethr-did@3.0.21:
     resolution: {integrity: sha512-2ojxqkGlujuhwtN5bSqESekfkpleOO+Nd3nwMyJmU4nB0K1fKe9+psL11VEh4AJ29+Rol+3gS4f/GjTCe3SF/Q==}
@@ -17282,14 +17276,6 @@ snapshots:
       - utf-8-validate
 
   ethr-did-resolver@10.1.5(bufferutil@4.0.8)(utf-8-validate@5.0.10):
-    dependencies:
-      did-resolver: 4.1.0
-      ethers: 6.13.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
-  ethr-did-resolver@11.0.2(bufferutil@4.0.8)(utf-8-validate@5.0.10):
     dependencies:
       did-resolver: 4.1.0
       ethers: 6.13.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
