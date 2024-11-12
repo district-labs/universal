@@ -5,7 +5,7 @@ import { createCredential } from "../lib/veramo/actions/create-credential.js";
 import { webDid } from "../lib/veramo/data/did.js";
 import { verifyCredential } from "../lib/veramo/actions/verify-credential.js";
 
-if (!process.env.TWITTER_OAUTH_CLIENT_ID || !process.env.TWITTER_OAUTH_CLIENT_SECRET) {
+if (!process.env.TWITTER_OAUTH_CLIENT_ID || !process.env.TWITTER_OAUTH_CLIENT_SECRET || !process.env.TWITTER_OAUTH_REDIRECT_URI) {
   throw new Error("Invalid Twitter OAuth credentials");
 }
 
@@ -60,6 +60,7 @@ app.use("/verify/x", xAuth({
   scope: ["users.read"],
   client_id: process.env.TWITTER_OAUTH_CLIENT_ID,
   client_secret: process.env.TWITTER_OAUTH_CLIENT_SECRET,
+  redirect_uri: process.env.TWITTER_OAUTH_REDIRECT_URI,
 }))
 // X verification
 app.get("/verify/x", (c) => {
