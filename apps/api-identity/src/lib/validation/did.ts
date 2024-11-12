@@ -7,8 +7,8 @@ export const didDocumentSchema = z
 		"@context": z.literal("https://www.w3.org/ns/did/v1").array().length(1),
 		// TODO: refine id validation
 		id: z.string().min(1),
-		alsoKnownAs: z.string().min(1),
-		controller: z.string().min(1),
+		alsoKnownAs: z.string().min(1).optional(),
+		controller: z.string().min(1).optional(),
 		verificationMethod: z
 			.object({
 				id: z.string().min(1),
@@ -27,7 +27,7 @@ export const didDocumentSchema = z
 				type: z.string().min(1),
 				serviceEndpoint: z.string().min(1),
 			})
-			.array(),
+			.array().optional(),
 	})
 	.strict();
 
@@ -35,6 +35,7 @@ export type DidDocument = z.infer<typeof didDocumentSchema>;
 
 export const postDidSchema = z.object({
 	address: addressSchema,
+	resolver: addressSchema,
 	chainId: chainIdSchema,
 	document: z.string(),
 	signature: hexSchema,

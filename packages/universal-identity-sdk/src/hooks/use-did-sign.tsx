@@ -1,11 +1,11 @@
-import { type Address } from "viem";
+import type { Address } from "viem";
 import { useChainId, useSignTypedData } from "wagmi";
-import { eip712UniversalDidType } from "../eip712-universal-did-type.js";
 import { useInsertUniversalDid } from "../api/hooks/insert-universal-did.js";
+import { eip712UniversalDidType } from "../eip712-universal-did-type.js";
 
 type SignDidParams = {
 	address: Address;
-	verifyContract: Address;
+	verifyingContract: Address;
 	document: string;
 };
 
@@ -16,7 +16,7 @@ export function useDidSign() {
 		useSignTypedData();
 
 	async function signAndSaveDid({
-		verifyContract,
+		verifyingContract,
 		document,
 		address,
 	}: SignDidParams) {
@@ -27,7 +27,7 @@ export function useDidSign() {
 				name: "Universal Resolver",
 				version: "1",
 				chainId: chainId,
-				verifyingContract: verifyContract,
+				verifyingContract: verifyingContract,
 			},
 			message: {
 				document: document,
@@ -38,6 +38,7 @@ export function useDidSign() {
 			document: document,
 			address: address,
 			signature: signature,
+			resolver: verifyingContract,
 		});
 
 		return signature;

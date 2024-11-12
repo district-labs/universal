@@ -4,8 +4,8 @@ import { insertDidDb } from "../lib/db/actions/insert-did-db.js";
 import { selectDidDb } from "../lib/db/actions/select-did-db.js";
 import type { SelectDidDb } from "../lib/db/schema.js";
 import { encodeDidResponse } from "../lib/did/utils.js";
-import { validateDidMiddleware } from "../lib/middleware/validate-did-middleware.js";
 import { getIdentifier } from "../lib/get-identifier.js";
+import { validateDidMiddleware } from "../lib/middleware/validate-did-middleware.js";
 
 type StatusCode = 200 | 404 | 500;
 
@@ -48,9 +48,10 @@ const didRouter = new Hono()
 		try {
 			await insertDidDb({
 				address: did.address,
+				resolver: did.resolver,
+				identifier: identifier,
 				document: did.document,
 				signature: did.signature,
-				identifier,
 			});
 		} catch (error) {
 			const errorMessage =

@@ -1,8 +1,8 @@
 import { validator } from "hono/validator";
 import { universalDeployments } from "universal-data";
 import {
-	didDocumentSchema,
 	type PostDid,
+	didDocumentSchema,
 	postDidSchema,
 } from "../validation/did.js";
 import { getPublicClientFromList } from "../viem/index.js";
@@ -47,6 +47,8 @@ export const validateDidMiddleware = validator("json", async (value, c) => {
 	const parsedDocument = didDocumentSchema.safeParse(
 		JSON.parse(parsedDid.data.document),
 	);
+
+	console.log(parsedDocument.error)
 	if (!parsedDocument.success) {
 		return c.json({ error: "Invalid did" }, 400);
 	}

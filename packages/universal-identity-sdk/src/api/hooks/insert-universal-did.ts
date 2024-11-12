@@ -10,8 +10,7 @@ export async function insertUniversalDid(
 	UniversalDidApiClient: UniversalIdentityApiClient,
 	data: InsertUniversalDidParams,
 ) {
-	try {
-		const res = await UniversalDidApiClient["index"].$post({
+		const res = await UniversalDidApiClient.index.$post({
 			json: data,
 		});
 
@@ -24,9 +23,6 @@ export async function insertUniversalDid(
 		return {
 			message,
 		};
-	} catch (error) {
-		throw error;
-	}
 }
 
 export function useInsertUniversalDid() {

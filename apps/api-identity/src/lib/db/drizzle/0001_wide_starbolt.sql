@@ -1,0 +1,1 @@
+ALTER TABLE "dids" ADD COLUMN "resolver" text NOT NULL;

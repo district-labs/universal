@@ -143,7 +143,7 @@ export default function IdentityManagePage() {
                           onClick={() => {
                             signAndSaveDid({
                               address,
-                              verifyContract:
+                              verifyingContract:
                                 universalDeployments[chainId as number]
                                   .resolver,
                               document: JSON.stringify(

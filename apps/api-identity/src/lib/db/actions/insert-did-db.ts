@@ -11,6 +11,7 @@ export function insertDidDb(params: InsertDidDb) {
 				document: params.document,
 				signature: params.signature,
 				identifier: params.identifier,
+				resolver: params.resolver,
 			},
 		});
 }
