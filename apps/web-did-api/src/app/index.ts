@@ -1,8 +1,13 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+import { xAuth } from "@hono/oauth-providers/x"
 import { createCredential } from "../lib/veramo/actions/create-credential.js";
 import { webDid } from "../lib/veramo/data/did.js";
 import { verifyCredential } from "../lib/veramo/actions/verify-credential.js";
+
+if (!process.env.TWITTER_OAUTH_CLIENT_ID || !process.env.TWITTER_OAUTH_CLIENT_SECRET) {
+  throw new Error("Invalid Twitter OAuth credentials");
+}
 
 const app = new Hono();
 
@@ -49,6 +54,23 @@ app.post("/verify-credential", async (c) => {
 
     return c.json({ error: "Failed to verify credential" }, 500);
   }
+});
+
+app.use("/verify/x", xAuth({
+  scope: ["users.read"],
+  client_id: process.env.TWITTER_OAUTH_CLIENT_ID,
+  client_secret: process.env.TWITTER_OAUTH_CLIENT_SECRET,
+}))
+// X verification
+app.get("/verify/x", (c) => {
+  const token = c.get('token')
+  const grantedScopes = c.get('granted-scopes')
+  const user = c.get('user-x')
+  return c.json({
+    token,
+    grantedScopes,
+    user,
+  }, 200);
 });
 
 const port = 8787;
