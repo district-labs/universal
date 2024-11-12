@@ -1,0 +1,32 @@
+{
+  "name": "web-did-api",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/app/index.ts",
+    "start": "tsx src/app/index.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.6",
+    "@hono/zod-validator": "^0.4.1",
+    "@veramo/core": "^6.0.0",
+    "@veramo/credential-w3c": "^6.0.0",
+    "@veramo/data-store": "^6.0.0",
+    "@veramo/did-manager": "^6.0.0",
+    "@veramo/did-provider-ethr": "^6.0.0",
+    "@veramo/did-provider-web": "^6.0.0",
+    "@veramo/did-resolver": "^6.0.0",
+    "@veramo/key-manager": "^6.0.0",
+    "@veramo/kms-local": "^6.0.0",
+    "dotenv": "^16.4.5",
+    "ethr-did-resolver": "^11.0.2",
+    "hono": "^4.6.9",
+    "pg": "^8.13.1",
+    "typeorm": "^0.3.20",
+    "web-did-resolver": "^2.0.27",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "tsx": "^4.7.1"
+  }
+}
