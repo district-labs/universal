@@ -1,17 +1,17 @@
-import * as React from 'react';
 import { cn } from '@/lib/utils';
-import { ConnectButton } from '../onchain/connect-button';
+import type * as React from 'react';
 import { useAccount } from 'wagmi';
+import { ConnectButton } from '../onchain/connect-button';
 
-type ViewPageConnectWallet = React.HTMLAttributes<HTMLElement>;
+export type ViewPageConnectWallet = React.HTMLAttributes<HTMLElement>;
 
-const ViewPageConnectWallet = ({
+export const ViewPageConnectWallet = ({
   children,
   className,
 }: ViewPageConnectWallet) => {
   const { address } = useAccount();
 
-  if (!address)
+  if (!address) {
     return (
       <div className={cn(className)}>
         <ConnectButton size="lg" rounded={'full'}>
@@ -19,7 +19,7 @@ const ViewPageConnectWallet = ({
         </ConnectButton>
       </div>
     );
+  }
 
   return <>{children}</>;
 };
-export { ViewPageConnectWallet };

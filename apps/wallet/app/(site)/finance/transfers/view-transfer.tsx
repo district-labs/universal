@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Address, parseUnits, zeroAddress } from 'viem';
+import { type Address, parseUnits } from 'viem';
 import { useAccount, useWriteContract } from 'wagmi';
 import { z } from 'zod';
 import { addressSchema, coercedNumberSchema } from '@/lib/validation/utils';
@@ -89,7 +89,7 @@ function ViewTransfer() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
         <FormField
           control={form.control}
           name="to"
@@ -141,13 +141,13 @@ function ViewTransfer() {
             </FormItem>
           )}
         />
-        <hr className="border-neutral-200 my-4" />
+        <hr className="my-4 border-neutral-200" />
         {address && (
           <div className="">
             <Button className="w-full" type="submit" size={'lg'}>
               Send
             </Button>
-            <p className="text-sm mt-2 text-center">
+            <p className="mt-2 text-center text-sm">
               Testnet tokens will be automatically minted during transfer.
             </p>
           </div>

@@ -1,42 +1,34 @@
 'use client';
 import { Address } from '@/components/onchain/address';
-import { Button } from '@/components/ui/button';
-import { useState } from 'react';
 import { EthAmountFormatted } from '@/components/onchain/eth-formatted';
+import { Toggle } from '@/components/toggle';
+import { Button } from '@/components/ui/button';
+import { useEstimateUserOpAssetChanges } from '@/lib/alchemy/hooks/use-simulate-user-op-asset-changes';
+import { type ReactElement, useState } from 'react';
+import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
 import { ActionRequestMain } from '../components/action-request-main';
-import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestTitle } from '../components/action-request-title';
-import { Toggle } from '@/components/toggle';
-import { ActionTransactionPreview } from '../components/action-transaction-preview';
 import { ActionTransactionFeeEstimate } from '../components/action-transaction-fee-estimate';
 import { ActionTransactionNetwork } from '../components/action-transaction-network';
-import { useSendTransaction } from './hooks/use-send-transaction';
-import { useEstimateUserOpAssetChanges } from '@/lib/alchemy/hooks/use-simulate-user-op-asset-changes';
 import { ActionTransactionNetworkSimplified } from '../components/action-transaction-network-simplified';
+import { ActionTransactionPreview } from '../components/action-transaction-preview';
+import { useSendTransaction } from './hooks/use-send-transaction';
 
-export default function PersonalSignPage() {
+export default function SignEthSendTransactionPage() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
-  const {
-    data,
-    isLoading: isLoadingEstimate,
-    isError: isErrorEstimate,
-  } = useEstimateUserOpAssetChanges();
-  const {
-    sendTransaction,
-    txParams,
-    isLoadingSendTx,
-    isLoadingUserOp,
-    isError,
-  } = useSendTransaction();
+  const { isLoading: isLoadingEstimate, isError: isErrorEstimate } =
+    useEstimateUserOpAssetChanges();
+  const { sendTransaction, txParams, isLoadingSendTx, isLoadingUserOp } =
+    useSendTransaction();
 
   if (!txParams) {
     return <div>Invalid Transaction</div>;
   }
 
   return (
-    <div className="flex flex-1 w-full flex-col justify-between h-full">
-      <ActionRequestHeader className="flex justify-between items-center border-b-2">
+    <div className="flex h-full w-full flex-1 flex-col justify-between">
+      <ActionRequestHeader className="flex items-center justify-between border-b-2">
         <ActionRequestTitle type="transaction">
           Transaction Request
         </ActionRequestTitle>
@@ -47,10 +39,10 @@ export default function PersonalSignPage() {
           />
         </span>
       </ActionRequestHeader>
-      <ActionRequestMain className="break-words pt-5 px-0">
+      <ActionRequestMain className="break-words px-0 pt-5">
         {viewModeAdvanced === false && (
           <>
-            <div className="w-full flex flex-col gap-y-4 px-6 mb-0 pb-5">
+            <div className="mb-0 flex w-full flex-col gap-y-4 px-6 pb-5">
               <Row
                 label="Blockchain"
                 value={<ActionTransactionNetworkSimplified />}
@@ -60,11 +52,11 @@ export default function PersonalSignPage() {
                 value={<Address truncate={true} address={txParams.to} />}
               />
             </div>
-            <ActionTransactionPreview className="text-center flex-1" />
+            <ActionTransactionPreview className="flex-1 text-center" />
           </>
         )}
         {viewModeAdvanced === true && (
-          <div className="w-full flex flex-col gap-y-4 px-6">
+          <div className="flex w-full flex-col gap-y-4 px-6">
             <Row
               label="Blockchain (Network)"
               value={<ActionTransactionNetwork />}
@@ -86,7 +78,7 @@ export default function PersonalSignPage() {
               value={<EthAmountFormatted amount={txParams.value} />}
             />
             <hr className="border-neutral-300" />
-            <div className="break-words text-xs max-h-[140px] bg-neutral-100 rounded-md p-4 shadow-inner overflow-auto">
+            <div className="max-h-[140px] overflow-auto break-words rounded-md bg-neutral-100 p-4 text-xs shadow-inner">
               {txParams.data}
             </div>
           </div>
@@ -94,7 +86,7 @@ export default function PersonalSignPage() {
       </ActionRequestMain>
       <ActionRequestFooter>
         <Button
-          className="flex-1 w-full rounded-full"
+          className="w-full flex-1 rounded-full"
           size={'lg'}
           disabled={
             isLoadingEstimate ||
@@ -116,11 +108,14 @@ export default function PersonalSignPage() {
   );
 }
 
-const Row = ({ value, label }: { value: any; label: string }) => {
+const Row = ({
+  value,
+  label,
+}: { value: ReactElement | string; label: string }) => {
   return (
     <div className="flex justify-between">
       <span className="text-sm">{label}</span>
-      <span className="text-sm font-bold">{value}</span>
+      <span className="font-bold text-sm">{value}</span>
     </div>
   );
 };

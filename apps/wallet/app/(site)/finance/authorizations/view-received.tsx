@@ -1,12 +1,12 @@
-import * as React from 'react';
+import type * as React from 'react';
 import { cn } from '@/lib/utils';
 import {
   useDelegationExecute,
   useDelegationStatus,
   useErc20TransferAmountEnforcer,
   useGetDelegationByDelegateAndType,
-} from 'universal-wallet-delegations';
-import { Address, encodeFunctionData, erc20Abi } from 'viem';
+} from 'universal-delegations-sdk';
+import { type Address, encodeFunctionData, erc20Abi } from 'viem';
 import {
   Card,
   CardContent,
@@ -36,7 +36,7 @@ const ViewReceived = ({ className, delegate }: ViewReceived) => {
     <div
       className={cn(
         className,
-        'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10',
+        'grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-3',
       )}
     >
       {data.map((delegation) => {
@@ -66,7 +66,9 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
     delegation: delegation,
   });
 
-  if (!enforcerData) return null;
+  if (!enforcerData) {
+    return null;
+  }
 
   return (
     <Card key={delegation.hash} className={className}>
@@ -79,8 +81,8 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
           symbol={enforcerData.symbol}
         />
       </CardHeader>
-      <CardContent className="border-t-2 pt-4 flex flex-col gap-y-3">
-        <RowBasic label="Status" value={!!status ? 'Disabled' : 'Active'} />
+      <CardContent className="flex flex-col gap-y-3 border-t-2 pt-4">
+        <RowBasic label="Status" value={status ? 'Disabled' : 'Active'} />
         <RowBasic label="From" value={delegation.delegator} />
         <RowBasic
           label="Asset"
@@ -98,7 +100,7 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
           variant={
             enforcerData.spendLimitReached
               ? 'default'
-              : !!status
+              : status
                 ? 'outline'
                 : 'emerald'
           }
@@ -125,7 +127,7 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
         >
           {enforcerData.spendLimitReached
             ? 'Spend Limit Reached'
-            : !!status
+            : status
               ? 'Disabled'
               : 'Claim Credit'}
         </Button>

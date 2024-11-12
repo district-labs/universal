@@ -9,6 +9,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "lucide-react": "^0.446.0",
     "tsconfig": "*"
   }
 }

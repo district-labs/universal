@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { tokenDeployments, findToken, Token } from 'universal-wallet-data';
+import { tokenDeployments, findToken, type Token } from 'universal-data';
 
 type SelectTokenProps = {
   chainId: number;
@@ -41,7 +41,7 @@ export function SelectToken({
               <Image
                 className="rounded-full shadow-lg"
                 src={token.img}
-                alt={token.name + ' ' + token.symbol}
+                alt={`${token.name} ${token.symbol}`}
                 width={24}
                 height={24}
               />

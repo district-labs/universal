@@ -1,6 +1,6 @@
-import { isAddress } from 'viem';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { isAddress } from 'viem';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -15,8 +15,8 @@ export function formatDate(input: string | number): string {
   });
 }
 
-export function truncateEthAddress(address: string) {
-  return `${address?.slice(0, 6)}...${address?.slice(-4)}`;
+export function truncateEthAddress(address: string, length = 6) {
+  return `${address?.slice(0, length)}...${address?.slice(-length + 2)}`;
 }
 
 export function formatAccount(account: string) {
@@ -36,7 +36,7 @@ export function formatNumber(
     return '0';
   }
   if (typeof input === 'string') {
-    input = parseFloat(input);
+    input = Number.parseFloat(input);
   }
   if (typeof input === 'bigint') {
     input = Number(input);
@@ -58,7 +58,7 @@ export function formatNumber(
   }
 
   // Round the number to the effective number of decimal places
-  const roundedInput = parseFloat(input.toFixed(dynamicDecimals));
+  const roundedInput = Number.parseFloat(input.toFixed(dynamicDecimals));
 
   // If the rounded value is 0, return "0"
   if (roundedInput === 0) {
@@ -73,7 +73,7 @@ export function formatNumber(
   // For numbers less than 0.01 but not zero, keep up to two significant digits
   if (Math.abs(input) < 0.01) {
     // Convert to string with two significant digits, then parse as a float to remove trailing zeros
-    return parseFloat(input.toPrecision(decimals)).toString();
+    return Number.parseFloat(input.toPrecision(decimals)).toString();
   }
 
   // For numbers 0.01 and above, format to two decimal places with commas

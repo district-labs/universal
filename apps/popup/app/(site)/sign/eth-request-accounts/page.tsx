@@ -1,13 +1,13 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { CHAINS } from '@/lib/constants';
+import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener';
 import { useAccountState } from '@/lib/state/use-account-state';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useSessionState } from '@/lib/state/use-session-state';
-import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener';
-import { CHAINS } from '@/lib/constants';
 import { ActionRequestFooter } from '../components/action-request-footer';
-import { ActionRequestMain } from '../components/action-request-main';
 import { ActionRequestHeader } from '../components/action-request-header';
+import { ActionRequestMain } from '../components/action-request-main';
 
 export default function SignEthRequestsAccountsPage() {
   const { accountState } = useAccountState();
@@ -15,23 +15,23 @@ export default function SignEthRequestsAccountsPage() {
   const { message } = useMessageContext();
 
   return (
-    <div className="flex flex-1 w-full flex-col justify-between h-full">
-      <ActionRequestHeader className="text-center bg-neutral-100 w-full pt-4 pb-10 z-50 relative">
+    <div className="flex h-full w-full flex-1 flex-col justify-between">
+      <ActionRequestHeader className="relative z-50 w-full bg-neutral-100 pt-4 pb-10 text-center">
         <img
           src={message?.params.appLogoUrl}
-          className="w-8 h-8 mx-auto rounded-full"
+          className="mx-auto h-8 w-8 rounded-full"
         />
-        <h1 className="text-3xl font-bold">{message?.params.appName}</h1>
-        <h4 className="text-lg font-normal mt-1">Connection Request</h4>
+        <h1 className="font-bold text-3xl">{message?.params.appName}</h1>
+        <h4 className="mt-1 font-normal text-lg">Connection Request</h4>
       </ActionRequestHeader>
       <ActionRequestMain className="px-14">
         <Button
           variant="white"
-          className="rounded-full font-bold mx-auto -mt-6 px-8"
+          className="-mt-6 mx-auto rounded-full px-8 font-bold"
         >
           Permissions
         </Button>
-        <ul className="list-disc text-left mt-8 leading-8">
+        <ul className="mt-8 list-disc text-left leading-8">
           <li>View public wallet address.</li>
           <li>Lookup public wallet information.</li>
           <li>Send additional action requests.</li>
@@ -39,7 +39,7 @@ export default function SignEthRequestsAccountsPage() {
       </ActionRequestMain>
       <ActionRequestFooter>
         <Button
-          className="flex-1 w-full rounded-full"
+          className="w-full flex-1 rounded-full"
           size="lg"
           disabled={
             !accountState ||

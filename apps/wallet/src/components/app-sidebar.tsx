@@ -35,7 +35,7 @@ export function AppSidebar() {
       <SidebarHeader className="p-4">
         <Link href="/" className="flex items-center">
           <CircleIcon className="size-6 text-emerald-500 dark:text-emerald-100" />
-          <span className="ml-2 text-lg font-semibold hidden lg:inline-block">
+          <span className="ml-2 hidden font-semibold text-lg lg:inline-block">
             {siteConfig.name}
           </span>
         </Link>
@@ -50,7 +50,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {itemsCore.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild={true}>
                     <LinkComponent href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
@@ -70,7 +70,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {itemsFinance.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild={true}>
                     <LinkComponent href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
@@ -90,7 +90,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {itemsIdentity.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild={true}>
                     <LinkComponent href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
@@ -111,7 +111,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {itemsTesting.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild={true}>
                     <LinkComponent href={item.url}>
                       {/* {item.icon && <item.icon />} */}
                       <span>{item.title}</span>
@@ -123,10 +123,10 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="p-4 border-t-2">
-        <div className="flex flow-row items-center gap-x-2">
+      <SidebarFooter className="border-t-2 p-4">
+        <div className="flow-row flex items-center gap-x-2">
           <LinkComponent
-            className="text-xs font-bold"
+            className="font-bold text-xs"
             href="https://github.com/district-labs/"
           >
             Github
