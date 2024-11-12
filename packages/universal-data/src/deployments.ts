@@ -10,7 +10,7 @@ export const universalDeployments: {
 		// Test
 		erc20Mintable: "0x4C8Be898BdE148aE6f9B0AF86e7D2b5a0558A7d0",
 		// Universal Identity
-		resolver: "0xC06F7eBe1679aAd9dF6Cb63EB49F44297524741a",
+		resolver: "0x305f57c997A35E79F6a59CF09A9d07d2408b5935",
 		// Delegation Framework Core
 		EntryPoint: "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
 		DelegationManager: "0x42f53d86aF500b0Cc98B3B1275a36fd438060a32",

@@ -1,8 +1,8 @@
 export type UniversalDID = {
-  document: string;
+	document: string;
 };
 
 export type VerificationRequest = {
-  id: string;
-  type: string;
+	id: string;
+	type: string;
 };

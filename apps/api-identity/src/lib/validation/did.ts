@@ -27,7 +27,8 @@ export const didDocumentSchema = z
 				type: z.string().min(1),
 				serviceEndpoint: z.string().min(1),
 			})
-			.array().optional(),
+			.array()
+			.optional(),
 	})
 	.strict();
 

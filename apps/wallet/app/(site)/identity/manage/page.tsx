@@ -50,8 +50,6 @@ export default function IdentityManagePage() {
       });
   }, [client, address, chainId]);
 
-  console.log(document, 'document');
-
   return (
     <section>
       <div className={cn('mx-auto')}>
