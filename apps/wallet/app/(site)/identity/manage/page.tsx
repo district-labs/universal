@@ -46,7 +46,7 @@ export default function IdentityManagePage() {
       });
   }, [client, address, chainId]);
 
-  console.log(document, 'document')
+  console.log(document, 'document');
 
   return (
     <section>
@@ -82,7 +82,7 @@ export default function IdentityManagePage() {
                     size={200}
                     address={constructDidIdentifier({
                       chainId: 85432,
-                      resolver: '0x832C9b300de8a7fABeDA6A30AE498d623004CfcB',
+                      resolver: universalDeployments[chainId as number].resolver,
                       address: address,
                     })}
                   />
@@ -146,11 +146,12 @@ export default function IdentityManagePage() {
                 <Card className="w-full p-5">
                   <h3 className="mb-2 font-bold text-lg">Identifier</h3>
                   <span className="mt-2 block font-bold">
-                    dis:uis:<span className="text-emerald-600">{'84532'}</span>:
-                    <span className="text-blue-600">
-                      0x832C9b300de8a7fABeDA6A30AE498d623004CfcB
+                    dis:uis:<span className="text-blue-600">{'84532'}</span>:
+                    <span className="text-emerald-600">
+                      {universalDeployments[chainId as number]
+                                  .resolver}
                     </span>
-                    :<span className="text-pink-600">{address}</span>
+                    :<span className="text-blue-600">{address}</span>
                   </span>
                 </Card>
                 <Card className="mt-4 w-full p-5">

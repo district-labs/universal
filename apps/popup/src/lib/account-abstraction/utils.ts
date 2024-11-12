@@ -20,6 +20,7 @@ const TYPE_HASH = keccak256(
     'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)',
   ),
 );
+
 const hashedName = keccak256(toHex('Universal Wallet'));
 const hashedVersion = keccak256(toHex('1'));
 
