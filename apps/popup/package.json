@@ -47,6 +47,7 @@
     "siwe": "^2.3.2",
     "universal-wallet-connector": "workspace:*",
     "universal-data": "workspace:*",
+    "universal-identity-sdk": "workspace:*",
     "universal-delegations-sdk": "workspace:*",
     "universal-wallet-sdk": "workspace:*",
     "universal-wallet-ui": "workspace:*",

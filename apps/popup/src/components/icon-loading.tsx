@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { cn } from '@/lib/utils';
+import type * as React from 'react';
 
 type IconLoading = React.HTMLAttributes<HTMLElement> & {
   height?: number;
@@ -21,6 +20,7 @@ const IconLoading = ({ height = 50, width = 50 }: IconLoading) => {
       enableBackground="new 0 0 0 0"
       xmlSpace="preserve"
     >
+      <title>Loading</title>
       <circle
         fill="none"
         stroke="#12B981"

@@ -1,18 +1,18 @@
-import * as React from 'react';
-import { cn } from '@/lib/utils';
-import { Delegation } from '@/lib/delegation-framework/types';
-import { Address, formatUnits } from 'viem';
-import { DebitCard } from 'universal-wallet-ui';
-import { findToken } from 'universal-data';
 import { RowBasic } from '@/components/row-basic';
+import type { Delegation } from '@/lib/delegation-framework/types';
+import { cn } from '@/lib/utils';
+import * as React from 'react';
+import { findToken } from 'universal-data';
 import { decodeEnforcerERC20TransferAmount } from 'universal-delegations-sdk';
+import { DebitCard } from 'universal-wallet-ui';
+import { type Address, formatUnits } from 'viem';
 
-type CardPaymentBasic = React.HTMLAttributes<HTMLElement> & {
+export type CardPaymentBasic = React.HTMLAttributes<HTMLElement> & {
   typedData: Delegation;
   chainId: number;
 };
 
-const CardPaymentBasic = ({
+export const CardPaymentBasic = ({
   className,
   typedData,
   chainId,
@@ -46,7 +46,7 @@ const CardPaymentBasic = ({
 
   return (
     <div className={cn(className)}>
-      <div className="pb-6">
+      <div className="flex justify-center pb-6">
         <DebitCard
           color="green"
           amount={formatUnits(BigInt(data.amount), 18).toString()}
@@ -69,5 +69,3 @@ const CardPaymentBasic = ({
     </div>
   );
 };
-
-export { CardPaymentBasic };

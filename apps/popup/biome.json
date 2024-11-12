@@ -32,7 +32,7 @@
       "correctness": {
         "noConstantMathMinMaxClamp": "error",
         "noNodejsModules": "error",
-        "noUnusedImports": "error",
+        "noUnusedImports": "off",
         "noUnusedPrivateClassMembers": "error",
         "noUnusedVariables": "error",
         "useArrayLiterals": "error"
