@@ -1,0 +1,27 @@
+{
+	"include": [],
+	"compilerOptions": {
+		"incremental": true,
+		"strict": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"useDefineForClassFields": true,
+		"useUnknownInCatchVariables": true,
+		"jsx": "react-jsx",
+
+		"allowJs": false,
+		"checkJs": false,
+		"forceConsistentCasingInFileNames": true,
+		"verbatimModuleSyntax": true,
+		"moduleResolution": "NodeNext",
+		"module": "NodeNext",
+		"target": "ES2021",
+		"lib": ["ES2022", "DOM"],
+		"skipLibCheck": true,
+		"noErrorTruncation": true
+	}
+}

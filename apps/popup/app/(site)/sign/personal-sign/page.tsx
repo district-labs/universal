@@ -1,37 +1,37 @@
 'use client';
 import { Button } from '@/components/ui/button';
+import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
 import { ActionRequestMain } from '../components/action-request-main';
-import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestTitle } from '../components/action-request-title';
 import { useSignMessage } from './hooks/use-sign-message';
 
-export default function PersonalSignPage() {
-  const { signMessage, formattedMessage, messageHash, isPending, status } =
+export default function EthPersonalSignPage() {
+  const { signMessage, formattedMessage, messageHash, isPending } =
     useSignMessage();
 
   if (!messageHash) {
     return (
-      <div className="mt-0 flex w-full flex-col justify-center items-center py-4 px-10 lg:px-20">
+      <div className="mt-0 flex w-full flex-col items-center justify-center px-10 py-4 lg:px-20">
         Invalid message
       </div>
     );
   }
   return (
-    <div className="flex flex-1 w-full flex-col justify-between h-full">
-      <ActionRequestHeader className="text-center bg-neutral-50 border-b-2 border-neutral-100 w-full py-2 z-50 relative">
+    <div className="flex h-full w-full flex-1 flex-col justify-between">
+      <ActionRequestHeader className="relative z-50 w-full border-neutral-100 border-b-2 bg-neutral-50 py-2 text-center">
         <ActionRequestTitle type="message">
           Signature Request
         </ActionRequestTitle>
       </ActionRequestHeader>
       <ActionRequestMain className="px-4 py-4">
-        <div className="max-h-[320px] h-full bg-neutral-100 rounded-lg flex-1 p-4 text-sm overflow-auto">
+        <div className="h-full max-h-[320px] flex-1 overflow-auto rounded-lg bg-neutral-100 p-4 text-sm">
           <pre className="font-mono text-xs">{`${formattedMessage}`}</pre>
         </div>
       </ActionRequestMain>
       <ActionRequestFooter>
         <Button
-          className="flex-1 w-full rounded-full"
+          className="w-full flex-1 rounded-full"
           size="lg"
           disabled={!signMessage || isPending}
           onClick={() => signMessage?.()}

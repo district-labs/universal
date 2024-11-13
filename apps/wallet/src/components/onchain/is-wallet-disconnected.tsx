@@ -1,9 +1,9 @@
 'use client';
 
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { useAccount } from 'wagmi';
 
-interface IsWalletDisconnectedProps {
+export interface IsWalletDisconnectedProps {
   children: ReactNode;
 }
 
@@ -12,7 +12,9 @@ export const IsWalletDisconnected = ({
 }: IsWalletDisconnectedProps) => {
   const { address } = useAccount();
 
-  if (!address) return <>{children}</>;
+  if (!address) {
+    return <>{children}</>;
+  }
 
   return null;
 };

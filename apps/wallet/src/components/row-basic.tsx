@@ -1,14 +1,14 @@
-import * as React from 'react';
 import { cn } from '@/lib/utils';
+import type * as React from 'react';
 import { isAddress } from 'viem';
 import { Address } from './onchain/address';
 
-type RowBasic = React.HTMLAttributes<HTMLElement> & {
+export type RowBasic = React.HTMLAttributes<HTMLElement> & {
   label: string;
   value: string;
 };
 
-const RowBasic = ({ label, value }: RowBasic) => {
+export const RowBasic = ({ label, value }: RowBasic) => {
   return (
     <div
       className={cn('flex justify-between', {
@@ -23,7 +23,7 @@ const RowBasic = ({ label, value }: RowBasic) => {
         {label}
       </span>
       <span
-        className={cn('text-sm font-bold', {
+        className={cn('font-bold text-sm', {
           'font-normal': value.length > 20 && !isAddress(value),
         })}
       >
@@ -32,5 +32,3 @@ const RowBasic = ({ label, value }: RowBasic) => {
     </div>
   );
 };
-
-export { RowBasic };

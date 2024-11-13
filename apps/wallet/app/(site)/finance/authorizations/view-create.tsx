@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Address, zeroAddress } from 'viem';
+import { type Address, zeroAddress } from 'viem';
 import { useAccount } from 'wagmi';
 import { z } from 'zod';
 
@@ -23,7 +23,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { DebitCard } from 'universal-wallet-ui';
 import { useChainId } from 'wagmi';
 import { Button } from '@/components/ui/button';
-import { useSignErc20TransferDelegation } from 'universal-wallet-delegations';
+import { useSignErc20TransferDelegation } from 'universal-delegations-sdk';
 import { IsUniversalWallet } from '@/components/onchain/is-universal-wallet';
 import { IsNotUniversalWallet } from '@/components/onchain/is-not-universal-wallet';
 
@@ -58,10 +58,10 @@ function ViewCreate() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+    <div className="grid w-full grid-cols-1 gap-6 md:grid-cols-2">
       {/* Preview Section */}
-      <Card className="bg-neutral-100 border-none shadow-none p-8 order-2 w-full">
-        <CardContent className="flex justify-center items-center h-full p-0">
+      <Card className="order-2 w-full border-none bg-neutral-100 p-8 shadow-none">
+        <CardContent className="flex h-full items-center justify-center p-0">
           <DebitCard
             color="green"
             to={data.delegate as Address}
@@ -74,11 +74,11 @@ function ViewCreate() {
         </CardContent>
       </Card>
       {/* Form Section */}
-      <Card className="bg-transparent border-none shadow-none p-4">
+      <Card className="border-none bg-transparent p-4 shadow-none">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 w-full"
+            className="w-full space-y-4"
           >
             <FormField
               control={form.control}
@@ -136,7 +136,7 @@ function ViewCreate() {
               )}
             />
 
-            <hr className="border-neutral-200 my-4" />
+            <hr className="my-4 border-neutral-200" />
             <IsUniversalWallet>
               {address && (
                 <Button className="w-full" type="submit">
@@ -145,7 +145,7 @@ function ViewCreate() {
               )}
             </IsUniversalWallet>
             <IsNotUniversalWallet>
-              <Button className="w-full" type="submit" disabled>
+              <Button className="w-full" type="submit" disabled={true}>
                 Connect Universal Wallet
               </Button>
             </IsNotUniversalWallet>

@@ -1,10 +1,10 @@
 'use client';
-import Image from 'next/image';
 import { ConnectButton } from '@/components/onchain/connect-button';
 import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
 import { IsWalletDisconnected } from '@/components/onchain/is-wallet-disconnected';
 import { Card, CardContent } from '@/components/ui/card';
 import { LinkComponent } from '@/components/ui/link-component';
+import Image from 'next/image';
 
 export default function HomePage() {
   return (
@@ -12,20 +12,20 @@ export default function HomePage() {
       <div className="w-full px-4">
         <div className="mt-4 flex flex-col gap-y-4">
           <Card className="relative overflow-hidden p-0">
-            <CardContent className="flex flex-col md:flex-row gap-y-5 p-0 default:mb-0 default:flex-col md:mb-0">
-              <div className="order-1 md:order-2 flex items-center gap-x-4 p-8 text-center md:w-1/2 md:p-20 md:text-left">
-                <div className="flex flex-col gap-y-5 justify-center items-center w-full">
+            <CardContent className="flex flex-col gap-y-5 p-0 default:mb-0 default:flex-col md:mb-0 md:flex-row">
+              <div className="order-1 flex items-center gap-x-4 p-8 text-center md:order-2 md:w-1/2 md:p-20 md:text-left">
+                <div className="flex w-full flex-col items-center justify-center gap-y-5">
                   <div className="text-center md:text-center">
-                    <h3 className="text-4xl font-black text-emerald-500 dark:text-emerald-400 md:text-5xl">
+                    <h3 className="font-black text-4xl text-emerald-500 md:text-5xl dark:text-emerald-400">
                       Universal Wallet
                     </h3>
-                    <h3 className="text-2xl font-black text-emerald-600 dark:text-emerald-400 md:text-3xl">
+                    <h3 className="font-black text-2xl text-emerald-600 md:text-3xl dark:text-emerald-400">
                       Discover What's Possible
                     </h3>
                   </div>
                 </div>
               </div>
-              <div className="relative z-10 order-1 flex flex-1 items-center justify-center bg-white px-8 py-16 dark:bg-neutral-900 md:order-2 md:w-1/2 md:border-l-2 md:py-8 h-auto border-t-2 md:border-t-0">
+              <div className="relative z-10 order-1 flex h-auto flex-1 items-center justify-center border-t-2 bg-white px-8 py-16 md:order-2 md:w-1/2 md:border-t-0 md:border-l-2 md:py-8 dark:bg-neutral-900">
                 <div className="absolute inset-0 z-0">
                   <Image
                     src="/images/landing/universal-circles.png"
@@ -48,7 +48,7 @@ export default function HomePage() {
               </div>
             </CardContent>
           </Card>
-          <Card className="mt-6 p-4 max-w-screen-sm w-full mx-auto content">
+          <Card className="content mx-auto mt-6 w-full max-w-screen-sm p-4">
             <p className="font-bold">
               Universal is a place to discover what's possible.
             </p>
@@ -69,7 +69,7 @@ export default function HomePage() {
               <span className="font-bold">Everything is Open Source.</span> With
               a MIT license wherever possible.
             </p>
-            <ul className="list-disc list-inside pl-4 mb-4">
+            <ul className="mb-4 list-inside list-disc pl-4">
               <li>
                 <LinkComponent href="https://github.com/district-labs/universal-sdk">
                   Universal SDK

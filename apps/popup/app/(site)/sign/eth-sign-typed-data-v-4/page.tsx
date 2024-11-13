@@ -1,76 +1,74 @@
 'use client';
+import { RowBasic } from '@/components/row-basic';
+import { Toggle } from '@/components/toggle';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import type { Delegation } from '@/lib/delegation-framework/types';
+import { useGetMessageChainId } from '@/lib/pop-up/hooks/use-get-message-chain-id';
 import { useMemo, useState } from 'react';
-import { type TypedDataDefinition } from 'viem';
+import type { UniversalDID, VerificationRequest } from 'universal-identity-sdk';
+import type { TypedDataDefinition } from 'viem';
+import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
 import { ActionRequestMain } from '../components/action-request-main';
-import { ActionRequestFooter } from '../components/action-request-footer';
-import { ActionRequestView } from '../components/action-request-view';
-import { Toggle } from '@/components/toggle';
 import { ActionRequestTitle } from '../components/action-request-title';
-import { useSignTypedDataV4 } from './hooks/use-sign-typed-data-v-4';
-import { DelegationParsedView } from './components/delegation-parsed-view';
-import { Delegation } from '@/lib/delegation-framework/types';
-import { useGetMessageChainId } from '@/lib/pop-up/hooks/use-get-message-chain-id';
+import { ActionRequestView } from '../components/action-request-view';
+import { DelegationDefaultParsedView } from './components/delegation-default-parsed-view';
+import { DIDAdvancedParsedView } from './components/did-advanced-parsed-view';
+import { DIDDefaultParsedView } from './components/did-default-parsed-view';
 import { GenerateEip712Items } from './components/generate-eip712-items';
-import { RowBasic } from '@/components/row-basic';
+import { VerificationRequestDefaultParsedView } from './components/verification-request-default-parsed-view';
+import { useSignTypedDataV4 } from './hooks/use-sign-typed-data-v-4';
 
-function calculateTypedDataType(data: TypedDataDefinition) {
-  if (data.primaryType === 'Delegation') {
-    return 'delegation';
-  }
-  return 'standard';
-}
+type ViewType = 'eip712' | 'delegation' | 'did' | 'verificationRequest';
 
-export default function WalletSendCallsPage() {
+export default function EthSignTypedDataV4Page() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
   const chain = useGetMessageChainId();
   const { typedData, signTypedDataV4, isPending } = useSignTypedDataV4();
 
-  const viewType = useMemo(() => {
-    if (!typedData) return 'standard';
-    return calculateTypedDataType(typedData);
+  const viewType = useMemo<ViewType>(() => {
+    if (!typedData) {
+      return 'eip712';
+    }
+    if (typedData.primaryType === 'VerificationRequest') {
+      return 'verificationRequest';
+    }
+    if (typedData.primaryType === 'UniversalDID') {
+      return 'did';
+    }
+    if (typedData.primaryType === 'Delegation') {
+      return 'delegation';
+    }
+    return 'eip712';
   }, [typedData]);
 
   if (!typedData || !viewType) {
     return (
-      <div className="mt-0 flex w-full flex-col justify-center items-center py-4 px-10 lg:px-20">
+      <div className="mt-0 flex w-full flex-col items-center justify-center px-10 py-4 lg:px-20">
         Invalid typed data
       </div>
     );
   }
   return (
-    <ActionRequestView className="flex flex-1 w-full flex-col h-full">
-      {viewType === 'standard' && (
-        <ActionRequestHeader className="flex justify-between items-center border-b-2">
-          <ActionRequestTitle type="eip712" className="text-sm font-medium">
-            Authorization Request
-          </ActionRequestTitle>
-          <span className="flex items-center gap-x-1">
-            <Toggle
-              label="Advanced"
-              handleIsTriggered={() => setViewModeAdvanced(!viewModeAdvanced)}
-            />
-          </span>
-        </ActionRequestHeader>
-      )}
-      {viewType === 'delegation' && (
-        <ActionRequestHeader className="flex justify-between items-center border-b-2">
-          <ActionRequestTitle type="eip712" className="text-sm font-medium">
-            Debit Authorization
-          </ActionRequestTitle>
-          <span className="flex items-center gap-x-1">
-            <Toggle
-              label="Advanced"
-              handleIsTriggered={() => setViewModeAdvanced(!viewModeAdvanced)}
-            />
-          </span>
-        </ActionRequestHeader>
-      )}
-      <ActionRequestMain className="px-4 py-4">
+    <ActionRequestView className="flex h-full w-full flex-1 flex-col">
+      <ActionRequestHeader className="flex items-center justify-between border-b-2">
+        <ActionRequestTitle type={viewType} className="font-medium text-sm">
+          {viewType === 'eip712' && 'Signature'}
+          {viewType === 'delegation' && 'Authorization'}
+          {viewType === 'did' && 'Universal DID'}
+          {viewType === 'verificationRequest' && 'Verification Request'}
+        </ActionRequestTitle>
+        <span className="flex items-center gap-x-1">
+          <Toggle
+            label="Advanced"
+            handleIsTriggered={() => setViewModeAdvanced(!viewModeAdvanced)}
+          />
+        </span>
+      </ActionRequestHeader>
+      <ActionRequestMain className="w-full px-4 py-4">
         {viewModeAdvanced === false && (
-          <OverviewRender
+          <DefaultRender
             chainId={chain?.id || 1}
             viewType={viewType}
             typedData={typedData}
@@ -86,7 +84,7 @@ export default function WalletSendCallsPage() {
       </ActionRequestMain>
       <ActionRequestFooter>
         <Button
-          className="flex-1 w-full rounded-full"
+          className="w-full flex-1 rounded-full"
           size={'lg'}
           disabled={!signTypedDataV4 || isPending}
           onClick={() => signTypedDataV4?.()}
@@ -98,16 +96,34 @@ export default function WalletSendCallsPage() {
   );
 }
 
-type OverviewRender = React.HTMLAttributes<HTMLElement> & {
+type DefaultRender = React.HTMLAttributes<HTMLElement> & {
   chainId: number;
-  viewType: 'delegation' | 'standard';
+  viewType: ViewType;
   typedData: TypedDataDefinition;
 };
 
-const OverviewRender = ({ chainId, viewType, typedData }: OverviewRender) => {
+const DefaultRender = ({ chainId, viewType, typedData }: DefaultRender) => {
+  if (viewType === 'did') {
+    return (
+      <DIDDefaultParsedView
+        chainId={chainId}
+        typedData={typedData.message as UniversalDID}
+      />
+    );
+  }
+  
+  if (viewType === 'verificationRequest') {
+    return (
+      <VerificationRequestDefaultParsedView
+        chainId={chainId}
+        typedDataMessage={typedData.message as VerificationRequest}
+      />
+    );
+  }
+
   if (viewType === 'delegation') {
     return (
-      <DelegationParsedView
+      <DelegationDefaultParsedView
         chainId={chainId}
         typedData={typedData.message as Delegation}
       />
@@ -115,9 +131,9 @@ const OverviewRender = ({ chainId, viewType, typedData }: OverviewRender) => {
   }
 
   return (
-    <ScrollArea className="max-h-[330px] h-full rounded-lg flex-1 text-sm overflow-auto">
+    <ScrollArea className="h-full max-h-[330px] flex-1 overflow-auto rounded-lg text-sm">
       <RowBasic label="Primary Type" value={typedData.primaryType} />
-      <hr className="border-neutral-200 my-2 block" />
+      <hr className="my-2 block border-neutral-200" />
       <GenerateEip712Items
         className="flex flex-col gap-y-3"
         data={typedData.message}
@@ -127,13 +143,26 @@ const OverviewRender = ({ chainId, viewType, typedData }: OverviewRender) => {
 };
 
 type AdvancedRender = React.HTMLAttributes<HTMLElement> & {
+  chainId: number;
+  viewType: ViewType;
   typedData: TypedDataDefinition;
 };
 
-const AdvancedRender = ({ typedData }: OverviewRender) => {
+const AdvancedRender = ({ typedData, viewType, chainId }: AdvancedRender) => {
+  if (viewType === 'did') {
+    return (
+      <DIDAdvancedParsedView
+        className="w-full"
+        chainId={chainId}
+        typedData={typedData}
+        data={typedData.message as UniversalDID}
+      />
+    );
+  }
+
   return (
-    <div className="max-h-[320px] h-full bg-neutral-100 rounded-lg flex-1 p-4 text-sm overflow-auto">
-      <pre className="font-mono text-xs pb-4">{`${JSON.stringify(typedData, null, 2)}`}</pre>
+    <div className="h-full flex-1 overflow-auto rounded-lg bg-neutral-100 p-4 text-sm">
+      <pre className="pb-4 font-mono text-xs">{`${JSON.stringify(typedData, null, 2)}`}</pre>
     </div>
   );
 };

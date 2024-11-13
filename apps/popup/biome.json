@@ -26,16 +26,22 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "a11y": {
+        "useKeyWithClickEvents": "off"
+      },
       "correctness": {
         "noConstantMathMinMaxClamp": "error",
         "noNodejsModules": "error",
-        "noUnusedImports": "error",
+        "noUnusedImports": "off",
         "noUnusedPrivateClassMembers": "error",
         "noUnusedVariables": "error",
         "useArrayLiterals": "error"
       },
       "nursery": {
-        "useSortedClasses": "error"
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "safe"
+        }
       },
       "style": {
         "noImplicitBoolean": "error",

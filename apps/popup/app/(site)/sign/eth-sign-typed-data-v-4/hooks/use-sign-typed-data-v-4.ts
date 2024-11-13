@@ -4,7 +4,7 @@ import { useSessionState } from '@/lib/state/use-session-state';
 import { useMutation } from '@tanstack/react-query';
 import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener';
 import { toWebAuthnAccount } from 'viem/account-abstraction';
-import { type TypedDataDefinition } from 'viem';
+import type { TypedDataDefinition } from 'viem';
 import { useMemo } from 'react';
 import { deserialize } from 'wagmi';
 import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
