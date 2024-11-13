@@ -2,9 +2,9 @@
 
 # Universal Wallet
 
-Universal Wallet is an Open Source Browser Based Wallet for Ethereum Smart Wallets powered by PassKeys.
+Universal is an Open Source stack for building *savage* smart wallets for Ethereum.
 
-[Demo](https://demo.districtlabs.com)
+[Demo](https://wallet.districtlabs.com)
 
 The monorepo contains the following packages:
 
