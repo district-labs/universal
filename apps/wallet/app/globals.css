@@ -151,7 +151,7 @@
   }
 
   .content p {
-    @apply mb-5
+    @apply mb-3;
   }
 
   .content a {
