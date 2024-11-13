@@ -18,7 +18,7 @@ const Credential0Auth = ({
   title,
   description,
 }: Credential0Auth) => {
-  const { signVerificationRequestAsync } = useVerificationRequestSign()
+  const { signVerificationRequestAsync } = useVerificationRequestSign();
   return (
     <Card className={cn('p-0', className)}>
       <CardHeader className="pb-2">{icon}</CardHeader>
@@ -28,16 +28,16 @@ const Credential0Auth = ({
       </CardContent>
       <CardFooter className=" w-full border-t-2 px-4 py-4">
         <Button
-          className='w-full font-bold text-base'
+          className="w-full font-bold text-base"
           rounded={'full'}
           variant="default"
           size="lg"
-          onClick={async ()=> {
+          onClick={async () => {
             const signature = await signVerificationRequestAsync({
               id: 'dis:uis:84532:0x305f57c997A35E79F6a59CF09A9d07d2408b5935:0xAa8201ec154Aa4869A974C62B3eAB0404d67653b',
-              type: type
-            })
-            console.log('Signature:', signature)
+              type: type,
+            });
+            console.log('Signature:', signature);
           }}
         >
           Claim Credential

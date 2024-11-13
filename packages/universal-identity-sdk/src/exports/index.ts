@@ -5,6 +5,7 @@ export * from "../actions/sign-did-document.js";
 export * from "../api/client.js";
 export * from "../api/hooks/insert-universal-did.js";
 export * from "../hooks/use-did-sign.js";
+export * from "../hooks/use-universal-resolver.js";
 export * from "../hooks/use-verification-request-sign.js";
 export * from "../types.js";
 export * from "../utils/construct-did-document.js";
