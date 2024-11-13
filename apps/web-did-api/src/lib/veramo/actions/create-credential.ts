@@ -1,4 +1,4 @@
-import { veramoAgent, alias } from "../agent.js";
+import { veramoAgent, alias } from '../agent.js';
 
 type CreateCredentialParams = {
   // TODO: Process credential correctly
@@ -11,7 +11,7 @@ export async function createCredential({
   const identifier = await veramoAgent.didManagerGetByAlias({ alias });
 
   const verifiableCredential = await veramoAgent.createVerifiableCredential({
-    proofFormat: "jwt",
+    proofFormat: 'jwt',
     credential: {
       issuer: {
         id: identifier.did,
