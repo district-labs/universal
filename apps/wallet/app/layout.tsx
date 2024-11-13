@@ -1,11 +1,11 @@
 import './globals.css';
 
-import type { ReactNode } from 'react';
 import { env } from '@/env';
+import type { ReactNode } from 'react';
 
+import { cn } from '@/lib/utils';
 import { siteConfig } from './config';
 import { fontSans } from './fonts';
-import { cn } from '@/lib/utils';
 import RootProvider from './root-provider';
 
 const url = env.NEXT_PUBLIC_SITE_URL;
