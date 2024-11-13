@@ -4,7 +4,7 @@ import { Info } from 'lucide-react';
 import type * as React from 'react';
 
 export type ActionRequestTitle = React.HTMLAttributes<HTMLElement> & {
-  type: 'transaction' | 'message' | 'eip712' | 'did' | 'delegation';
+  type: 'transaction' | 'message' | 'eip712' | 'did' | 'delegation' | 'verificationRequest';
 };
 
 export const ActionRequestTitle = ({
@@ -27,6 +27,7 @@ export const ActionRequestTitle = ({
           {type === 'eip712' && <Eip712 />}
           {type === 'delegation' && <Eip712 />}
           {type === 'did' && <UniversalDID />}
+          {type === 'verificationRequest' && <VerificationRequest />}
         </DialogContent>
       </Dialog>
     </h3>
@@ -94,6 +95,23 @@ const UniversalDID = () => {
       <h3 className="font-bold text-lg">Universal DID</h3>
       <p className="mt-2 text-sm">
         The application is requesting you to update your Universal DID.
+      </p>
+      <p className="mt-2 font-bold text-sm">
+        Only confirm requests that you trust.
+      </p>
+      <p className="mt-2 text-sm">
+        You're responsible for any messages/updates you authorize.
+      </p>
+    </div>
+  );
+};
+
+const VerificationRequest = () => {
+  return (
+    <div>
+      <h3 className="font-bold text-lg">Verification Request</h3>
+      <p className="mt-2 text-sm">
+        The application is requesting you to verify your account address.
       </p>
       <p className="mt-2 font-bold text-sm">
         Only confirm requests that you trust.

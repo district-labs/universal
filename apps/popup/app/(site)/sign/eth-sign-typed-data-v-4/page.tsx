@@ -6,7 +6,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Delegation } from '@/lib/delegation-framework/types';
 import { useGetMessageChainId } from '@/lib/pop-up/hooks/use-get-message-chain-id';
 import { useMemo, useState } from 'react';
-import type { UniversalDID } from 'universal-identity-sdk';
+import type { UniversalDID, VerificationRequest } from 'universal-identity-sdk';
 import type { TypedDataDefinition } from 'viem';
 import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
@@ -17,16 +17,22 @@ import { DelegationDefaultParsedView } from './components/delegation-default-par
 import { DIDAdvancedParsedView } from './components/did-advanced-parsed-view';
 import { DIDDefaultParsedView } from './components/did-default-parsed-view';
 import { GenerateEip712Items } from './components/generate-eip712-items';
+import { VerificationRequestDefaultParsedView } from './components/verification-request-default-parsed-view';
 import { useSignTypedDataV4 } from './hooks/use-sign-typed-data-v-4';
+
+type ViewType = 'eip712' | 'delegation' | 'did' | 'verificationRequest';
 
 export default function EthSignTypedDataV4Page() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
   const chain = useGetMessageChainId();
   const { typedData, signTypedDataV4, isPending } = useSignTypedDataV4();
 
-  const viewType = useMemo(() => {
+  const viewType = useMemo<ViewType>(() => {
     if (!typedData) {
       return 'eip712';
+    }
+    if (typedData.primaryType === 'VerificationRequest') {
+      return 'verificationRequest';
     }
     if (typedData.primaryType === 'UniversalDID') {
       return 'did';
@@ -51,6 +57,7 @@ export default function EthSignTypedDataV4Page() {
           {viewType === 'eip712' && 'Signature'}
           {viewType === 'delegation' && 'Authorization'}
           {viewType === 'did' && 'Universal DID'}
+          {viewType === 'verificationRequest' && 'Verification Request'}
         </ActionRequestTitle>
         <span className="flex items-center gap-x-1">
           <Toggle
@@ -91,7 +98,7 @@ export default function EthSignTypedDataV4Page() {
 
 type DefaultRender = React.HTMLAttributes<HTMLElement> & {
   chainId: number;
-  viewType: 'did' | 'delegation' | 'eip712';
+  viewType: ViewType;
   typedData: TypedDataDefinition;
 };
 
@@ -101,6 +108,15 @@ const DefaultRender = ({ chainId, viewType, typedData }: DefaultRender) => {
       <DIDDefaultParsedView
         chainId={chainId}
         typedData={typedData.message as UniversalDID}
+      />
+    );
+  }
+  
+  if (viewType === 'verificationRequest') {
+    return (
+      <VerificationRequestDefaultParsedView
+        chainId={chainId}
+        typedDataMessage={typedData.message as VerificationRequest}
       />
     );
   }
@@ -128,7 +144,7 @@ const DefaultRender = ({ chainId, viewType, typedData }: DefaultRender) => {
 
 type AdvancedRender = React.HTMLAttributes<HTMLElement> & {
   chainId: number;
-  viewType: 'did' | 'delegation' | 'eip712';
+  viewType: ViewType;
   typedData: TypedDataDefinition;
 };
 
