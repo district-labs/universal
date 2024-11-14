@@ -1,10 +1,16 @@
 {
-  "name": "api-web-did",
+  "name": "api-credentials",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/app/index.ts",
     "start": "tsx src/app/index.ts",
     "format": "biome format --write ."
+  },
+  "exports": {
+    ".": {
+      "default": "./src/app/index.ts"
+    },
+    "./package.json": "./package.json"
   },
   "dependencies": {
     "@hono/node-server": "^1.13.6",

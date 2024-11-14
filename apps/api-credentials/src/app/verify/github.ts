@@ -4,7 +4,11 @@ import type { VerifiableCredential } from '@veramo/core';
 
 import { getCookie } from 'hono/cookie';
 import { createCredential } from '../../lib/veramo/actions/create-credential.js';
-import { deleteCookies, stateMiddleware } from './middlewares/state-middleware.js';
+import {
+  deleteCookies,
+  stateMiddleware,
+} from './middlewares/state-middleware.js';
+import { insertCredentialDb } from '../../lib/db/actions/insert-credential-db.js';
 
 if (
   !process.env.GITHUB_OAUTH_CLIENT_ID ||
@@ -16,8 +20,9 @@ if (
 
 const verifyGithubApp = new Hono();
 
-verifyGithubApp.get('/verify/github/:did?/:signature?/:callbackUrl?',
-  stateMiddleware,
+verifyGithubApp.get(
+  '/verify/github/:did?/:signature?/:callbackUrl?',
+  stateMiddleware("github"),
   githubAuth({
     client_id: process.env.GITHUB_OAUTH_CLIENT_ID,
     client_secret: process.env.GITHUB_OAUTH_CLIENT_SECRET,
@@ -25,13 +30,12 @@ verifyGithubApp.get('/verify/github/:did?/:signature?/:callbackUrl?',
     scope: ['read:user', 'user'],
   }),
   async (c) => {
-    console.log('githubAuth')
     const did = getCookie(c, 'did');
     const callbackUrl = getCookie(c, 'callbackUrl');
     const user = c.get('user-github');
 
     // Delete cookies after use
-    deleteCookies(c)
+    deleteCookies(c);
 
     if (!did) {
       return c.json({ error: 'Failed to get did' }, 500);
@@ -54,6 +58,14 @@ verifyGithubApp.get('/verify/github/:did?/:signature?/:callbackUrl?',
           platformProfileUrl: `https://github.com/${user.login}`,
         },
       });
+      const issuer = typeof credential.issuer === 'string' ? credential.issuer : credential.issuer.id;
+      await insertCredentialDb({
+        issuer,
+        subject: did,
+        category: "social",
+        type: "github",
+        credential
+      })
     } catch (e) {
       console.error(e);
       return c.json({ error: 'Failed to create credential' }, 500);
@@ -74,6 +86,7 @@ verifyGithubApp.get('/verify/github/:did?/:signature?/:callbackUrl?',
       },
       200,
     );
-  });
+  },
+);
 
 export { verifyGithubApp };

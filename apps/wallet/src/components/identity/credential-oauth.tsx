@@ -9,11 +9,13 @@ type CredentialOAuth = HTMLAttributes<HTMLElement> & {
   type: string;
   icon: ReactNode;
   title: string;
+  did: string | undefined
   description: string;
 };
 
-const CredentialOAuth = ({
+export const CredentialOAuth = ({
   className,
+  did,
   type,
   icon,
   title,
@@ -35,15 +37,14 @@ const CredentialOAuth = ({
           rounded={'full'}
           variant="default"
           size="lg"
-          disabled={isLoading}
+          disabled={isLoading || !did}
           onClick={async () => {
+            if (!did) return;
             setIsLoading(true);
-            const did = 'did:uis:84532:0x305f57c997A35E79F6a59CF09A9d07d2408b5935:0xAa8201ec154Aa4869A974C62B3eAB0404d67653b'
             const signature = await signVerificationRequestAsync({
               id: did,
               type
             })
-
             router.push(`http://localhost:8787/verify/${type}/${did}/${signature}/${window.location.href ? encodeURIComponent(window.location.href) : ''}`);
             setIsLoading(false);
           }}
@@ -54,4 +55,3 @@ const CredentialOAuth = ({
     </Card>
   );
 };
-export { CredentialOAuth };

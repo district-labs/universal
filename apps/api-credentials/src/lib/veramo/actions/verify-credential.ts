@@ -1,4 +1,4 @@
-import { veramoAgent, alias } from '../agent.js';
+import { veramoAgent } from '../agent.js';
 
 type VerifyCredentialParams = {
   // TODO: Process credential correctly

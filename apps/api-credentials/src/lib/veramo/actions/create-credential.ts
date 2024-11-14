@@ -19,6 +19,5 @@ export async function createCredential({
       credentialSubject,
     },
   });
-
   return verifiableCredential;
 }

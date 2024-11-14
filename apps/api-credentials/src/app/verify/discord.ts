@@ -1,37 +1,41 @@
 import { Hono } from 'hono';
-import { xAuth } from '@hono/oauth-providers/x';
 import type { VerifiableCredential } from '@veramo/core';
 
 import { getCookie } from 'hono/cookie';
 import { createCredential } from '../../lib/veramo/actions/create-credential.js';
-import { deleteCookies, stateMiddleware } from './middlewares/state-middleware.js';
+import {
+  deleteCookies,
+  stateMiddleware,
+} from './middlewares/state-middleware.js';
+import { discordAuth } from '@hono/oauth-providers/discord';
+import { insertCredentialDb } from '../../lib/db/actions/insert-credential-db.js';
 
 if (
-  !process.env.TWITTER_OAUTH_CLIENT_ID ||
-  !process.env.TWITTER_OAUTH_CLIENT_SECRET ||
-  !process.env.TWITTER_OAUTH_REDIRECT_URI
+  !process.env.DISCORD_OAUTH_CLIENT_ID ||
+  !process.env.DISCORD_OAUTH_CLIENT_SECRET ||
+  !process.env.DISCORD_OAUTH_REDIRECT_URI
 ) {
-  throw new Error('Invalid Twitter OAuth credentials');
+  throw new Error('Invalid Discord OAuth credentials');
 }
 
-const verifyXApp = new Hono();
+const verifyDiscordApp = new Hono();
 
-verifyXApp.get('/verify/x/:did?/:signature?/:callbackUrl?',
-  stateMiddleware,
-  xAuth({
-    scope: ['tweet.read', 'users.read'],
-    fields: ['url', 'profile_image_url', 'username', 'id'],
-    client_id: process.env.TWITTER_OAUTH_CLIENT_ID,
-    client_secret: process.env.TWITTER_OAUTH_CLIENT_SECRET,
-    redirect_uri: process.env.TWITTER_OAUTH_REDIRECT_URI,
+verifyDiscordApp.get(
+  '/verify/discord/:did?/:signature?/:callbackUrl?',
+  stateMiddleware('discord'),
+  discordAuth({
+    client_id: process.env.DISCORD_OAUTH_CLIENT_ID,
+    client_secret: process.env.DISCORD_OAUTH_CLIENT_SECRET,
+    redirect_uri: process.env.DISCORD_OAUTH_REDIRECT_URI,
+    scope: ['identify', 'email'],
   }),
   async (c) => {
     const did = getCookie(c, 'did');
     const callbackUrl = getCookie(c, 'callbackUrl');
-    const user = c.get('user-x');
+    const user = c.get('user-discord');
 
     // Delete cookies after use
-    deleteCookies(c)
+    deleteCookies(c);
 
     if (!did) {
       return c.json({ error: 'Failed to get did' }, 500);
@@ -47,13 +51,22 @@ verifyXApp.get('/verify/x/:did?/:signature?/:callbackUrl?',
       credential = await createCredential({
         credentialSubject: {
           id: did,
-          platform: 'x',
+          platform: 'discord',
           platformUserId: user.id,
-          handle: `@${user.username}`,
+          handle: user.username,
           verifiedAt: new Date().toISOString(),
-          platformProfileUrl: `https://x.com/${user.username}`,
+          platformProfileUrl: `https://discordapp.com/users/${user.id}`,
         },
       });
+      const issuer = typeof credential.issuer === 'string' ? credential.issuer : credential.issuer.id;
+
+      await insertCredentialDb({
+        issuer,
+        subject: did,
+        category: "social",
+        type: "discord",
+        credential
+      })
     } catch (e) {
       console.error(e);
       return c.json({ error: 'Failed to create credential' }, 500);
@@ -74,6 +87,7 @@ verifyXApp.get('/verify/x/:did?/:signature?/:callbackUrl?',
       },
       200,
     );
-  });
+  },
+);
 
-export { verifyXApp };
+export { verifyDiscordApp };

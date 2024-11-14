@@ -1,38 +1,42 @@
 import { Hono } from 'hono';
-import { githubAuth } from '@hono/oauth-providers/github';
+import { xAuth } from '@hono/oauth-providers/x';
 import type { VerifiableCredential } from '@veramo/core';
 
 import { getCookie } from 'hono/cookie';
 import { createCredential } from '../../lib/veramo/actions/create-credential.js';
-import { deleteCookies, stateMiddleware } from './middlewares/state-middleware.js';
-import { discordAuth } from '@hono/oauth-providers/discord';
+import {
+  deleteCookies,
+  stateMiddleware,
+} from './middlewares/state-middleware.js';
+import { insertCredentialDb } from '../../lib/db/actions/insert-credential-db.js';
 
 if (
-  !process.env.DISCORD_OAUTH_CLIENT_ID ||
-  !process.env.DISCORD_OAUTH_CLIENT_SECRET ||
-  !process.env.DISCORD_OAUTH_REDIRECT_URI
+  !process.env.TWITTER_OAUTH_CLIENT_ID ||
+  !process.env.TWITTER_OAUTH_CLIENT_SECRET ||
+  !process.env.TWITTER_OAUTH_REDIRECT_URI
 ) {
-  throw new Error('Invalid Discord OAuth credentials');
+  throw new Error('Invalid Twitter OAuth credentials');
 }
 
-const verifyDiscordApp = new Hono();
+const verifyXApp = new Hono();
 
-
-verifyDiscordApp.get('/verify/discord/:did?/:signature?/:callbackUrl?',
-  stateMiddleware,
-  discordAuth({
-    client_id: process.env.DISCORD_OAUTH_CLIENT_ID,
-    client_secret: process.env.DISCORD_OAUTH_CLIENT_SECRET,
-    redirect_uri: process.env.DISCORD_OAUTH_REDIRECT_URI,
-    scope: ['identify', 'email'],
+verifyXApp.get(
+  '/verify/x/:did?/:signature?/:callbackUrl?',
+  stateMiddleware('x'),
+  xAuth({
+    scope: ['tweet.read', 'users.read'],
+    fields: ['url', 'profile_image_url', 'username', 'id'],
+    client_id: process.env.TWITTER_OAUTH_CLIENT_ID,
+    client_secret: process.env.TWITTER_OAUTH_CLIENT_SECRET,
+    redirect_uri: process.env.TWITTER_OAUTH_REDIRECT_URI,
   }),
   async (c) => {
     const did = getCookie(c, 'did');
     const callbackUrl = getCookie(c, 'callbackUrl');
-    const user = c.get('user-discord');
+    const user = c.get('user-x');
 
     // Delete cookies after use
-    deleteCookies(c)
+    deleteCookies(c);
 
     if (!did) {
       return c.json({ error: 'Failed to get did' }, 500);
@@ -48,13 +52,23 @@ verifyDiscordApp.get('/verify/discord/:did?/:signature?/:callbackUrl?',
       credential = await createCredential({
         credentialSubject: {
           id: did,
-          platform: 'discord',
+          platform: 'x',
           platformUserId: user.id,
-          handle: user.username,
+          handle: `@${user.username}`,
           verifiedAt: new Date().toISOString(),
-          platformProfileUrl: `https://discordapp.com/users/${user.id}`,
+          platformProfileUrl: `https://x.com/${user.username}`,
         },
       });
+
+      const issuer = typeof credential.issuer === 'string' ? credential.issuer : credential.issuer.id;
+
+      await insertCredentialDb({
+        issuer,
+        subject: did,
+        category: "social",
+        type: "x",
+        credential
+      })
     } catch (e) {
       console.error(e);
       return c.json({ error: 'Failed to create credential' }, 500);
@@ -75,6 +89,7 @@ verifyDiscordApp.get('/verify/discord/:did?/:signature?/:callbackUrl?',
       },
       200,
     );
-  });
+  },
+);
 
-export { verifyDiscordApp };
+export { verifyXApp };
