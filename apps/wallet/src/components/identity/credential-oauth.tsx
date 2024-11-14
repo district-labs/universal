@@ -4,12 +4,13 @@ import { useVerificationRequestSign } from 'universal-identity-sdk';
 import { useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '../ui/card';
+import { env } from '@/env';
 
 type CredentialOAuth = HTMLAttributes<HTMLElement> & {
   type: string;
   icon: ReactNode;
   title: string;
-  did: string | undefined
+  did: string | undefined;
   description: string;
 };
 
@@ -23,7 +24,7 @@ export const CredentialOAuth = ({
 }: CredentialOAuth) => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { signVerificationRequestAsync } = useVerificationRequestSign()
+  const { signVerificationRequestAsync } = useVerificationRequestSign();
   return (
     <Card className={cn('p-0', className)}>
       <CardHeader className="pb-2">{icon}</CardHeader>
@@ -33,7 +34,7 @@ export const CredentialOAuth = ({
       </CardContent>
       <CardFooter className=" w-full border-t-2 px-4 py-4">
         <Button
-          className='w-full font-bold text-base'
+          className="w-full font-bold text-base"
           rounded={'full'}
           variant="default"
           size="lg"
@@ -43,9 +44,11 @@ export const CredentialOAuth = ({
             setIsLoading(true);
             const signature = await signVerificationRequestAsync({
               id: did,
-              type
-            })
-            router.push(`http://localhost:8787/verify/${type}/${did}/${signature}/${window.location.href ? encodeURIComponent(window.location.href) : ''}`);
+              type,
+            });
+            router.push(
+              `${env.NEXT_PUBLIC_CREDENTIALS_API_URL}/verify/${type}/${did}/${signature}/${window.location.href ? encodeURIComponent(window.location.href) : ''}`,
+            );
             setIsLoading(false);
           }}
         >

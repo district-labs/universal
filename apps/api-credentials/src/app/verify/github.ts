@@ -22,7 +22,7 @@ const verifyGithubApp = new Hono();
 
 verifyGithubApp.get(
   '/verify/github/:did?/:signature?/:callbackUrl?',
-  stateMiddleware("github"),
+  stateMiddleware('github'),
   githubAuth({
     client_id: process.env.GITHUB_OAUTH_CLIENT_ID,
     client_secret: process.env.GITHUB_OAUTH_CLIENT_SECRET,
@@ -58,14 +58,17 @@ verifyGithubApp.get(
           platformProfileUrl: `https://github.com/${user.login}`,
         },
       });
-      const issuer = typeof credential.issuer === 'string' ? credential.issuer : credential.issuer.id;
+      const issuer =
+        typeof credential.issuer === 'string'
+          ? credential.issuer
+          : credential.issuer.id;
       await insertCredentialDb({
         issuer,
         subject: did,
-        category: "social",
-        type: "github",
-        credential
-      })
+        category: 'social',
+        type: 'github',
+        credential,
+      });
     } catch (e) {
       console.error(e);
       return c.json({ error: 'Failed to create credential' }, 500);

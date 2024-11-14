@@ -58,15 +58,18 @@ verifyDiscordApp.get(
           platformProfileUrl: `https://discordapp.com/users/${user.id}`,
         },
       });
-      const issuer = typeof credential.issuer === 'string' ? credential.issuer : credential.issuer.id;
+      const issuer =
+        typeof credential.issuer === 'string'
+          ? credential.issuer
+          : credential.issuer.id;
 
       await insertCredentialDb({
         issuer,
         subject: did,
-        category: "social",
-        type: "discord",
-        credential
-      })
+        category: 'social',
+        type: 'discord',
+        credential,
+      });
     } catch (e) {
       console.error(e);
       return c.json({ error: 'Failed to create credential' }, 500);

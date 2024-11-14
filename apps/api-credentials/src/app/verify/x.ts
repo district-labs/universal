@@ -60,15 +60,18 @@ verifyXApp.get(
         },
       });
 
-      const issuer = typeof credential.issuer === 'string' ? credential.issuer : credential.issuer.id;
+      const issuer =
+        typeof credential.issuer === 'string'
+          ? credential.issuer
+          : credential.issuer.id;
 
       await insertCredentialDb({
         issuer,
         subject: did,
-        category: "social",
-        type: "x",
-        credential
-      })
+        category: 'social',
+        type: 'x',
+        credential,
+      });
     } catch (e) {
       console.error(e);
       return c.json({ error: 'Failed to create credential' }, 500);

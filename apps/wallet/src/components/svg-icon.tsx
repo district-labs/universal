@@ -29,4 +29,3 @@ export const SvgIcon: React.FC<SvgIconProps> = ({
     />
   );
 };
-

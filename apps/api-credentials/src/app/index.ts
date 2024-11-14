@@ -9,13 +9,16 @@ import { verifyGithubApp } from './verify/github.js';
 import { verifyXApp } from './verify/x.js';
 import { credentialsApp } from './credentials/index.js';
 import { zValidator } from '@hono/zod-validator';
-import { z } from "zod"
+import { z } from 'zod';
 
 const app = new Hono()
-  .use('*', cors({
-    origin: '*',
-    allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
-  }))
+  .use(
+    '*',
+    cors({
+      origin: '*',
+      allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
+    }),
+  )
   .route('/', verifyDiscordApp)
   .route('/', verifyGithubApp)
   .route('/', verifyXApp)
@@ -42,13 +45,17 @@ const app = new Hono()
       return c.json({ error: 'Failed to create credential' }, 500);
     }
   })
-  .post('/verify-credential',
-    zValidator("json", z.object({
-      credential: z.record(z.string(), z.string())
-    })),
+  .post(
+    '/verify-credential',
+    zValidator(
+      'json',
+      z.object({
+        credential: z.record(z.string(), z.string()),
+      }),
+    ),
     async (c) => {
       try {
-        const { credential } = c.req.valid("json")
+        const { credential } = c.req.valid('json');
 
         const result = await verifyCredential({ credential });
         return c.json({ result }, 200);
@@ -57,11 +64,12 @@ const app = new Hono()
 
         return c.json({ error: 'Failed to verify credential' }, 500);
       }
-    });
+    },
+  );
 
 export type AppType = typeof app;
 
-const port = 8787;
+const port = 3100;
 
 serve({
   fetch: app.fetch,

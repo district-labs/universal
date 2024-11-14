@@ -1,4 +1,6 @@
 import { hc } from "hono/client"
 import type { AppType } from "api-credentials"
 
-export const apiCredentialsClient = hc<AppType>('http://localhost:8787/')
+const apiCredentialsUrl = process.env.NEXT_PUBLIC_CREDENTIALS_API_URL ?? 'http://localhost:3100/'
+
+export const apiCredentialsClient = hc<AppType>(apiCredentialsUrl)

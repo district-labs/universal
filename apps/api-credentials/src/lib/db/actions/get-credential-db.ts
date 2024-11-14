@@ -1,19 +1,19 @@
 import { db } from '../index.js';
 import type { SQL } from 'drizzle-orm';
 
-type GetCredentialDbParams =
-  ({
-    issuer: string
-    subject?: string
-  } |
-  {
-    subject: string
-    issuer?: string
-  }) &
-  {
-    category?: string;
-    type?: string;
-  }
+type GetCredentialDbParams = (
+  | {
+      issuer: string;
+      subject?: string;
+    }
+  | {
+      subject: string;
+      issuer?: string;
+    }
+) & {
+  category?: string;
+  type?: string;
+};
 
 export function getCredentialDb(params: GetCredentialDbParams) {
   return db.query.credentials.findMany({
@@ -37,7 +37,6 @@ export function getCredentialDb(params: GetCredentialDbParams) {
       }
 
       return and(...conditions);
-    }
-  })
-
+    },
+  });
 }

@@ -8,23 +8,24 @@ import { baseSepoliaPublicClient } from '../../../lib/viem/client.js';
 const eip712VerificationRequestType = {
   VerificationRequest: [
     {
-      name: "id",
-      type: "string",
+      name: 'id',
+      type: 'string',
     },
     {
-      name: "type",
-      type: "string",
+      name: 'type',
+      type: 'string',
     },
   ],
 };
 
-
-async function verifyDidSignature({ did, signature, type }: { did: string, signature: Hex, type: string }) {
+async function verifyDidSignature({
+  did,
+  signature,
+  type,
+}: { did: string; signature: Hex; type: string }) {
   const didUis = getDidUis(did);
 
-
   if (!didUis) {
-
     return false;
   }
 
@@ -39,20 +40,19 @@ async function verifyDidSignature({ did, signature, type }: { did: string, signa
     signature,
     address,
     types: eip712VerificationRequestType,
-    primaryType: "VerificationRequest",
+    primaryType: 'VerificationRequest',
     domain: {
-      name: "Universal Resolver",
-      version: "1",
+      name: 'Universal Resolver',
+      version: '1',
       chainId: chainId,
     },
     message: {
       id: did,
       type,
     },
-  })
+  });
 
   return isValidSignature;
-
 }
 
 function getDidUis(did: string) {
@@ -78,7 +78,6 @@ function getDidUis(did: string) {
   }
 
   if (typeof address !== 'string' || !isAddress(address)) {
-
     return null;
   }
 
@@ -107,7 +106,7 @@ export function deleteCookies<C extends Context>(c: C) {
   deleteCookie(c, 'callbackUrl');
   deleteCookie(c, 'did');
   deleteCookie(c, 'signature');
-  deleteCookie(c, 'type')
+  deleteCookie(c, 'type');
 }
 
 export const stateMiddleware = (type: string) =>
@@ -123,8 +122,8 @@ export const stateMiddleware = (type: string) =>
     const isValidSignature = await verifyDidSignature({
       did,
       signature,
-      type
-    })
+      type,
+    });
 
     if (!isValidSignature) {
       return c.json({ error: 'Invalid signature' }, 400);
