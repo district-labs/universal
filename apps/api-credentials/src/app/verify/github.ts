@@ -27,6 +27,7 @@ verifyGithubApp.get(
     client_id: process.env.GITHUB_OAUTH_CLIENT_ID,
     client_secret: process.env.GITHUB_OAUTH_CLIENT_SECRET,
     redirect_uri: process.env.GITHUB_OAUTH_REDIRECT_URI,
+    oauthApp: false,
     scope: ['read:user', 'user'],
   }),
   async (c) => {
