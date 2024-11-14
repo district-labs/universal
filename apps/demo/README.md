@@ -1,4 +1,4 @@
-# Universal SDK/Wallet Demo
+# Universal Wallet Demo
 
 A basic playground for testing the Universal Wallet SDK.
 
