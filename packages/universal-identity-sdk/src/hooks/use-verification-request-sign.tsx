@@ -12,7 +12,8 @@ export function useVerificationRequestSign() {
 		useSignTypedData();
 
 	async function signVerificationRequestAsync({
-		id, type
+		id,
+		type,
 	}: VerificationRequestSignParams) {
 		return await signTypedDataAsync({
 			types: eip712VerificationRequestType,

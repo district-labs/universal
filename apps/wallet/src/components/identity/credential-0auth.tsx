@@ -1,29 +1,23 @@
-import { env } from '@/env';
 import { cn } from '@/lib/utils';
-import { useRouter } from 'next/navigation';
-import { type HTMLAttributes, type ReactNode, useState } from 'react';
+import type * as React from 'react';
 import { useVerificationRequestSign } from 'universal-identity-sdk';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardFooter, CardHeader } from '../ui/card';
 
-type CredentialOAuth = HTMLAttributes<HTMLElement> & {
+type Credential0Auth = React.HTMLAttributes<HTMLElement> & {
   type: string;
-  icon: ReactNode;
+  icon: React.ReactNode;
   title: string;
-  did: string | undefined;
   description: string;
 };
 
-export const CredentialOAuth = ({
+const Credential0Auth = ({
   className,
-  did,
   type,
   icon,
   title,
   description,
-}: CredentialOAuth) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+}: Credential0Auth) => {
   const { signVerificationRequestAsync } = useVerificationRequestSign();
   return (
     <Card className={cn('p-0', className)}>
@@ -38,20 +32,12 @@ export const CredentialOAuth = ({
           rounded={'full'}
           variant="default"
           size="lg"
-          disabled={isLoading || !did}
           onClick={async () => {
-            if (!did) {
-              return;
-            }
-            setIsLoading(true);
             const signature = await signVerificationRequestAsync({
-              id: did,
-              type,
+              id: 'dis:uis:84532:0x305f57c997A35E79F6a59CF09A9d07d2408b5935:0xAa8201ec154Aa4869A974C62B3eAB0404d67653b',
+              type: type,
             });
-            router.push(
-              `${env.NEXT_PUBLIC_CREDENTIALS_API_URL}/verify/${type}/${did}/${signature}/${window.location.href ? encodeURIComponent(window.location.href) : ''}`,
-            );
-            setIsLoading(false);
+            console.log('Signature:', signature);
           }}
         >
           Claim Credential
@@ -60,3 +46,4 @@ export const CredentialOAuth = ({
     </Card>
   );
 };
+export { Credential0Auth };

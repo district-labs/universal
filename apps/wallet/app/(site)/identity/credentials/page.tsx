@@ -4,14 +4,15 @@ import DiscordIcon from '@/assets/brands/discord.svg';
 import GithubIcon from '@/assets/brands/github.svg';
 import XIcon from '@/assets/brands/x.svg';
 import { CredentialOAuth } from '@/components/identity/credential-oauth';
+import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
 import { SvgIcon } from '@/components/svg-icon';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useGetCredentials } from 'universal-credential-sdk';
 import { useMemo } from 'react';
-import { useAccount } from 'wagmi';
+import { useGetCredentials } from 'universal-credential-sdk';
 import { constructDidIdentifier } from 'universal-identity-sdk';
 import { baseSepolia } from 'viem/chains';
+import { useAccount } from 'wagmi';
 
 const CREDENTIAL_OPTIONS = [
   {
@@ -81,45 +82,47 @@ export default function IdentityCredentialsPage() {
           </p>
         </div>
       </section>
-      <section className="py-8">
-        <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-x-5 lg:grid-cols-3">
-          {credentialsQuery.isLoading &&
-            Array.from({ length: 3 }).map((_, i) => (
-              <Skeleton key={String(i)} className="w-full h-72" />
-            ))}
-          {!credentialsQuery.isLoading &&
-            missingCredentialOptions.map((credential) => (
-              <CredentialOAuth
-                {...credential}
-                did={did}
-                key={credential.title}
-                className="mb-6"
-              />
-            ))}
-        </div>
-        <h2 className="px-10 mb-4 mt-6 text-2xl font-bold">
-          Created Credentials
-        </h2>
-        <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-x-5 lg:grid-cols-3">
-          {credentialsQuery.isLoading &&
-            Array.from({ length: 3 }).map((_, i) => (
-              <Skeleton key={String(i)} className="w-full h-72" />
-            ))}
-          {!credentialsQuery.isLoading &&
-            credentialsQuery.data?.map((credential) => (
-              <Card key={credential.id}>
-                <CardHeader className="pb-2 text-lg capitalize font-bold">
-                  {credential.type}
-                </CardHeader>
-                <CardContent>
-                  <pre className="w-full max-w-full overflow-auto">
-                    {JSON.stringify(credential, null, 2)}
-                  </pre>
-                </CardContent>
-              </Card>
-            ))}
-        </div>
-      </section>
+      <IsWalletConnected>
+        <section className="py-8">
+          <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-x-5 lg:grid-cols-3">
+            {credentialsQuery.isLoading &&
+              Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={String(i)} className="h-72 w-full" />
+              ))}
+            {!credentialsQuery.isLoading &&
+              missingCredentialOptions.map((credential) => (
+                <CredentialOAuth
+                  {...credential}
+                  did={did}
+                  key={credential.title}
+                  className="mb-6"
+                />
+              ))}
+          </div>
+          <h2 className="mt-6 mb-4 px-10 font-bold text-2xl">
+            Created Credentials
+          </h2>
+          <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-x-5 lg:grid-cols-3">
+            {credentialsQuery.isLoading &&
+              Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={String(i)} className="h-72 w-full" />
+              ))}
+            {!credentialsQuery.isLoading &&
+              credentialsQuery.data?.map((credential) => (
+                <Card key={credential.id}>
+                  <CardHeader className="pb-2 font-bold text-lg capitalize">
+                    {credential.type}
+                  </CardHeader>
+                  <CardContent>
+                    <pre className="w-full max-w-full overflow-auto">
+                      {JSON.stringify(credential, null, 2)}
+                    </pre>
+                  </CardContent>
+                </Card>
+              ))}
+          </div>
+        </section>
+      </IsWalletConnected>
     </>
   );
 }

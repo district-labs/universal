@@ -35,7 +35,7 @@ const QRIconReceiveDialog = () => {
           <div className="overflow-hidden rounded-3xl border-4 border-neutral-300 shadow-lg">
             <QRCodeRender data={address} className="h-auto w-full" />
           </div>
-          <span className='mt-4 break-all font-semibold text-sm'>
+          <span className="mt-4 break-all font-semibold text-sm">
             {address}
           </span>
           <CopyIconButton value={address} />

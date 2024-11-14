@@ -111,7 +111,7 @@ const DefaultRender = ({ chainId, viewType, typedData }: DefaultRender) => {
       />
     );
   }
-  
+
   if (viewType === 'verificationRequest') {
     return (
       <VerificationRequestDefaultParsedView

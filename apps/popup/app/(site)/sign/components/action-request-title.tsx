@@ -4,7 +4,13 @@ import { Info } from 'lucide-react';
 import type * as React from 'react';
 
 export type ActionRequestTitle = React.HTMLAttributes<HTMLElement> & {
-  type: 'transaction' | 'message' | 'eip712' | 'did' | 'delegation' | 'verificationRequest';
+  type:
+    | 'transaction'
+    | 'message'
+    | 'eip712'
+    | 'did'
+    | 'delegation'
+    | 'verificationRequest';
 };
 
 export const ActionRequestTitle = ({

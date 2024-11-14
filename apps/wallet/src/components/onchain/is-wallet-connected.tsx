@@ -1,11 +1,7 @@
 'use client';
-
-import type { ReactNode } from 'react';
 import { useAccount } from 'wagmi';
 
-export interface IsWalletConnectedProps {
-  children: ReactNode;
-}
+type IsWalletConnectedProps = React.HTMLAttributes<HTMLElement>;
 
 export const IsWalletConnected = ({ children }: IsWalletConnectedProps) => {
   const { address } = useAccount();
