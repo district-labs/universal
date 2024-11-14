@@ -2,8 +2,8 @@
   "name": "api-credentials",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/app/index.ts",
-    "start": "tsx src/app/index.ts",
+    "dev": "tsx watch src/app/node.ts",
+    "start": "tsx src/app/node.ts",
     "format": "biome format --write ."
   },
   "exports": {

@@ -1,4 +1,3 @@
-import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { createCredential } from '../lib/veramo/actions/create-credential.js';
@@ -69,9 +68,4 @@ const app = new Hono()
 
 export type AppType = typeof app;
 
-const port = 3100;
-
-serve({
-  fetch: app.fetch,
-  port,
-});
+export { app };
