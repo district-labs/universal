@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -9,9 +10,11 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
-import { IDetectedBarcode, Scanner } from '@yudiel/react-qr-scanner';
+import { type IDetectedBarcode, Scanner } from '@yudiel/react-qr-scanner';
 import { Focus, SwitchCamera } from 'lucide-react';
 import { useCallback, useState } from 'react';
+import { constructDidIdentifier } from 'universal-identity-sdk';
+import type { Address } from 'viem';
 import { z } from 'zod';
 import { CopyIconButton } from './copy-icon-button';
 import { Card } from './ui/card';
@@ -33,6 +36,7 @@ const ethereumUriSchema = z
     const address = match[1];
     const paramsString = match.groups.params || '';
     const params: Record<string, string> = {};
+    // biome-ignore lint/complexity/noForEach: <explanation>
     paramsString.split('&').forEach((param) => {
       const [key, value] = param.split('=');
       if (key && value) {
@@ -53,7 +57,7 @@ const didUriSchema = z
   })
   .transform((did) => {
     const [_, chainId, resolver, account] = did.split(':');
-    return { chainId, resolver, account };
+    return { chainId: Number(chainId), resolver, account };
   });
 
 // Scanner Component
@@ -62,7 +66,7 @@ export function ScannerIconDialog() {
   const [error, setError] = useState<string | null>(null);
   const [scannedResult, setScannedResult] = useState<{
     type: 'address' | 'did' | 'unknown';
-    data: any;
+    data: string;
   } | null>(null);
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>(
     'environment',
@@ -70,7 +74,6 @@ export function ScannerIconDialog() {
 
   // Handle QR code decoding
   const handleDecode = useCallback((result: IDetectedBarcode[]) => {
-    console.log(result[0].rawValue);
     // Try parsing as Ethereum URI
     const ethResult = ethereumUriSchema.safeParse(result[0].rawValue);
     if (ethResult.success) {
@@ -86,22 +89,18 @@ export function ScannerIconDialog() {
     if (didResult.success) {
       setScannedResult({
         type: 'did',
-        data: didResult.data,
+        data: constructDidIdentifier({
+          chainId: didResult.data.chainId,
+          resolver: didResult.data.resolver as Address,
+          address: didResult.data.account as Address,
+        }),
       });
       return;
     }
 
     // If neither matches, set as unknown
-    setScannedResult({ type: 'unknown', data: result });
+    setScannedResult({ type: 'unknown', data: '' });
   }, []);
-
-  // Handle errors from QR scanner
-  const handleError = (error: Error) => {
-    setError(
-      'Failed to access camera. Please make sure you have granted camera permissions.',
-    );
-    console.error(error);
-  };
 
   // Toggle camera facing mode (for smartphones)
   const switchCamera = () => {
@@ -119,7 +118,7 @@ export function ScannerIconDialog() {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
+      <DialogTrigger asChild={true}>
         <Button variant="outline" size="icon">
           <span>
             <Focus width={24} height={24} className="size-8 text-lg" />
@@ -128,23 +127,23 @@ export function ScannerIconDialog() {
         </Button>
       </DialogTrigger>
       <DialogContent
-        className={cn('md:max-w-lg transition-all max-w-sm', {
+        className={cn('max-w-sm transition-all md:max-w-lg', {
           'md:max-w-2xl ': scannedResult?.type === 'address',
         })}
       >
-        <DialogHeader className="text-center items-center" />
+        <DialogHeader className="items-center text-center" />
         {error ? (
           <Alert variant="destructive">
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         ) : scannedResult ? (
-          <div className="p-4 rounded-lg w-full">
+          <div className="w-full rounded-lg p-4">
             {/* <h3 className="font-semibold mb-2">Scanned Result:</h3> */}
-            <Card className="p-8 break-anywhere">
+            <Card className="break-anywhere p-8">
               {scannedResult.type === 'address' && (
                 <>
                   <h3 className="font-semibold text-lg">Ethereum Address</h3>
-                  <div className="flex flex-col md:flex-row md:items-center gap-2">
+                  <div className="flex flex-col gap-2 md:flex-row md:items-center">
                     <span className="block break-all text-sm">
                       {scannedResult.data}
                     </span>
@@ -164,7 +163,7 @@ export function ScannerIconDialog() {
             </Button>
           </div>
         ) : (
-          <div className="relative w-full h-[min-content] md:min-h-[455px] overflow-hidden rounded-lg bg-muted">
+          <div className="relative h-[min-content] w-full overflow-hidden rounded-lg bg-muted md:min-h-[455px]">
             <Scanner
               styles={{ finderBorder: 3 }}
               classNames={{
@@ -174,7 +173,7 @@ export function ScannerIconDialog() {
               onScan={handleDecode}
               constraints={{ facingMode }}
             />
-            <div className="absolute inset-0 border-[3px] border-white/50 rounded-lg" />
+            <div className="absolute inset-0 rounded-lg border-[3px] border-white/50" />
             <div className="absolute top-2 right-2">
               <Button variant="secondary" size="icon" onClick={switchCamera}>
                 <SwitchCamera className="h-4 w-4" />

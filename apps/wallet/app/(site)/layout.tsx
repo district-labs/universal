@@ -24,12 +24,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <div className="flex flex-1 flex-col">
             <header
               className={cn(
-                'sticky lg:relative top-0 z-50 w-full border-b-2 bg-background text-foreground transition-all',
+                'sticky top-0 z-50 w-full border-b-2 bg-background text-foreground transition-all lg:relative',
               )}
             >
               <div className="flex w-full items-center justify-between px-4 py-4">
-                <div className="flex-1 flex items-center gap-x-1">
-                  {/* <CircleIcon className="size-6 text-emerald-500 dark:text-emerald-100 md:hidden" /> */}
+                <div className='flex flex-1 items-center gap-x-1'>
                   <SidebarTrigger className="size-9" />
                 </div>
                 <div className="">
