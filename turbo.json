@@ -25,9 +25,10 @@
     },
     "universal-wallet-connector#build": {
       "dependsOn": ["universal-wallet-sdk#build"]
+    },
+    "universal-wallet-app#build": {
+      "dependsOn": ["universal-wallet-connector#build"]
     }
   },
-  "globalEnv": [
-    "DATABASE_URL"
-  ]
+  "globalEnv": ["DATABASE_URL"]
 }
