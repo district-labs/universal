@@ -1,18 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { isAddress, zeroAddress } from 'viem';
+import { useEffect, useState } from 'react';
+import { isAddress } from 'viem';
 
 interface QRCodeRender {
-  address?: string;
+  data?: string;
   size?: number;
   logoSize?: number;
   className?: string;
 }
 
 export function QRCodeRender({
-  address = zeroAddress,
+  data,
   size = 256,
   logoSize = 46,
   className,
@@ -22,18 +22,19 @@ export function QRCodeRender({
   const [qrValue, setQrValue] = useState('');
 
   useEffect(() => {
-    if (isAddress(address)) {
+    if (data && isAddress(data)) {
       setIsValid(true);
-      setQrValue(`ethereum:${address}`);
+      setQrValue(`ethereum:${data}`);
       setLogoUrl('/images/eth-qr.png');
-    } else if (address.startsWith('did:uis')) {
+    } else if (data?.startsWith('did:uis')) {
       setIsValid(true);
-      setQrValue(`ethereum:${address}`);
+      setQrValue(`${data}`);
       setLogoUrl('/images/qr-id-dark.png');
+    } else {
+      setIsValid(false);
+      setQrValue('invalid');
     }
-    setIsValid(true);
-    setQrValue(`ethereum:${address}`);
-  }, [address]);
+  }, [data]);
 
   if (!isValid) {
     return null;

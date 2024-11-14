@@ -1,6 +1,6 @@
-# Universal SDK/Wallet Demo
+# Universal Wallet Demo
 
-A basic playground for testing the Universal Wallet SDK.
+A playground for testing the Universal Wallet SDK.
 
 ## Developer
 
@@ -9,6 +9,7 @@ A basic playground for testing the Universal Wallet SDK.
 To develop the app, run the following command:
 
 ```bash
+pnpm i
 pnpm dev
 ```
 

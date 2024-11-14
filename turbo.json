@@ -23,11 +23,19 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
+    "universal-wallet-app#build": {
+      "dependsOn": [
+        "universal-credential-sdk#build",
+        "universal-delegations-sdk#build",
+        "universal-identity-sdk#build",
+        "universal-wallet-connector#build"
+      ],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
     "universal-wallet-connector#build": {
-      "dependsOn": ["universal-wallet-sdk#build"]
+      "dependsOn": ["universal-wallet-sdk#build"],
+      "outputs": ["dist/**"]
     }
   },
-  "globalEnv": [
-    "DATABASE_URL"
-  ]
+  "globalEnv": ["DATABASE_URL"]
 }

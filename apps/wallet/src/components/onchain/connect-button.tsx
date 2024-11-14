@@ -1,9 +1,9 @@
 'use client';
 
-import type { HTMLAttributes } from 'react';
-import Image from 'next/image';
 import { ConnectButton as ConnectButtonRainbowkit } from '@rainbow-me/rainbowkit';
 import type { VariantProps } from 'class-variance-authority';
+import Image from 'next/image';
+import type { HTMLAttributes } from 'react';
 
 import { truncateEthAddress } from '@/lib/utils';
 
@@ -21,6 +21,7 @@ interface ConnectButtonProps
   onClick?: () => void;
   onConnectClick?: () => void;
   onConnected?: () => void;
+  enableChainView?: boolean;
 }
 
 export const ConnectButton = ({
@@ -32,6 +33,7 @@ export const ConnectButton = ({
   labelWrongNetwork = 'Wrong Network',
   onConnectClick,
   onClick,
+  enableChainView,
   ...props
 }: ConnectButtonProps) => {
   return (
@@ -98,19 +100,21 @@ export const ConnectButton = ({
                       {account?.ensName ?? truncateEthAddress(account?.address)}
                     </div>
                   </Button>
-                  <Button
-                    type="button"
-                    variant={'outline'}
-                    onClick={onClick ?? openChainModal}
-                  >
-                    <Image
-                      alt={chain.name ?? 'Chain icon'}
-                      width={26}
-                      height={26}
-                      src={chain?.iconUrl as string}
-                      className="mx-0"
-                    />
-                  </Button>
+                  {enableChainView && (
+                    <Button
+                      type="button"
+                      variant={'outline'}
+                      onClick={onClick ?? openChainModal}
+                    >
+                      <Image
+                        alt={chain.name ?? 'Chain icon'}
+                        width={26}
+                        height={26}
+                        src={chain?.iconUrl as string}
+                        className="mx-0"
+                      />
+                    </Button>
+                  )}
                 </div>
               );
             })()}

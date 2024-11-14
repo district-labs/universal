@@ -22,7 +22,6 @@ const nextConfig = {
     });
     return config;
   },
-  
   images: {
     remotePatterns: [
       {
