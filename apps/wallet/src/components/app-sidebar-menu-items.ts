@@ -1,6 +1,7 @@
 import {
   ArrowLeftRight,
   Banknote,
+  CircleDollarSign,
   IdCard,
   LayoutDashboard,
   Search,
@@ -17,13 +18,18 @@ export const itemsCore = [
 
 export const itemsFinance = [
   {
-    title: 'Send/Receive',
+    title: 'Transfer',
     url: '/finance/transfers',
     icon: ArrowLeftRight,
   },
   {
-    title: 'Debit/Credit',
-    url: '/finance/authorizations',
+    title: 'Authorizations',
+    url: '/finance/authorization',
+    icon: CircleDollarSign,
+  },
+  {
+    title: 'Credit Lines',
+    url: '/finance/credit',
     icon: Banknote,
   },
 ];

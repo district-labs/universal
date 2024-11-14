@@ -28,7 +28,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               )}
             >
               <div className="flex w-full items-center justify-between px-4 py-4">
-                <div className='flex flex-1 items-center gap-x-1'>
+                <div className="flex flex-1 items-center gap-x-1">
                   <SidebarTrigger className="size-9" />
                 </div>
                 <div>

@@ -19,6 +19,6 @@ export const siteConfig: SiteConfig = {
   name: 'Universal',
   title: 'Universal',
   emoji: '✳️',
-  description: "Wallet",
+  description: 'Wallet',
   localeDefault: 'en',
 };

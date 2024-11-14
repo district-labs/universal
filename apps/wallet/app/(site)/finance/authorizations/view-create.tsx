@@ -6,7 +6,12 @@ import { type Address, zeroAddress } from 'viem';
 import { useAccount } from 'wagmi';
 import { z } from 'zod';
 
-import { addressSchema, coercedNumberSchema } from '@/lib/validation/utils';
+import { ConnectButton } from '@/components/onchain/connect-button';
+import { IsNotUniversalWallet } from '@/components/onchain/is-not-universal-wallet';
+import { IsUniversalWallet } from '@/components/onchain/is-universal-wallet';
+import { SelectToken } from '@/components/select/select-token';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -17,15 +22,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { SelectToken } from '@/components/select/select-token';
-import { ConnectButton } from '@/components/onchain/connect-button';
-import { Card, CardContent } from '@/components/ui/card';
+import { addressSchema, coercedNumberSchema } from '@/lib/validation/utils';
+import { useSignErc20TransferDelegation } from 'universal-delegations-sdk';
 import { DebitCard } from 'universal-wallet-ui';
 import { useChainId } from 'wagmi';
-import { Button } from '@/components/ui/button';
-import { useSignErc20TransferDelegation } from 'universal-delegations-sdk';
-import { IsUniversalWallet } from '@/components/onchain/is-universal-wallet';
-import { IsNotUniversalWallet } from '@/components/onchain/is-not-universal-wallet';
 
 const formSchema = z.object({
   delegate: addressSchema,

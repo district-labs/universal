@@ -1,7 +1,9 @@
 'use client';
 
+import { CopyIconButton } from '@/components/copy-icon-button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -9,58 +11,17 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
+import { didUriSchema, ethereumUriSchema } from '@/lib/validation/utils';
 import { type IDetectedBarcode, Scanner } from '@yudiel/react-qr-scanner';
-import { Focus, SwitchCamera } from 'lucide-react';
+import { Camera, SwitchCamera } from 'lucide-react';
 import { useCallback, useState } from 'react';
-import { constructDidIdentifier } from 'universal-identity-sdk';
-import type { Address } from 'viem';
-import { z } from 'zod';
-import { CopyIconButton } from './copy-icon-button';
-import { Card } from './ui/card';
 
-// Regular expression to match Ethereum URIs with optional parameters
-const ethereumUriRegex = /^ethereum:(0x[a-fA-F0-9]{40})(\?(?<params>.+))?$/;
-
-// Zod schema for Ethereum URI
-const ethereumUriSchema = z
-  .string()
-  .regex(ethereumUriRegex, {
-    message: 'Invalid Ethereum URI format',
-  })
-  .transform((uri) => {
-    const match = uri.match(ethereumUriRegex);
-    if (!match || !match.groups) {
-      throw new Error('Invalid Ethereum URI format');
-    }
-    const address = match[1];
-    const paramsString = match.groups.params || '';
-    const params: Record<string, string> = {};
-    // biome-ignore lint/complexity/noForEach: <explanation>
-    paramsString.split('&').forEach((param) => {
-      const [key, value] = param.split('=');
-      if (key && value) {
-        params[key] = value;
-      }
-    });
-    return { address, params };
-  });
-
-// Regular expression to match DID format: did:uis:chainId:resolver:account
-const didUriRegex = /^did:uis:([a-zA-Z0-9]+):([a-zA-Z0-9]+):0x[a-fA-F0-9]{40}$/;
-
-// Zod schema for DIDs
-const didUriSchema = z
-  .string()
-  .regex(didUriRegex, {
-    message: 'Invalid DID format',
-  })
-  .transform((did) => {
-    const [_, chainId, resolver, account] = did.split(':');
-    return { chainId: Number(chainId), resolver, account };
-  });
+type CameraQrScannerProps = {
+  onScanSuccess: (data: string) => void;
+};
 
 // Scanner Component
-export function ScannerIconDialog() {
+export function CameraQrScanner({ onScanSuccess }: CameraQrScannerProps) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [scannedResult, setScannedResult] = useState<{
@@ -71,35 +32,28 @@ export function ScannerIconDialog() {
     'environment',
   );
 
-  // Handle QR code decoding
-  const handleDecode = useCallback((result: IDetectedBarcode[]) => {
-    // Try parsing as Ethereum URI
-    const ethResult = ethereumUriSchema.safeParse(result[0].rawValue);
-    if (ethResult.success) {
-      setScannedResult({
-        type: 'address',
-        data: ethResult.data.address,
-      });
-      return;
-    }
+  const handleDecode = useCallback(
+    (result: IDetectedBarcode[]) => {
+      const ethResult = ethereumUriSchema.safeParse(result[0].rawValue);
+      if (ethResult.success) {
+        onScanSuccess(ethResult.data.address);
+        handleOpenChange(false);
+        return;
+      }
 
-    // Try parsing as DID
-    const didResult = didUriSchema.safeParse(result);
-    if (didResult.success) {
-      setScannedResult({
-        type: 'did',
-        data: constructDidIdentifier({
-          chainId: didResult.data.chainId,
-          resolver: didResult.data.resolver as Address,
-          address: didResult.data.account as Address,
-        }),
-      });
-      return;
-    }
+      // Try parsing as DID
+      const didResult = didUriSchema.safeParse(result);
+      if (didResult.success) {
+        onScanSuccess(didResult.data.account);
+        handleOpenChange(false);
+        return;
+      }
 
-    // If neither matches, set as unknown
-    setScannedResult({ type: 'unknown', data: '' });
-  }, []);
+      // If neither matches, set as unknown
+      setScannedResult({ type: 'unknown', data: '' });
+    },
+    [onScanSuccess],
+  );
 
   // Toggle camera facing mode (for smartphones)
   const switchCamera = () => {
@@ -120,7 +74,7 @@ export function ScannerIconDialog() {
       <DialogTrigger asChild={true}>
         <Button variant="outline" size="icon">
           <span>
-            <Focus width={24} height={24} className="size-8 text-lg" />
+            <Camera width={24} height={24} className="size-8 text-lg" />
             <span className="sr-only">Open QR scanner</span>
           </span>
         </Button>
