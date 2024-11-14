@@ -29,6 +29,7 @@
     "drizzle-orm": "^0.35.2",
     "hono": "^4.6.10",
     "pg": "^8.13.1",
+    "postgres": "^3.4.5",
     "typeorm": "^0.3.20",
     "viem": "^2.21.45",
     "web-did-resolver": "^2.0.27",
