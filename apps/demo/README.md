@@ -9,6 +9,7 @@ A playground for testing the Universal Wallet SDK.
 To develop the app, run the following command:
 
 ```bash
+pnpm i
 pnpm dev
 ```
 
