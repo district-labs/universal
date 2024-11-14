@@ -9,6 +9,8 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@svgr/webpack": "^8.1.0",
+    "@types/react": "^18.2.48",
     "lucide-react": "^0.446.0",
     "tsconfig": "*"
   }

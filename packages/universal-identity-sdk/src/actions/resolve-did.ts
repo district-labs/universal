@@ -1,6 +1,5 @@
+import type { DidDocument } from "api-identity";
 import {
-	encodePacked,
-	zeroAddress,
 	type Account,
 	type Address,
 	type CallErrorType,
@@ -9,11 +8,13 @@ import {
 	type Hex,
 	type ReadContractErrorType,
 	type Transport,
+	encodePacked,
+	zeroAddress,
 } from "viem";
 import { readContract } from "viem/actions";
 import { resolverAbi } from "../abis.js";
-import { encodeServerDidResponse } from "../utils/encode-server-did-response.js";
 import { deconstructDidIdentifier } from "../utils/deconstruct-did-identifier.js";
+import { encodeServerDidResponse } from "../utils/encode-server-did-response.js";
 
 export type ResolveUisParameters =
 	| {
@@ -31,6 +32,7 @@ export type ResolveUisReturnType = {
 	status: number;
 	signature: Hex;
 	data: string;
+	parsed: DidDocument;
 };
 
 export type ResolveUisErrorType = CallErrorType | ReadContractErrorType;
@@ -55,7 +57,7 @@ export async function resolveDid<
 	let address: Address;
 	let resolver: Address;
 	if (parameters.id) {
-		let {
+		const {
 			resolver: _resolver,
 			address: _address,
 			status,
@@ -85,9 +87,12 @@ export async function resolveDid<
 			functionName: "lookup",
 			args: [address],
 		});
-		return data;
+		return {
+			...data,
+			parsed: JSON.parse(data.data),
+		};
 	} catch (error) {
-		return await readContract(client, {
+		const data = await readContract(client, {
 			abi: resolverAbi,
 			address: resolver,
 			functionName: "resolve",
@@ -100,5 +105,9 @@ export async function resolveDid<
 				encodePacked(["address"], [address]),
 			],
 		});
+		return {
+			...data,
+			parsed: JSON.parse(data.data),
+		};
 	}
 }

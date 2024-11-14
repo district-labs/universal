@@ -43,6 +43,9 @@
           "fix": "safe"
         }
       },
+      "complexity": {
+        "noUselessFragments": "off"
+      },
       "style": {
         "noImplicitBoolean": "error",
         "noNamespace": "error",

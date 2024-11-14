@@ -1,8 +1,9 @@
-import { createConfig, http } from 'wagmi';
-import { baseSepolia } from 'wagmi/chains';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
-import { universalWalletRainbowkit } from 'universal-wallet-connector';
 import { coinbaseWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
+import { universalWalletRainbowkit } from 'universal-wallet-connector';
+import { createPublicClient } from 'viem';
+import { createConfig, http } from 'wagmi';
+import { baseSepolia, mainnet } from 'wagmi/chains';
 
 const connectors = connectorsForWallets(
   [
@@ -30,4 +31,9 @@ export const baseConfig = createConfig({
   transports: {
     [baseSepolia.id]: http(),
   },
+});
+
+export const mainnetPublicClient = createPublicClient({
+  chain: mainnet,
+  transport: http(),
 });
