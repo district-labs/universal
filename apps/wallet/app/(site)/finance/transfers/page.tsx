@@ -1,10 +1,10 @@
 'use client';
-import { useAccount } from 'wagmi';
-import { ViewTransfer } from './view-transfer';
-import { Card } from '@/components/ui/card';
 import { QRCodeRender } from '@/components/qr-code-address';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { ArrowDown, ArrowUp } from 'lucide-react';
+import { useAccount } from 'wagmi';
+import { ViewTransfer } from './view-transfer';
 
 export default function FinanceCardsPage() {
   const { address } = useAccount();
@@ -41,10 +41,7 @@ export default function FinanceCardsPage() {
             </span>
             <div className="flex flex-1 flex-col items-center justify-center">
               <Card className="p-4">
-                <QRCodeRender
-                  address={address}
-                  className="size-48 lg:size-auto"
-                />
+                <QRCodeRender data={address} className="size-48 lg:size-auto" />
               </Card>
             </div>
           </div>

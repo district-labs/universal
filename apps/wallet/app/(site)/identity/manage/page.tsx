@@ -86,7 +86,7 @@ export default function IdentityManagePage() {
                   {address && (
                     <QRCodeRender
                       size={200}
-                      address={constructDidIdentifier({
+                      data={constructDidIdentifier({
                         chainId: 85432,
                         resolver:
                           universalDeployments[chainId as number].resolver,
