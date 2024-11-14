@@ -1,6 +1,6 @@
-# District Wallet Popup
+# Universal Wallet Popup
 
-The District Wallet Popup is a popup app to communicate with the `universal-wallet-sdk` package.
+The Universal Wallet Popup is a popup app to communicate with the `universal-wallet-sdk` package.
 
 ## Getting Started
 
@@ -16,7 +16,7 @@ Connect a PostgreSQL database by setting the `DATABASE_URL` environment variable
 
 ```bash
 # Example
-DATABASE_URL="postgresql://localhost:5432/district-wallet-popup"
+DATABASE_URL="postgresql://localhost:5432/universal-wallet-popup"
 ```
 
 ### Pimlico Bundler

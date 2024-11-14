@@ -2,20 +2,28 @@ import { useCallback } from "react";
 import type { Address } from "viem";
 import { useChainId, usePublicClient } from "wagmi";
 import { useQuery } from "wagmi/query";
-import { resolveDid } from "../actions/resolve-did.js";
+import {
+	type ResolveUisReturnType,
+	resolveDid,
+} from "../actions/resolve-did.js";
 
-export function useUniversalResolver(inputs: {
+export function useUniversalResolver(inputs?: {
 	address?: Address;
 	resolver?: Address;
-} | null) {
+}) {
 	const chainId = useChainId();
 	const client = usePublicClient();
 
-	const query = useQuery({
+	const query = useQuery<
+		ResolveUisReturnType,
+		Error,
+		ResolveUisReturnType,
+		["did", Address | undefined, Address | undefined]
+	>({
 		queryKey: ["did", inputs?.address, inputs?.resolver],
-		queryFn: async () => {
+		queryFn: async (): Promise<ResolveUisReturnType> => {
 			if (!client && !inputs?.address && !chainId) {
-				return;
+				throw new Error("Invalid parameters.");
 			}
 			// @ts-expect-error We know that client is defined
 			const data = await resolveDid(client, {
@@ -25,7 +33,7 @@ export function useUniversalResolver(inputs: {
 			return data;
 		},
 		enabled: !!inputs?.address && !!inputs?.resolver && !!client,
-	})
+	});
 
 	const resolve = useCallback(
 		async ({
@@ -34,14 +42,15 @@ export function useUniversalResolver(inputs: {
 		}: {
 			address: Address;
 			resolver: Address;
-		}) => {
+		}): Promise<ResolveUisReturnType> => {
 			if (!client || !address || !chainId) {
-				return;
+				throw new Error("Invalid parameters.");
 			}
-			 const document = await resolveDid(client, {
+
+			const document = await resolveDid(client, {
 				resolver: resolver,
 				address: address,
-			})
+			});
 			document.data = JSON.parse(document.data);
 			return document;
 		},

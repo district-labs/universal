@@ -1,4 +1,3 @@
-import { zeroAddress } from "viem";
 import { useChainId, useSignTypedData } from "wagmi";
 import { eip712VerificationRequestType } from "../eip712-verification-request-type.js";
 
@@ -23,7 +22,6 @@ export function useVerificationRequestSign() {
 				name: "Universal Resolver",
 				version: "1",
 				chainId: chainId,
-				verifyingContract: zeroAddress,
 			},
 			message: {
 				id: id,

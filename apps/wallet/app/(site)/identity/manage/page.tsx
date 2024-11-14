@@ -16,6 +16,7 @@ import {
   useUniversalResolver,
 } from 'universal-identity-sdk';
 import { IconLoading } from 'universal-wallet-ui';
+import type { Address } from 'viem';
 import { useAccount } from 'wagmi';
 import { WALLET_SUPPORT } from './data';
 
@@ -63,7 +64,7 @@ export default function IdentityManagePage() {
                   {address && (
                     <QRCodeRender
                       size={200}
-                      address={constructDidIdentifier({
+                      data={constructDidIdentifier({
                         chainId: 85432,
                         resolver:
                           universalDeployments[chainId as number].resolver,
@@ -111,14 +112,16 @@ export default function IdentityManagePage() {
                         <h3 className="font-normal text-sm">
                           Status:{' '}
                           <span className="font-bold">
-                            {query.data.status === 1 ? 'Verified' : 'Unverified'}
+                            {query.data.status === 1
+                              ? 'Verified'
+                              : 'Unverified'}
                           </span>
                         </h3>
                         {query.data.status !== 1 && (
                           <Button
                             onClick={() => {
                               signAndSaveDid({
-                                address,
+                                address: address as Address,
                                 verifyingContract:
                                   universalDeployments[chainId as number]
                                     .resolver,
@@ -128,7 +131,7 @@ export default function IdentityManagePage() {
                                     resolver:
                                       universalDeployments[chainId as number]
                                         .resolver,
-                                    address: address,
+                                    address: address as Address,
                                   }),
                                 ),
                               });
@@ -161,8 +164,8 @@ export default function IdentityManagePage() {
                           Managed by District
                         </h3>
                         <p className="text-xs">
-                          Your decentralized identifier is hosted by District Labs
-                          but always controlled by you.
+                          Your decentralized identifier is hosted by District
+                          Labs but always controlled by you.
                         </p>
                       </Card>
                       <Card className="p-5">
@@ -181,8 +184,8 @@ export default function IdentityManagePage() {
                           Controlled By You
                         </h3>
                         <p className="text-xs">
-                          Only you can update your identifier by signing a message
-                          to verify your identities authenticity.
+                          Only you can update your identifier by signing a
+                          message to verify your identities authenticity.
                         </p>
                       </Card>
                     </div>
@@ -199,7 +202,7 @@ export default function IdentityManagePage() {
                           UIS offers a path towards a more decentralized and
                           user-controlled digital future.
                         </p>
-  
+
                         <p className="">
                           Designed to scale, while also always giving users
                           control:{' '}

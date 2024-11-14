@@ -1,0 +1,11 @@
+{
+	"extends": "./tsconfig.build.json",
+	"include": [
+		"src/**/*.ts",
+		"src/api/actions/get-delegation-by-delegate-and-type.tsx",
+		"src/client.tsx",
+		"src/client.tsx",
+		"index.ts"
+	],
+	"exclude": ["node_modules"]
+}

@@ -96,25 +96,25 @@ export default function IdentitySearchPage() {
                   </h3>
                 </div>
               </div>
-              <Card className='mb-4 flex w-full items-center gap-x-4 p-5'>
-              <div className="flex items-center justify-center">
-                {data.ens.avatar && (
-                  <img
-                    alt="avatar"
-                    src={data.ens.avatar}
-                    className="h-16 w-16 rounded-full border-4 border-white shadow-md"
-                  />
-                )}
-              </div>
-              <div className="flex-1">
-                {data.ens.name && (
-                  <>
-                    <h3 className="font-bold text-2xl">{data.ens.name}</h3>
-                    <span className="text-sm">{data.address}</span>
-                  </>
-                )}
-              </div>
-            </Card>
+              <Card className="mb-4 flex w-full items-center gap-x-4 p-5">
+                <div className="flex items-center justify-center">
+                  {data.ens.avatar && (
+                    <img
+                      alt="avatar"
+                      src={data.ens.avatar}
+                      className="h-16 w-16 rounded-full border-4 border-white shadow-md"
+                    />
+                  )}
+                </div>
+                <div className="flex-1">
+                  {data.ens.name && (
+                    <>
+                      <h3 className="font-bold text-2xl">{data.ens.name}</h3>
+                      <span className="text-sm">{data.address}</span>
+                    </>
+                  )}
+                </div>
+              </Card>
               <Card className="w-full p-5">
                 <h3 className="mb-2 font-bold text-lg">Identifier</h3>
                 <span className="mt-2 block font-bold text-neutral-500">

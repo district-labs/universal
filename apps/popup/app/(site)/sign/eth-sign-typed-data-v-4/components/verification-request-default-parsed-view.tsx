@@ -43,7 +43,7 @@ export const VerificationRequestDefaultParsedView = ({
           {typedDataMessage?.type === 'github' && 'Github'}
           {typedDataMessage?.type === 'farcaster' && 'Farcaster'}
         </h3>
-        <span className='block py-4'>
+        <span className="block py-4">
           <hr className="block border-gray-200" />
         </span>
         <p className="text-sm">

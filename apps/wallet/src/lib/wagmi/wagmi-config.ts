@@ -33,8 +33,7 @@ export const baseConfig = createConfig({
   },
 });
 
-
 export const mainnetPublicClient = createPublicClient({
   chain: mainnet,
   transport: http(),
-})
+});

@@ -13,4 +13,3 @@ export * from "../utils/construct-did-identifier.js";
 export * from "../utils/decode-onchain-did-response.js";
 export * from "../utils/deconstruct-did-identifier.js";
 export * from "../utils/encode-server-did-response.js";
-
