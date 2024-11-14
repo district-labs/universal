@@ -31,11 +31,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <div className='flex flex-1 items-center gap-x-1'>
                   <SidebarTrigger className="size-9" />
                 </div>
-                <div className="">
+                <div>
                   <IsWalletConnected>
                     <div className="flex items-center gap-x-2">
                       <ScannerIconDialog />
-                      <QRIconReceiveDialog className="" />
+                      <QRIconReceiveDialog />
                       <ConnectButton rounded={'full'} />
                     </div>
                   </IsWalletConnected>
