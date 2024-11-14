@@ -1,6 +1,6 @@
-# District Wallet Popup
+# Universal Wallet Popup
 
-The District Wallet Popup is a popup app to communicate with the `universal-wallet-sdk` package.
+The Universal Wallet Popup is a popup app to communicate with the `universal-wallet-sdk` package.
 
 ## Getting Started
 
