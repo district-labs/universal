@@ -1,11 +1,12 @@
 import './globals.css';
 
-import type { ReactNode } from 'react';
 import { env } from '@/env';
+import type { ReactNode } from 'react';
 
+import { Toaster } from '@/components/ui/toaster';
+import { cn } from '@/lib/utils';
 import { siteConfig } from './config';
 import { fontSans } from './fonts';
-import { cn } from '@/lib/utils';
 import RootProvider from './root-provider';
 
 const url = env.NEXT_PUBLIC_SITE_URL;
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           fontSans.variable,
         )}
       >
+        <Toaster />
         <RootProvider>{children}</RootProvider>
       </body>
     </html>
