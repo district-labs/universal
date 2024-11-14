@@ -3,6 +3,7 @@ import './globals.css';
 import { env } from '@/env';
 import type { ReactNode } from 'react';
 
+import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import { siteConfig } from './config';
 import { fontSans } from './fonts';
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           fontSans.variable,
         )}
       >
+        <Toaster />
         <RootProvider>{children}</RootProvider>
       </body>
     </html>

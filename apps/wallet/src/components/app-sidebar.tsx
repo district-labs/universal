@@ -37,9 +37,7 @@ export function AppSidebar() {
       <SidebarHeader className="p-4">
         <Link href="/" className="flex items-center">
           <CircleIcon className="size-6 text-emerald-500 dark:text-emerald-100" />
-          <span className="ml-2 hidden font-semibold text-lg lg:inline-block">
-            {siteConfig.name}
-          </span>
+          <span className="ml-2 font-semibold text-lg">{siteConfig.name}</span>
         </Link>
       </SidebarHeader>
       <SidebarContent className="px-2">

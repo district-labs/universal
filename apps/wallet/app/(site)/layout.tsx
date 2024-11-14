@@ -4,6 +4,8 @@ import { ConnectButton } from '@/components/onchain/connect-button';
 import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
 import { IsWalletDisconnected } from '@/components/onchain/is-wallet-disconnected';
 import { PWAEnvironment } from '@/components/pwa-environment';
+import { QRIconReceiveDialog } from '@/components/qr-icon-receive-dialog';
+import { ScannerIconDialog } from '@/components/scanner-icon-dialog';
 import { SiteEnvironment } from '@/components/site-environment';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
@@ -26,12 +28,17 @@ export default function RootLayout({ children }: RootLayoutProps) {
               )}
             >
               <div className="flex w-full items-center justify-between px-4 py-4">
-                <div className="flex-1">
+                <div className="flex-1 flex items-center gap-x-1">
+                  {/* <CircleIcon className="size-6 text-emerald-500 dark:text-emerald-100 md:hidden" /> */}
                   <SidebarTrigger className="size-9" />
                 </div>
                 <div className="">
                   <IsWalletConnected>
-                    <ConnectButton rounded={'full'} />
+                    <div className="flex items-center gap-x-2">
+                      <ScannerIconDialog />
+                      <QRIconReceiveDialog className="" />
+                      <ConnectButton rounded={'full'} />
+                    </div>
                   </IsWalletConnected>
                   <IsWalletDisconnected>
                     <SiteEnvironment>
