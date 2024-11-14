@@ -18,7 +18,7 @@ interface SiteConfig {
 export const siteConfig: SiteConfig = {
   name: 'Universal',
   title: 'Universal',
-  emoji: '⚡',
-  description: "Discover What's Possible",
+  emoji: '✳️',
+  description: "Wallet",
   localeDefault: 'en',
 };

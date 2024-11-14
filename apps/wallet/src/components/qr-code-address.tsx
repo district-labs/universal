@@ -26,13 +26,13 @@ export function QRCodeRender({
       setIsValid(true);
       setQrValue(`ethereum:${data}`);
       setLogoUrl('/images/eth-qr.png');
-    } else if (data && data.startsWith('did:uis')) {
+    } else if (data?.startsWith('did:uis')) {
       setIsValid(true);
       setQrValue(`${data}`);
       setLogoUrl('/images/qr-id-dark.png');
     } else {
       setIsValid(false);
-      setQrValue(`invalid`);
+      setQrValue('invalid');
     }
   }, [data]);
 
