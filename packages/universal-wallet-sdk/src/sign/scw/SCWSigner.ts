@@ -85,6 +85,7 @@ export class SCWSigner implements Signer {
   }
 
   async request(request: RequestArguments) {
+    console.log('request', request);
     if (this.accounts.length === 0) {
       throw standardErrors.provider.unauthorized();
     }
