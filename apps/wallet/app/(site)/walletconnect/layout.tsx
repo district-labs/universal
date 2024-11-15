@@ -9,7 +9,5 @@ export default function WcLayout({ children }: { children: ReactNode }) {
   useWcEventsManager(initialized);
 
   // TODO: Handle ui/toast for when WC is not initialized
-  return {
-    children,
-  };
+  return <>{children}</>;
 }
