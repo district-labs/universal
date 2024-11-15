@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { tokenDeployments, findToken, type Token } from 'universal-data';
+import { type Token, findToken, tokenDeployments } from 'universal-data';
 
 type SelectTokenProps = {
   chainId: number;

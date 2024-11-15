@@ -1,12 +1,12 @@
 'use client';
 import type { ReactNode } from 'react';
 
-import { cn } from '@/lib/utils';
-import { useAccountState } from '@/lib/state/use-account-state';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useRouter } from 'next/navigation';
 import { Address } from '@/components/onchain/address';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useAccountState } from '@/lib/state/use-account-state';
+import { cn } from '@/lib/utils';
 import { ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -24,13 +24,13 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <div className="relative flex min-h-screen flex-col">
       <header
         className={cn(
-          'sticky top-0 z-50 w-full border-b-2 bg-background text-foreground transition-all text-center py-4',
+          'sticky top-0 z-50 w-full border-b-2 bg-background py-4 text-center text-foreground transition-all',
         )}
       >
         {accountState ? (
-          <div className="w-full flex justify-between items-center px-4">
-            <span className="p-1 hover:bg-neutral-100 cursor-pointer rounded-lg">
-              <ArrowLeft className="size-5 mx-auto" onClick={previousPage} />
+          <div className="flex w-full items-center justify-between px-4">
+            <span className="cursor-pointer rounded-lg p-1 hover:bg-neutral-100">
+              <ArrowLeft className="mx-auto size-5" onClick={previousPage} />
             </span>
             <div className="flex items-center gap-x-2">
               <Address
@@ -41,10 +41,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
           </div>
         ) : (
-          <Skeleton className="w-20 h-5" />
+          <Skeleton className="h-5 w-20" />
         )}
       </header>
-      <main className="flex flex-1 flex-col justify-center z-10 relative h-full">
+      <main className="relative z-10 flex h-full flex-1 flex-col justify-center">
         {children}
       </main>
     </div>
