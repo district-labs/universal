@@ -8,12 +8,13 @@ import {
 } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import type { Address } from 'viem';
 import { Button } from '../ui/button';
 
 interface AccountSelectorProps {
   disabled?: boolean;
   value: string;
-  onValueChange: (account: string) => void;
+  onValueChange: (account: Address) => void;
   className?: string;
 }
 

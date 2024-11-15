@@ -14,7 +14,7 @@ import { cn } from '@/lib/utils';
 import { didUriSchema, ethereumUriSchema } from '@/lib/validation/utils';
 import { type IDetectedBarcode, Scanner } from '@yudiel/react-qr-scanner';
 import { Camera, SwitchCamera } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 type CameraQrScannerProps = {
   onScanSuccess: (data: string) => void;
@@ -31,6 +31,12 @@ export function CameraQrScanner({ onScanSuccess }: CameraQrScannerProps) {
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>(
     'environment',
   );
+  const [isIOS, setIsIOS] = useState(false);
+
+  useEffect(() => {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    setIsIOS(/iphone|ipad|ipod/.test(userAgent));
+  }, []);
 
   const handleDecode = useCallback(
     (result: IDetectedBarcode[]) => {
@@ -124,7 +130,17 @@ export function CameraQrScanner({ onScanSuccess }: CameraQrScannerProps) {
                 video: 'object-cover w-full h-full',
               }}
               onScan={handleDecode}
-              constraints={{ facingMode }}
+              constraints={{
+                facingMode,
+              }}
+              onError={(error) => {
+                console.error('Camera Error:', error);
+                setError(
+                  isIOS
+                    ? 'Camera access denied. On iOS, please ensure camera permissions are granted in Settings > Safari > Camera.'
+                    : 'Failed to access camera. Please check your permissions.',
+                );
+              }}
             />
             <div className="absolute inset-0 rounded-lg border-[3px] border-white/50" />
             <div className="absolute top-2 right-2">

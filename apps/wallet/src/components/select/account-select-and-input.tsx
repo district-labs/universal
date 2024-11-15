@@ -1,5 +1,6 @@
-import type { Dispatch, SetStateAction } from 'react';
+import type { Dispatch } from 'react';
 
+import type { Address } from 'viem';
 import { CameraQrScanner } from '../camera/camera-qr-scanner';
 import { FormDescription, FormLabel } from '../ui/form';
 import { Input } from '../ui/input';
@@ -7,10 +8,10 @@ import { AccountSelector } from './account-selector';
 
 interface AccountSelectAndInput {
   disabled?: boolean;
-  valueAccount: string | undefined;
-  onAccountChange: Dispatch<SetStateAction<string | undefined>>;
-  valueContact: string;
-  onContactSelected: (account: string) => void;
+  valueAccount: Address | undefined;
+  onAccountChange: Dispatch<Address>;
+  valueContact: Address;
+  onContactSelected: (account: Address) => void;
 }
 
 export function AccountSelectAndInput({
@@ -30,7 +31,7 @@ export function AccountSelectAndInput({
           className="block h-auto w-full flex-1 border-transparent bg-transparent py-1 pl-0 text-left font-medium text-base shadow-none placeholder:text-muted-foreground placeholder:text-sm focus:border-transparent focus:ring-transparent focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-transparent"
           placeholder="Ethereum address or ENS name"
           value={valueAccount}
-          onChange={(e) => onAccountChange(e.target.value)}
+          onChange={(e) => onAccountChange(e.target.value as Address)}
         />
         <div className="flex items-center gap-x-2">
           <AccountSelector
@@ -39,7 +40,7 @@ export function AccountSelectAndInput({
             onValueChange={onContactSelected}
           />
           <CameraQrScanner
-            onScanSuccess={(data: string) => onAccountChange(data)}
+            onScanSuccess={(data: string) => onAccountChange(data as Address)}
           />
         </div>
       </div>

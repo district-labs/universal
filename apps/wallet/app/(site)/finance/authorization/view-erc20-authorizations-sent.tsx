@@ -19,11 +19,15 @@ import {
 import { DebitCard } from 'universal-wallet-ui';
 import type { Address } from 'viem';
 
-export type ViewErc20AuthorizationsSentProps = React.HTMLAttributes<HTMLElement> & {
-  delegator: Address;
-};
+export type ViewErc20AuthorizationsSentProps =
+  React.HTMLAttributes<HTMLElement> & {
+    delegator: Address;
+  };
 
-export const ViewErc20AuthorizationsSent = ({ className, delegator }: ViewErc20AuthorizationsSentProps) => {
+export const ViewErc20AuthorizationsSent = ({
+  className,
+  delegator,
+}: ViewErc20AuthorizationsSentProps) => {
   const { data } = useGetDelegationByDelegatorAndType({
     address: delegator,
     type: 'DebitAuthorization',
@@ -42,7 +46,11 @@ export const ViewErc20AuthorizationsSent = ({ className, delegator }: ViewErc20A
     >
       {data.map((delegation) => {
         return (
-          <CardAuthorization key={delegation.hash} delegation={delegation} className='overflow-hidden' />
+          <CardAuthorization
+            key={delegation.hash}
+            delegation={delegation}
+            className="overflow-hidden"
+          />
         );
       })}
     </div>
@@ -82,7 +90,6 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
     <Card key={delegation.hash} className={className}>
       <CardHeader className="bg-neutral-100">
         <DebitCard
-          color="green"
           to={delegation.delegate}
           amount={enforcerData.amountFormatted}
           name={enforcerData.name}

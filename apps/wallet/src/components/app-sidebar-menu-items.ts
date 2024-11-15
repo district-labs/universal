@@ -5,12 +5,11 @@ import {
   IdCard,
   LayoutDashboard,
   Search,
-  TicketCheck,
 } from 'lucide-react';
 
 export const itemsCore = [
   {
-    title: 'Overview',
+    title: 'Assets',
     url: '/',
     icon: LayoutDashboard,
   },
@@ -39,11 +38,6 @@ export const itemsIdentity = [
     title: 'Manage',
     url: '/identity/manage',
     icon: IdCard,
-  },
-  {
-    title: 'Credentials',
-    url: '/identity/credentials',
-    icon: TicketCheck,
   },
   {
     title: 'Search',

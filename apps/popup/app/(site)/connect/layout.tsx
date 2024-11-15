@@ -1,7 +1,3 @@
-import type { ReactNode } from 'react';
-import { cn } from '@/lib/utils';
-import { CircleIcon, MenuIcon } from 'lucide-react';
-import { siteConfig } from 'app/config';
 import {
   Sheet,
   SheetContent,
@@ -9,8 +5,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import { siteConfig } from 'app/config';
+import { CircleIcon, MenuIcon } from 'lucide-react';
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -25,25 +24,24 @@ export default function RootLayout({ children }: RootLayoutProps) {
             'sticky top-0 z-50 w-full border-b-2 bg-background text-foreground transition-all',
           )}
         >
-          <div className="px-6 grid grid-cols-3 w-full justify-between items-center py-4">
+          <div className='grid w-full grid-cols-3 items-center justify-between px-6 py-4'>
             <div className="col-span-1 flex items-center">
               <CircleIcon className="size-6 text-emerald-500 dark:text-emerald-100" />
             </div>
-            <div className="col-span-1 flex flex-col items-center justify-center"></div>
             <div className="col-span-1 flex items-center justify-end ">
               <Sheet>
                 <SheetTrigger asChild={true}>
-                  <span className="px-2 py-1 hover:bg-neutral-100 rounded-lg cursor-pointer text-xs">
+                  <span className='cursor-pointer rounded-lg px-2 py-1 text-xs hover:bg-neutral-100'>
                     <MenuIcon className="size-6" />
                   </span>
                 </SheetTrigger>
-                <SheetContent className="w-full h-full" side={'bottom'}>
+                <SheetContent className='h-full w-full' side={'bottom'}>
                   <SheetHeader>
-                    <SheetTitle className="text-3xl font-bold">
+                    <SheetTitle className='font-bold text-3xl'>
                       Universal Wallet
                     </SheetTitle>
                   </SheetHeader>
-                  <div className="flex flex-col gap-y-4 mt-4">
+                  <div className='mt-4 flex flex-col gap-y-4'>
                     <p className="text-center text-normal">
                       Discover What's Possible
                     </p>
@@ -57,12 +55,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
           </div>
         </header>
-        <main className="flex flex-1 flex-col justify-center z-10 relative">
+        <main className='relative z-10 flex flex-1 flex-col justify-center'>
           {children}
         </main>
-        <footer className="px-3 py-3 border-t-2 z-50 relative dark:border-neutral-600 text-center flex items-center justify-between">
-          <span className="ml-2 text-xs font-bold">{siteConfig.company}</span>
-          <span className="text-xs flex items-start gap-x-1">
+        <footer className='relative z-50 flex items-center justify-between border-t-2 px-3 py-3 text-center dark:border-neutral-600'>
+          <span className='ml-2 font-bold text-xs'>{siteConfig.company}</span>
+          <span className='flex items-start gap-x-1 text-xs'>
             <Link
               target="blank"
               href="https://www.districtlabs.com/terms-of-service"

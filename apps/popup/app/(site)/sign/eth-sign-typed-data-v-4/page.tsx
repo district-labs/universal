@@ -61,7 +61,7 @@ export default function EthSignTypedDataV4Page() {
         </ActionRequestTitle>
         <span className="flex items-center gap-x-1">
           <Toggle
-            label="Advanced"
+            label="Details"
             handleIsTriggered={() => setViewModeAdvanced(!viewModeAdvanced)}
           />
         </span>

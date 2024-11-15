@@ -40,7 +40,7 @@ const ViewCreditReceived = ({
     <div
       className={cn(
         className,
-        'grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-3',
+        'grid grid-cols-1 gap-x-6 gap-y-10 lg:grid-cols-3',
       )}
     >
       {data.map((delegation) => {
@@ -76,9 +76,8 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
 
   return (
     <Card key={delegation.hash} className={className}>
-      <CardHeader className="bg-neutral-100">
+      <CardHeader className="flex items-center justify-center bg-neutral-100">
         <DebitCard
-          color="green"
           to={delegation.delegate}
           amount={enforcerData.amountFormatted}
           name={enforcerData.name}

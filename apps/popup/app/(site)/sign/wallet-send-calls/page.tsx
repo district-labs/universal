@@ -34,7 +34,7 @@ export default function PersonalSignPage() {
         </ActionRequestTitle>
         <span className="flex items-center gap-x-1">
           <Toggle
-            label="Advanced"
+            label="Details"
             handleIsTriggered={() => setViewModeAdvanced(!viewModeAdvanced)}
           />
         </span>

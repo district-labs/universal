@@ -24,8 +24,8 @@ const formSchema = z.object({
 });
 
 function FormerErc20Transfer() {
-  const { writeContracts } = useWriteContracts();
   const { address } = useAccount();
+  const { writeContracts } = useWriteContracts();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -83,15 +83,17 @@ function FormerErc20Transfer() {
         <Card className="rounded-3xl p-5">
           <FormField
             control={form.control}
-            name="token"
+            name="to"
             render={({ field }) => (
               <FormItem>
                 <AccountSelectAndInput
                   valueAccount={form.watch('to')}
-                  onAccountChange={(value) => form.setValue('to', value)}
+                  onAccountChange={(value: Address) =>
+                    form.setValue('to', value)
+                  }
                   valueContact={field.value}
-                  onContactSelected={(token: Token) => {
-                    field.onChange(token);
+                  onContactSelected={(account: string) => {
+                    field.onChange(account);
                   }}
                 />
               </FormItem>
@@ -117,7 +119,7 @@ function FormerErc20Transfer() {
             )}
           />
         </Card>
-        {/* <hr className="my-4 border-neutral-200" /> */}
+
         {address && (
           <div className="">
             <Button
@@ -130,9 +132,6 @@ function FormerErc20Transfer() {
             >
               Transfer Assets
             </Button>
-            <p className="mt-2 text-center text-sm">
-              Testnet tokens will be automatically minted during transfer.
-            </p>
           </div>
         )}
 

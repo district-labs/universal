@@ -1,6 +1,4 @@
 'use client';
-
-import { ConnectButton } from '@/components/onchain/connect-button';
 import { Button } from '@/components/ui/button';
 import { Form, FormField, FormItem } from '@/components/ui/form';
 import { addressSchema } from '@/lib/validation/utils';
@@ -10,6 +8,11 @@ import type { Address } from 'viem';
 import { useAccount } from 'wagmi';
 import { z } from 'zod';
 
+import { ConnectUniversalWalletButton } from '@/components/connect-universal-wallet';
+import { ConnectedWalletName } from '@/components/connected-wallet-name';
+import { DisconnectWalletElement } from '@/components/onchain/disconnect-wallet-element';
+import { IsNotUniversalWallet } from '@/components/onchain/is-not-universal-wallet';
+import { IsUniversalWallet } from '@/components/onchain/is-universal-wallet';
 import { AccountSelectAndInput } from '@/components/select/account-select-and-input';
 import { Erc20SelectAndAmount } from '@/components/select/erc20-select-and-amount';
 import { Card } from '@/components/ui/card';
@@ -25,9 +28,14 @@ const formSchema = z.object({
 });
 
 export type FormSchema = z.infer<typeof formSchema>;
+export type FormData = {
+  to?: string;
+  token?: TokenItem;
+  amount?: string;
+};
 
 type FormErc20AuthorizeProps = {
-  onFormChange?: (data: FormSchema) => void;
+  onFormChange?: (data?: FormData) => void;
 };
 
 function FormErc20Authorize({ onFormChange }: FormErc20AuthorizeProps) {
@@ -37,22 +45,16 @@ function FormErc20Authorize({ onFormChange }: FormErc20AuthorizeProps) {
     resolver: zodResolver(formSchema),
   });
 
-  const dataWatch = form.watch();
   useEffect(() => {
-    console.log(dataWatch, 'dataWatch');
-    onFormChange?.({
-      ...dataWatch,
-      token: dataWatch.token,
+    const subscription = form.watch((data) => {
+      onFormChange?.({
+        to: data.to,
+        token: data.token as TokenItem,
+        amount: data.amount,
+      });
     });
-  }, [dataWatch.token, onFormChange]);
-
-  useEffect(() => {
-    onFormChange?.(dataWatch);
-  }, [dataWatch.amount, onFormChange]);
-
-  useEffect(() => {
-    onFormChange?.(dataWatch);
-  }, [dataWatch.to, onFormChange]);
+    return () => subscription.unsubscribe();
+  }, [form, onFormChange]);
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     if (!chainId) {
@@ -110,29 +112,53 @@ function FormErc20Authorize({ onFormChange }: FormErc20AuthorizeProps) {
             )}
           />
         </Card>
-        {address && (
-          <div className="">
-            <Button
-              disabled={!form.formState.isValid}
-              className="w-full py-3 text-lg"
-              type="submit"
-              rounded={'full'}
-              variant={'emerald'}
-              size={'lg'}
-            >
-              Authorize Credit Line
-            </Button>
-            <p className="mt-2 text-center text-sm">
-              The recipient will be able to pull funds from your account.
-            </p>
-          </div>
-        )}
+        <div className="mt-4">
+          {address && (
+            <div className="">
+              <IsUniversalWallet>
+                <Button
+                  disabled={!form.formState.isValid}
+                  className="w-full py-3 text-lg"
+                  type="submit"
+                  rounded={'full'}
+                  variant={'emerald'}
+                  size={'lg'}
+                >
+                  Authorize Credit Line
+                </Button>
+              </IsUniversalWallet>
+              <IsNotUniversalWallet>
+                <Button
+                  className="w-full py-3 text-lg"
+                  type="submit"
+                  rounded={'full'}
+                  variant={'default'}
+                  size={'lg'}
+                >
+                  Requires Universal Wallet
+                </Button>
+                <p className="mt-4 text-center text-sm">
+                  You're connected with the{' '}
+                  <ConnectedWalletName className="font-bold" /> wallet. <br />{' '}
+                  Please connect with a{' '}
+                  <span className="font-bold">Universal Wallet</span> to
+                  authorize credit lines.
+                </p>
+                <p className="mt-2 text-center underline">
+                  <DisconnectWalletElement>
+                    Disconnect Wallet
+                  </DisconnectWalletElement>
+                </p>
+              </IsNotUniversalWallet>
+            </div>
+          )}
 
-        {!address && (
-          <ConnectButton classNameConnect="w-full" className="w-full">
-            Connect
-          </ConnectButton>
-        )}
+          {!address && (
+            <ConnectUniversalWalletButton className="w-full rounded-full py-3 text-lg">
+              Connect Universal Wallet
+            </ConnectUniversalWalletButton>
+          )}
+        </div>
       </form>
     </Form>
   );
