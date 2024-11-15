@@ -13,7 +13,7 @@ import { WcScanner } from './wallet-kit/components/wc-scanner';
 import { useConnectWc } from './wallet-kit/hooks/use-connect-wc';
 
 export default function WalletConnectPage() {
-  const [uri, setUri] = useState<string>();
+  const [uri, setUri] = useState<string | undefined>();
   const activeSessionsQuery = useActiveSessions();
   const connectWcMutation = useConnectWc();
 
@@ -31,7 +31,7 @@ export default function WalletConnectPage() {
           {activeSessionsQuery.error.message}
         </div>
       )}
-      {activeSessionsQuery.isSuccess && sessions?.length === 0 && (
+      {activeSessionsQuery.isSuccess && (
         <>
           <Label htmlFor="uri">URI</Label>
           <Input
@@ -41,14 +41,22 @@ export default function WalletConnectPage() {
           />
           <Button
             disabled={!uri || connectWcMutation.isPending}
-            onClick={() => connectWcMutation.connectWc({ uri })}
+            onClick={() =>
+              connectWcMutation.connectWc({
+                uri,
+                onPair: async () => {
+                  await activeSessionsQuery.refetch();
+                  setUri(undefined);
+                },
+              })
+            }
           >
             Connect
           </Button>
         </>
       )}
       {activeSessionsQuery.isSuccess && sessions && (
-        <div className="flex flex-col gap-y-8">
+        <div className="flex mt-8 flex-col gap-y-8">
           {sessions.map((session) => (
             <div key={session?.topic} className="flex flex-col gap-y-2">
               <div className="font-bold">{session.topic}</div>
