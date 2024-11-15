@@ -33,25 +33,27 @@ export default function WalletConnectPage() {
       )}
       {activeSessionsQuery.isSuccess && (
         <>
-          <Label htmlFor="uri">URI</Label>
-          <Input
-            id="uri"
-            value={uri}
-            onChange={(e) => setUri(e.target.value)}
-          />
+          <div>
+            <Label htmlFor="uri">URI</Label>
+            <Input
+              id="uri"
+              value={uri}
+              onChange={(e) => setUri(e.target.value)}
+            />
+          </div>
           <Button
             disabled={!uri || connectWcMutation.isPending}
             onClick={() =>
               connectWcMutation.connectWc({
                 uri,
                 onPair: async () => {
-                  await activeSessionsQuery.refetch();
                   setUri(undefined);
+                  await activeSessionsQuery.refetch();
                 },
               })
             }
           >
-            Connect
+            {connectWcMutation.isPending ? 'Connecting...' : 'Connect'}
           </Button>
         </>
       )}
