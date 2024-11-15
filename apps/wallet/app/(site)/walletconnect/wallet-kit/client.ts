@@ -23,21 +23,20 @@ export const walletKitClient = await WalletKit.init({
   },
 });
 
-const universalWalletConnector = universalWallet()
+const universalWalletConnector = universalWallet();
 // @ts-expect-error
-const connector = universalWalletConnector(wagmiConfig)
+const connector = universalWalletConnector(wagmiConfig);
 
 async function onSessionProposal({
   id,
   params,
 }: WalletKitTypes.SessionProposal) {
   try {
-    console.log("onSessionProposal")
+    console.log('onSessionProposal');
 
+    await connector.disconnect();
 
-    await connector.disconnect()
-
-    const { chainId, accounts } = await connector.connect()
+    const { chainId, accounts } = await connector.connect();
 
     // ------- namespaces builder util ------------ //
     const approvedNamespaces = buildApprovedNamespaces({
@@ -46,11 +45,20 @@ async function onSessionProposal({
         eip155: {
           // TODO: refactor to get all supported chains
           chains: supportedChainIds.map((chainId) => `eip155:${chainId}`),
-          methods: ['eth_sendTransaction', 'personal_sign', 'eth_signTypedData_v4', 'wallet_sendCalls'],
+          methods: [
+            'eth_sendTransaction',
+            'personal_sign',
+            'eth_signTypedData_v4',
+            'wallet_sendCalls',
+          ],
           events: ['accountsChanged', 'chainChanged'],
-          accounts: (accounts.map((account) =>
-            supportedChainIds.map((chainId) =>
-              `eip155:${chainId}:${account}`))).flat()
+          accounts: accounts
+            .map((account) =>
+              supportedChainIds.map(
+                (chainId) => `eip155:${chainId}:${account}`,
+              ),
+            )
+            .flat(),
         },
       },
     });
@@ -70,25 +78,26 @@ async function onSessionProposal({
 }
 
 async function onSessionRequest(event: WalletKitTypes.SessionRequest) {
-  await connector.connect()
-  const provider = await connector.getProvider()
+  await connector.connect();
+  const provider = await connector.getProvider();
 
-  console.log("onSessionRequest", event)
+  console.log('onSessionRequest', event);
 
-  const { topic, params: eventParams, id } = event
-  const { request } = eventParams
+  const { topic, params: eventParams, id } = event;
+  const { request } = eventParams;
 
-
-  const { method, params } = request
-
+  const { method, params } = request;
 
   const result = await provider.request({
     method,
-    params
-  })
+    params,
+  });
 
-  await walletKitClient.respondSessionRequest({ topic, response: { id, result, jsonrpc: '2.0' } })
+  await walletKitClient.respondSessionRequest({
+    topic,
+    response: { id, result, jsonrpc: '2.0' },
+  });
 }
 
 walletKitClient.on('session_proposal', onSessionProposal);
-walletKitClient.on('session_request', onSessionRequest)
+walletKitClient.on('session_request', onSessionRequest);

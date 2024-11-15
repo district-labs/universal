@@ -16,14 +16,13 @@ export default function WalletConnectPage() {
   const activeSessionsQuery = useActiveSessions();
 
   const sessions = useMemo(() => {
-    if (!activeSessionsQuery.data) return
-    return Object.values(activeSessionsQuery.data)
-  }
-    , [activeSessionsQuery.data]);
+    if (!activeSessionsQuery.data) return;
+    return Object.values(activeSessionsQuery.data);
+  }, [activeSessionsQuery.data]);
 
   return (
     <div className="container gap-y-2 flex flex-col items-center py-20">
-      <WcScanner />
+      <WcScanner onScan={(value) => setUri(value)} />
       {activeSessionsQuery.isLoading && <Skeleton className="w-full h-44" />}
       {activeSessionsQuery.isError && (
         <div className="text-red-500 font-medium">
@@ -43,15 +42,15 @@ export default function WalletConnectPage() {
             onClick={async () => {
               if (!uri) return;
               await walletKitClient.pair({ uri });
-              await activeSessionsQuery.refetch()
+              await activeSessionsQuery.refetch();
             }}
           >
             Get Active sessions
           </Button>
         </>
       )}
-      {activeSessionsQuery.isSuccess && sessions &&
-        <div className='flex flex-col gap-y-8'>
+      {activeSessionsQuery.isSuccess && sessions && (
+        <div className="flex flex-col gap-y-8">
           {sessions.map((session) => (
             <div key={session?.topic} className="flex flex-col gap-y-2">
               <div className="font-bold">{session.topic}</div>
@@ -59,9 +58,9 @@ export default function WalletConnectPage() {
                 onClick={async () => {
                   await walletKitClient.disconnectSession({
                     topic: session.topic,
-                    reason: getSdkError('USER_DISCONNECTED')
-                  })
-                  await activeSessionsQuery.refetch()
+                    reason: getSdkError('USER_DISCONNECTED'),
+                  });
+                  await activeSessionsQuery.refetch();
                 }}
               >
                 Disconnect
@@ -69,8 +68,7 @@ export default function WalletConnectPage() {
             </div>
           ))}
         </div>
-      }
-
+      )}
     </div>
   );
 }

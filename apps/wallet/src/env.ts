@@ -17,8 +17,7 @@ export const env = createEnv({
       .string()
       .url()
       .default('http://localhost:3300'),
-    NEXT_PUBLIC_WC_PROJECT_ID: z
-      .string(),
+    NEXT_PUBLIC_WC_PROJECT_ID: z.string(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_WC_PROJECT_ID: process.env.NEXT_PUBLIC_WC_PROJECT_ID,

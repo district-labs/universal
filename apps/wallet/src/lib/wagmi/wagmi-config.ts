@@ -1,8 +1,5 @@
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
-import {
-  coinbaseWallet,
-  metaMaskWallet,
-} from '@rainbow-me/rainbowkit/wallets';
+import { coinbaseWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
 import { universalWalletRainbowkit } from 'universal-wallet-connector';
 import { createPublicClient } from 'viem';
 import { createConfig, http } from 'wagmi';
@@ -12,11 +9,7 @@ const connectors = connectorsForWallets(
   [
     {
       groupName: 'Recommended',
-      wallets: [
-        universalWalletRainbowkit,
-        coinbaseWallet,
-        metaMaskWallet,
-      ],
+      wallets: [universalWalletRainbowkit, coinbaseWallet, metaMaskWallet],
     },
   ],
   {
@@ -31,7 +24,7 @@ export const wagmiConfig = createConfig({
   transports: {
     [baseSepolia.id]: http(),
   },
-})
+});
 
 export const baseConfig = createConfig({
   chains: [baseSepolia],
