@@ -83,7 +83,7 @@ export default function WalletConnectPage() {
               <CardContent className="flex flex-col gap-y-2">
                 <Button
                   onClick={async () => {
-                    await walletKitClient.disconnectSession({
+                    await walletKitClient?.disconnectSession({
                       topic: session.topic,
                       reason: getSdkError('USER_DISCONNECTED'),
                     });

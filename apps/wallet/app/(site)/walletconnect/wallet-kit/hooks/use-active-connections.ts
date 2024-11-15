@@ -4,6 +4,10 @@ import { walletKitClient } from '../client';
 export function useActiveSessions() {
   return useQuery({
     queryKey: ['wc', 'active-connections'],
-    queryFn: () => walletKitClient.getActiveSessions(),
+    queryFn: () => {
+      if (!walletKitClient) return null;
+      return walletKitClient.getActiveSessions();
+    },
+    enabled: !!walletKitClient,
   });
 }
