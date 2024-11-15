@@ -73,8 +73,6 @@ async function onSessionRequest(event: WalletKitTypes.SessionRequest) {
   await connector.connect();
   const provider = await connector.getProvider();
 
-  console.log('onSessionRequest', event);
-
   const { topic, params: eventParams, id } = event;
   const { request } = eventParams;
 

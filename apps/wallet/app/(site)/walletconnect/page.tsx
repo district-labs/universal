@@ -47,7 +47,7 @@ export default function WalletConnectPage() {
               connectWcMutation.connectWc({
                 uri,
                 onPair: async () => {
-                  setUri(undefined);
+                  setUri('');
                   await activeSessionsQuery.refetch();
                 },
               })
