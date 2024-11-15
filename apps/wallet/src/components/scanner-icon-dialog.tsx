@@ -137,7 +137,6 @@ export function ScannerIconDialog() {
           </Alert>
         ) : scannedResult ? (
           <div className="w-full rounded-lg p-4">
-            {/* <h3 className="font-semibold mb-2">Scanned Result:</h3> */}
             <Card className="break-anywhere p-8">
               {scannedResult.type === 'address' && (
                 <>

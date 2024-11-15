@@ -9,6 +9,8 @@ import { useActiveSessions } from './wallet-kit/hooks/use-active-connections';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getSdkError } from '@walletconnect/utils';
 
+import { WcScanner } from './wallet-kit/components/wc-scanner';
+
 export default function WalletConnectPage() {
   const [uri, setUri] = useState<string>();
   const activeSessionsQuery = useActiveSessions();
@@ -21,6 +23,7 @@ export default function WalletConnectPage() {
 
   return (
     <div className="container gap-y-2 flex flex-col items-center py-20">
+      <WcScanner />
       {activeSessionsQuery.isLoading && <Skeleton className="w-full h-44" />}
       {activeSessionsQuery.isError && (
         <div className="text-red-500 font-medium">
