@@ -10,10 +10,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { getSdkError } from '@walletconnect/utils';
 
 import { WcScanner } from './wallet-kit/components/wc-scanner';
+import { useConnectWc } from './wallet-kit/hooks/use-connect-wc';
 
 export default function WalletConnectPage() {
   const [uri, setUri] = useState<string>();
   const activeSessionsQuery = useActiveSessions();
+  const connectWcMutation = useConnectWc();
 
   const sessions = useMemo(() => {
     if (!activeSessionsQuery.data) return;
@@ -38,14 +40,10 @@ export default function WalletConnectPage() {
             onChange={(e) => setUri(e.target.value)}
           />
           <Button
-            disabled={!uri}
-            onClick={async () => {
-              if (!uri) return;
-              await walletKitClient.pair({ uri });
-              await activeSessionsQuery.refetch();
-            }}
+            disabled={!uri || connectWcMutation.isPending}
+            onClick={() => connectWcMutation.connectWc({ uri })}
           >
-            Get Active sessions
+            Connect
           </Button>
         </>
       )}
