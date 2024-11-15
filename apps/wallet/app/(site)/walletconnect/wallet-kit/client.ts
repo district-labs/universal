@@ -32,11 +32,7 @@ async function onSessionProposal({
   params,
 }: WalletKitTypes.SessionProposal) {
   try {
-    console.log('onSessionProposal');
-
-    await connector.disconnect();
-
-    const { chainId, accounts } = await connector.connect();
+    const { accounts } = await connector.connect();
 
     // ------- namespaces builder util ------------ //
     const approvedNamespaces = buildApprovedNamespaces({
@@ -52,13 +48,9 @@ async function onSessionProposal({
             'wallet_sendCalls',
           ],
           events: ['accountsChanged', 'chainChanged'],
-          accounts: accounts
-            .map((account) =>
-              supportedChainIds.map(
-                (chainId) => `eip155:${chainId}:${account}`,
-              ),
-            )
-            .flat(),
+          accounts: accounts.flatMap((account) =>
+            supportedChainIds.map((chainId) => `eip155:${chainId}:${account}`),
+          ),
         },
       },
     });
