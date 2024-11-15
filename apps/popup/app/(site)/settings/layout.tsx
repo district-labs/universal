@@ -28,9 +28,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         {accountState ? (
-          <div className='flex w-full items-center justify-between px-4'>
-            <span className='cursor-pointer rounded-lg p-1 hover:bg-neutral-100'>
-              <ArrowLeft className='mx-auto size-5' onClick={previousPage} />
+          <div className="flex w-full items-center justify-between px-4">
+            <span className="cursor-pointer rounded-lg p-1 hover:bg-neutral-100">
+              <ArrowLeft className="mx-auto size-5" onClick={previousPage} />
             </span>
             <div className="flex items-center gap-x-2">
               <Address
@@ -41,10 +41,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </div>
           </div>
         ) : (
-          <Skeleton className='h-5 w-20' />
+          <Skeleton className="h-5 w-20" />
         )}
       </header>
-      <main className='relative z-10 flex h-full flex-1 flex-col justify-center'>
+      <main className="relative z-10 flex h-full flex-1 flex-col justify-center">
         {children}
       </main>
     </div>

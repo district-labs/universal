@@ -4,7 +4,9 @@ import DiscordIcon from '@/assets/brands/discord.svg';
 import GithubIcon from '@/assets/brands/github.svg';
 import XIcon from '@/assets/brands/x.svg';
 import { CredentialOAuth } from '@/components/identity/credential-oauth';
+import { ConnectButton } from '@/components/onchain/connect-button';
 import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
+import { IsWalletDisconnected } from '@/components/onchain/is-wallet-disconnected';
 import { SvgIcon } from '@/components/svg-icon';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMemo } from 'react';
@@ -63,6 +65,14 @@ export function ViewCredentials() {
           </p>
         </div>
       </section>
+      <IsWalletDisconnected>
+        <div className="flex flex-col items-center justify-center gap-4 p-10">
+          <ConnectButton>Connect Wallet</ConnectButton>
+          <p className="">
+            Connect your wallet to view and manage your credentials.
+          </p>
+        </div>
+      </IsWalletDisconnected>
       <IsWalletConnected>
         <section className="py-8">
           <div className="2xl container mx-auto grid grid-cols-1 gap-x-5 lg:grid-cols-3">
