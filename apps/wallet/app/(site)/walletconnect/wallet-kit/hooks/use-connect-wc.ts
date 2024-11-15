@@ -8,7 +8,7 @@ export function useConnectWc() {
       uri,
       onPair,
     }: { uri: string | undefined; onPair?: () => Promise<void> }) => {
-      if (!uri || !walletKitClient) return null;
+      if (!uri) return null;
 
       await walletKitClient.pair({ uri });
       await onPair?.();

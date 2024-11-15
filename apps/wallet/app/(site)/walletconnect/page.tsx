@@ -62,7 +62,7 @@ export default function WalletConnectPage() {
       {activeSessionsQuery.isSuccess && sessions && (
         <div className="flex mt-8 flex-col gap-y-8">
           {sessions.map((session) => (
-            <Card key={session?.topic}>
+            <Card className="w-full min-w-[500px]" key={session?.topic}>
               <CardHeader>
                 <div className="flex items-center gap-x-2">
                   <Image

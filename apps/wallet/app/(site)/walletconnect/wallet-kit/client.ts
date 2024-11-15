@@ -2,13 +2,13 @@ import { Core } from '@walletconnect/core';
 import { type IWalletKit, WalletKit } from '@reown/walletkit';
 import { env } from '@/env';
 
-export let walletKitClient: IWalletKit | undefined;
+export const walletKitClient = await createWalletKitClient();
 
 export async function createWalletKitClient() {
   const core = new Core({
     projectId: env.NEXT_PUBLIC_WC_PROJECT_ID,
   });
-  walletKitClient = await WalletKit.init({
+  const walletKitClient = await WalletKit.init({
     core,
     metadata: {
       name: 'Universal Wallet',
@@ -33,4 +33,6 @@ export async function createWalletKitClient() {
       error,
     );
   }
+
+  return walletKitClient;
 }

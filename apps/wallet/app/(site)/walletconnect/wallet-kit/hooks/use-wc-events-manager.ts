@@ -15,9 +15,7 @@ export function useWcEventsManager(initialized: boolean) {
   const onSessionProposal = useCallback(
     async ({ id, params }: WalletKitTypes.SessionProposal) => {
       try {
-        if (!walletKitClient) return;
         const { accounts } = await universalWalletConnector.connect();
-
         // ------- namespaces builder util ------------ //
         const approvedNamespaces = buildApprovedNamespaces({
           proposal: params,
@@ -60,7 +58,6 @@ export function useWcEventsManager(initialized: boolean) {
 
   const onSessionRequest = useCallback(
     async (event: WalletKitTypes.SessionRequest) => {
-      if (!walletKitClient) return;
       await universalWalletConnector.connect();
       const provider = await universalWalletConnector.getProvider();
 
@@ -84,7 +81,7 @@ export function useWcEventsManager(initialized: boolean) {
 
   // Set up WalletConnect event listeners
   useEffect(() => {
-    if (!initialized || !walletKitClient) return;
+    if (!initialized) return;
 
     walletKitClient.on('session_proposal', onSessionProposal);
     walletKitClient.on('session_request', onSessionRequest);

@@ -5,9 +5,7 @@ export function useActiveSessions() {
   return useQuery({
     queryKey: ['wc', 'active-connections'],
     queryFn: () => {
-      if (!walletKitClient) return null;
       return walletKitClient.getActiveSessions();
     },
-    enabled: !!walletKitClient,
   });
 }
