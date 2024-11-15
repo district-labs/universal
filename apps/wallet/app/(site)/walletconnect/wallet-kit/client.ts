@@ -62,7 +62,6 @@ async function onSessionProposal({
     });
   } catch (error) {
     // use the error.message to show toast/info-box letting the user know that the connection attempt was unsuccessful
-    console.error("error: ", error.message);
     await walletKitClient.rejectSession({
       id: params.id,
       reason: getSdkError('USER_REJECTED'),

@@ -19,7 +19,6 @@ export default function WalletConnectPage() {
   }
     , [activeSessionsQuery.data]);
 
-  console.log(sessions);
   return (
     <div className="container gap-y-2 flex flex-col items-center py-20">
       {activeSessionsQuery.isLoading && <Skeleton className="w-full h-44" />}
