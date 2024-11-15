@@ -4,10 +4,10 @@ import { WalletKit, type WalletKitTypes } from '@reown/walletkit';
 import { buildApprovedNamespaces, getSdkError } from '@walletconnect/utils';
 import { universalWallet } from 'universal-wallet-connector';
 import { wagmiConfig } from '@/lib/wagmi/wagmi-config';
-import { base, baseSepolia, mainnet } from 'viem/chains';
+import { base, baseSepolia, mainnet, sepolia } from 'viem/chains';
 import { env } from '@/env';
 
-const supportedChainIds = [mainnet.id, base.id, baseSepolia.id];
+const supportedChainIds = [mainnet.id, sepolia.id, base.id, baseSepolia.id];
 
 const core = new Core({
   projectId: env.NEXT_PUBLIC_WC_PROJECT_ID,
@@ -61,6 +61,7 @@ async function onSessionProposal({
       namespaces: approvedNamespaces,
     });
   } catch (error) {
+    console.log('SessionApprovalError: ', error);
     // use the error.message to show toast/info-box letting the user know that the connection attempt was unsuccessful
     await walletKitClient.rejectSession({
       id: params.id,

@@ -11,6 +11,8 @@ import { getSdkError } from '@walletconnect/utils';
 
 import { WcScanner } from './wallet-kit/components/wc-scanner';
 import { useConnectWc } from './wallet-kit/hooks/use-connect-wc';
+import Image from 'next/image';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 export default function WalletConnectPage() {
   const [uri, setUri] = useState<string | undefined>();
@@ -33,7 +35,7 @@ export default function WalletConnectPage() {
       )}
       {activeSessionsQuery.isSuccess && (
         <>
-          <div>
+          <div className="w-full max-w-xl">
             <Label htmlFor="uri">URI</Label>
             <Input
               id="uri"
@@ -60,20 +62,38 @@ export default function WalletConnectPage() {
       {activeSessionsQuery.isSuccess && sessions && (
         <div className="flex mt-8 flex-col gap-y-8">
           {sessions.map((session) => (
-            <div key={session?.topic} className="flex flex-col gap-y-2">
-              <div className="font-bold">{session.topic}</div>
-              <Button
-                onClick={async () => {
-                  await walletKitClient.disconnectSession({
-                    topic: session.topic,
-                    reason: getSdkError('USER_DISCONNECTED'),
-                  });
-                  await activeSessionsQuery.refetch();
-                }}
-              >
-                Disconnect
-              </Button>
-            </div>
+            <Card key={session?.topic}>
+              <CardHeader>
+                <div className="flex items-center gap-x-2">
+                  <Image
+                    alt="logo"
+                    className="rounded-lg"
+                    src={
+                      session.peer.metadata.icons[0] ?? '/images/logo-xl.png'
+                    }
+                    width={32}
+                    height={32}
+                  />
+                  <div className="font-bold">{session.peer.metadata.name}</div>
+                </div>
+                <div className="text-xs">
+                  {session.peer.metadata.description}
+                </div>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-y-2">
+                <Button
+                  onClick={async () => {
+                    await walletKitClient.disconnectSession({
+                      topic: session.topic,
+                      reason: getSdkError('USER_DISCONNECTED'),
+                    });
+                    await activeSessionsQuery.refetch();
+                  }}
+                >
+                  Disconnect
+                </Button>
+              </CardContent>
+            </Card>
           ))}
         </div>
       )}
