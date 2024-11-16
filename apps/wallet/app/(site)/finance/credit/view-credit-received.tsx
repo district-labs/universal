@@ -1,28 +1,32 @@
-import type * as React from 'react';
-import { cn } from '@/lib/utils';
-import {
-  useDelegationExecute,
-  useDelegationStatus,
-  useErc20TransferAmountEnforcer,
-  useGetDelegationByDelegateAndType,
-} from 'universal-delegations-sdk';
-import { type Address, encodeFunctionData, erc20Abi } from 'viem';
+import { RowBasic } from '@/components/row-basic';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from '@/components/ui/card';
-import { RowBasic } from '@/components/row-basic';
+import { cn } from '@/lib/utils';
+import type * as React from 'react';
+import {
+  type DelegationDb,
+  useDelegationExecute,
+  useDelegationStatus,
+  useErc20TransferAmountEnforcer,
+  useGetDelegationByDelegateAndType,
+} from 'universal-delegations-sdk';
 import { DebitCard } from 'universal-wallet-ui';
-import { Button } from '@/components/ui/button';
+import { type Address, encodeFunctionData, erc20Abi } from 'viem';
 import { useAccount } from 'wagmi';
 
-type ViewReceived = React.HTMLAttributes<HTMLElement> & {
+type ViewCreditReceivedProps = React.HTMLAttributes<HTMLElement> & {
   delegate: Address;
 };
 
-const ViewReceived = ({ className, delegate }: ViewReceived) => {
+const ViewCreditReceived = ({
+  className,
+  delegate,
+}: ViewCreditReceivedProps) => {
   const { data } = useGetDelegationByDelegateAndType({
     address: delegate,
     type: 'DebitAuthorization',
@@ -36,7 +40,7 @@ const ViewReceived = ({ className, delegate }: ViewReceived) => {
     <div
       className={cn(
         className,
-        'grid grid-cols-1 gap-x-6 gap-y-10 md:grid-cols-2 lg:grid-cols-3',
+        'grid grid-cols-1 gap-x-6 gap-y-10 lg:grid-cols-3',
       )}
     >
       {data.map((delegation) => {
@@ -49,7 +53,7 @@ const ViewReceived = ({ className, delegate }: ViewReceived) => {
 };
 
 type CardAuthorization = React.HTMLAttributes<HTMLElement> & {
-  delegation: any;
+  delegation: DelegationDb;
 };
 
 const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
@@ -72,9 +76,8 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
 
   return (
     <Card key={delegation.hash} className={className}>
-      <CardHeader className="bg-neutral-100">
+      <CardHeader className="flex items-center justify-center bg-neutral-100">
         <DebitCard
-          color="green"
           to={delegation.delegate}
           amount={enforcerData.amountFormatted}
           name={enforcerData.name}
@@ -136,4 +139,4 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
   );
 };
 
-export { ViewReceived };
+export { ViewCreditReceived };

@@ -38,3 +38,46 @@ export const slugSchema = z
       message: 'Invalid slug',
     },
   );
+
+// Regular expression to match Ethereum URIs with optional parameters
+export const ethereumUriRegex =
+  /^ethereum:(0x[a-fA-F0-9]{40})(\?(?<params>.+))?$/;
+
+// Zod schema for Ethereum URI
+export const ethereumUriSchema = z
+  .string()
+  .regex(ethereumUriRegex, {
+    message: 'Invalid Ethereum URI format',
+  })
+  .transform((uri) => {
+    const match = uri.match(ethereumUriRegex);
+    if (!match || !match.groups) {
+      throw new Error('Invalid Ethereum URI format');
+    }
+    const address = match[1];
+    const paramsString = match.groups.params || '';
+    const params: Record<string, string> = {};
+    // biome-ignore lint/complexity/noForEach: <explanation>
+    paramsString.split('&').forEach((param) => {
+      const [key, value] = param.split('=');
+      if (key && value) {
+        params[key] = value;
+      }
+    });
+    return { address, params };
+  });
+
+// Regular expression to match DID format: did:uis:chainId:resolver:account
+export const didUriRegex =
+  /^did:uis:([a-zA-Z0-9]+):([a-zA-Z0-9]+):0x[a-fA-F0-9]{40}$/;
+
+// Zod schema for DIDs
+export const didUriSchema = z
+  .string()
+  .regex(didUriRegex, {
+    message: 'Invalid DID format',
+  })
+  .transform((did) => {
+    const [_, chainId, resolver, account] = did.split(':');
+    return { chainId: Number(chainId), resolver, account };
+  });

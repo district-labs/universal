@@ -48,7 +48,6 @@ export const CardPaymentBasic = ({
     <div className={cn(className)}>
       <div className="flex justify-center pb-6">
         <DebitCard
-          color="green"
           amount={formatUnits(BigInt(data.amount), 18).toString()}
           tokenAddress={data.token}
           chainId={chainId}

@@ -1,5 +1,5 @@
 import { Slot } from '@radix-ui/react-slot';
-import { cva, type VariantProps } from 'class-variance-authority';
+import { type VariantProps, cva } from 'class-variance-authority';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -22,10 +22,10 @@ const buttonVariants = cva(
         emerald: 'bg-emerald-600 text-white shadow hover:bg-emerald-600/90',
       },
       size: {
-        default: 'h-9 px-4 py-2',
-        sm: 'h-8 rounded-md px-3 text-xs',
-        lg: 'h-10 rounded-md px-8',
-        xl: 'h-12 rounded-lg px-10 text-xl',
+        default: 'px-4 py-2',
+        sm: 'h-8 rounded-md px-3 py-2 text-xs',
+        lg: 'rounded-md px-8 py-2.5',
+        xl: 'rounded-lg px-10 text-xl',
         icon: 'h-9 w-9',
       },
       rounded: {

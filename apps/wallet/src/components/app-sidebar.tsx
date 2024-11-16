@@ -144,9 +144,9 @@ export function AppSidebar() {
           <div className="flex-1">
             <LinkComponent
               className="font-semibold text-xs"
-              href="https://github.com/district-labs/"
+              href="https://districtlabs.com/"
             >
-              Github
+              District
             </LinkComponent>
           </div>
           <div className="">
