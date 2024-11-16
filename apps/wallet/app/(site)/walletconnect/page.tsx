@@ -1,18 +1,18 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { walletKitClient } from './wallet-kit/client';
-import { useMemo, useState } from 'react';
 import { Input } from '@/components/ui/input';
-import { Label } from '@radix-ui/react-label';
-import { useActiveSessions } from './wallet-kit/hooks/use-active-connections';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Label } from '@radix-ui/react-label';
 import { getSdkError } from '@walletconnect/utils';
+import { useMemo, useState } from 'react';
+import { walletKitClient } from './wallet-kit/client';
+import { useActiveSessions } from './wallet-kit/hooks/use-active-connections';
 
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import Image from 'next/image';
 import { WcScanner } from './wallet-kit/components/wc-scanner';
 import { useConnectWc } from './wallet-kit/hooks/use-connect-wc';
-import Image from 'next/image';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 export default function WalletConnectPage() {
   const [uri, setUri] = useState<string | undefined>();
@@ -20,16 +20,16 @@ export default function WalletConnectPage() {
   const connectWcMutation = useConnectWc();
 
   const sessions = useMemo(() => {
-    if (!activeSessionsQuery.data) return;
+    if (!activeSessionsQuery.data) { return; }
     return Object.values(activeSessionsQuery.data);
   }, [activeSessionsQuery.data]);
 
   return (
-    <div className="container gap-y-2 flex flex-col items-center py-20">
+    <div className='container flex flex-col items-center gap-y-2 py-20'>
       <WcScanner onScan={(value) => setUri(value)} />
-      {activeSessionsQuery.isLoading && <Skeleton className="w-full h-44" />}
+      {activeSessionsQuery.isLoading && <Skeleton className='h-44 w-full' />}
       {activeSessionsQuery.isError && (
-        <div className="text-red-500 font-medium">
+        <div className='font-medium text-red-500'>
           {activeSessionsQuery.error.message}
         </div>
       )}
@@ -49,6 +49,7 @@ export default function WalletConnectPage() {
               connectWcMutation.connectWc({
                 uri,
                 onPair: async () => {
+                  ''
                   setUri('');
                   await activeSessionsQuery.refetch();
                 },
@@ -60,7 +61,7 @@ export default function WalletConnectPage() {
         </>
       )}
       {activeSessionsQuery.isSuccess && sessions && (
-        <div className="flex mt-8 flex-col gap-y-8">
+        <div className='mt-8 flex flex-col gap-y-8'>
           {sessions.map((session) => (
             <Card className="w-full min-w-[500px]" key={session?.topic}>
               <CardHeader>

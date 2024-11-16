@@ -1,18 +1,19 @@
+import { connectorsForWallets } from '@rainbow-me/rainbowkit';
+import { walletConnectWallet } from '@rainbow-me/rainbowkit/wallets';
+import { universalWalletRainbowkit } from 'universal-wallet-connector';
 import { createConfig, http } from 'wagmi';
 import { baseSepolia } from 'wagmi/chains';
-import { connectorsForWallets } from '@rainbow-me/rainbowkit';
-import { universalWalletRainbowkit } from 'universal-wallet-connector';
 
 const connectors = connectorsForWallets(
   [
     {
       groupName: 'Recommended',
-      wallets: [universalWalletRainbowkit],
+      wallets: [universalWalletRainbowkit, walletConnectWallet],
     },
   ],
   {
     appName: 'Universal Wallet',
-    projectId: 'YOUR_PROJECT_ID',
+    projectId: 'cb444694b88d050cef9d9b71eb718a09',
   },
 );
 

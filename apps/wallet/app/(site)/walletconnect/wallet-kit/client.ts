@@ -1,6 +1,6 @@
-import { Core } from '@walletconnect/core';
-import { type IWalletKit, WalletKit } from '@reown/walletkit';
 import { env } from '@/env';
+import { WalletKit } from '@reown/walletkit';
+import { Core } from '@walletconnect/core';
 
 export const walletKitClient = await createWalletKitClient();
 
