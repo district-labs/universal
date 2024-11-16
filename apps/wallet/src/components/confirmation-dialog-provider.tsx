@@ -4,7 +4,6 @@ import { useToast } from '@/lib/hooks/use-toast';
 import { ToastClose } from '@radix-ui/react-toast';
 import { type ReactNode, createContext, useContext } from 'react';
 import { Button } from './ui/button';
-import { ToastProvider, ToastViewport } from './ui/toast';
 
 type ConfirmationDialogContextType = {
   openDialog: () => Promise<boolean>;
@@ -18,12 +17,9 @@ export function ConfirmationDialogProvider({
   children,
 }: { children: ReactNode }) {
   return (
-    <ToastProvider>
-      <ConfirmationDialogContextProvider>
-        {children}
-      </ConfirmationDialogContextProvider>
-      <ToastViewport />
-    </ToastProvider>
+    <ConfirmationDialogContextProvider>
+      {children}
+    </ConfirmationDialogContextProvider>
   );
 }
 
@@ -41,7 +37,7 @@ function ConfirmationDialogContextProvider({
 
       // Display the toast with action buttons
       toast({
-        title: 'Wallet Request',
+        title: 'Signature Request',
         action: (
           <div className="flex space-x-2">
             <ToastClose>

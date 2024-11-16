@@ -27,7 +27,7 @@ export const itemsFinance = [
     icon: CircleDollarSign,
   },
   {
-    title: 'Credit Lines',
+    title: 'Credit',
     url: '/finance/credit',
     icon: Banknote,
   },

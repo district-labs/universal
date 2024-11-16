@@ -50,8 +50,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           fontSans.variable,
         )}
       >
-        <Toaster />
         <RootProvider>{children}</RootProvider>
+        <Toaster />
       </body>
     </html>
   );

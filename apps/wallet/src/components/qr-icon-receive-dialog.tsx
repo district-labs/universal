@@ -12,7 +12,6 @@ import { Fingerprint, QrCode, WalletMinimal } from 'lucide-react';
 import { universalDeployments } from 'universal-data';
 import { constructDidIdentifier } from 'universal-identity-sdk';
 import { useAccount } from 'wagmi';
-import { CopyIconButton } from './copy-icon-button';
 import { QRCodeRender } from './qr-code-address';
 import { Button } from './ui/button';
 
@@ -52,7 +51,6 @@ const QRIconReceiveDialog = () => {
                 <div className="overflow-hidden rounded-3xl border-4 border-neutral-300 shadow-lg">
                   <QRCodeRender data={address} className="h-auto w-full" />
                 </div>
-                {/* <CopyIconButton value={address} /> */}
               </div>
             </TabsContent>
             <TabsContent className="pt-4" value="password">
@@ -72,13 +70,6 @@ const QRIconReceiveDialog = () => {
                     className="h-auto w-full"
                   />
                 </div>
-                <CopyIconButton
-                  value={constructDidIdentifier({
-                    address,
-                    resolver: universalDeployments?.[chainId].resolver,
-                    chainId,
-                  })}
-                />
               </div>
             </TabsContent>
           </Tabs>

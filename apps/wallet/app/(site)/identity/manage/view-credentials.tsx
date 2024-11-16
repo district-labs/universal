@@ -58,8 +58,10 @@ export function ViewCredentials() {
   return (
     <>
       <section className="border-b-2 bg-neutral-100/30 py-6">
-        <div className="2xl container mx-auto w-full">
-          <h3 className="font-bold text-3xl">Universal Credentials</h3>
+        <div className="container flex w-full flex-col items-center gap-2 md:flex-row md:justify-between">
+          <h3 className="font-bold text-2xl md:text-3xl">
+            Universal Credentials
+          </h3>
           <p className="">
             Verify your online accounts to create a universal identity.
           </p>

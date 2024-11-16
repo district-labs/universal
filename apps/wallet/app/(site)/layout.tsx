@@ -24,7 +24,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   useWcEventsManager(initialized);
   return (
     <>
-      <div className="relative flex min-h-screen flex-col">
+      <div className="relative flex max-w-[100vw] flex-col">
         <SidebarProvider>
           <AppSidebar />
           <div className="flex flex-1 flex-col">

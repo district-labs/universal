@@ -18,7 +18,7 @@ import { Button } from './ui/button';
 type AccountPopover = React.HTMLAttributes<HTMLElement>;
 
 export const AccountPopover = ({ className }: AccountPopover) => {
-  const { address, chainId } = useAccount();
+  const { address } = useAccount();
   const activeSessionsQuery = useActiveSessions();
 
   const sessions = useMemo(() => {
