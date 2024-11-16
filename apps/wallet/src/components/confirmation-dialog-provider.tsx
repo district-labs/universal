@@ -42,7 +42,6 @@ function ConfirmationDialogContextProvider({
       // Display the toast with action buttons
       toast({
         title: 'Wallet Request',
-        description: 'Do you want to proceed?',
         action: (
           <div className="flex space-x-2">
             <ToastClose>

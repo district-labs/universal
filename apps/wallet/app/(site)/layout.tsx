@@ -1,11 +1,11 @@
 import { AppSidebar } from '@/components/app-sidebar';
+import { ScannerIconDialog } from '@/components/camera/scanner-icon-dialog';
 import { ConnectUniversalWalletButton } from '@/components/connect-universal-wallet';
 import { ConnectButton } from '@/components/onchain/connect-button';
 import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
 import { IsWalletDisconnected } from '@/components/onchain/is-wallet-disconnected';
 import { PWAEnvironment } from '@/components/pwa-environment';
 import { QRIconReceiveDialog } from '@/components/qr-icon-receive-dialog';
-import { ScannerIconDialog } from '@/components/scanner-icon-dialog';
 import { SiteEnvironment } from '@/components/site-environment';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';

@@ -9,14 +9,15 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
-import { type IDetectedBarcode, Scanner } from '@yudiel/react-qr-scanner';
+import type { IDetectedBarcode } from '@yudiel/react-qr-scanner';
 import { Focus, SwitchCamera } from 'lucide-react';
 import { useCallback, useState } from 'react';
+import ReactQrReader from 'react-qr-reader-es6';
 import { constructDidIdentifier } from 'universal-identity-sdk';
 import type { Address } from 'viem';
 import { z } from 'zod';
-import { CopyIconButton } from './copy-icon-button';
-import { Card } from './ui/card';
+import { CopyIconButton } from '../copy-icon-button';
+import { Card } from '../ui/card';
 
 // Regular expression to match Ethereum URIs with optional parameters
 const ethereumUriRegex = /^ethereum:(0x[a-fA-F0-9]{40})(\?(?<params>.+))?$/;
@@ -70,6 +71,11 @@ export function ScannerIconDialog() {
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>(
     'environment',
   );
+
+  const handleOnScan = (result?: string | null) => {
+    if (!result) { return; }
+    console.log(result);
+  };
 
   // Handle QR code decoding
   const handleDecode = useCallback((result: IDetectedBarcode[]) => {
@@ -162,7 +168,7 @@ export function ScannerIconDialog() {
           </div>
         ) : (
           <div className="relative h-[min-content] w-full overflow-hidden rounded-lg bg-muted md:min-h-[455px]">
-            <Scanner
+            {/* <Scanner
               styles={{ finderBorder: 3 }}
               classNames={{
                 container: 'object-cover w-full h-full',
@@ -170,6 +176,17 @@ export function ScannerIconDialog() {
               }}
               onScan={handleDecode}
               constraints={{ facingMode }}
+            /> */}
+            <ReactQrReader
+              showViewFinder={false}
+              className='h-full w-full object-cover'
+              onError={(e) => {
+                console.log('error: ', e);
+                setError(e);
+              }}
+              onScan={handleOnScan}
+              facingMode={facingMode}
+              style={{ width: '100%' }}
             />
             <div className="absolute inset-0 rounded-lg border-[3px] border-white/50" />
             <div className="absolute top-2 right-2">
