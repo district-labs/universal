@@ -1,7 +1,7 @@
 import { standardErrors } from ':core/error';
 
-const POPUP_WIDTH = 420;
-const POPUP_HEIGHT = 540;
+const POPUP_WIDTH = 435;
+const POPUP_HEIGHT = 550;
 
 // Window Management
 
@@ -26,9 +26,3 @@ export function closePopup(popup: Window | null) {
     popup.close();
   }
 }
-
-/**
- * TODO: consolidate all UI related helper functions,
- * ones making window.xxx() document.yyy() calls.
- * e.g. WLMobileRelayUI, WalletLinkRelay, ...
- */

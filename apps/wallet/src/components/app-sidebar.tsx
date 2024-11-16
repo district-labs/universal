@@ -10,6 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar';
 import { siteConfig } from 'app/config';
 import {
@@ -32,6 +33,7 @@ import { PWAInstallPrompt } from './pwa-install-prompt';
 import { LinkComponent } from './ui/link-component';
 
 export function AppSidebar() {
+  const { toggleSidebar } = useSidebar();
   return (
     <Sidebar>
       <SidebarHeader className="p-4">
@@ -51,7 +53,7 @@ export function AppSidebar() {
               {itemsCore.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild={true}>
-                    <LinkComponent href={item.url}>
+                    <LinkComponent href={item.url} onClick={toggleSidebar}>
                       <item.icon />
                       <span>{item.title}</span>
                     </LinkComponent>
@@ -71,7 +73,7 @@ export function AppSidebar() {
               {itemsFinance.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild={true}>
-                    <LinkComponent href={item.url}>
+                    <LinkComponent href={item.url} onClick={toggleSidebar}>
                       <item.icon />
                       <span>{item.title}</span>
                     </LinkComponent>
@@ -91,7 +93,7 @@ export function AppSidebar() {
               {itemsIdentity.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild={true}>
-                    <LinkComponent href={item.url}>
+                    <LinkComponent href={item.url} onClick={toggleSidebar}>
                       <item.icon />
                       <span>{item.title}</span>
                     </LinkComponent>
@@ -112,7 +114,7 @@ export function AppSidebar() {
               {itemsTesting.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild={true}>
-                    <LinkComponent href={item.url}>
+                    <LinkComponent href={item.url} onClick={toggleSidebar}>
                       {/* {item.icon && <item.icon />} */}
                       <span>{item.title}</span>
                     </LinkComponent>

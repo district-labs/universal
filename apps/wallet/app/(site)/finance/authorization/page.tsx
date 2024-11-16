@@ -32,11 +32,11 @@ export default function FinanceAuthorizationPage() {
         <div className="flex-1 lg:h-auto">
           <TabsContent value="account" className="m-0 h-full p-0">
             <section className="h-full">
-              <div className="flex h-full w-full flex-col items-center lg:flex-row lg:justify-center">
+              <div className="flex h-full w-full flex-col items-center lg:flex-row lg:justify-center ">
                 <div className="order-1 flex w-full flex-col bg-neutral-100 py-6 lg:order-1 lg:h-full">
-                  <div className="flex flex-1 flex-col items-center justify-center px-12">
+                  <div className="container flex flex-1 flex-col items-center justify-center">
                     <FormErc20Authorize onFormChange={setData} />
-                    <p className="mt-4 text-center text-foreground-muted text-sm">
+                    <p className="mt-4 hidden text-center text-foreground-muted text-sm md:block">
                       The recipient will be able to pull funds from your account
                       at any time. <br /> You can revoke this authorization
                       before spending occurs.

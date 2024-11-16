@@ -2,7 +2,6 @@
 import { RowBasic } from '@/components/row-basic';
 import { Toggle } from '@/components/toggle';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Delegation } from '@/lib/delegation-framework/types';
 import { useGetMessageChainId } from '@/lib/pop-up/hooks/use-get-message-chain-id';
 import { useMemo, useState } from 'react';
@@ -131,14 +130,14 @@ const DefaultRender = ({ chainId, viewType, typedData }: DefaultRender) => {
   }
 
   return (
-    <ScrollArea className="h-full max-h-[330px] flex-1 overflow-auto rounded-lg text-sm">
+    <div>
       <RowBasic label="Primary Type" value={typedData.primaryType} />
       <hr className="my-2 block border-neutral-200" />
       <GenerateEip712Items
         className="flex flex-col gap-y-3"
         data={typedData.message}
       />
-    </ScrollArea>
+    </div>
   );
 };
 

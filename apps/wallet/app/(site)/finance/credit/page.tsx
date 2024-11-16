@@ -16,7 +16,7 @@ export default function FinanceTransferPage() {
           <p className="">Spending allowances sent from other wallets.</p>
         </div>
       </section>
-      <section className="h-full bg-neutral-100/50 p-6">
+      <section className="h-full bg-neutral-100/50 py-4 md:py-8">
         <div className="2xl container">
           <ViewCreditReceived delegate={address} />
         </div>

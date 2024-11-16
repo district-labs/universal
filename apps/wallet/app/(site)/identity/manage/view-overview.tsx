@@ -86,7 +86,7 @@ export default function ViewOverview() {
               </Card>
             </div>
             <div className="mt-4 grid gap-5 lg:grid-cols-4">
-              <Card className="content p-8 lg:col-span-2">
+              <Card className="content col-span-2 p-8">
                 {/* <Circle className='text-blue-400 mb-4' size={32} /> */}
                 <h3 className="mb-2 font-bold text-3xl text-neutral-600">
                   How It Works

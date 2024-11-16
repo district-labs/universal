@@ -1,11 +1,11 @@
 import './globals.css';
 
-import type { ReactNode } from 'react';
 import { env } from '@/env';
+import type { ReactNode } from 'react';
 
+import { cn } from '@/lib/utils';
 import { siteConfig } from './config';
 import { fontSans } from './fonts';
-import { cn } from '@/lib/utils';
 import RootProvider from './root-provider';
 
 const url = env.NEXT_PUBLIC_SITE_URL;
@@ -23,10 +23,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
-        className={cn(
-          'min-h-screen bg-background font-sans antialiased',
-          fontSans.variable,
-        )}
+        className={cn('bg-background font-sans antialiased', fontSans.variable)}
       >
         <RootProvider>{children}</RootProvider>
       </body>

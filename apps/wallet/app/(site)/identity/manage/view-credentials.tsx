@@ -62,7 +62,7 @@ export function ViewCredentials() {
           <h3 className="font-bold text-2xl md:text-3xl">
             Universal Credentials
           </h3>
-          <p className="">
+          <p className="hidden md:block">
             Verify your online accounts to create a universal identity.
           </p>
         </div>

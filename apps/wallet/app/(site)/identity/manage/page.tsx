@@ -8,7 +8,7 @@ import ViewOverview from './view-overview';
 export default function FinanceAuthorizationPage() {
   return (
     <>
-      <Tabs defaultValue="account" className="h-full w-full p-0">
+      <Tabs defaultValue="account" className="flex h-full w-full flex-col p-0">
         <div className="sticky top-0 flex w-full border-b-2 bg-neutral-100/60 py-3">
           <div className="2xl container">
             <TabsList className="max-w-screen-sm">
@@ -27,7 +27,7 @@ export default function FinanceAuthorizationPage() {
             </TabsList>
           </div>
         </div>
-        <div className="h-full">
+        <div className="flex-1">
           <TabsContent value="account" className="m-0 h-full p-0">
             <ViewCredentials />
           </TabsContent>
