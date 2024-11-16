@@ -80,7 +80,12 @@ export function useWcEventsManager(initialized: boolean) {
           topic,
           response: { id, result, jsonrpc: '2.0' },
         });
-      } 
+      }  else {
+        await walletKitClient.respondSessionRequest({
+          topic,
+          response: { id, error: getSdkError('USER_REJECTED'), jsonrpc: '2.0' },
+        })
+      }
 
     },
     [openDialog],

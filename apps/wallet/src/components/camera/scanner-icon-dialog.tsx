@@ -175,7 +175,17 @@ export function ScannerIconDialog() {
                 video: 'object-cover w-full h-full',
               }}
               onScan={handleDecode}
-              constraints={{ facingMode }}
+              constraints={{
+                facingMode,
+              }}
+              onError={(error) => {
+                console.error('Camera Error:', error);
+                setError(
+                  isIOS
+                    ? 'Camera access denied. On iOS, please ensure camera permissions are granted in Settings > Safari > Camera.'
+                    : 'Failed to access camera. Please check your permissions.',
+                );
+              }}
             /> */}
             <ReactQrReader
               showViewFinder={false}

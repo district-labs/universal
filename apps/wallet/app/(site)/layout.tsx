@@ -1,5 +1,6 @@
+'use client';
 import { AppSidebar } from '@/components/app-sidebar';
-import { ScannerIconDialog } from '@/components/camera/scanner-icon-dialog';
+import { CameraQrScanner } from '@/components/camera/camera-qr-scanner';
 import { ConnectUniversalWalletButton } from '@/components/connect-universal-wallet';
 import { ConnectButton } from '@/components/onchain/connect-button';
 import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
@@ -10,12 +11,16 @@ import { SiteEnvironment } from '@/components/site-environment';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 import type { ReactNode } from 'react';
+import { useWcEventsManager } from './walletconnect/wallet-kit/hooks/use-wc-events-manager';
+import { useWcInitialization } from './walletconnect/wallet-kit/hooks/use-wc-initialization';
 
 interface RootLayoutProps {
   children: ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  const initialized = useWcInitialization();
+  useWcEventsManager(initialized);
   return (
     <>
       <div className="relative flex min-h-screen flex-col">
@@ -34,7 +39,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <div>
                   <IsWalletConnected>
                     <div className="flex items-center gap-x-2">
-                      <ScannerIconDialog />
+                      <CameraQrScanner />
                       <QRIconReceiveDialog />
                       <ConnectButton rounded={'full'} />
                     </div>
