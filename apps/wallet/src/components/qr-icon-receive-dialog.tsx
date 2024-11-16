@@ -52,10 +52,7 @@ const QRIconReceiveDialog = () => {
                 <div className="overflow-hidden rounded-3xl border-4 border-neutral-300 shadow-lg">
                   <QRCodeRender data={address} className="h-auto w-full" />
                 </div>
-                <span className="mt-4 block break-all font-semibold text-sm">
-                  {address}
-                </span>
-                <CopyIconButton value={address} />
+                {/* <CopyIconButton value={address} /> */}
               </div>
             </TabsContent>
             <TabsContent className="pt-4" value="password">
@@ -75,13 +72,6 @@ const QRIconReceiveDialog = () => {
                     className="h-auto w-full"
                   />
                 </div>
-                <span className="mt-4 block break-all font-semibold text-sm">
-                  {constructDidIdentifier({
-                    address,
-                    resolver: universalDeployments?.[chainId].resolver,
-                    chainId,
-                  })}
-                </span>
                 <CopyIconButton
                   value={constructDidIdentifier({
                     address,

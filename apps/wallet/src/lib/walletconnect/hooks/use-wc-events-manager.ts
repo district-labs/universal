@@ -47,7 +47,9 @@ export function useWcEventsManager(initialized: boolean) {
           namespaces: approvedNamespaces,
         });
       } catch (_error) {
-        if (!walletKitClient) { return; }
+        if (!walletKitClient) {
+          return;
+        }
         // use the error.message to show toast/info-box letting the user know that the connection attempt was unsuccessful
         await walletKitClient.rejectSession({
           id: params.id,
@@ -80,26 +82,27 @@ export function useWcEventsManager(initialized: boolean) {
           topic,
           response: { id, result, jsonrpc: '2.0' },
         });
-      }  else {
+      } else {
         await walletKitClient.respondSessionRequest({
           topic,
           response: { id, error: getSdkError('USER_REJECTED'), jsonrpc: '2.0' },
-        })
+        });
       }
-
     },
     [openDialog],
   );
 
   // Set up WalletConnect event listeners
   useEffect(() => {
-    if (!initialized) { return; }
+    if (!initialized) {
+      return;
+    }
 
     walletKitClient.on('session_proposal', onSessionProposal);
     walletKitClient.on('session_request', onSessionRequest);
     return () => {
       walletKitClient.off('session_proposal', onSessionProposal);
       walletKitClient.off('session_request', onSessionRequest);
-    }
+    };
   }, [initialized, onSessionProposal, onSessionRequest]);
 }

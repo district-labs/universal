@@ -11,8 +11,8 @@ import {
 import { useToast } from '@/lib/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { didUriSchema, ethereumUriSchema } from '@/lib/validation/utils';
-import { useActiveSessions } from 'app/(site)/walletconnect/wallet-kit/hooks/use-active-connections';
-import { useConnectWc } from 'app/(site)/walletconnect/wallet-kit/hooks/use-connect-wc';
+import { useActiveSessions } from '@/lib/walletconnect/hooks/use-active-connections';
+import { useConnectWc } from '@/lib/walletconnect/hooks/use-connect-wc';
 import { ScanQrCode, SwitchCamera } from 'lucide-react';
 import { useState } from 'react';
 import ReactQrReader from 'react-qr-reader-es6';

@@ -73,7 +73,9 @@ export function ScannerIconDialog() {
   );
 
   const handleOnScan = (result?: string | null) => {
-    if (!result) { return; }
+    if (!result) {
+      return;
+    }
     console.log(result);
   };
 
@@ -189,7 +191,7 @@ export function ScannerIconDialog() {
             /> */}
             <ReactQrReader
               showViewFinder={false}
-              className='h-full w-full object-cover'
+              className="h-full w-full object-cover"
               onError={(e) => {
                 console.log('error: ', e);
                 setError(e);

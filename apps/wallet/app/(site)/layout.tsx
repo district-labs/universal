@@ -1,4 +1,5 @@
 'use client';
+import { AccountPopover } from '@/components/account-popover';
 import { AppSidebar } from '@/components/app-sidebar';
 import { CameraQrScanner } from '@/components/camera/camera-qr-scanner';
 import { ConnectUniversalWalletButton } from '@/components/connect-universal-wallet';
@@ -10,9 +11,9 @@ import { QRIconReceiveDialog } from '@/components/qr-icon-receive-dialog';
 import { SiteEnvironment } from '@/components/site-environment';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
+import { useWcEventsManager } from '@/lib/walletconnect/hooks/use-wc-events-manager';
+import { useWcInitialization } from '@/lib/walletconnect/hooks/use-wc-initialization';
 import type { ReactNode } from 'react';
-import { useWcEventsManager } from './walletconnect/wallet-kit/hooks/use-wc-events-manager';
-import { useWcInitialization } from './walletconnect/wallet-kit/hooks/use-wc-initialization';
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -41,7 +42,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                     <div className="flex items-center gap-x-2">
                       <CameraQrScanner />
                       <QRIconReceiveDialog />
-                      <ConnectButton rounded={'full'} />
+                      <AccountPopover />
                     </div>
                   </IsWalletConnected>
                   <IsWalletDisconnected>
