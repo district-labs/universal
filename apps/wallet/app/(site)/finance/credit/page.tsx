@@ -7,7 +7,7 @@ export default function FinanceTransferPage() {
   const { address } = useAccount();
 
   return (
-    <div className='flex h-full flex-col'>
+    <div className="flex h-full flex-col">
       <section className="border-b-2 bg-neutral-100/30 py-6">
         <div className="container flex w-full flex-col items-center gap-2 md:flex-row md:justify-between">
           <h3 className="font-bold text-2xl">Credit</h3>

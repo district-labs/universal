@@ -58,9 +58,7 @@ export const PWAInstallPrompt = ({ className, children }: PWAInstallPrompt) => {
 
               <h3 className="font-bold text-lg">Android</h3>
               <ul className="mb-4 list-inside list-disc pl-2 text-sm">
-                <li>
-                  Tap the menu button in the top-right corner
-                </li>
+                <li>Tap the menu button in the top-right corner</li>
                 <li>Tap "Add to Home screen" or "Install App" ➕</li>
               </ul>
               <p className="text-sm">
@@ -110,9 +108,7 @@ export const PWAInstallPrompt = ({ className, children }: PWAInstallPrompt) => {
 
             <h3 className="font-bold text-lg">Android</h3>
             <ul className="mb-4 list-inside list-disc pl-2 text-sm">
-              <li>
-                Tap the menu button in the top-right corner
-              </li>
+              <li>Tap the menu button in the top-right corner</li>
               <li>Tap "Add to Home screen" or "Install App" ➕</li>
             </ul>
             <p className="text-sm">
