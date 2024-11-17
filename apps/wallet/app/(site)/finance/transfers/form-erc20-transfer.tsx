@@ -11,8 +11,8 @@ import { useAccount } from 'wagmi';
 import { useWriteContracts } from 'wagmi/experimental';
 import { z } from 'zod';
 
-import { AccountSelectAndInput } from '@/components/select/account-select-and-input';
-import { Erc20SelectAndAmount } from '@/components/select/erc20-select-and-amount';
+import { AccountSelectAndInput } from '@/components/fields/account-select-and-input';
+import { Erc20SelectAndAmount } from '@/components/fields/erc20-select-and-amount';
 import { Card } from '@/components/ui/card';
 import type { TokenItem } from 'universal-data';
 import { tokenList } from 'universal-data';

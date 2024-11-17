@@ -3,11 +3,11 @@
 import DiscordIcon from '@/assets/brands/discord.svg';
 import GithubIcon from '@/assets/brands/github.svg';
 import XIcon from '@/assets/brands/x.svg';
+import { SvgIcon } from '@/components/core/svg-icon';
 import { CredentialOAuth } from '@/components/identity/credential-oauth';
 import { ConnectButton } from '@/components/onchain/connect-button';
 import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
 import { IsWalletDisconnected } from '@/components/onchain/is-wallet-disconnected';
-import { SvgIcon } from '@/components/svg-icon';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMemo } from 'react';
 import { useGetCredentials } from 'universal-credential-sdk';

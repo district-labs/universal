@@ -13,29 +13,28 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { siteConfig } from 'app/config';
-import {
-  CircleIcon,
-  Earth,
-  Fingerprint,
-  FlaskConical,
-  SmartphoneNfc,
-} from 'lucide-react';
+import { CircleIcon, Earth, Fingerprint, SmartphoneNfc } from 'lucide-react';
 
+import { type breakpoints, useBreakpoint } from '@/lib/hooks/use-breakpoint';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { PWAInstallPrompt } from '../core/pwa-install-prompt';
+import { LinkComponent } from '../ui/link-component';
 import {
   itemsCore,
   itemsFinance,
   itemsIdentity,
-  itemsTesting,
 } from './app-sidebar-menu-items';
-import { PWAInstallPrompt } from './pwa-install-prompt';
-import { LinkComponent } from './ui/link-component';
 
 export function AppSidebar() {
   const { toggleSidebar } = useSidebar();
+  const toggleBreakpoint: keyof typeof breakpoints = 'md';
+  const isToggleSidebarBreakpoint = useBreakpoint(toggleBreakpoint);
+  const pathname = usePathname();
+
   return (
-    <Sidebar>
+    <Sidebar className="z-50">
       <SidebarHeader className="p-4">
         <Link href="/" className="flex items-center">
           <CircleIcon className="size-6 text-emerald-500 dark:text-emerald-100" />
@@ -43,6 +42,7 @@ export function AppSidebar() {
         </Link>
       </SidebarHeader>
       <SidebarContent className="px-2">
+        {/* Dashboard Group */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-sm">Dashboard</SidebarGroupLabel>
           <SidebarGroupAction>
@@ -52,8 +52,16 @@ export function AppSidebar() {
             <SidebarMenu>
               {itemsCore.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild={true}>
-                    <LinkComponent href={item.url} onClick={toggleSidebar}>
+                  <SidebarMenuButton
+                    isActive={pathname === item.url}
+                    asChild={true}
+                  >
+                    <LinkComponent
+                      href={item.url}
+                      onClick={
+                        isToggleSidebarBreakpoint ? toggleSidebar : undefined
+                      }
+                    >
                       <item.icon />
                       <span>{item.title}</span>
                     </LinkComponent>
@@ -63,17 +71,27 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Finance Group */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-sm">Finance</SidebarGroupLabel>
           <SidebarGroupAction>
-            <SmartphoneNfc /> <span className="sr-only">Identity</span>
+            <SmartphoneNfc /> <span className="sr-only">Finance</span>
           </SidebarGroupAction>
           <SidebarGroupContent>
             <SidebarMenu>
               {itemsFinance.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild={true}>
-                    <LinkComponent href={item.url} onClick={toggleSidebar}>
+                  <SidebarMenuButton
+                    isActive={pathname === item.url}
+                    asChild={true}
+                  >
+                    <LinkComponent
+                      href={item.url}
+                      onClick={
+                        isToggleSidebarBreakpoint ? toggleSidebar : undefined
+                      }
+                    >
                       <item.icon />
                       <span>{item.title}</span>
                     </LinkComponent>
@@ -83,6 +101,8 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Identity Group */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-sm">Identity</SidebarGroupLabel>
           <SidebarGroupAction>
@@ -92,8 +112,16 @@ export function AppSidebar() {
             <SidebarMenu>
               {itemsIdentity.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild={true}>
-                    <LinkComponent href={item.url} onClick={toggleSidebar}>
+                  <SidebarMenuButton
+                    isActive={pathname === item.url}
+                    asChild={true}
+                  >
+                    <LinkComponent
+                      href={item.url}
+                      onClick={
+                        isToggleSidebarBreakpoint ? toggleSidebar : undefined
+                      }
+                    >
                       <item.icon />
                       <span>{item.title}</span>
                     </LinkComponent>
@@ -103,32 +131,12 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <hr className="my-1" />
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-sm">Testing</SidebarGroupLabel>
-          <SidebarGroupAction>
-            <FlaskConical /> <span className="sr-only">Testing</span>
-          </SidebarGroupAction>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {itemsTesting.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild={true}>
-                    <LinkComponent href={item.url} onClick={toggleSidebar}>
-                      {/* {item.icon && <item.icon />} */}
-                      <span>{item.title}</span>
-                    </LinkComponent>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
       </SidebarContent>
+
       <SidebarFooter className="gap-y-0 p-0">
         <PWAInstallPrompt className="text-sm">
           <div className="bg-neutral-200/60 px-4 py-2">
-            <div className="curs flex w-full items-center justify-between">
+            <div className="flex w-full items-center justify-between">
               <span className="font-semibold text-neutral-600">
                 Install Universal
               </span>
@@ -142,7 +150,7 @@ export function AppSidebar() {
             </div>
           </div>
         </PWAInstallPrompt>
-        <div className="flow-row flex items-center gap-x-2 border-t-2 p-4">
+        <div className="flex items-center gap-x-2 border-t-2 p-4">
           <div className="flex-1">
             <LinkComponent
               className="font-semibold text-xs"
@@ -151,7 +159,7 @@ export function AppSidebar() {
               District
             </LinkComponent>
           </div>
-          <div className="">
+          <div>
             <span className="text-xs">version 0.0.0</span>
           </div>
         </div>

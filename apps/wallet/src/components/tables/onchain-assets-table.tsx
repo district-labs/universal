@@ -8,7 +8,7 @@ import { DataTable } from '@/components/data-table/data-table';
 import { cn } from '@/lib/utils';
 import { tokenList } from 'universal-data';
 import { ERC20Balance } from '../onchain/erc20-balance';
-import { TokenImageWithFallback } from '../token-image-with-fallback';
+import { TokenImageWithFallback } from '../onchain/token-image-with-fallback';
 
 const columns = [
   {

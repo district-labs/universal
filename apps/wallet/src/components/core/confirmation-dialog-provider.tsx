@@ -3,7 +3,7 @@
 import { useToast } from '@/lib/hooks/use-toast';
 import { ToastClose } from '@radix-ui/react-toast';
 import { type ReactNode, createContext, useContext } from 'react';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 
 type ConfirmationDialogContextType = {
   openDialog: () => Promise<boolean>;

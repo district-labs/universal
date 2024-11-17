@@ -1,5 +1,5 @@
 'use client';
-import { ConfirmationDialogProvider } from '@/components/confirmation-dialog-provider';
+import { ConfirmationDialogProvider } from '@/components/core/confirmation-dialog-provider';
 import { env } from '@/env';
 import { wagmiConfig } from '@/lib/wagmi/wagmi-config';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';

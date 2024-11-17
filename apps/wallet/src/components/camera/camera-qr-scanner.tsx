@@ -16,15 +16,19 @@ import { useConnectWc } from '@/lib/walletconnect/hooks/use-connect-wc';
 import { ScanQrCode, SwitchCamera } from 'lucide-react';
 import { useState } from 'react';
 import ReactQrReader from 'react-qr-reader-es6';
-import { SvgIcon } from '../svg-icon';
+import { SvgIcon } from '../core/svg-icon';
 import { Input } from '../ui/input';
 
 type CameraQrScannerProps = {
   onScanSuccess?: (data: string) => void;
+  isWalletConnectEnabled?: boolean;
 };
 
 // Scanner Component
-export function CameraQrScanner({ onScanSuccess }: CameraQrScannerProps) {
+export function CameraQrScanner({
+  onScanSuccess,
+  isWalletConnectEnabled,
+}: CameraQrScannerProps) {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [_error, setError] = useState<string | null>(null);
@@ -44,7 +48,7 @@ export function CameraQrScanner({ onScanSuccess }: CameraQrScannerProps) {
       return;
     }
 
-    if (result.startsWith('wc:')) {
+    if (isWalletConnectEnabled && result.startsWith('wc:')) {
       connectWcMutation.connectWc({
         uri: result,
         onPair: async () => {
@@ -130,21 +134,23 @@ export function CameraQrScanner({ onScanSuccess }: CameraQrScannerProps) {
             </Button>
           </div>
         </div>
-        <div className="flex items-center gap-x-2 px-2 pb-3">
-          <Input
-            id="uri"
-            placeholder="Enter WalletConnect URI"
-            value={uri}
-            onChange={(e) => setUri(e.target.value)}
-          />
-          <Button
-            size={'icon'}
-            disabled={!uri || connectWcMutation.isPending}
-            onClick={() => handleOnScan(uri)}
-          >
-            <SvgIcon src={WalletConnectIcon} className="size-8 text-lg" />
-          </Button>
-        </div>
+        {isWalletConnectEnabled && (
+          <div className="flex items-center gap-x-2 px-2 pb-3">
+            <Input
+              id="uri"
+              placeholder="Enter WalletConnect URI"
+              value={uri}
+              onChange={(e) => setUri(e.target.value)}
+            />
+            <Button
+              size={'icon'}
+              disabled={!uri || connectWcMutation.isPending}
+              onClick={() => handleOnScan(uri)}
+            >
+              <SvgIcon src={WalletConnectIcon} className="size-8 text-lg" />
+            </Button>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

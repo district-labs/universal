@@ -1,4 +1,4 @@
-import { useConfirmationDialog } from '@/components/confirmation-dialog-provider';
+import { useConfirmationDialog } from '@/components/core/confirmation-dialog-provider';
 import { wagmiConfig } from '@/lib/wagmi/wagmi-config';
 import type { WalletKitTypes } from '@reown/walletkit';
 import { buildApprovedNamespaces, getSdkError } from '@walletconnect/utils';
@@ -64,10 +64,8 @@ export function useWcEventsManager(initialized: boolean) {
     async (event: WalletKitTypes.SessionRequest) => {
       await universalWalletConnector.connect();
       const provider = await universalWalletConnector.getProvider();
-
       const { topic, params: eventParams, id } = event;
       const { request } = eventParams;
-
       const { method, params } = request;
 
       const dialogConfirmed = await openDialog();
@@ -100,9 +98,9 @@ export function useWcEventsManager(initialized: boolean) {
 
     walletKitClient.on('session_proposal', onSessionProposal);
     walletKitClient.on('session_request', onSessionRequest);
-    return () => {
-      walletKitClient.off('session_proposal', onSessionProposal);
-      walletKitClient.off('session_request', onSessionRequest);
-    };
+    // return () => {
+    //   walletKitClient.off('session_proposal', onSessionProposal);
+    //   walletKitClient.off('session_request', onSessionRequest);
+    // };
   }, [initialized, onSessionProposal, onSessionRequest]);
 }

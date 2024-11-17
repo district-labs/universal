@@ -1,4 +1,4 @@
-import { RowBasic } from '@/components/row-basic';
+import { RowBasic } from '@/components/core/row-basic';
 import { Button } from '@/components/ui/button';
 import {
   Card,

@@ -12,9 +12,9 @@ import { Circle, LogOut, Unplug } from 'lucide-react';
 import Image from 'next/image';
 import { useMemo } from 'react';
 import { useAccount } from 'wagmi';
-import { DisconnectWalletElement } from './onchain/disconnect-wallet-element';
-import { PWAInstallPrompt } from './pwa-install-prompt';
-import { Button } from './ui/button';
+import { PWAInstallPrompt } from '../core/pwa-install-prompt';
+import { DisconnectWalletElement } from '../onchain/disconnect-wallet-element';
+import { Button } from '../ui/button';
 type AccountPopover = React.HTMLAttributes<HTMLElement>;
 
 export const AccountPopover = ({ className }: AccountPopover) => {

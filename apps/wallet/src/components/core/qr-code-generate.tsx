@@ -4,19 +4,19 @@ import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
 import { isAddress } from 'viem';
 
-interface QRCodeRender {
+interface QRCodeGenerate {
   data?: string;
   size?: number;
   logoSize?: number;
   className?: string;
 }
 
-export function QRCodeRender({
+export function QRCodeGenerate({
   data,
   size = 256,
   logoSize = 46,
   className,
-}: QRCodeRender) {
+}: QRCodeGenerate) {
   const [logoUrl, setLogoUrl] = useState('/images/eth-qr.png');
   const [isValid, setIsValid] = useState(false);
   const [qrValue, setQrValue] = useState('');

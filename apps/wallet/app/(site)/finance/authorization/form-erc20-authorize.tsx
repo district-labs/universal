@@ -8,13 +8,13 @@ import type { Address } from 'viem';
 import { useAccount } from 'wagmi';
 import { z } from 'zod';
 
-import { ConnectUniversalWalletButton } from '@/components/connect-universal-wallet';
-import { ConnectedWalletName } from '@/components/connected-wallet-name';
+import { AccountSelectAndInput } from '@/components/fields/account-select-and-input';
+import { Erc20SelectAndAmount } from '@/components/fields/erc20-select-and-amount';
+import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
+import { ConnectedWalletName } from '@/components/onchain/connected-wallet-name';
 import { DisconnectWalletElement } from '@/components/onchain/disconnect-wallet-element';
 import { IsNotUniversalWallet } from '@/components/onchain/is-not-universal-wallet';
 import { IsUniversalWallet } from '@/components/onchain/is-universal-wallet';
-import { AccountSelectAndInput } from '@/components/select/account-select-and-input';
-import { Erc20SelectAndAmount } from '@/components/select/erc20-select-and-amount';
 import { Card } from '@/components/ui/card';
 import { useEffect } from 'react';
 import type { TokenItem } from 'universal-data';
