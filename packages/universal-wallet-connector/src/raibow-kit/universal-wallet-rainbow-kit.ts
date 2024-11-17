@@ -15,7 +15,7 @@ export const universalWalletRainbowkit: UniversalWallet = ({
 	return {
 		id: "universalWallet",
 		name: "Universal Wallet",
-		shortName: "Universal Wallet",
+		shortName: "Universal",
 		iconUrl: "https://wallet.districtlabs.com/images/icon-sm.png",
 		iconAccent: "#fff",
 		iconBackground: "#fff",
