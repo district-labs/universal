@@ -1,4 +1,4 @@
-import FarcasterIcon from '@/assets/brands/farcaster.svg';
+import DiscordIcon from '@/assets/brands/discord.svg';
 import GithubIcon from '@/assets/brands/github.svg';
 import XIcon from '@/assets/brands/x.svg';
 import { cn } from '@/lib/utils';
@@ -30,13 +30,13 @@ export const VerificationRequestDefaultParsedView = ({
             src={GithubIcon}
           />
         )}
-        {typedDataMessage?.type === 'farcaster' && (
+        {typedDataMessage?.type === 'discord' && (
           <SvgIcon
             className="mx-auto"
             color="purple"
             width={48}
             height={48}
-            src={FarcasterIcon}
+            src={DiscordIcon}
           />
         )}
         <h3 className="font-bold text-2xl">

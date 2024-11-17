@@ -11,7 +11,10 @@ import { tokenList } from 'universal-data';
 import { type Address, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 import { useWriteContracts } from 'wagmi/experimental';
-import { Button } from './ui/button';
+import { ConnectUniversalWalletButton } from '../onchain/connect-universal-wallet';
+import { IsWalletConnected } from '../onchain/is-wallet-connected';
+import { IsWalletDisconnected } from '../onchain/is-wallet-disconnected';
+import { Button } from '../ui/button';
 
 const MINT_ABI = [
   {
@@ -50,7 +53,7 @@ const AddFundsTestnet = ({ children }: AddFundsTestnet) => {
           functionName: 'mint',
           args: [
             address as Address,
-            parseUnits('100', tokenList.tokens[1].decimals),
+            parseUnits('250', tokenList.tokens[1].decimals),
           ],
         },
         {
@@ -69,19 +72,39 @@ const AddFundsTestnet = ({ children }: AddFundsTestnet) => {
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="p-10">
-        <DialogHeader>
-          <DialogTitle className="font-black text-3xl">
-            Mint Universal Test Assets
+      <DialogContent className="px-10 pt-10 pb-6">
+        <DialogHeader className="sm:text-center">
+          <DialogTitle className="font-black text-4xl">
+            <span className="text-8xl">🐳</span>
+            <br />
+            Testnet Whale
           </DialogTitle>
-          <DialogDescription className="text-lg">
-            Add funds to your account by minting testnet tokens. You'll be sent
-            test USD, EUR and GEMS.
+          <DialogDescription>
+            <span className="font-bold text-lg">
+              Become a beta tester on Base Sepolia!
+            </span>{' '}
+            <br />
+            You'll be sent testnet USD, EUR and GEMS for free.
           </DialogDescription>
         </DialogHeader>
-        <Button className="w-full" onClick={handleOnClick}>
-          Mint Funds
-        </Button>
+        <IsWalletDisconnected>
+          <ConnectUniversalWalletButton
+            size="lg"
+            className="rounded-full py-3 text-lg"
+          >
+            Connect Universal Wallet
+          </ConnectUniversalWalletButton>
+        </IsWalletDisconnected>
+        <IsWalletConnected>
+          <Button
+            className="w-full text-lg"
+            rounded={'full'}
+            size={'lg'}
+            onClick={handleOnClick}
+          >
+            Mint Testnet Tokens
+          </Button>
+        </IsWalletConnected>
       </DialogContent>
     </Dialog>
   );

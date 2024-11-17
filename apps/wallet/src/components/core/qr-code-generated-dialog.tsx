@@ -12,11 +12,10 @@ import { Fingerprint, QrCode, WalletMinimal } from 'lucide-react';
 import { universalDeployments } from 'universal-data';
 import { constructDidIdentifier } from 'universal-identity-sdk';
 import { useAccount } from 'wagmi';
-import { CopyIconButton } from './copy-icon-button';
-import { QRCodeRender } from './qr-code-address';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
+import { QRCodeGenerate } from './qr-code-generate';
 
-const QRIconReceiveDialog = () => {
+const QRCodeGeneratedDialog = () => {
   const { address, chainId } = useAccount();
 
   return (
@@ -50,12 +49,8 @@ const QRIconReceiveDialog = () => {
               </DialogHeader>
               <div className="space-y-4">
                 <div className="overflow-hidden rounded-3xl border-4 border-neutral-300 shadow-lg">
-                  <QRCodeRender data={address} className="h-auto w-full" />
+                  <QRCodeGenerate data={address} className="h-auto w-full" />
                 </div>
-                <span className="mt-4 block break-all font-semibold text-sm">
-                  {address}
-                </span>
-                <CopyIconButton value={address} />
               </div>
             </TabsContent>
             <TabsContent className="pt-4" value="password">
@@ -66,7 +61,7 @@ const QRIconReceiveDialog = () => {
               </DialogHeader>
               <div className="space-y-4">
                 <div className=" overflow-hidden rounded-3xl border-4 border-neutral-300 shadow-lg">
-                  <QRCodeRender
+                  <QRCodeGenerate
                     data={constructDidIdentifier({
                       address,
                       resolver: universalDeployments?.[chainId].resolver,
@@ -75,20 +70,6 @@ const QRIconReceiveDialog = () => {
                     className="h-auto w-full"
                   />
                 </div>
-                <span className="mt-4 block break-all font-semibold text-sm">
-                  {constructDidIdentifier({
-                    address,
-                    resolver: universalDeployments?.[chainId].resolver,
-                    chainId,
-                  })}
-                </span>
-                <CopyIconButton
-                  value={constructDidIdentifier({
-                    address,
-                    resolver: universalDeployments?.[chainId].resolver,
-                    chainId,
-                  })}
-                />
               </div>
             </TabsContent>
           </Tabs>
@@ -97,4 +78,4 @@ const QRIconReceiveDialog = () => {
     </Dialog>
   );
 };
-export { QRIconReceiveDialog };
+export { QRCodeGeneratedDialog };

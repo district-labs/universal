@@ -16,7 +16,10 @@ export const DisconnectWalletElement = ({
   const { disconnect } = useDisconnect();
   const Comp = asChild ? Slot : 'span';
   return (
-    <Comp onClick={() => disconnect()} className={cn(className)}>
+    <Comp
+      onClick={() => disconnect()}
+      className={cn('cursor-pointer', className)}
+    >
       {children}
     </Comp>
   );

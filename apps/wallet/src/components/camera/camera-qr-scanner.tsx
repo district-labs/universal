@@ -1,29 +1,37 @@
 'use client';
-
-import { CopyIconButton } from '@/components/copy-icon-button';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import WalletConnectIcon from '@/assets/brands/walletconnect.svg';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useToast } from '@/lib/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { didUriSchema, ethereumUriSchema } from '@/lib/validation/utils';
-import { type IDetectedBarcode, Scanner } from '@yudiel/react-qr-scanner';
-import { Camera, SwitchCamera } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useActiveSessions } from '@/lib/walletconnect/hooks/use-active-connections';
+import { useConnectWc } from '@/lib/walletconnect/hooks/use-connect-wc';
+import { ScanQrCode, SwitchCamera } from 'lucide-react';
+import { useState } from 'react';
+import ReactQrReader from 'react-qr-reader-es6';
+import { SvgIcon } from '../core/svg-icon';
+import { Input } from '../ui/input';
 
 type CameraQrScannerProps = {
-  onScanSuccess: (data: string) => void;
+  onScanSuccess?: (data: string) => void;
+  isWalletConnectEnabled?: boolean;
 };
 
 // Scanner Component
-export function CameraQrScanner({ onScanSuccess }: CameraQrScannerProps) {
+export function CameraQrScanner({
+  onScanSuccess,
+  isWalletConnectEnabled,
+}: CameraQrScannerProps) {
+  const { toast } = useToast();
   const [open, setOpen] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [_error, setError] = useState<string | null>(null);
   const [scannedResult, setScannedResult] = useState<{
     type: 'address' | 'did' | 'unknown';
     data: string;
@@ -31,35 +39,47 @@ export function CameraQrScanner({ onScanSuccess }: CameraQrScannerProps) {
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>(
     'environment',
   );
-  const [isIOS, setIsIOS] = useState(false);
+  const [uri, setUri] = useState<string | undefined>();
+  const activeSessionsQuery = useActiveSessions();
+  const connectWcMutation = useConnectWc();
 
-  useEffect(() => {
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    setIsIOS(/iphone|ipad|ipod/.test(userAgent));
-  }, []);
+  const handleOnScan = (result?: string | null) => {
+    if (!result) {
+      return;
+    }
 
-  const handleDecode = useCallback(
-    (result: IDetectedBarcode[]) => {
-      const ethResult = ethereumUriSchema.safeParse(result[0].rawValue);
-      if (ethResult.success) {
-        onScanSuccess(ethResult.data.address);
-        handleOpenChange(false);
-        return;
-      }
+    if (isWalletConnectEnabled && result.startsWith('wc:')) {
+      connectWcMutation.connectWc({
+        uri: result,
+        onPair: async () => {
+          await activeSessionsQuery.refetch();
+          handleOpenChange(false);
+          toast({
+            title: 'Application Connected',
+            description: 'You have successfully connected to the application',
+          });
+        },
+      });
+    }
 
-      // Try parsing as DID
-      const didResult = didUriSchema.safeParse(result);
-      if (didResult.success) {
-        onScanSuccess(didResult.data.account);
-        handleOpenChange(false);
-        return;
-      }
+    const ethResult = ethereumUriSchema.safeParse(result);
+    if (ethResult.success) {
+      onScanSuccess?.(ethResult.data.address);
+      handleOpenChange(false);
+      return;
+    }
 
-      // If neither matches, set as unknown
-      setScannedResult({ type: 'unknown', data: '' });
-    },
-    [onScanSuccess],
-  );
+    // Try parsing as DID
+    const didResult = didUriSchema.safeParse(result);
+    if (didResult.success) {
+      onScanSuccess?.(didResult.data.account);
+      handleOpenChange(false);
+      return;
+    }
+
+    // If neither matches, set as unknown
+    setScannedResult({ type: 'unknown', data: '' });
+  };
 
   // Toggle camera facing mode (for smartphones)
   const switchCamera = () => {
@@ -80,75 +100,55 @@ export function CameraQrScanner({ onScanSuccess }: CameraQrScannerProps) {
       <DialogTrigger asChild={true}>
         <Button variant="outline" size="icon">
           <span>
-            <Camera width={24} height={24} className="size-8 text-lg" />
+            <ScanQrCode width={24} height={24} className="size-8 text-lg" />
             <span className="sr-only">Open QR scanner</span>
           </span>
         </Button>
       </DialogTrigger>
       <DialogContent
-        className={cn('max-w-sm transition-all md:max-w-lg', {
+        isCloseDisabled={true}
+        className={cn('max-w-sm p-0 transition-all md:max-w-lg', {
           'md:max-w-2xl ': scannedResult?.type === 'address',
         })}
       >
-        <DialogHeader className="items-center text-center" />
-        {error ? (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        ) : scannedResult ? (
-          <div className="w-full rounded-lg p-4">
-            {/* <h3 className="font-semibold mb-2">Scanned Result:</h3> */}
-            <Card className="break-anywhere p-8">
-              {scannedResult.type === 'address' && (
-                <>
-                  <h3 className="font-semibold text-lg">Ethereum Address</h3>
-                  <div className="flex flex-col gap-2 md:flex-row md:items-center">
-                    <span className="block break-all text-sm">
-                      {scannedResult.data}
-                    </span>
-                    <CopyIconButton value={scannedResult.data} />
-                  </div>
-                </>
-              )}
-              {scannedResult.type === 'did' && (
-                <span className="">{scannedResult.data}</span>
-              )}
-            </Card>
-            <Button
-              className="mt-4 w-full"
-              onClick={() => setScannedResult(null)}
-            >
-              Scan Again
+        <DialogHeader className="sr-only items-center text-center">
+          <DialogTitle className="sr-only">Scan QR Code</DialogTitle>
+        </DialogHeader>
+        <div className="relative h-[min-content] w-full overflow-hidden rounded-lg bg-muted md:min-h-[455px]">
+          <ReactQrReader
+            showViewFinder={false}
+            className="h-full w-full object-cover"
+            onError={(e) => {
+              console.log('error: ', e);
+              setError(e.message);
+            }}
+            onScan={handleOnScan}
+            facingMode={facingMode}
+            style={{ width: '100%' }}
+          />
+          <div className="absolute inset-0 rounded-lg border-[3px] border-white/50" />
+          <div className="absolute top-2 right-2">
+            <Button variant="secondary" size="icon" onClick={switchCamera}>
+              <SwitchCamera className="h-4 w-4" />
+              <span className="sr-only">Switch camera</span>
             </Button>
           </div>
-        ) : (
-          <div className="relative h-[min-content] w-full overflow-hidden rounded-lg bg-muted md:min-h-[455px]">
-            <Scanner
-              styles={{ finderBorder: 3 }}
-              classNames={{
-                container: 'object-cover w-full h-full',
-                video: 'object-cover w-full h-full',
-              }}
-              onScan={handleDecode}
-              constraints={{
-                facingMode,
-              }}
-              onError={(error) => {
-                console.error('Camera Error:', error);
-                setError(
-                  isIOS
-                    ? 'Camera access denied. On iOS, please ensure camera permissions are granted in Settings > Safari > Camera.'
-                    : 'Failed to access camera. Please check your permissions.',
-                );
-              }}
+        </div>
+        {isWalletConnectEnabled && (
+          <div className="flex items-center gap-x-2 px-2 pb-3">
+            <Input
+              id="uri"
+              placeholder="Enter WalletConnect URI"
+              value={uri}
+              onChange={(e) => setUri(e.target.value)}
             />
-            <div className="absolute inset-0 rounded-lg border-[3px] border-white/50" />
-            <div className="absolute top-2 right-2">
-              <Button variant="secondary" size="icon" onClick={switchCamera}>
-                <SwitchCamera className="h-4 w-4" />
-                <span className="sr-only">Switch camera</span>
-              </Button>
-            </div>
+            <Button
+              size={'icon'}
+              disabled={!uri || connectWcMutation.isPending}
+              onClick={() => handleOnScan(uri)}
+            >
+              <SvgIcon src={WalletConnectIcon} className="size-8 text-lg" />
+            </Button>
           </div>
         )}
       </DialogContent>

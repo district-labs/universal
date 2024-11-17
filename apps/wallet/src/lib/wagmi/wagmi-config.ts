@@ -14,7 +14,7 @@ const connectors = connectorsForWallets(
   ],
   {
     appName: 'Universal Wallet',
-    projectId: 'YOUR_PROJECT_ID',
+    projectId: '97f5c1a3ff6472301394f11c869fc601',
   },
 );
 

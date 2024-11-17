@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import type * as React from 'react';
 import { isAddress } from 'viem';
-import { Address } from './onchain/address';
+import { Address } from '../onchain/address';
 
 export type RowBasic = React.HTMLAttributes<HTMLElement> & {
   label: string;

@@ -1,4 +1,4 @@
-import { RowBasic } from '@/components/row-basic';
+import { RowBasic } from '@/components/core/row-basic';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -33,7 +33,19 @@ const ViewCreditReceived = ({
   });
 
   if (!data) {
-    return null;
+    return (
+      <Card className="p-8 text-center">
+        <h3 className="font-normal text-lg">No Active Credit Lines</h3>
+      </Card>
+    );
+  }
+
+  if (data?.length === 0) {
+    return (
+      <Card className="p-8 text-center">
+        <h3 className="font-normal text-lg">No Active Credit Lines</h3>
+      </Card>
+    );
   }
 
   return (

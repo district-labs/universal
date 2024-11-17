@@ -1,8 +1,8 @@
 import {
   ArrowLeftRight,
   Banknote,
-  CircleDollarSign,
   IdCard,
+  KeySquare,
   LayoutDashboard,
   Search,
 } from 'lucide-react';
@@ -18,16 +18,16 @@ export const itemsCore = [
 export const itemsFinance = [
   {
     title: 'Transfer',
-    url: '/finance/transfers',
+    url: '/finance/transfer',
     icon: ArrowLeftRight,
   },
   {
-    title: 'Authorizations',
-    url: '/finance/authorization',
-    icon: CircleDollarSign,
+    title: 'Smart Links',
+    url: '/finance/smart-links',
+    icon: KeySquare,
   },
   {
-    title: 'Credit Lines',
+    title: 'Credit',
     url: '/finance/credit',
     icon: Banknote,
   },

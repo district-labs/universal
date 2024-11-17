@@ -1,14 +1,15 @@
 'use client';
-import '@rainbow-me/rainbowkit/styles.css';
-import type { ReactNode } from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { WagmiProvider } from 'wagmi';
-import { DelegationsApiClientProvider } from 'universal-delegations-sdk';
-import { wagmiConfig } from '@/lib/wagmi/wagmi-config';
-import { ThemeProvider } from 'next-themes';
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { ConfirmationDialogProvider } from '@/components/core/confirmation-dialog-provider';
 import { env } from '@/env';
+import { wagmiConfig } from '@/lib/wagmi/wagmi-config';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import '@rainbow-me/rainbowkit/styles.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from 'next-themes';
+import type { ReactNode } from 'react';
+import { DelegationsApiClientProvider } from 'universal-delegations-sdk';
 import { UniversalIdentityClientProvider } from 'universal-identity-sdk';
+import { WagmiProvider } from 'wagmi';
 const queryClient = new QueryClient();
 
 type RootProviderProps = {
@@ -32,7 +33,9 @@ export default function RootProvider({ children }: RootProviderProps) {
               <DelegationsApiClientProvider
                 url={env.NEXT_PUBLIC_DELEGATIONS_API_URL}
               >
-                {children}
+                <ConfirmationDialogProvider>
+                  {children}
+                </ConfirmationDialogProvider>
               </DelegationsApiClientProvider>
             </UniversalIdentityClientProvider>
           </RainbowKitProvider>

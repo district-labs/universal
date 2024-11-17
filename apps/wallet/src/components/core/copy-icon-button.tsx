@@ -1,17 +1,17 @@
 import { useToast } from '@/lib/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Copy } from 'lucide-react';
-import * as React from 'react';
+import type * as React from 'react';
 import { useCopyToClipboard } from 'usehooks-ts';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 
 type CopyIconButton = React.HTMLAttributes<HTMLElement> & {
   value: string;
 };
 
-const CopyIconButton = ({ children, className, value }: CopyIconButton) => {
+const CopyIconButton = ({ className, value }: CopyIconButton) => {
   const { toast } = useToast();
-  const [copiedText, copy] = useCopyToClipboard();
+  const [, copy] = useCopyToClipboard();
 
   const handleCopy = (text: string) => {
     copy(text)

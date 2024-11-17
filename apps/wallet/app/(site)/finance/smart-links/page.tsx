@@ -1,5 +1,6 @@
 'use client';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { KeyRound, SquareDashedKanban } from 'lucide-react';
 import { useState } from 'react';
 import { DebitCard } from 'universal-wallet-ui';
 import type { Address } from 'viem';
@@ -11,25 +12,36 @@ export default function FinanceAuthorizationPage() {
   const { address } = useAccount();
   const [data, setData] = useState<FormData>();
   return (
-    <>
-      <Tabs defaultValue="account" className="h-full w-full p-0">
-        <div className="sticky top-0 flex w-full border-b-2 bg-neutral-100/60 p-3 px-8 ">
-          <TabsList className="max-w-screen-sm">
-            <TabsTrigger value="account">Create</TabsTrigger>
-            <TabsTrigger value="debit">Manage</TabsTrigger>
-          </TabsList>
-        </div>
-        <div className="h-full">
+    <div className="h-full">
+      <Tabs defaultValue="account" className=" flex h-full w-full flex-col p-0">
+        <section className="border-b-2 bg-neutral-100/30 py-4 md:py-6">
+          <div className="container flex w-full flex-col items-center gap-2 md:flex-row md:justify-between">
+            <div className="">
+              <h3 className="font-bold text-2xl">Smart Links</h3>
+              <p className="hidden text-sm md:block">
+                Create an onchain credit line between you and friends.
+              </p>
+            </div>
+            <TabsList className="max-w-screen-sm">
+              <TabsTrigger value="account">
+                <KeyRound className="mr-2 size-4" />
+                Create
+              </TabsTrigger>
+              <TabsTrigger value="debit">
+                <SquareDashedKanban className="mr-2 size-4" />
+                Manage
+              </TabsTrigger>
+            </TabsList>
+          </div>
+        </section>
+        <div className="flex-1 lg:h-auto">
           <TabsContent value="account" className="m-0 h-full p-0">
             <section className="h-full">
-              <div className="flex h-full w-full flex-col items-center lg:flex-row lg:justify-center">
+              <div className="flex h-full w-full flex-col items-center lg:flex-row lg:justify-center ">
                 <div className="order-1 flex w-full flex-col bg-neutral-100 py-6 lg:order-1 lg:h-full">
-                  <div className="flex flex-1 flex-col items-center justify-center px-12">
-                    <h3 className="mb-4 font-black text-4xl text-foreground-muted">
-                      Authorize Credit Line
-                    </h3>
+                  <div className="container flex flex-1 flex-col items-center justify-center">
                     <FormErc20Authorize onFormChange={setData} />
-                    <p className="mt-4 text-center text-foreground-muted text-sm">
+                    <p className="mt-4 hidden text-center text-foreground-muted text-sm md:block">
                       The recipient will be able to pull funds from your account
                       at any time. <br /> You can revoke this authorization
                       before spending occurs.
@@ -57,6 +69,6 @@ export default function FinanceAuthorizationPage() {
           </TabsContent>
         </div>
       </Tabs>
-    </>
+    </div>
   );
 }

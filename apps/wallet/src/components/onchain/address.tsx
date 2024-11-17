@@ -1,11 +1,11 @@
-import { useMemo, type HTMLAttributes } from 'react';
+import { type HTMLAttributes, useMemo } from 'react';
 import type { Address as AddressType, Chain } from 'viem';
 
-import { LinkComponent } from '../ui/link-component';
 import { baseSepolia } from 'viem/chains';
+import { LinkComponent } from '../ui/link-component';
 
 interface AddressProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
-  address: AddressType;
+  address?: AddressType;
   truncate?: boolean;
   truncateLength?: number;
   isLink?: boolean;
@@ -25,7 +25,7 @@ export const Address = ({
   const formattedAddress = useMemo(
     () =>
       truncate
-        ? `${address?.slice(0, truncateLength)}...${address?.slice(-(truncateLength - 2))}`
+        ? `${address?.slice(0, truncateLength + 2)}...${address?.slice(-truncateLength)}`
         : address,
     [address, truncate, truncateLength],
   );
