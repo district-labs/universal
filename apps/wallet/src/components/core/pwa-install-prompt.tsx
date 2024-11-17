@@ -117,7 +117,7 @@ export const PWAInstallPrompt = ({ className, children }: PWAInstallPrompt) => {
             </ul>
             <p className="text-sm">
               The Universal Wallet icon will appear on your home screen. Use it
-              to access your wallet anytime and on the go.
+              to access your wallet anytime on the go.
             </p>
           </div>
         </DialogContent>

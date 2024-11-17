@@ -1,6 +1,4 @@
 'use client';
-
-import { ConnectButton } from '@/components/onchain/connect-button';
 import { Button } from '@/components/ui/button';
 import { Form, FormField, FormItem } from '@/components/ui/form';
 import { addressSchema } from '@/lib/validation/utils';
@@ -13,6 +11,7 @@ import { z } from 'zod';
 
 import { AccountSelectAndInput } from '@/components/fields/account-select-and-input';
 import { Erc20SelectAndAmount } from '@/components/fields/erc20-select-and-amount';
+import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
 import { Card } from '@/components/ui/card';
 import type { TokenItem } from 'universal-data';
 import { tokenList } from 'universal-data';
@@ -130,15 +129,15 @@ function FormerErc20Transfer() {
               variant={'emerald'}
               size={'lg'}
             >
-              Transfer Assets
+              Transfer
             </Button>
           </div>
         )}
 
         {!address && (
-          <ConnectButton classNameConnect="w-full" className="w-full">
-            Connect
-          </ConnectButton>
+          <ConnectUniversalWalletButton className="w-full rounded-full py-3 text-lg">
+            Connect Universal Wallet
+          </ConnectUniversalWalletButton>
         )}
       </form>
     </Form>

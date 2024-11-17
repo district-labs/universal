@@ -15,15 +15,17 @@ const columns = [
     accessorKey: 'name',
     header: () => <h3 className="font-semibold text-base">Name</h3>,
     cell: ({ row }) => (
-      <div className="flex flex-col gap-x-3 md:flex-row md:items-center">
+      <div className="flex flex-row gap-x-1 md:flex-row md:items-center md:gap-x-3">
         <TokenImageWithFallback
           imgUri={row.original?.logoURI}
           symbol={row.original.symbol}
-          className="size-5 md:size-7"
+          className="size-4 md:size-7"
         />
         <div className="flex flex-col">
           <span className="font-bold text-sm">{row.original.symbol}</span>
-          <span className="text-gray-500 text-xs">{row.original.name}</span>
+          <span className="hidden text-gray-500 text-xs md:inline-block">
+            {row.original.name}
+          </span>
         </div>
       </div>
     ),
@@ -43,7 +45,7 @@ const columns = [
   {
     accessorKey: 'credit',
     header: () => (
-      <h3 className="text-right font-semibold text-base">Credit Lines</h3>
+      <h3 className="text-right font-semibold text-base">Credit</h3>
     ),
     cell: ({ row }) => (
       <div className="text-right">

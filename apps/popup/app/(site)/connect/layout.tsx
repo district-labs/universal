@@ -1,6 +1,7 @@
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -28,7 +29,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <div className="col-span-1 flex items-center">
               <CircleIcon className="size-6 text-emerald-500 dark:text-emerald-100" />
             </div>
-            <div className="col-span-1 flex items-center justify-end ">
+            <div className="col-span-2 flex items-center justify-end">
               <Sheet>
                 <SheetTrigger asChild={true}>
                   <span className="cursor-pointer rounded-lg px-2 py-1 text-xs hover:bg-neutral-100">
@@ -38,18 +39,22 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 <SheetContent className="h-full w-full" side={'bottom'}>
                   <SheetHeader>
                     <SheetTitle className="font-bold text-3xl">
-                      Universal Wallet
+                      Welcome
                     </SheetTitle>
+                    <SheetDescription className="text-lg">
+                      <span className="font-bold">
+                        Universal is in early development.
+                      </span>{' '}
+                      <br /> Expect regular updates and improvements.
+                    </SheetDescription>
                   </SheetHeader>
-                  <div className="mt-4 flex flex-col gap-y-4">
-                    <p className="text-center text-normal">
-                      Discover What's Possible
-                    </p>
-                    <p className="text-center text-xs">
-                      Secure your digital assets. <br /> Own your digital
-                      identity. <br /> Connect with the world.
-                    </p>
-                  </div>
+                  <p className="mt-4 text-center">
+                    Thank you for being an early adopter!
+                  </p>
+                  <p className="mt-4 text-center">
+                    We are excited to have you on board. Please feel free to
+                    reach out to us with any feedback or suggestions.
+                  </p>
                 </SheetContent>
               </Sheet>
             </div>

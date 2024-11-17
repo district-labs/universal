@@ -36,6 +36,14 @@ const ViewCreditReceived = ({
     return null;
   }
 
+  if (data?.length === 0) {
+    return (
+      <Card className="p-8 text-center">
+        <h3 className="font-normal text-lg">No Active Credit Lines</h3>
+      </Card>
+    );
+  }
+
   return (
     <div
       className={cn(

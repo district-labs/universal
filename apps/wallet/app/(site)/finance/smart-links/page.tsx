@@ -14,9 +14,14 @@ export default function FinanceAuthorizationPage() {
   return (
     <div className="h-full">
       <Tabs defaultValue="account" className=" flex h-full w-full flex-col p-0">
-        <section className="border-b-2 bg-neutral-100/30 py-6">
+        <section className="border-b-2 bg-neutral-100/30 py-4 md:py-6">
           <div className="container flex w-full flex-col items-center gap-2 md:flex-row md:justify-between">
-            <h3 className="font-bold text-2xl md:text-3xl">Authorizations</h3>
+            <div className="">
+              <h3 className="font-bold text-2xl">Smart Links</h3>
+              <p className="hidden text-sm md:block">
+                Create an onchain credit line between you and friends.
+              </p>
+            </div>
             <TabsList className="max-w-screen-sm">
               <TabsTrigger value="account">
                 <KeyRound className="mr-2 size-4" />

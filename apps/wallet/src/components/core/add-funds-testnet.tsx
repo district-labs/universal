@@ -11,6 +11,9 @@ import { tokenList } from 'universal-data';
 import { type Address, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 import { useWriteContracts } from 'wagmi/experimental';
+import { ConnectUniversalWalletButton } from '../onchain/connect-universal-wallet';
+import { IsWalletConnected } from '../onchain/is-wallet-connected';
+import { IsWalletDisconnected } from '../onchain/is-wallet-disconnected';
 import { Button } from '../ui/button';
 
 const MINT_ABI = [
@@ -50,7 +53,7 @@ const AddFundsTestnet = ({ children }: AddFundsTestnet) => {
           functionName: 'mint',
           args: [
             address as Address,
-            parseUnits('100', tokenList.tokens[1].decimals),
+            parseUnits('250', tokenList.tokens[1].decimals),
           ],
         },
         {
@@ -84,14 +87,24 @@ const AddFundsTestnet = ({ children }: AddFundsTestnet) => {
             You'll be sent testnet USD, EUR and GEMS for free.
           </DialogDescription>
         </DialogHeader>
-        <Button
-          className="w-full text-lg"
-          rounded={'full'}
-          size={'lg'}
-          onClick={handleOnClick}
-        >
-          Mint Testnet Tokens
-        </Button>
+        <IsWalletDisconnected>
+          <ConnectUniversalWalletButton
+            size="lg"
+            className="rounded-full py-3 text-lg"
+          >
+            Connect Universal Wallet
+          </ConnectUniversalWalletButton>
+        </IsWalletDisconnected>
+        <IsWalletConnected>
+          <Button
+            className="w-full text-lg"
+            rounded={'full'}
+            size={'lg'}
+            onClick={handleOnClick}
+          >
+            Mint Testnet Tokens
+          </Button>
+        </IsWalletConnected>
       </DialogContent>
     </Dialog>
   );

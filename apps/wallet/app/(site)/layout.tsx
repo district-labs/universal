@@ -49,7 +49,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
                   </IsWalletConnected>
                   <IsWalletDisconnected>
                     <SiteEnvironment>
-                      <ConnectButton rounded={'full'} />
+                      <ConnectButton
+                        rounded={'full'}
+                        classNameConnect="font-semibold"
+                      >
+                        Connect Wallet
+                      </ConnectButton>
                     </SiteEnvironment>
                     <PWAEnvironment>
                       <ConnectUniversalWalletButton>

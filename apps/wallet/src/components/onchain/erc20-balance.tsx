@@ -24,7 +24,7 @@ export const ERC20Balance = ({ className, address, account }: ERC20Balance) => {
   });
 
   if (!data) {
-    return <span className={classes}>0</span>;
+    return <span className={classes}>0.00</span>;
   }
 
   return <span className={classes}>{formatNumber(formatUnits(data, 18))}</span>;

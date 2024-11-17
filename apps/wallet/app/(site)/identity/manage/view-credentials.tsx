@@ -5,7 +5,7 @@ import GithubIcon from '@/assets/brands/github.svg';
 import XIcon from '@/assets/brands/x.svg';
 import { SvgIcon } from '@/components/core/svg-icon';
 import { CredentialOAuth } from '@/components/identity/credential-oauth';
-import { ConnectButton } from '@/components/onchain/connect-button';
+import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
 import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
 import { IsWalletDisconnected } from '@/components/onchain/is-wallet-disconnected';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -56,27 +56,27 @@ export function ViewCredentials() {
   });
 
   return (
-    <>
+    <div className="flex h-full flex-col">
       <section className="border-b-2 bg-neutral-100/30 py-6">
         <div className="container flex w-full flex-col items-center gap-2 md:flex-row md:justify-between">
-          <h3 className="font-bold text-2xl md:text-3xl">
-            Universal Credentials
-          </h3>
+          <h3 className="font-bold text-2xl">Universal Credentials</h3>
           <p className="hidden md:block">
             Verify your online accounts to create a universal identity.
           </p>
         </div>
       </section>
       <IsWalletDisconnected>
-        <div className="flex flex-col items-center justify-center gap-4 p-10">
-          <ConnectButton>Connect Wallet</ConnectButton>
-          <p className="">
-            Connect your wallet to view and manage your credentials.
-          </p>
+        <div className="flex flex-col items-center justify-center pt-6">
+          <ConnectUniversalWalletButton
+            size="lg"
+            className="rounded-full py-3 text-lg"
+          >
+            Connect Universal Wallet
+          </ConnectUniversalWalletButton>
         </div>
       </IsWalletDisconnected>
       <IsWalletConnected>
-        <section className="py-8">
+        <section className="flex-1 bg-neutral-100 pt-6">
           <div className="2xl container mx-auto grid grid-cols-1 gap-x-5 lg:grid-cols-3">
             {credentialsQuery.isLoading &&
               Array.from({ length: 3 }).map((_, i) => (
@@ -98,6 +98,6 @@ export function ViewCredentials() {
           </div>
         </section>
       </IsWalletConnected>
-    </>
+    </div>
   );
 }

@@ -14,7 +14,7 @@ export const mobileMenu = [
   },
   {
     title: 'Transfer',
-    url: '/finance/transfers',
+    url: '/finance/transfer',
     icon: ArrowLeftRight,
   },
   {
@@ -23,8 +23,8 @@ export const mobileMenu = [
     icon: Banknote,
   },
   {
-    title: 'Authorizations',
-    url: '/finance/authorization',
+    title: 'Smart Links',
+    url: '/finance/smart-links',
     icon: KeySquare,
   },
   {
