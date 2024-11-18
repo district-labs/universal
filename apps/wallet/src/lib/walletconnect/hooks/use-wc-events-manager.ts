@@ -1,5 +1,4 @@
 import { useConfirmationDialog } from '@/components/core/confirmation-dialog-provider';
-import { wagmiConfig } from '@/lib/wagmi/wagmi-config';
 import type { WalletKitTypes } from '@reown/walletkit';
 import { buildApprovedNamespaces, getSdkError } from '@walletconnect/utils';
 import { useCallback, useEffect } from 'react';
@@ -7,10 +6,24 @@ import { universalWallet } from 'universal-wallet-connector';
 import { base, baseSepolia, mainnet, sepolia } from 'viem/chains';
 import { useWalletKitClient } from './use-wallet-kit-client';
 import { useQueryClient } from '@tanstack/react-query';
+import { type ConnectorEventMap, createConfig, http } from 'wagmi';
+import { createEmitter } from '@/lib/wagmi/emitter';
 
-const createUniversalWalletConnector = universalWallet();
-// @ts-expect-error
-const universalWalletConnector = createUniversalWalletConnector(wagmiConfig);
+const createUniversalWalletConnector = universalWallet({});
+
+const config = createConfig({
+  chains: [base, baseSepolia],
+  transports: {
+    [base.id]: http(),
+    [baseSepolia.id]: http(),
+  },
+});
+
+const emitter = createEmitter<ConnectorEventMap>(crypto.randomUUID());
+const universalWalletConnector = createUniversalWalletConnector({
+  ...config,
+  emitter,
+});
 const supportedChainIds = [mainnet.id, sepolia.id, base.id, baseSepolia.id];
 
 export function useWcEventsManager(initialized: boolean) {
@@ -78,6 +91,7 @@ export function useWcEventsManager(initialized: boolean) {
       queryKey: ['wc-active-connections'],
     });
   }, [queryClient]);
+
   const onSessionRequest = useCallback(
     async (event: WalletKitTypes.SessionRequest) => {
       try {
@@ -87,12 +101,18 @@ export function useWcEventsManager(initialized: boolean) {
         await universalWalletConnector.connect();
         const provider = await universalWalletConnector.getProvider();
         const { topic, params: eventParams, id } = event;
-        const { request } = eventParams;
+        const { request, chainId } = eventParams;
         const { method, params } = request;
 
         const dialogConfirmed = await openDialog();
-
+        console.log('dialogConfirmed', Number(chainId.replace('eip155:', '')));
         if (dialogConfirmed) {
+          if (universalWalletConnector?.switchChain) {
+            // Ensure the universal wallet is connected with the correct chain
+            await universalWalletConnector?.switchChain({
+              chainId: Number(chainId.replace('eip155:', '')),
+            });
+          }
           const result = await provider.request({
             method,
             params,
