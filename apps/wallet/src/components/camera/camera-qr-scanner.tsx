@@ -62,12 +62,14 @@ export function CameraQrScanner({
           });
         },
       });
+      setUri('');
     }
 
     const ethResult = ethereumUriSchema.safeParse(result);
     if (ethResult.success) {
       onScanSuccess?.(ethResult.data.address);
       handleOpenChange(false);
+      setUri('');
       return;
     }
 
@@ -76,6 +78,7 @@ export function CameraQrScanner({
     if (didResult.success) {
       onScanSuccess?.(didResult.data.account);
       handleOpenChange(false);
+      setUri('');
       return;
     }
 
