@@ -1,6 +1,7 @@
 'use client';
 import { cn } from '@/lib/utils';
 import type * as React from 'react';
+import { universalWalletConnectorId } from 'universal-wallet-connector';
 import { useAccount } from 'wagmi';
 
 export type IsNotUniversalWallet = React.HTMLAttributes<HTMLElement>;
@@ -10,7 +11,7 @@ export const IsNotUniversalWallet = ({
   className,
 }: IsNotUniversalWallet) => {
   const { connector } = useAccount();
-  if (connector?.type === 'universalWallet') {
+  if (connector?.id === universalWalletConnectorId) {
     return null;
   }
 
