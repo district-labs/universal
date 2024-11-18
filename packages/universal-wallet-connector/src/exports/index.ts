@@ -2,6 +2,8 @@
 export {
   type UniversalWalletParameters,
   universalWallet as universalWallet,
+  universalWalletConnectorId,
+  universalWalletConnectorName
 } from "../universalWallet.js";
 
 export {
