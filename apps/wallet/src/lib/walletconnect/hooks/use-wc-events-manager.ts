@@ -101,17 +101,44 @@ export function useWcEventsManager(initialized: boolean) {
         await universalWalletConnector.connect();
         const provider = await universalWalletConnector.getProvider();
         const { topic, params: eventParams, id } = event;
-        const { request, chainId } = eventParams;
+        const { request, chainId: rawChainId } = eventParams;
+        const chainId = Number(rawChainId.replace('eip155:', ''));
         const { method, params } = request;
 
+        // If the chain is unsupported, reject the request
+        if (
+          !supportedChainIds.some(
+            (supportedChainId) => supportedChainId === chainId,
+          )
+        ) {
+          return await walletKitClient.respondSessionRequest({
+            topic,
+            response: {
+              id,
+              error: getSdkError('UNSUPPORTED_CHAINS'),
+              jsonrpc: '2.0',
+            },
+          });
+        }
+
         const dialogConfirmed = await openDialog();
-        console.log('dialogConfirmed', Number(chainId.replace('eip155:', '')));
         if (dialogConfirmed) {
           if (universalWalletConnector?.switchChain) {
-            // Ensure the universal wallet is connected with the correct chain
-            await universalWalletConnector?.switchChain({
-              chainId: Number(chainId.replace('eip155:', '')),
-            });
+            try {
+              // Ensure the universal wallet is connected with the correct chain
+              await universalWalletConnector?.switchChain({
+                chainId,
+              });
+            } catch (error) {
+              return await walletKitClient.respondSessionRequest({
+                topic,
+                response: {
+                  id,
+                  error: getSdkError('USER_REJECTED_CHAINS'),
+                  jsonrpc: '2.0',
+                },
+              });
+            }
           }
           const result = await provider.request({
             method,
