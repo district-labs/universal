@@ -15,17 +15,17 @@ export const webDid = {
   id: `did:web:${alias}`,
   verificationMethod: [
     {
-      id: `did:web:${alias}#04ed446cfec055f86e568a9b819399415df8f3d755a410754edc858c0d9b5b688e8d9a4bb1853f8ca1d80f20fa3eacbea2e198bb73d8cf2e38bbf6e0ee7779c5dc`,
+      id: `did:web:${alias}#${didPubKey}`,
       type: 'EcdsaSecp256k1VerificationKey2019',
       controller: `did:web:${alias}`,
       publicKeyHex: didPubKey,
     },
   ],
   authentication: [
-    `did:web:${alias}#04ed446cfec055f86e568a9b819399415df8f3d755a410754edc858c0d9b5b688e8d9a4bb1853f8ca1d80f20fa3eacbea2e198bb73d8cf2e38bbf6e0ee7779c5dc`,
+    `did:web:${alias}#${didPubKey}`,
   ],
   assertionMethod: [
-    `did:web:${alias}#04ed446cfec055f86e568a9b819399415df8f3d755a410754edc858c0d9b5b688e8d9a4bb1853f8ca1d80f20fa3eacbea2e198bb73d8cf2e38bbf6e0ee7779c5dc`,
+    `did:web:${alias}#${didPubKey}`,
   ],
   keyAgreement: [],
   service: [],
