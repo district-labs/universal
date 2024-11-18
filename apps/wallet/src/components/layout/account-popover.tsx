@@ -72,7 +72,9 @@ export const AccountPopover = ({ className }: AccountPopover) => {
           </div>
           {isUniversalConnected && (
             <div className="p-4">
-              {activeSessionsQuery.isLoading && <Skeleton className="h-20" />}
+              {activeSessionsQuery.isLoading && (
+                <Skeleton className="w-full h-20" />
+              )}
               {sessions && sessions.length === 0 && (
                 <div className="py-4 text-center font-medium text-neutral-500">
                   No active application connections

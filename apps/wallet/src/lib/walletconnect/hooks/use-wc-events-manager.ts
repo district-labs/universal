@@ -6,6 +6,7 @@ import { useCallback, useEffect } from 'react';
 import { universalWallet } from 'universal-wallet-connector';
 import { base, baseSepolia, mainnet, sepolia } from 'viem/chains';
 import { useWalletKitClient } from './use-wallet-kit-client';
+import { useQueryClient } from '@tanstack/react-query';
 
 const createUniversalWalletConnector = universalWallet();
 // @ts-expect-error
@@ -15,12 +16,14 @@ const supportedChainIds = [mainnet.id, sepolia.id, base.id, baseSepolia.id];
 export function useWcEventsManager(initialized: boolean) {
   const { openDialog } = useConfirmationDialog();
   const { data: walletKitClient } = useWalletKitClient();
+  const queryClient = useQueryClient();
   const onSessionProposal = useCallback(
     async ({ id, params }: WalletKitTypes.SessionProposal) => {
       try {
         if (!walletKitClient) {
           throw new Error('WalletKit client not initialized');
         }
+
         const { accounts } = await universalWalletConnector.connect();
         // ------- namespaces builder util ------------ //
         const approvedNamespaces = buildApprovedNamespaces({
@@ -50,6 +53,11 @@ export function useWcEventsManager(initialized: boolean) {
           id,
           namespaces: approvedNamespaces,
         });
+
+        // Invalidate active connections query to update the UI
+        await queryClient.invalidateQueries({
+          queryKey: ['wc-active-connections'],
+        });
       } catch (_error) {
         if (!walletKitClient) {
           return;
@@ -61,9 +69,15 @@ export function useWcEventsManager(initialized: boolean) {
         });
       }
     },
-    [walletKitClient],
+    [walletKitClient, queryClient],
   );
 
+  const onSessionDelete = useCallback(async () => {
+    // Invalidate active connections query to update the UI
+    await queryClient.invalidateQueries({
+      queryKey: ['wc-active-connections'],
+    });
+  }, [queryClient]);
   const onSessionRequest = useCallback(
     async (event: WalletKitTypes.SessionRequest) => {
       try {
@@ -112,11 +126,19 @@ export function useWcEventsManager(initialized: boolean) {
     }
 
     walletKitClient.on('session_proposal', onSessionProposal);
+    walletKitClient.on('session_delete', onSessionDelete);
     walletKitClient.on('session_request', onSessionRequest);
 
     return () => {
       walletKitClient.off('session_proposal', onSessionProposal);
+      walletKitClient.off('session_delete', onSessionDelete);
       walletKitClient.off('session_request', onSessionRequest);
     };
-  }, [walletKitClient, initialized, onSessionProposal, onSessionRequest]);
+  }, [
+    walletKitClient,
+    initialized,
+    onSessionProposal,
+    onSessionDelete,
+    onSessionRequest,
+  ]);
 }
