@@ -7,8 +7,7 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from 'next-themes';
 import type { ReactNode } from 'react';
-import { DelegationsApiClientProvider } from 'universal-delegations-sdk';
-import { UniversalIdentityClientProvider } from 'universal-identity-sdk';
+import { UniversalProvider } from 'universal-sdk';
 import { WagmiProvider } from 'wagmi';
 const queryClient = new QueryClient();
 
@@ -27,17 +26,15 @@ export default function RootProvider({ children }: RootProviderProps) {
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider>
-            <UniversalIdentityClientProvider
-              url={env.NEXT_PUBLIC_IDENTITY_API_URL}
+            <UniversalProvider
+              url={env.NEXT_PUBLIC_UNIVERSAL_API_URL}
+              urlDelegations={env.NEXT_PUBLIC_DELEGATIONS_API_URL}
+              urlIdentity={env.NEXT_PUBLIC_IDENTITY_API_URL}
             >
-              <DelegationsApiClientProvider
-                url={env.NEXT_PUBLIC_DELEGATIONS_API_URL}
-              >
-                <ConfirmationDialogProvider>
-                  {children}
-                </ConfirmationDialogProvider>
-              </DelegationsApiClientProvider>
-            </UniversalIdentityClientProvider>
+              <ConfirmationDialogProvider>
+                {children}
+              </ConfirmationDialogProvider>
+            </UniversalProvider>
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>

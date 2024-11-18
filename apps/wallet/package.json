@@ -55,6 +55,7 @@
     "universal-data": "workspace:*",
     "universal-delegations-sdk": "workspace:*",
     "universal-identity-sdk": "workspace:*",
+    "universal-sdk": "workspace:*",
     "universal-wallet-connector": "workspace:*",
     "universal-wallet-sdk": "workspace:*",
     "universal-wallet-ui": "workspace:*",

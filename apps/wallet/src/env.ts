@@ -17,6 +17,10 @@ export const env = createEnv({
       .string()
       .url()
       .default('http://localhost:3300'),
+      NEXT_PUBLIC_UNIVERSAL_API_URL: z
+      .string()
+      .url()
+      .default('http://localhost:4200'),
     NEXT_PUBLIC_WC_PROJECT_ID: z.string(),
   },
   runtimeEnv: {
@@ -27,5 +31,6 @@ export const env = createEnv({
     NEXT_PUBLIC_DELEGATIONS_API_URL:
       process.env.NEXT_PUBLIC_DELEGATIONS_API_URL,
     NEXT_PUBLIC_IDENTITY_API_URL: process.env.NEXT_PUBLIC_IDENTITY_API_URL,
+    NEXT_PUBLIC_UNIVERSAL_API_URL: process.env.NEXT_PUBLIC_UNIVERSAL_API_URL,
   },
 });

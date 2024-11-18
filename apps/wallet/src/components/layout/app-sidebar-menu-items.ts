@@ -28,7 +28,7 @@ export const itemsFinance = [
     icon: ArrowLeftRight,
   },
   {
-    title: 'Smart Links',
+    title: 'Authorizations',
     url: '/finance/smart-links',
     icon: KeySquare,
   },
