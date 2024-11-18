@@ -5,7 +5,6 @@ import {
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import { useActiveSessions } from '@/lib/walletconnect/hooks/use-active-connections';
-import { getSdkError } from '@walletconnect/utils';
 import { Addreth } from 'addreth';
 import { Circle, LogOut, Unplug } from 'lucide-react';
 import Image from 'next/image';
@@ -15,14 +14,14 @@ import { PWAInstallPrompt } from '../core/pwa-install-prompt';
 import { DisconnectWalletElement } from '../onchain/disconnect-wallet-element';
 import { Button } from '../ui/button';
 import { useIsUniversalConnected } from '@/lib/hooks/use-is-universal-connected';
-import { useWalletKitClient } from '@/lib/walletconnect/hooks/use-wallet-kit-client';
 import { Skeleton } from '../ui/skeleton';
+import { useDisconnectWc } from '@/lib/walletconnect/hooks/use-disconnect-wc';
 type AccountPopover = React.HTMLAttributes<HTMLElement>;
 
 export const AccountPopover = ({ className }: AccountPopover) => {
-  const { data: walletKitClient } = useWalletKitClient();
   const isUniversalConnected = useIsUniversalConnected();
   const { address } = useAccount();
+  const { disconnectWc } = useDisconnectWc();
   const activeSessionsQuery = useActiveSessions({
     enabled: isUniversalConnected,
   });
@@ -73,16 +72,12 @@ export const AccountPopover = ({ className }: AccountPopover) => {
           </div>
           {isUniversalConnected && (
             <div className="p-4">
-              {
-                activeSessionsQuery.isLoading &&
-                <Skeleton className="h-20" />
-              }
-              {
-                sessions && sessions.length === 0 && (
-                  <div className="py-4 text-center font-medium text-neutral-500">
-                    No active application connections
-                  </div>
-                )}
+              {activeSessionsQuery.isLoading && <Skeleton className="h-20" />}
+              {sessions && sessions.length === 0 && (
+                <div className="py-4 text-center font-medium text-neutral-500">
+                  No active application connections
+                </div>
+              )}
               {activeSessionsQuery.isSuccess &&
                 sessions &&
                 sessions.length > 0 && (
@@ -114,14 +109,10 @@ export const AccountPopover = ({ className }: AccountPopover) => {
                           <Button
                             variant="ghost"
                             size="sm"
-                            disabled={!walletKitClient}
-                            onClick={async () => {
-                              await walletKitClient?.disconnectSession({
-                                topic: session.topic,
-                                reason: getSdkError('USER_DISCONNECTED'),
-                              });
-                              await activeSessionsQuery.refetch();
-                            }}
+                            disabled={!disconnectWc}
+                            onClick={() =>
+                              disconnectWc?.({ topic: session.topic })
+                            }
                           >
                             <Unplug className="size-3" />
                           </Button>

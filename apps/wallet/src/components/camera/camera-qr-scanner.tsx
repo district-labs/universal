@@ -40,7 +40,6 @@ export function CameraQrScanner({
     'environment',
   );
   const [uri, setUri] = useState<string | undefined>();
-  const activeSessionsQuery = useActiveSessions();
   const connectWcMutation = useConnectWc();
 
   const handleOnScan = (result?: string | null) => {
@@ -56,7 +55,6 @@ export function CameraQrScanner({
       connectWcMutation.connectWc({
         uri: result,
         onPair: async () => {
-          await activeSessionsQuery.refetch();
           handleOpenChange(false);
           toast({
             title: 'Application Connected',

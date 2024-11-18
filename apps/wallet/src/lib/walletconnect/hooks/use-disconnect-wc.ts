@@ -1,21 +1,21 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useWalletKitClient } from './use-wallet-kit-client';
+import { getSdkError } from '@walletconnect/utils';
 
-export function useConnectWc() {
+export function useDisconnectWc() {
   const { data: walletKitClient } = useWalletKitClient();
   const queryClient = useQueryClient();
 
   const { mutate, mutateAsync, ...rest } = useMutation({
-    mutationKey: ['wc', 'connect'],
-    mutationFn: async ({
-      uri,
-      onPair,
-    }: { uri: string | undefined; onPair?: () => Promise<void> }) => {
-      if (!uri || !walletKitClient) {
+    mutationKey: ['wc-disconnect'],
+    mutationFn: async ({ topic }: { topic: string }) => {
+      if (!walletKitClient) {
         return null;
       }
-      await walletKitClient.pair({ uri });
-      await onPair?.();
+      await walletKitClient.disconnectSession({
+        topic,
+        reason: getSdkError('USER_DISCONNECTED'),
+      });
       await queryClient.invalidateQueries({
         queryKey: ['wc-active-connections'],
       });
@@ -23,8 +23,8 @@ export function useConnectWc() {
   });
 
   return {
-    connectWc: walletKitClient ? mutate : undefined,
-    connectWcAsync: walletKitClient ? mutateAsync : undefined,
+    disconnectWc: walletKitClient ? mutate : undefined,
+    disconnectWcAsync: walletKitClient ? mutateAsync : undefined,
     ...rest,
   };
 }

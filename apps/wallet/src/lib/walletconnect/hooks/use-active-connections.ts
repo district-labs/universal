@@ -10,7 +10,7 @@ export function useActiveSessions(
 ) {
   const { data: walletKitClient } = useWalletKitClient();
   return useQuery({
-    queryKey: ['wc', 'active-connections'],
+    queryKey: ['wc-active-connections'],
     queryFn: async () => {
       if (!walletKitClient) return null;
       return walletKitClient.getActiveSessions();
