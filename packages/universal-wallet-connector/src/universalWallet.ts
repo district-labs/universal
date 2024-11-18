@@ -30,6 +30,9 @@ type Provider = ProviderInterface & {
   close?(): void;
 };
 
+export const universalWalletConnectorId = "universalWalletSDK"
+export const universalWalletConnectorName = "Universal Wallet"
+
 universalWallet.type = "universalWallet" as const;
 export function universalWallet(
   parameters: UniversalWalletParameters = {} as any
@@ -42,8 +45,8 @@ export function universalWallet(
   let disconnect: Connector["onDisconnect"] | undefined;
 
   return createConnector<Provider>((config) => ({
-    id: "universalWalletSDK",
-    name: "Universal Wallet",
+    id: universalWalletConnectorId,
+    name: universalWalletConnectorName,
     supportsSimulation: true,
     type: universalWallet.type,
     async connect({ chainId } = {}) {

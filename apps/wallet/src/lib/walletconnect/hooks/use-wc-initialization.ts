@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createWalletKitClient } from '../client';
 
-export function useWcInitialization() {
+export function useWcInitialization({
+  isWcEnabled,
+}: {
+  isWcEnabled: boolean;
+}) {
   const [initialized, setInitialized] = useState(false);
 
   const onInitialize = useCallback(async () => {
@@ -14,9 +18,9 @@ export function useWcInitialization() {
   }, []);
 
   useEffect(() => {
-    if (!initialized) {
+    if (!initialized && isWcEnabled) {
       onInitialize();
     }
-  }, [initialized, onInitialize]);
+  }, [initialized, isWcEnabled, onInitialize]);
   return initialized;
 }
