@@ -5,6 +5,7 @@ import {
   KeySquare,
   LayoutDashboard,
   Search,
+  Trophy,
 } from 'lucide-react';
 
 export const itemsCore = [
@@ -12,6 +13,11 @@ export const itemsCore = [
     title: 'Assets',
     url: '/',
     icon: LayoutDashboard,
+  },
+  {
+    title: 'Leaderboard',
+    url: '/leaderboard',
+    icon: Trophy,
   },
 ];
 
