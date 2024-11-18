@@ -16,6 +16,7 @@ import { DisconnectWalletElement } from '../onchain/disconnect-wallet-element';
 import { Button } from '../ui/button';
 import { useIsUniversalConnected } from '@/lib/hooks/use-is-universal-connected';
 import { useWalletKitClient } from '@/lib/walletconnect/hooks/use-wallet-kit-client';
+import { Skeleton } from '../ui/skeleton';
 type AccountPopover = React.HTMLAttributes<HTMLElement>;
 
 export const AccountPopover = ({ className }: AccountPopover) => {
@@ -72,12 +73,16 @@ export const AccountPopover = ({ className }: AccountPopover) => {
           </div>
           {isUniversalConnected && (
             <div className="p-4">
-              {activeSessionsQuery.isLoading ||
-                (sessions && sessions.length === 0 && (
+              {
+                activeSessionsQuery.isLoading &&
+                <Skeleton className="h-20" />
+              }
+              {
+                sessions && sessions.length === 0 && (
                   <div className="py-4 text-center font-medium text-neutral-500">
                     No active application connections
                   </div>
-                ))}
+                )}
               {activeSessionsQuery.isSuccess &&
                 sessions &&
                 sessions.length > 0 && (
