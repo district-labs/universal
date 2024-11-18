@@ -5,7 +5,7 @@ import { buildApprovedNamespaces, getSdkError } from '@walletconnect/utils';
 import { useCallback, useEffect } from 'react';
 import { universalWallet } from 'universal-wallet-connector';
 import { base, baseSepolia, mainnet, sepolia } from 'viem/chains';
-import { walletKitClient } from '../client';
+import { useWalletKitClient } from './use-wallet-kit-client';
 
 const createUniversalWalletConnector = universalWallet();
 // @ts-expect-error
@@ -14,9 +14,13 @@ const supportedChainIds = [mainnet.id, sepolia.id, base.id, baseSepolia.id];
 
 export function useWcEventsManager(initialized: boolean) {
   const { openDialog } = useConfirmationDialog();
+  const { data: walletKitClient } = useWalletKitClient();
   const onSessionProposal = useCallback(
     async ({ id, params }: WalletKitTypes.SessionProposal) => {
       try {
+        if (!walletKitClient) {
+          throw new Error('WalletKit client not initialized');
+        }
         const { accounts } = await universalWalletConnector.connect();
         // ------- namespaces builder util ------------ //
         const approvedNamespaces = buildApprovedNamespaces({
@@ -57,50 +61,62 @@ export function useWcEventsManager(initialized: boolean) {
         });
       }
     },
-    [],
+    [walletKitClient],
   );
 
   const onSessionRequest = useCallback(
     async (event: WalletKitTypes.SessionRequest) => {
-      await universalWalletConnector.connect();
-      const provider = await universalWalletConnector.getProvider();
-      const { topic, params: eventParams, id } = event;
-      const { request } = eventParams;
-      const { method, params } = request;
+      try {
+        if (!walletKitClient) {
+          throw new Error('WalletKit client not initialized');
+        }
+        await universalWalletConnector.connect();
+        const provider = await universalWalletConnector.getProvider();
+        const { topic, params: eventParams, id } = event;
+        const { request } = eventParams;
+        const { method, params } = request;
 
-      const dialogConfirmed = await openDialog();
+        const dialogConfirmed = await openDialog();
 
-      if (dialogConfirmed) {
-        const result = await provider.request({
-          method,
-          params,
-        });
+        if (dialogConfirmed) {
+          const result = await provider.request({
+            method,
+            params,
+          });
 
-        await walletKitClient.respondSessionRequest({
-          topic,
-          response: { id, result, jsonrpc: '2.0' },
-        });
-      } else {
-        await walletKitClient.respondSessionRequest({
-          topic,
-          response: { id, error: getSdkError('USER_REJECTED'), jsonrpc: '2.0' },
-        });
+          await walletKitClient.respondSessionRequest({
+            topic,
+            response: { id, result, jsonrpc: '2.0' },
+          });
+        } else {
+          await walletKitClient.respondSessionRequest({
+            topic,
+            response: {
+              id,
+              error: getSdkError('USER_REJECTED'),
+              jsonrpc: '2.0',
+            },
+          });
+        }
+      } catch (error) {
+        console.error('Error handling session request', error);
       }
     },
-    [openDialog],
+    [walletKitClient, openDialog],
   );
 
   // Set up WalletConnect event listeners
   useEffect(() => {
-    if (!initialized) {
+    if (!initialized || !walletKitClient) {
       return;
     }
 
     walletKitClient.on('session_proposal', onSessionProposal);
     walletKitClient.on('session_request', onSessionRequest);
-    // return () => {
-    //   walletKitClient.off('session_proposal', onSessionProposal);
-    //   walletKitClient.off('session_request', onSessionRequest);
-    // };
-  }, [initialized, onSessionProposal, onSessionRequest]);
+
+    return () => {
+      walletKitClient.off('session_proposal', onSessionProposal);
+      walletKitClient.off('session_request', onSessionRequest);
+    };
+  }, [walletKitClient, initialized, onSessionProposal, onSessionRequest]);
 }

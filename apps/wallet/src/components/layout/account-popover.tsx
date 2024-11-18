@@ -4,7 +4,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { walletKitClient } from '@/lib/walletconnect/client';
 import { useActiveSessions } from '@/lib/walletconnect/hooks/use-active-connections';
 import { getSdkError } from '@walletconnect/utils';
 import { Addreth } from 'addreth';
@@ -16,9 +15,11 @@ import { PWAInstallPrompt } from '../core/pwa-install-prompt';
 import { DisconnectWalletElement } from '../onchain/disconnect-wallet-element';
 import { Button } from '../ui/button';
 import { useIsUniversalConnected } from '@/lib/hooks/use-is-universal-connected';
+import { useWalletKitClient } from '@/lib/walletconnect/hooks/use-wallet-kit-client';
 type AccountPopover = React.HTMLAttributes<HTMLElement>;
 
 export const AccountPopover = ({ className }: AccountPopover) => {
+  const { data: walletKitClient } = useWalletKitClient();
   const isUniversalConnected = useIsUniversalConnected();
   const { address } = useAccount();
   const activeSessionsQuery = useActiveSessions({
@@ -108,6 +109,7 @@ export const AccountPopover = ({ className }: AccountPopover) => {
                           <Button
                             variant="ghost"
                             size="sm"
+                            disabled={!walletKitClient}
                             onClick={async () => {
                               await walletKitClient?.disconnectSession({
                                 topic: session.topic,

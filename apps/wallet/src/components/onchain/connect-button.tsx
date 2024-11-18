@@ -41,6 +41,7 @@ export const ConnectButton = ({
       {({
         account,
         chain,
+        mounted,
         openChainModal,
         openAccountModal,
         openConnectModal,
@@ -62,6 +63,7 @@ export const ConnectButton = ({
               if (!connected || !displayProfile) {
                 return (
                   <Button
+                    disabled={!mounted}
                     type="button"
                     variant={props?.variant}
                     size={props?.size}
@@ -77,6 +79,7 @@ export const ConnectButton = ({
               if (chain.unsupported) {
                 return (
                   <Button
+                    disabled={!mounted}
                     type="button"
                     variant="destructive"
                     size={props?.size}
@@ -91,6 +94,7 @@ export const ConnectButton = ({
               return (
                 <div className="flex w-full items-center gap-x-2">
                   <Button
+                    disabled={!mounted}
                     type="button"
                     variant={'outline'}
                     className="flex w-full gap-x-1 text-sm"
@@ -102,6 +106,7 @@ export const ConnectButton = ({
                   </Button>
                   {enableChainView && (
                     <Button
+                      disabled={!mounted}
                       type="button"
                       variant={'outline'}
                       onClick={onClick ?? openChainModal}

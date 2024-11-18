@@ -48,7 +48,11 @@ export function CameraQrScanner({
       return;
     }
 
-    if (isWalletConnectEnabled && result.startsWith('wc:')) {
+    if (
+      isWalletConnectEnabled &&
+      connectWcMutation.connectWc &&
+      result.startsWith('wc:')
+    ) {
       connectWcMutation.connectWc({
         uri: result,
         onPair: async () => {
@@ -144,7 +148,11 @@ export function CameraQrScanner({
             />
             <Button
               size={'icon'}
-              disabled={!uri || connectWcMutation.isPending}
+              disabled={
+                !uri ||
+                connectWcMutation.isPending ||
+                !connectWcMutation.connectWc
+              }
               onClick={() => handleOnScan(uri)}
             >
               <SvgIcon src={WalletConnectIcon} className="size-8 text-lg" />
