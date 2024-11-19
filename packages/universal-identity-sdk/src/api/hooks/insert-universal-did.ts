@@ -1,16 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
-import type { UniversalIdentityApiClient } from "api-identity";
-import { useUniversalIdentityClient } from "../client.js";
+import type { IdentityApiClient } from "../client.js";
 
 type InsertUniversalDidParams = Parameters<
-	UniversalIdentityApiClient["index"]["$post"]
+	IdentityApiClient["index"]["$post"]
 >[0]["json"];
 
 export async function insertUniversalDid(
-	UniversalDidApiClient: UniversalIdentityApiClient,
+	universalDidApiClient: IdentityApiClient,
 	data: InsertUniversalDidParams,
 ) {
-	const res = await UniversalDidApiClient.index.$post({
+	const res = await universalDidApiClient.index.$post({
 		json: data,
 	});
 
@@ -25,10 +24,11 @@ export async function insertUniversalDid(
 	};
 }
 
-export function useInsertUniversalDid() {
-	const UniversalDidApiClient = useUniversalIdentityClient();
+export function useInsertUniversalDid(
+	universalDidApiClient: IdentityApiClient,
+) {
 	return useMutation({
 		mutationFn: (data: InsertUniversalDidParams) =>
-			insertUniversalDid(UniversalDidApiClient, data),
+			insertUniversalDid(universalDidApiClient, data),
 	});
 }

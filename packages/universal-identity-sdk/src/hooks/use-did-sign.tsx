@@ -2,6 +2,7 @@ import type { Address } from "viem";
 import { useChainId, useSignTypedData } from "wagmi";
 import { useInsertUniversalDid } from "../api/hooks/insert-universal-did.js";
 import { eip712UniversalDidType } from "../eip712-universal-did-type.js";
+import type { IdentityApiClient } from "../api/client.js";
 
 type SignDidParams = {
 	address: Address;
@@ -9,8 +10,8 @@ type SignDidParams = {
 	document: string;
 };
 
-export function useDidSign() {
-	const { mutateAsync } = useInsertUniversalDid();
+export function useDidSign(identityApiClient: IdentityApiClient) {
+	const { mutateAsync } = useInsertUniversalDid(identityApiClient);
 	const chainId = useChainId();
 	const { data, signTypedData, signTypedDataAsync, ...rest } =
 		useSignTypedData();

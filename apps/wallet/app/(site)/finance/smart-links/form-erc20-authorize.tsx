@@ -41,7 +41,8 @@ type FormErc20AuthorizeProps = {
 
 function FormErc20Authorize({ onFormChange }: FormErc20AuthorizeProps) {
   const { address, chainId } = useAccount();
-  const { signAndSaveDelegationAsync } = useSignErc20TransferDelegation(delegationsApiClient);
+  const { signAndSaveDelegationAsync } =
+    useSignErc20TransferDelegation(delegationsApiClient);
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });

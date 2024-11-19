@@ -8,7 +8,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from 'next-themes';
 import type { ReactNode } from 'react';
 
-import { UniversalIdentityClientProvider } from 'universal-identity-sdk';
 import { WagmiProvider } from 'wagmi';
 const queryClient = new QueryClient();
 
@@ -27,13 +26,7 @@ export default function RootProvider({ children }: RootProviderProps) {
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider>
-            <UniversalIdentityClientProvider
-              url={env.NEXT_PUBLIC_IDENTITY_API_URL}
-            >
-              <ConfirmationDialogProvider>
-                {children}
-              </ConfirmationDialogProvider>
-            </UniversalIdentityClientProvider>
+            <ConfirmationDialogProvider>{children}</ConfirmationDialogProvider>
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
