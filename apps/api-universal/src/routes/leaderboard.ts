@@ -11,6 +11,7 @@ import type { SelectAccountDb } from '../db/schema.js';
 
 const getLeaderboard = z.object({
   limit: z.string().optional(),
+  asset: z.custom<Address>(),
 });
 
 export type LeaderboardSearchParams = z.infer<typeof getLeaderboard>;
@@ -19,15 +20,18 @@ const leaderboardRouter = new Hono().get(
   '/',
   zValidator('param', getLeaderboard),
   async (c) => {
-    const { limit } = c.req.valid('param');
+    const { limit, asset } = c.req.valid('param');
+    // console.log(asset, 'asset')
+    // if(!asset) {
+    //   return c.json({ error: 'Invalid Asset Address' }, 404);
+    // }
+
     const accounts: SelectAccountDb[] | undefined =
       await getLeaderboardAccounts({
         limit,
       });
 
     const _accounts = accounts.map((_account) => _account.id);
-
-    console.log(_accounts, '_accounts');
 
     const _dids = accounts
       .map((_account) => {
@@ -45,9 +49,9 @@ const leaderboardRouter = new Hono().get(
       },
     });
 
-    const delegations = await apiDelegationsClient.delegations.$get({
+    const delegations = await apiDelegationsClient.credit.$get({
       param: {
-        type: 'Payment',
+        type: 'DebitAuthorization',
       },
       query: {
         accounts: _accounts.toString(),
@@ -81,6 +85,7 @@ const leaderboardRouter = new Hono().get(
         creditOut: formatUnits(
           calculateCredit(
             _delegations.delegator,
+            // asset,
             '0xE3Cfc3bB7c8149d76829426D0544e6A76BE5a00B',
           ),
           18,
@@ -88,6 +93,7 @@ const leaderboardRouter = new Hono().get(
         creditIn: formatUnits(
           calculateCredit(
             _delegations.delegate,
+            // asset,
             '0xE3Cfc3bB7c8149d76829426D0544e6A76BE5a00B',
           ),
           18,
@@ -118,7 +124,7 @@ function calculateCredit(
     const [_token, _amount] = decodeEnforcerERC20TransferAmount(
       delegation.caveats[0].terms,
     );
-    if (String(_token).toLowerCase() !== token.toLowerCase()) {
+    if (String(_token).toLowerCase() !== token.toLowerCase() || !_amount) {
       return acc;
     }
     return acc + BigInt(_amount);

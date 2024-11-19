@@ -15,39 +15,14 @@ import { Address } from '../onchain/address';
 import { ERC20Balance } from '../onchain/erc20-balance';
 import { LinkComponent } from '../ui/link-component';
 
-const MOCK_DATA = [
-  {
-    account: '0xAa8201ec154Aa4869A974C62B3eAB0404d67653b',
-    credentials: [
-      {
-        credentialSubject: {
-          id: 'did:uis:84532:0x305f57c997A35E79F6a59CF09A9d07d2408b5935:0x4e6083C2FA5787587b090BeBb59bbC9569378Edd',
-          handle: '@KamesGeraghty',
-          platform: 'x',
-          verifiedAt: '2024-11-14T14:34:03.300Z',
-          platformUserId: '1506253502925869061',
-          platformProfileUrl: 'https://x.com/KamesGeraghty',
-        },
-      },
-      {
-        credentialSubject: {
-          id: 'did:uis:84532:0x305f57c997A35E79F6a59CF09A9d07d2408b5935:0xAa8201ec154Aa4869A974C62B3eAB0404d67653b',
-          handle: '@kamescg',
-          platform: 'github',
-          verifiedAt: '2024-11-15T01:09:43.783Z',
-          platformUserId: 3408362,
-          platformProfileUrl: 'https://github.com/kamescg',
-        },
-      },
-    ],
-  },
-];
 
 type LeaderboardTableProps = React.HTMLAttributes<HTMLDivElement> & {};
 
 const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ className }) => {
   const classes = cn('onchain-assets-table', className);
-  const { data } = useGetLeaderboard();
+  const { data } = useGetLeaderboard({
+    asset: '0xE3Cfc3bB7c8149d76829426D0544e6A76BE5a00B'
+  });
 
   console.log(data, 'data');
 

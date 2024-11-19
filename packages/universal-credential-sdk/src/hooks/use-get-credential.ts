@@ -14,7 +14,7 @@ export function useGetCredentials({ did }: UseGetCredentialsParams) {
 			if (!did) {
 				return null;
 			}
-			const response = await apiCredentialsClient.credentials[":did"].$get({
+			const response = await apiCredentialsClient.credentials?.[":did"].$get({
 				param: { did },
 			});
 

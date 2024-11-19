@@ -55,8 +55,6 @@ function FormErc20Authorize({ onFormChange }: FormErc20AuthorizeProps) {
   });
   const { toast } = useToast();
 
-  console.log(form, 'formform')
-
   useEffect(() => {
     if (isSuccess) {
       form.reset(
@@ -70,10 +68,6 @@ function FormErc20Authorize({ onFormChange }: FormErc20AuthorizeProps) {
         title: 'Authorization Signed',
         description: 'The authorization has been signed and saved.',
       });
-      // form.trigger()
-      // .then(() => {
-      //   form.clearErrors();
-      // })
     }
   }, [toast, form, isSuccess]);
 
