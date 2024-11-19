@@ -12,7 +12,7 @@ export async function getDelegationsCollectionDb({
     where: (delegations, { eq }) =>
       and(
         eq(sql`LOWER(${delegations.delegate})`, lowercasedAddress),
-        eq(delegations.type, type)
+        eq(delegations.type, type),
       ),
     with: {
       caveats: true,
@@ -23,7 +23,7 @@ export async function getDelegationsCollectionDb({
     where: (delegations, { eq }) =>
       and(
         eq(sql`LOWER(${delegations.delegator})`, lowercasedAddress),
-        eq(delegations.type, type)
+        eq(delegations.type, type),
       ),
     with: {
       caveats: true,

@@ -47,6 +47,7 @@
     "api-credentials": "workspace:*",
     "api-delegations": "workspace:*",
     "api-identity": "workspace:*",
+    "universal-data": "workspace:*",
     "universal-delegations-sdk": "workspace:*",
     "universal-identity-sdk": "workspace:*",
     "viem": "^2.21.41",

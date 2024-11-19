@@ -2,79 +2,79 @@ import { Hono } from 'hono';
 import { getCredentialDb } from '../../lib/db/actions/get-credential-db.js';
 
 const credentialsApp = new Hono()
-.get('/credentials/:did', async (c) => {
-  const subject = c.req.param('did');
-  const issuer = c.req.query('issuer');
-  const category = c.req.query('category');
-  const type = c.req.query('type');
+  .get('/credentials/:did', async (c) => {
+    const subject = c.req.param('did');
+    const issuer = c.req.query('issuer');
+    const category = c.req.query('category');
+    const type = c.req.query('type');
 
-  const credentials = await getCredentialDb({
-    issuer,
-    subject,
-    category,
-    type,
-  });
+    const credentials = await getCredentialDb({
+      issuer,
+      subject,
+      category,
+      type,
+    });
 
-  if (!credentials) {
-    return c.json({ error: 'No credentials found' }, 404);
-  }
-
-  return c.json({ credentials }, 200);
-})
-.get('/credentials', async (c) => {
-  let dids: string[] | undefined;
-  // Option 1: Accept multiple 'did' query parameters (e.g., /credentials?did=did1&did=did2)
-  const did = c.req.query('did');
-  
-  // Option 2: Accept a comma-separated list in a single 'dids' query parameter (e.g., /credentials?dids=did1,did2)
-  if (did) {
-    dids = [did];
-  } else {
-    const didsParam = c.req.query('dids');
-    if (didsParam) {
-      dids = didsParam.split(',').map((did) => did.trim());
+    if (!credentials) {
+      return c.json({ error: 'No credentials found' }, 404);
     }
-  }
 
-  // Ensure 'dids' is an array
-  if (!Array.isArray(dids)) {
-    if (typeof dids === 'string') {
-      dids = [dids];
+    return c.json({ credentials }, 200);
+  })
+  .get('/credentials', async (c) => {
+    let dids: string[] | undefined;
+    // Option 1: Accept multiple 'did' query parameters (e.g., /credentials?did=did1&did=did2)
+    const did = c.req.query('did');
+
+    // Option 2: Accept a comma-separated list in a single 'dids' query parameter (e.g., /credentials?dids=did1,did2)
+    if (did) {
+      dids = [did];
     } else {
-      dids = [];
+      const didsParam = c.req.query('dids');
+      if (didsParam) {
+        dids = didsParam.split(',').map((did) => did.trim());
+      }
     }
-  }
 
-  // If no DIDs are provided, return a bad request
-  if (dids.length === 0) {
-    return c.json({ error: 'No DIDs provided' }, 400);
-  }
+    // Ensure 'dids' is an array
+    if (!Array.isArray(dids)) {
+      if (typeof dids === 'string') {
+        dids = [dids];
+      } else {
+        dids = [];
+      }
+    }
 
-  const issuer = c.req.query('issuer');
-  const category = c.req.query('category');
-  const type = c.req.query('type');
+    // If no DIDs are provided, return a bad request
+    if (dids.length === 0) {
+      return c.json({ error: 'No DIDs provided' }, 400);
+    }
 
-  try {
-    // Fetch credentials for all DIDs in parallel
-    const credentialsPromises = dids.map((did) =>
-      getCredentialDb({
-        issuer,
-        subject: did,
-        category,
-        type,
-      }).then((credentials) => ({
-        did,
-        credentials: credentials || [],
-      }))
-    );
+    const issuer = c.req.query('issuer');
+    const category = c.req.query('category');
+    const type = c.req.query('type');
 
-    const credentialsResults = await Promise.all(credentialsPromises);
+    try {
+      // Fetch credentials for all DIDs in parallel
+      const credentialsPromises = dids.map((did) =>
+        getCredentialDb({
+          issuer,
+          subject: did,
+          category,
+          type,
+        }).then((credentials) => ({
+          did,
+          credentials: credentials || [],
+        })),
+      );
 
-    return c.json({ credentials: credentialsResults }, 200);
-  } catch (error) {
-    console.error('Error fetching credentials for multiple DIDs:', error);
-    return c.json({ error: 'Internal Server Error' }, 500);
-  }
-});
+      const credentialsResults = await Promise.all(credentialsPromises);
+
+      return c.json({ credentials: credentialsResults }, 200);
+    } catch (error) {
+      console.error('Error fetching credentials for multiple DIDs:', error);
+      return c.json({ error: 'Internal Server Error' }, 500);
+    }
+  });
 
 export { credentialsApp };

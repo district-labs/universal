@@ -45,6 +45,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                       <CameraQrScanner isWalletConnectEnabled={true} />
                       <QRCodeGeneratedDialog />
                       <AccountPopover />
+                      <ConnectButton />
                     </div>
                   </IsWalletConnected>
                   <IsWalletDisconnected>

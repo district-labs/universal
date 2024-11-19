@@ -6,17 +6,10 @@ import { getDelegationsByDelegateAndTypeDb } from '../db/actions/delegations/get
 import { getDelegationsByDelegateDb } from '../db/actions/delegations/get-delegations-by-delegate-db.js';
 import { getDelegationsByDelegatorAndTypeDb } from '../db/actions/delegations/get-delegations-by-delegator-and-type-db.js';
 import { getDelegationsByDelegatorDb } from '../db/actions/delegations/get-delegations-by-delegator-db.js';
-import { getDelegationsCollectionDb } from '../db/actions/delegations/get-delegations-collection-db.js';
 import { getDelegationsDb } from '../db/actions/delegations/get-delegations-db.js';
 import { insertDelegationDb } from '../db/actions/delegations/insert-delegation-db.js';
 import { invalidateDelegationDb } from '../db/actions/delegations/invalidate-delegation-db.js';
 import type { DelegationDb, SelectDelegationDb } from '../db/schema.js';
-
-// const getCollectionSchema = z.object({
-//   type: z.string().refine((val) => val.length > 0, {
-//     message: 'invalid type',
-//   }),
-// });
 
 const getDelegationSchema = z.object({
   hash: z
@@ -62,61 +55,6 @@ const postDelegationSchema = z.object({
 });
 
 const delegationsRouter = new Hono()
-
-  // Get a delegation by its hash
-  .get('/', async (c) => {
-    let accounts: Address[] | undefined;
-    // Option 1: Accept multiple 'account' query parameters (e.g., /credentials?account=account1&account=account2)
-    const account = c.req.query('account');
-
-    // Option 2: Accept a comma-separated list in a single 'accounts' query parameter (e.g., /credentials?accounts=account1,account2)
-    if (account) {
-      accounts = [account as Address];
-    } else {
-      const didsParam = c.req.query('accounts');
-      if (didsParam) {
-        accounts = didsParam.split(',').map((did) => did.trim() as Address);
-      }
-    }
-
-    // Ensure 'dids' is an array
-    if (!Array.isArray(accounts)) {
-      if (typeof accounts === 'string') {
-        accounts = [accounts];
-      } else {
-        accounts = [];
-      }
-    }
-
-    // If no DIDs are provided, return a bad request
-    if (accounts.length === 0) {
-      return c.json({ error: 'No DIDs provided' }, 400);
-    }
-
-    console.log(accounts, 'accounts');
-
-    try {
-      // Fetch credentials for all DIDs in parallel
-      const delegationsPromises = accounts.map((_account) =>
-        getDelegationsCollectionDb({
-          address: _account,
-          type: 'DebitAuthorization',
-        }),
-      );
-
-      const results = await Promise.all(delegationsPromises);
-
-      if (results) {
-        return c.json({ collection: results }, 200);
-      }
-
-      return c.json({ error: 'delegation collections not found' }, 404);
-    } catch (error) {
-      console.error('Error fetching delegation collections:', error);
-      return c.json({ error: 'Internal Server Error' }, 500);
-    }
-  })
-
   // Get a delegation by its hash
   .get('/:hash', zValidator('param', getDelegationSchema), async (c) => {
     const { hash } = c.req.valid('param');
@@ -216,9 +154,11 @@ const delegationsRouter = new Hono()
     async (c) => {
       const delegation = c.req.valid('json');
 
-	  const format = JSON.parse(JSON.stringify(delegation, (_key, value) =>
-		typeof value === 'bigint' ? value.toString() : value
-	  ));
+      const format = JSON.parse(
+        JSON.stringify(delegation, (_key, value) =>
+          typeof value === 'bigint' ? value.toString() : value,
+        ),
+      );
 
       // Save the delegation to the database
       try {

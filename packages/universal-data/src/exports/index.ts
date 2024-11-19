@@ -6,6 +6,7 @@ export * from "../deployments.js";
 export * from "../token-list.js";
 export * from "../tokens.js";
 export type { Token, TokenItem, TokenList } from "../types.js";
+export * from "../utils/find-token-by-address.js";
 export * from "../utils/find-token-by-symbol.js";
 export * from "../utils/find-token.js";
 

@@ -57,13 +57,11 @@ function FormErc20Authorize({ onFormChange }: FormErc20AuthorizeProps) {
 
   useEffect(() => {
     if (isSuccess) {
-      form.reset(
-        {
-          to: undefined,
-          token: undefined,
-          amount: undefined,
-        }
-      );
+      form.reset({
+        to: undefined,
+        token: undefined,
+        amount: undefined,
+      });
       toast({
         title: 'Authorization Signed',
         description: 'The authorization has been signed and saved.',

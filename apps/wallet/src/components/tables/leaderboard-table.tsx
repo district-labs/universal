@@ -9,22 +9,22 @@ import { cn, formatNumber } from '@/lib/utils';
 import Image from 'next/image';
 import { findTokenBySymbol } from 'universal-data';
 import { useGetLeaderboard } from 'universal-sdk';
+import { useAccount } from 'wagmi';
 import { CopyIconButton } from '../core/copy-icon-button';
 import { CredentialSocialIcon } from '../identity/credential-social-icon';
 import { Address } from '../onchain/address';
 import { ERC20Balance } from '../onchain/erc20-balance';
 import { LinkComponent } from '../ui/link-component';
 
-
 type LeaderboardTableProps = React.HTMLAttributes<HTMLDivElement> & {};
 
 const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ className }) => {
   const classes = cn('onchain-assets-table', className);
+  const { chainId } = useAccount();
   const { data } = useGetLeaderboard({
-    asset: '0xE3Cfc3bB7c8149d76829426D0544e6A76BE5a00B'
+    asset: '0xE3Cfc3bB7c8149d76829426D0544e6A76BE5a00B',
+    chainId: chainId,
   });
-
-  console.log(data, 'data');
 
   if (!data) {
     return null;

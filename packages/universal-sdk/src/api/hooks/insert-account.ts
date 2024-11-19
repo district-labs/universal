@@ -27,7 +27,7 @@ export async function insertAccount(
   }
 }
 
-export function useInsertDelegation() {
+export function useInsertAccount() {
   const client = useUniversal();
   return useMutation({
     mutationFn: (data: InsertParams) => insertAccount(client, data),

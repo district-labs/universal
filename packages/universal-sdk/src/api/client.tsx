@@ -8,25 +8,25 @@ import { UniversalIdentityClientProvider } from 'universal-identity-sdk';
 const UniversalContext = createContext<UniversalApiClient | null>(null);
 
 interface UniversalProviderProps {
-  url: string;
-  urlDelegations: string;
-  urlIdentity: string;
+  apiUniversal: string;
+  apiDelegations: string;
+  apiIdentity: string;
   children: ReactNode;
 }
 
 // Provider component
 export function UniversalProvider({
   children,
-  url,
-  urlDelegations,
-  urlIdentity,
+  apiUniversal,
+  apiDelegations,
+  apiIdentity,
 }: UniversalProviderProps) {
-  const client = hc<App>(url);
+  const client = hc<App>(apiUniversal);
 
   return (
     <UniversalContext.Provider value={client}>
-      <UniversalIdentityClientProvider url={urlIdentity}>
-        <DelegationsApiClientProvider url={urlDelegations}>
+      <UniversalIdentityClientProvider url={apiIdentity}>
+        <DelegationsApiClientProvider url={apiDelegations}>
           {children}
         </DelegationsApiClientProvider>
       </UniversalIdentityClientProvider>

@@ -1,78 +1,66 @@
 import { Hono } from 'hono';
-import type { Address } from 'viem';
+import { type Address, isAddress } from 'viem';
 import { z } from 'zod';
 import { getDelegationsCollectionDb } from '../db/actions/delegations/get-delegations-collection-db.js';
 
-const getCollectionParm = z.object({
-  type: z.string().refine((val) => val.length > 0, {
-    message: 'invalid type',
-  }),
-});
-
 const getCollectionQuery = z.object({
-  account: z
-    .string()
-    .refine((val) => val.length > 0, {
-      message: 'invalid type',
-    })
-    .optional(),
-  accounts: z
-    .string()
-    .refine((val) => val.length > 0, {
-      message: 'invalid type',
-    })
-    .optional(),
+  type: z.string().optional(),
+  account: z.string().optional(),
+  accounts: z.string().optional(),
 });
 
 const creditRouter = new Hono().get('/', async (c) => {
-  let accounts: Address[] | undefined;
-  // Option 1: Accept multiple 'account' query parameters (e.g., /credentials?account=account1&account=account2)
-  const account = c.req.query('account');
+  let accounts: Address[] = [];
+  const queryParams = getCollectionQuery.safeParse(c.req.query());
 
-  // Option 2: Accept a comma-separated list in a single 'accounts' query parameter (e.g., /credentials?accounts=account1,account2)
-  if (account) {
-    accounts = [account as Address];
-  } else {
-    const didsParam = c.req.query('accounts');
-    if (didsParam) {
-      accounts = didsParam.split(',').map((did) => did.trim() as Address);
-    }
-  }
-
-  // Ensure 'dids' is an array
-  if (!Array.isArray(accounts)) {
-    if (typeof accounts === 'string') {
-      accounts = [accounts];
-    } else {
-      accounts = [];
-    }
-  }
-
-  // If no DIDs are provided, return a bad request
-  if (accounts.length === 0) {
+  if (
+    !queryParams.success ||
+    (!queryParams?.data?.account && !queryParams?.data?.accounts)
+  ) {
     return c.json({ error: 'No accounts provided' }, 400);
   }
 
-  try {
-    // Fetch credentials for all DIDs in parallel
-    const delegationsPromises = accounts.map((_account) =>
-      getDelegationsCollectionDb({
-        address: _account,
-        // type: type,
-        type: 'DebitAuthorization',
-      }),
+  if (queryParams?.data?.account && queryParams?.data?.accounts) {
+    return c.json(
+      { error: 'Both account and accounts query parameters are provided' },
+      400,
     );
+  }
 
-    const results = await Promise.all(delegationsPromises);
+  // Option 1: Accept a comma-separated list in a single 'accounts' query parameter (e.g., /credentials?accounts=account1,account2)
+  if (queryParams?.data?.accounts) {
+    accounts = queryParams?.data?.accounts
+      .split(',')
+      .map((did) => did.trim() as Address);
+  } else if (queryParams?.data?.account) {
+    // Option 2: Accept a single 'account' query parameter (e.g., /credentials?account=account1)
+    accounts = [queryParams?.data?.account as Address];
+  }
+
+  // Ensure 'accounts' is an array of valid addresses
+  for (const account of accounts) {
+    if (!isAddress(account)) {
+      return c.json({ error: 'Invalid account address' }, 400);
+    }
+  }
+
+  try {
+    const results = await Promise.all(
+      accounts.map((_account) =>
+        getDelegationsCollectionDb({
+          address: _account,
+          type: queryParams?.data?.type || 'DebitAuthorization',
+        }),
+      ),
+    );
 
     if (results) {
       return c.json({ collection: results }, 200);
     }
 
-    return c.json({ error: 'delegation collections not found' }, 404);
-  } catch (error) {
-    console.error('Error fetching delegation collections:', error);
-    return c.json({ error: 'Internal Server Error' }, 500);
+    return c.json({ error: 'Delegations Collections' }, 404);
+  } catch (_error) {
+    return c.json({ error: 'Error: Internal Server Error' }, 500);
   }
 });
 

@@ -7,11 +7,10 @@ import { useUniversal } from '../client.js';
 
 export async function getLeaderboard(
   universalApiClient: UniversalApiClient,
-  params: LeaderboardSearchParams,
+  query: LeaderboardSearchParams,
 ) {
-  console.log(params, 'paramsparams')
   const res = await universalApiClient.leaderboard.$get({
-    param: params,
+    query: query,
   });
 
   if (!res.ok) {
@@ -28,6 +27,6 @@ export function useGetLeaderboard(params: LeaderboardSearchParams) {
   return useQuery({
     queryKey: ['leaderboard-get', params],
     queryFn: () => getLeaderboard(universalApiClient, params),
-    enabled: !!universalApiClient,
+    enabled: !!(!!universalApiClient && !!params.asset && !!params.chainId),
   });
 }

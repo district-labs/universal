@@ -27,9 +27,9 @@ export default function RootProvider({ children }: RootProviderProps) {
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider>
             <UniversalProvider
-              url={env.NEXT_PUBLIC_UNIVERSAL_API_URL}
-              urlDelegations={env.NEXT_PUBLIC_DELEGATIONS_API_URL}
-              urlIdentity={env.NEXT_PUBLIC_IDENTITY_API_URL}
+              apiUniversal={env.NEXT_PUBLIC_UNIVERSAL_API_URL}
+              apiDelegations={env.NEXT_PUBLIC_DELEGATIONS_API_URL}
+              apiIdentity={env.NEXT_PUBLIC_IDENTITY_API_URL}
             >
               <ConfirmationDialogProvider>
                 {children}

@@ -1,40 +1,15 @@
 'use client';
-
-import DiscordIcon from '@/assets/brands/discord.svg';
-import GithubIcon from '@/assets/brands/github.svg';
-import XIcon from '@/assets/brands/x.svg';
-import { SvgIcon } from '@/components/core/svg-icon';
 import { CredentialOAuth } from '@/components/identity/credential-oauth';
 import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
 import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
 import { IsWalletDisconnected } from '@/components/onchain/is-wallet-disconnected';
 import { Skeleton } from '@/components/ui/skeleton';
+import { CREDENTIAL_OPTIONS } from 'app/settings';
 import { useMemo } from 'react';
 import { useGetCredentials } from 'universal-credential-sdk';
 import { universalDeployments } from 'universal-data';
 import { constructDidIdentifier } from 'universal-identity-sdk';
 import { useAccount } from 'wagmi';
-
-const CREDENTIAL_OPTIONS = [
-  {
-    type: 'x',
-    icon: <SvgIcon src={XIcon} height={42} width={42} color="black" />,
-    title: 'X (Formerly Twitter)',
-    description: 'Verify your X account.',
-  },
-  {
-    type: 'github',
-    icon: <SvgIcon src={GithubIcon} height={42} width={42} color="#3e3e3e" />,
-    title: 'Github',
-    description: 'Verify your Github account.',
-  },
-  {
-    type: 'discord',
-    icon: <SvgIcon src={DiscordIcon} height={42} width={42} color="#3e3e3e" />,
-    title: 'Discord',
-    description: 'Verify your Discord account.',
-  },
-];
 
 export function ViewCredentials() {
   const { address, chainId } = useAccount();
