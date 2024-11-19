@@ -8,6 +8,7 @@ import { useWalletKitClient } from './use-wallet-kit-client';
 import { useQueryClient } from '@tanstack/react-query';
 import { type ConnectorEventMap, createConfig, http } from 'wagmi';
 import { createEmitter } from '@/lib/wagmi/emitter';
+import { supportedChainIdsWc } from '../constants';
 
 const createUniversalWalletConnector = universalWallet({});
 
@@ -24,12 +25,13 @@ const universalWalletConnector = createUniversalWalletConnector({
   ...config,
   emitter,
 });
-const supportedChainIds = [mainnet.id, sepolia.id, base.id, baseSepolia.id];
 
 export function useWcEventsManager(initialized: boolean) {
   const { openDialog } = useConfirmationDialog();
   const { data: walletKitClient } = useWalletKitClient();
   const queryClient = useQueryClient();
+
+  // Callbacks for WalletConnect events
   const onSessionProposal = useCallback(
     async ({ id, params }: WalletKitTypes.SessionProposal) => {
       try {
@@ -44,7 +46,7 @@ export function useWcEventsManager(initialized: boolean) {
           supportedNamespaces: {
             eip155: {
               // TODO: refactor to get all supported chains
-              chains: supportedChainIds.map((chainId) => `eip155:${chainId}`),
+              chains: supportedChainIdsWc.map((chainId) => `eip155:${chainId}`),
               methods: [
                 'eth_sendTransaction',
                 'personal_sign',
@@ -53,7 +55,7 @@ export function useWcEventsManager(initialized: boolean) {
               ],
               events: ['accountsChanged', 'chainChanged'],
               accounts: accounts.flatMap((account) =>
-                supportedChainIds.map(
+                supportedChainIdsWc.map(
                   (chainId) => `eip155:${chainId}:${account}`,
                 ),
               ),
@@ -84,14 +86,12 @@ export function useWcEventsManager(initialized: boolean) {
     },
     [walletKitClient, queryClient],
   );
-
   const onSessionDelete = useCallback(async () => {
     // Invalidate active connections query to update the UI
     await queryClient.invalidateQueries({
       queryKey: ['wc-active-connections'],
     });
   }, [queryClient]);
-
   const onSessionRequest = useCallback(
     async (event: WalletKitTypes.SessionRequest) => {
       try {
@@ -107,7 +107,7 @@ export function useWcEventsManager(initialized: boolean) {
 
         // If the chain is unsupported, reject the request
         if (
-          !supportedChainIds.some(
+          !supportedChainIdsWc.some(
             (supportedChainId) => supportedChainId === chainId,
           )
         ) {

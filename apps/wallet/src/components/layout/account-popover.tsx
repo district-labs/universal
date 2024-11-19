@@ -15,7 +15,7 @@ import { DisconnectWalletElement } from '../onchain/disconnect-wallet-element';
 import { Button } from '../ui/button';
 import { useIsUniversalConnected } from '@/lib/hooks/use-is-universal-connected';
 import { Skeleton } from '../ui/skeleton';
-import { useDisconnectWc } from '@/lib/walletconnect/hooks/use-disconnect-wc';
+import { useDisconnectWc } from '@/lib/walletconnect/hooks/use-wc-disconnect';
 type AccountPopover = React.HTMLAttributes<HTMLElement>;
 
 export const AccountPopover = ({ className }: AccountPopover) => {
