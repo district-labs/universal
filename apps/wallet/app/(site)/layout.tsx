@@ -14,8 +14,8 @@ import { IsWalletDisconnected } from '@/components/onchain/is-wallet-disconnecte
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { useIsUniversalConnected } from '@/lib/hooks/use-is-universal-connected';
 import { cn } from '@/lib/utils';
+import { useWcAccountsSync } from '@/lib/walletconnect/hooks/use-wc-accounts-sync';
 import { useWcEventsManager } from '@/lib/walletconnect/hooks/use-wc-events-manager';
-import { useWcInitialization } from '@/lib/walletconnect/hooks/use-wc-initialization';
 import type { ReactNode } from 'react';
 
 interface RootLayoutProps {
@@ -24,10 +24,8 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   const isUniversalConnected = useIsUniversalConnected();
-  const initialized = useWcInitialization({
-    isWcEnabled: isUniversalConnected,
-  });
-  useWcEventsManager(initialized);
+  useWcEventsManager(isUniversalConnected);
+  useWcAccountsSync();
 
   return (
     <div className="relative flex max-w-[100vw] flex-col">

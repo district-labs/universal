@@ -11,8 +11,7 @@ import {
 import { useToast } from '@/lib/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { didUriSchema, ethereumUriSchema } from '@/lib/validation/utils';
-import { useActiveSessions } from '@/lib/walletconnect/hooks/use-active-connections';
-import { useConnectWc } from '@/lib/walletconnect/hooks/use-connect-wc';
+import { useConnectWc } from '@/lib/walletconnect/hooks/use-wc-connect';
 import { ScanQrCode, SwitchCamera } from 'lucide-react';
 import { useState } from 'react';
 import ReactQrReader from 'react-qr-reader-es6';
@@ -40,7 +39,6 @@ export function CameraQrScanner({
     'environment',
   );
   const [uri, setUri] = useState<string | undefined>();
-  const activeSessionsQuery = useActiveSessions();
   const connectWcMutation = useConnectWc();
 
   const handleOnScan = (result?: string | null) => {
@@ -48,11 +46,14 @@ export function CameraQrScanner({
       return;
     }
 
-    if (isWalletConnectEnabled && result.startsWith('wc:')) {
+    if (
+      isWalletConnectEnabled &&
+      connectWcMutation.connectWc &&
+      result.startsWith('wc:')
+    ) {
       connectWcMutation.connectWc({
         uri: result,
         onPair: async () => {
-          await activeSessionsQuery.refetch();
           handleOpenChange(false);
           toast({
             title: 'Application Connected',
@@ -60,12 +61,14 @@ export function CameraQrScanner({
           });
         },
       });
+      setUri('');
     }
 
     const ethResult = ethereumUriSchema.safeParse(result);
     if (ethResult.success) {
       onScanSuccess?.(ethResult.data.address);
       handleOpenChange(false);
+      setUri('');
       return;
     }
 
@@ -74,6 +77,7 @@ export function CameraQrScanner({
     if (didResult.success) {
       onScanSuccess?.(didResult.data.account);
       handleOpenChange(false);
+      setUri('');
       return;
     }
 
@@ -144,7 +148,11 @@ export function CameraQrScanner({
             />
             <Button
               size={'icon'}
-              disabled={!uri || connectWcMutation.isPending}
+              disabled={
+                !uri ||
+                connectWcMutation.isPending ||
+                !connectWcMutation.connectWc
+              }
               onClick={() => handleOnScan(uri)}
             >
               <SvgIcon src={WalletConnectIcon} className="size-8 text-lg" />

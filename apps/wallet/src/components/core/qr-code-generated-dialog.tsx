@@ -64,7 +64,7 @@ const QRCodeGeneratedDialog = () => {
                   <QRCodeGenerate
                     data={constructDidIdentifier({
                       address,
-                      resolver: universalDeployments?.[chainId].resolver,
+                      resolver: universalDeployments?.[chainId]?.resolver,
                       chainId,
                     })}
                     className="h-auto w-full"
