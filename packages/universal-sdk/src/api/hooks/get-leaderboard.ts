@@ -9,6 +9,7 @@ export async function getLeaderboard(
   universalApiClient: UniversalApiClient,
   params: LeaderboardSearchParams,
 ) {
+  console.log(params, 'paramsparams')
   const res = await universalApiClient.leaderboard.$get({
     param: params,
   });
@@ -25,7 +26,7 @@ export async function getLeaderboard(
 export function useGetLeaderboard(params: LeaderboardSearchParams) {
   const universalApiClient = useUniversal();
   return useQuery({
-    queryKey: ['account-get', params],
+    queryKey: ['leaderboard-get', params],
     queryFn: () => getLeaderboard(universalApiClient, params),
     enabled: !!universalApiClient,
   });
