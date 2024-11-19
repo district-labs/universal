@@ -3,7 +3,6 @@ import { cn } from '@/lib/utils';
 import { Copy } from 'lucide-react';
 import type * as React from 'react';
 import { useCopyToClipboard } from 'usehooks-ts';
-import { Button } from '../ui/button';
 
 type CopyIconButton = React.HTMLAttributes<HTMLElement> & {
   value: string;
@@ -26,16 +25,12 @@ const CopyIconButton = ({ className, value }: CopyIconButton) => {
       });
   };
   return (
-    <div className={cn(className)}>
-      <Button
-        onClick={() => handleCopy(value)}
-        variant="outline"
-        size="icon"
-        className="h-10 w-10"
-      >
-        <Copy className="h-4 w-4" />
-        <span className="sr-only">Open QR scanner</span>
-      </Button>
+    <div
+      className={cn('inline-block cursor-pointer p-1', className)}
+      onClick={() => handleCopy(value)}
+    >
+      <Copy className="size-3 cursor-pointer" height={8} width={8} />
+      <span className="sr-only">Copy</span>
     </div>
   );
 };

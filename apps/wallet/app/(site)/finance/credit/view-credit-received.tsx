@@ -32,6 +32,8 @@ const ViewCreditReceived = ({
     type: 'DebitAuthorization',
   });
 
+  console.log(data, 'datadatadatadatadata');
+
   if (!data) {
     return (
       <Card className="p-8 text-center">

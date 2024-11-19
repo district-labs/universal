@@ -1,14 +1,14 @@
+import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import { z } from 'zod';
 import { createCredential } from '../lib/veramo/actions/create-credential.js';
-import { webDid } from '../lib/veramo/data/did.js';
 import { verifyCredential } from '../lib/veramo/actions/verify-credential.js';
+import { webDid } from '../lib/veramo/data/did.js';
+import { credentialsApp } from './credentials/index.js';
 import { verifyDiscordApp } from './verify/discord.js';
 import { verifyGithubApp } from './verify/github.js';
 import { verifyXApp } from './verify/x.js';
-import { credentialsApp } from './credentials/index.js';
-import { zValidator } from '@hono/zod-validator';
-import { z } from 'zod';
 
 const app = new Hono()
   .use(
@@ -66,6 +66,6 @@ const app = new Hono()
     },
   );
 
-export type AppType = typeof app;
+export type CredentialsApi = typeof app;
 
 export { app };

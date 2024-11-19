@@ -1,10 +1,6 @@
-import { tokenDeployments } from '../tokens.js';
-import type { Token } from '../types.js';
+import { tokenList } from '../token-list.js';
+import type { TokenItem } from '../types.js';
 
-export function findToken(chainId: number, address: string): Token | undefined {
-  const tokens = tokenDeployments[chainId];
-  
-  if (!tokens) return undefined;
-
-  return tokens.find(token => token.address.toLowerCase() === address.toLowerCase());
+export function findToken(address: string): TokenItem | undefined {
+  return tokenList.tokens.find(token => token.address.toLowerCase() === address.toLowerCase());
 }

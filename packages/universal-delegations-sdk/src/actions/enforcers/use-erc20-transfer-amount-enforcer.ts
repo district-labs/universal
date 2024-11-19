@@ -1,12 +1,11 @@
 'use client';
-import { erc20Abi, formatUnits, type Address } from "viem"
-import { useReadContract } from "wagmi"
-import { usePublicClient } from 'wagmi'
-import { getDelegationHash } from "../../delegation/get-delegation-hash.js";
-import { useMemo } from "react";
-import { decodeEnforcerERC20TransferAmount } from "../../enforcers/enforcer-erc20-transfer-amount.js";
-import { findToken } from "universal-data";
 import type { DelegationDb } from "api-delegations";
+import { useMemo } from "react";
+import { findToken } from "universal-data";
+import { type Address, erc20Abi, formatUnits } from "viem";
+import { usePublicClient, useReadContract } from "wagmi";
+import { getDelegationHash } from "../../delegation/get-delegation-hash.js";
+import { decodeEnforcerERC20TransferAmount } from "../../enforcers/enforcer-erc20-transfer-amount.js";
 
 
 export function useErc20TransferAmountEnforcer({
@@ -55,12 +54,12 @@ export function useErc20TransferAmountEnforcer({
     })
 
     const data = useMemo(() => {
-      if (client && delegation && delegation?.caveats?.[0]?.terms && typeof spentMap.data === 'bigint') {
+      if (client?.account && delegation && delegation?.caveats?.[0]?.terms && typeof spentMap.data === 'bigint') {
         const decodedTerms = decodeEnforcerERC20TransferAmount(
           delegation.caveats[0].terms,
         );
 
-        const token = findToken(delegation.chainId, decodedTerms[0] as Address);
+        const token = findToken(decodedTerms[0] as Address);
         if(token) {
           return {
             to: delegation.delegate,
@@ -114,10 +113,10 @@ export function useErc20TransferAmountEnforcer({
         }
       }
       return null;
-    }, [client?.account, delegation, spentMap.data]);
+    }, [client?.account, client?.multicall, delegation, spentMap.data]);
 
     const formatted = useMemo(() => {
-      if(!spentMap) return null
+      if(!spentMap) { return null }
         return {
             raw: spentMap.data,
             formatted: formatUnits(spentMap.data as bigint || BigInt(0), 18),

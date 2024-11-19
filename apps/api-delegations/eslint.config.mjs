@@ -1,7 +1,7 @@
-import eslint from '@eslint/js'
-import tseslint from 'typescript-eslint'
-import unusedImports from 'eslint-plugin-unused-imports'
-import eslintConfigPrettier from 'eslint-config-prettier'
+import eslint from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import unusedImports from 'eslint-plugin-unused-imports';
+import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default tseslint.config({
   files: ['**/*.ts', '**/*.tsx'],
@@ -56,4 +56,4 @@ export default tseslint.config({
       },
     ],
   },
-})
+});

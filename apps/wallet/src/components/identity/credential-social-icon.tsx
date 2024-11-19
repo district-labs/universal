@@ -9,7 +9,11 @@ type CredentialSocialIconProps = React.HTMLAttributes<HTMLElement> & {
   type: 'x' | 'github' | 'discord';
 };
 
-export const CredentialSocialIcon = ({ className, type, size = 18 }: CredentialSocialIconProps) => {
+export const CredentialSocialIcon = ({
+  className,
+  type,
+  size = 18,
+}: CredentialSocialIconProps) => {
   if (type === 'x') {
     return (
       <SvgIcon
@@ -48,4 +52,3 @@ export const CredentialSocialIcon = ({ className, type, size = 18 }: CredentialS
 
   return null;
 };
-

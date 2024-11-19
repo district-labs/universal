@@ -17,7 +17,7 @@ export const env = createEnv({
       .string()
       .url()
       .default('http://localhost:3300'),
-      NEXT_PUBLIC_UNIVERSAL_API_URL: z
+    NEXT_PUBLIC_UNIVERSAL_API_URL: z
       .string()
       .url()
       .default('http://localhost:4200'),
