@@ -1,7 +1,7 @@
-import { createMiddleware } from 'hono/factory';
-import { getCookie, setCookie, deleteCookie } from 'hono/cookie';
-import { isAddress, type Hex, isHex } from 'viem';
 import type { Context } from 'hono';
+import { deleteCookie, getCookie, setCookie } from 'hono/cookie';
+import { createMiddleware } from 'hono/factory';
+import { type Hex, isAddress, isHex } from 'viem';
 import { baseSepolia } from 'viem/chains';
 import { baseSepoliaPublicClient } from '../../../lib/viem/client.js';
 
@@ -138,5 +138,5 @@ export const stateMiddleware = (type: string) =>
       setCookie(c, 'signature', signature);
     }
 
-    await next();
+    return await next();
   });

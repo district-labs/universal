@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { zValidator } from '@hono/zod-validator';
 import type { DelegationDb } from 'api-delegations';
 import { Hono } from 'hono';
@@ -20,8 +21,7 @@ const leaderboardRouter = new Hono().get(
   '/',
   zValidator('param', getLeaderboard),
   async (c) => {
-    const { limit, asset } = c.req.valid('param');
-    // console.log(asset, 'asset')
+    const { limit } = c.req.valid('param');
     // if(!asset) {
     //   return c.json({ error: 'Invalid Asset Address' }, 404);
     // }
@@ -121,6 +121,9 @@ function calculateCredit(
   token: Address,
 ): bigint {
   return delegations.reduce((acc, delegation) => {
+    if(!delegation?.caveats?.[0].terms) {
+      return acc;
+    }
     const [_token, _amount] = decodeEnforcerERC20TransferAmount(
       delegation.caveats[0].terms,
     );

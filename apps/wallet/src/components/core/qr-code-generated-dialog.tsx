@@ -11,6 +11,7 @@ import { DialogTitle } from '@radix-ui/react-dialog';
 import { Fingerprint, QrCode, WalletMinimal } from 'lucide-react';
 import { universalDeployments } from 'universal-data';
 import { constructDidIdentifier } from 'universal-identity-sdk';
+import { zeroAddress } from 'viem';
 import { useAccount } from 'wagmi';
 import { Button } from '../ui/button';
 import { QRCodeGenerate } from './qr-code-generate';
@@ -64,7 +65,7 @@ const QRCodeGeneratedDialog = () => {
                   <QRCodeGenerate
                     data={constructDidIdentifier({
                       address,
-                      resolver: universalDeployments?.[chainId].resolver,
+                      resolver: universalDeployments?.[chainId]?.resolver || zeroAddress,
                       chainId,
                     })}
                     className="h-auto w-full"
