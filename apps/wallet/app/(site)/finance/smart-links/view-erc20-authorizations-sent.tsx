@@ -6,6 +6,7 @@ import {
   CardFooter,
   CardHeader,
 } from '@/components/ui/card';
+import { delegationsApiClient } from '@/lib/delegations-api/client';
 import { cn } from '@/lib/utils';
 import type * as React from 'react';
 import {
@@ -28,7 +29,7 @@ export const ViewErc20AuthorizationsSent = ({
   className,
   delegator,
 }: ViewErc20AuthorizationsSentProps) => {
-  const { data } = useGetDelegationByDelegatorAndType({
+  const { data } = useGetDelegationByDelegatorAndType(delegationsApiClient, {
     address: delegator,
     type: 'DebitAuthorization',
   });

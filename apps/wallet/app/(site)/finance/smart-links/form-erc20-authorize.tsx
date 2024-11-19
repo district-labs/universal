@@ -20,6 +20,7 @@ import { useEffect } from 'react';
 import type { TokenItem } from 'universal-data';
 import { tokenList } from 'universal-data';
 import { useSignErc20TransferDelegation } from 'universal-delegations-sdk';
+import { delegationsApiClient } from '@/lib/delegations-api/client';
 
 const formSchema = z.object({
   to: addressSchema,
@@ -40,7 +41,7 @@ type FormErc20AuthorizeProps = {
 
 function FormErc20Authorize({ onFormChange }: FormErc20AuthorizeProps) {
   const { address, chainId } = useAccount();
-  const { signAndSaveDelegationAsync } = useSignErc20TransferDelegation();
+  const { signAndSaveDelegationAsync } = useSignErc20TransferDelegation(delegationsApiClient);
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
   });

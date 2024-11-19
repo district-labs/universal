@@ -6,6 +6,7 @@ import {
   CardFooter,
   CardHeader,
 } from '@/components/ui/card';
+import { delegationsApiClient } from '@/lib/delegations-api/client';
 import { cn } from '@/lib/utils';
 import type * as React from 'react';
 import {
@@ -27,7 +28,7 @@ const ViewCreditReceived = ({
   className,
   delegate,
 }: ViewCreditReceivedProps) => {
-  const { data } = useGetDelegationByDelegateAndType({
+  const { data } = useGetDelegationByDelegateAndType(delegationsApiClient, {
     address: delegate,
     type: 'DebitAuthorization',
   });
