@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { universalWalletConnectorId } from 'universal-wallet-connector';
-import { useAccount } from 'wagmi';
+import { useAccount, useChainId } from 'wagmi';
 import { useWalletKitClient } from './use-wallet-kit-client';
 import type { Address } from 'viem';
 import { supportedChainIdsWc } from '../constants';
@@ -11,6 +11,7 @@ import { supportedChainIdsWc } from '../constants';
 export function useWcAccountsSync() {
   const { data: walletKitClient } = useWalletKitClient();
   const { address, connector } = useAccount();
+  const chainId = useChainId()
 
   const universalWalletAccount = useMemo(() => {
     if (!address || connector?.id !== universalWalletConnectorId) return;
@@ -39,15 +40,22 @@ export function useWcAccountsSync() {
             ),
           },
         };
-        await walletKitClient.updateSession({
-          topic: session.topic,
-          namespaces,
-        });
+        await Promise.all([
+          walletKitClient.updateSession({
+            topic: session.topic,
+            namespaces,
+          }),
+          walletKitClient.emitSessionEvent({
+            topic: session.topic,
+            event: { name: 'accountsChanged', data: [universalWalletAccount] },
+            chainId: `eip155:${chainId}`,
+          })])
+
       }
     }
 
     updateWalletAccount(universalWalletAccount).catch(console.error);
-  }, [walletKitClient, universalWalletAccount]);
+  }, [chainId, walletKitClient, universalWalletAccount]);
 
   return universalWalletAccount;
 }
