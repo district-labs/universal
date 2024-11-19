@@ -28,7 +28,7 @@
         "universal-credential-sdk#build",
         "universal-delegations-sdk#build",
         "universal-identity-sdk#build",
-        "universal-universal-sdk#build",
+        "universal-sdk#build",
         "universal-wallet-connector#build"
       ],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
