@@ -8,9 +8,11 @@ import { baseSepolia } from 'viem/chains';
 const apiCredentialsUrl =
   process.env.CREDENTIALS_API_URL ?? 'http://localhost:3100/';
 const apiDelegationsUrl =
-  process.env.CREDENTIALS_API_URL ?? 'http://localhost:3200/';
+  process.env.DELEGATIONS_API_URL ?? 'http://localhost:3200/';
 const apiIdentityUrl =
-  process.env.CREDENTIALS_API_URL ?? 'http://localhost:3300/';
+  process.env.IDENTITY_API_URL ?? 'http://localhost:3300/';
+
+  console.log(process.env.DELEGATIONS_API_URL)
 
 export const apiCredentialsClient = hc<CredentialsApi>(apiCredentialsUrl);
 export const apiDelegationsClient = hc<DelegationsApi>(apiDelegationsUrl);

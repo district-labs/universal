@@ -57,15 +57,16 @@ const leaderboardRouter = new Hono().get('/', async (c) => {
     },
   });
 
-  const delegationsRes = await delegations.json();
-  if (!delegations.ok || 'error' in delegationsRes) {
-    return c.json({ error: 'delegations not found' }, 404);
-  }
-
-  const credentialsRes = await credentials.json();
-  if (!credentials.ok || 'error' in credentialsRes) {
+  
+  if (!credentials.ok) {
     return c.json({ error: 'credentials not found' }, 404);
   }
+  const credentialsRes = await credentials.json();
+  
+  if (!delegations.ok) {
+    return c.json({ error: 'delegations not found' }, 404);
+  }
+  const delegationsRes = await delegations.json();
 
   const _credentials = credentialsRes.credentials;
   const data = accounts.map((account, index) => {
