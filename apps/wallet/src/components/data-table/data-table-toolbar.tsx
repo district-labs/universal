@@ -1,17 +1,17 @@
 'use client';
 
-import * as React from 'react';
-import Link from 'next/link';
 import { Cross2Icon, PlusCircledIcon, TrashIcon } from '@radix-ui/react-icons';
 import type { Table } from '@tanstack/react-table';
+import Link from 'next/link';
+import * as React from 'react';
 
-import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 
 import {
   DataTableFacetedFilter,
-  DataTableOption,
+  type DataTableOption,
 } from './data-table-faceted-filter';
 import { DataTableViewOptions } from './data-table-view-options';
 
@@ -48,7 +48,7 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex w-full items-center justify-between space-x-2 overflow-auto p-1">
       {tableName && (
-        <h3 className="text-lg font-semibold text-foreground">{tableName}</h3>
+        <h3 className="font-semibold text-foreground text-lg">{tableName}</h3>
       )}
       <div className="flex flex-1 items-center space-x-2">
         {searchableColumns.length > 0 &&

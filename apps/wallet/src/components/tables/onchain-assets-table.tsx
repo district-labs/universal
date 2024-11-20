@@ -55,15 +55,10 @@ const columns = [
   },
 ];
 
-type OnchainAssetsTableProps = React.HTMLAttributes<HTMLDivElement> & {
-  address: string;
-  chainId: number;
-};
+type OnchainAssetsTableProps = React.HTMLAttributes<HTMLDivElement> & {};
 
 const OnchainAssetsTable: React.FC<OnchainAssetsTableProps> = ({
   className,
-  address,
-  chainId,
 }) => {
   const classes = cn('onchain-assets-table', className);
 

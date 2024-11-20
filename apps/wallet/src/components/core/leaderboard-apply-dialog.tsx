@@ -72,7 +72,7 @@ export const LeaderboardApplyDialog = ({
 
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger asChild={true}>{children}</DialogTrigger>
       <DialogContent className="px-10 pt-10 pb-14 md:max-w-screen-md">
         <div className="grid grid-cols-1 gap-x-5">
           <DialogHeader className="sm:text-center">
@@ -113,7 +113,7 @@ export const LeaderboardApplyDialog = ({
             size={'lg'}
             onClick={signVerificationRequestAsync}
           >
-            Apply to Join
+            Apply to Join Early Beta
           </Button>
         </IsWalletConnected>
       </DialogContent>
@@ -153,7 +153,7 @@ export function ViewCredentials() {
         <div className="mx-auto grid w-full max-w-md grid-cols-1 gap-y-2">
           {credentialsQuery.isLoading &&
             Array.from({ length: 3 }).map((_, i) => (
-              <Skeleton key={String(i)} className="h-72 w-full" />
+              <Skeleton key={String(i)} className="h-10 w-full" />
             ))}
           {!credentialsQuery.isLoading &&
             CREDENTIAL_OPTIONS.map((credential) => (

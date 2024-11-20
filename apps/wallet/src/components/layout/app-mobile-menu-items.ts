@@ -23,8 +23,8 @@ export const mobileMenu = [
     icon: Banknote,
   },
   {
-    title: 'Smart Links',
-    url: '/finance/smart-links',
+    title: 'Authorizations',
+    url: '/finance/authorizations',
     icon: KeySquare,
   },
   {

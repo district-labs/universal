@@ -18,35 +18,40 @@ import { Address } from '../onchain/address';
 import { ERC20Balance } from '../onchain/erc20-balance';
 import { Button } from '../ui/button';
 import { LinkComponent } from '../ui/link-component';
+import { Skeleton } from '../ui/skeleton';
 
 type LeaderboardTableProps = React.HTMLAttributes<HTMLDivElement> & {};
 
 const DEFAULT_LEADERBOARD_ASSET = '0xE3Cfc3bB7c8149d76829426D0544e6A76BE5a00B';
 const DEFAULT_LEADERBOARD_CHAIN_ID = baseSepolia.id;
 
-const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ className }) => {
-  const classes = cn('onchain-assets-table', className);
+const LeaderboardTable: React.FC<LeaderboardTableProps> = () => {
   const { data } = useGetLeaderboard({
     asset: DEFAULT_LEADERBOARD_ASSET,
     chainId: DEFAULT_LEADERBOARD_CHAIN_ID,
   });
 
   if (!data) {
-    return null;
+    return (
+      <div className="space-y-5">
+        <Skeleton className="h-16 w-full" />
+        <Skeleton className="h-16 w-full" />
+        <Skeleton className="h-16 w-full" />
+        <Skeleton className="h-16 w-full" />
+        <Skeleton className="h-16 w-full" />
+      </div>
+    );
   }
 
   return (
-    <div className={classes}>
-      <Suspense fallback={<div>Loading...</div>}>
-        <DataTable
-          tableName="Leaderboard"
-          columns={columns}
-          data={data}
-          pageCount={10}
-          disablePagination={true}
-        />
-      </Suspense>
-    </div>
+    <Suspense fallback={null}>
+      <DataTable
+        tableName="Leaderboard"
+        columns={columns}
+        data={data}
+        pageCount={1}
+      />
+    </Suspense>
   );
 };
 
@@ -61,7 +66,7 @@ const columns = [
         {row.original.credentials.map((credential) => {
           return (
             <div
-              key={credential.credentialSubject.id}
+              key={credential.credentialSubject.platform}
               className="flex flex-row items-center gap-1"
             >
               <CredentialSocialIcon

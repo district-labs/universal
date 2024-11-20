@@ -160,7 +160,7 @@ export function AppSidebar() {
             </LinkComponent>
           </div>
           <div>
-            <span className="text-xs">version 0.0.0</span>
+            <span className="text-xs">v0.0.0-alpha</span>
           </div>
         </div>
       </SidebarFooter>

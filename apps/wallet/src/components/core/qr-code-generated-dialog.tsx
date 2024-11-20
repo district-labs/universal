@@ -21,7 +21,7 @@ const QRCodeGeneratedDialog = () => {
 
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild={true}>
         <Button variant="outline" size="icon">
           <span>
             <QrCode />

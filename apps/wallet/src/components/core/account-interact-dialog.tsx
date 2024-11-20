@@ -34,7 +34,7 @@ export const AccountInteractDialog = ({
 
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger asChild={true}>{children}</DialogTrigger>
       <DialogContent className="grid grid-cols-1 overflow-hidden p-0 md:max-w-screen-lg md:grid-cols-5">
         <div className="gap-x-5 bg-neutral-100 p-6 md:col-span-2">
           <DialogHeader className="text-left sm:text-left">

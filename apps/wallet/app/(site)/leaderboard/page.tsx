@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Orbit } from 'lucide-react';
 
-export default function LeaderbaordPage() {
+export default function LeaderboardPage() {
   return (
     <div className="space-y-6">
       <section className="border-b-2 bg-neutral-100/30 py-6">
@@ -24,8 +24,8 @@ export default function LeaderbaordPage() {
         </div>
       </section>
       <section>
-        <div className="container">
-          <Card className="p-6">
+        <div className="container max-w-[100vw] md:max-w-[1400px]">
+          <Card className=" p-6 ">
             <LeaderboardTable />
           </Card>
         </div>
