@@ -11,7 +11,7 @@ import { supportedChainIdsWc } from '../constants';
 export function useWcAccountsSync() {
   const { data: walletKitClient } = useWalletKitClient();
   const { address, connector } = useAccount();
-  const chainId = useChainId()
+  const chainId = useChainId();
 
   const universalWalletAccount = useMemo(() => {
     if (!address || connector?.id !== universalWalletConnectorId) return;
@@ -49,8 +49,8 @@ export function useWcAccountsSync() {
             topic: session.topic,
             event: { name: 'accountsChanged', data: [universalWalletAccount] },
             chainId: `eip155:${chainId}`,
-          })])
-
+          }),
+        ]);
       }
     }
 
