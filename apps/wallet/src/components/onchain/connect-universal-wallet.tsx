@@ -6,6 +6,7 @@ import type * as React from 'react';
 import { useCallback } from 'react';
 import { useConnect } from 'wagmi';
 import { Button, type buttonVariants } from '../ui/button';
+import { universalWalletConnectorId } from 'universal-wallet-connector';
 
 type ConnectUniversalWalletButton = React.HTMLAttributes<HTMLElement> &
   VariantProps<typeof buttonVariants>;
@@ -20,7 +21,7 @@ const ConnectUniversalWalletButton = ({
   const { connectors, connect } = useConnect();
   const createWallet = useCallback(() => {
     const universalWalletConnector = connectors.find(
-      (connector) => connector.id === 'universalWalletSDK',
+      (connector) => connector.id === universalWalletConnectorId,
     );
 
     if (universalWalletConnector) {

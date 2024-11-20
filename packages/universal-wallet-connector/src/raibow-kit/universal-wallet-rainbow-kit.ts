@@ -1,7 +1,9 @@
 import { createConnector } from "wagmi";
 import {
-  type UniversalWalletParameters,
-  universalWallet as universalConnector,
+	type UniversalWalletParameters,
+	universalWallet as universalConnector,
+	universalWalletConnectorId,
+	universalWalletConnectorName,
 } from "../universalWallet.js";
 
 import type { Wallet, WalletDetailsParams } from "@rainbow-me/rainbowkit";
@@ -13,8 +15,8 @@ export const universalWalletRainbowkit: UniversalWallet = ({
 	appLogoUrl,
 }) => {
 	return {
-		id: "universalWallet",
-		name: "Universal Wallet",
+		id: universalWalletConnectorId,
+		name: universalWalletConnectorName,
 		shortName: "Universal",
 		iconUrl: "https://wallet.districtlabs.com/images/icon-sm.png",
 		iconAccent: "#fff",

@@ -2,8 +2,6 @@ import { env } from '@/env';
 import { WalletKit } from '@reown/walletkit';
 import { Core } from '@walletconnect/core';
 
-export const walletKitClient = await createWalletKitClient();
-
 export async function createWalletKitClient() {
   const core = new Core({
     projectId: env.NEXT_PUBLIC_WC_PROJECT_ID,

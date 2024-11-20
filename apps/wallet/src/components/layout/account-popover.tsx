@@ -4,9 +4,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { walletKitClient } from '@/lib/walletconnect/client';
 import { useActiveSessions } from '@/lib/walletconnect/hooks/use-active-connections';
-import { getSdkError } from '@walletconnect/utils';
 import { Addreth } from 'addreth';
 import { Circle, LogOut, Unplug } from 'lucide-react';
 import Image from 'next/image';
@@ -15,11 +13,18 @@ import { useAccount } from 'wagmi';
 import { PWAInstallPrompt } from '../core/pwa-install-prompt';
 import { DisconnectWalletElement } from '../onchain/disconnect-wallet-element';
 import { Button } from '../ui/button';
+import { useIsUniversalConnected } from '@/lib/hooks/use-is-universal-connected';
+import { Skeleton } from '../ui/skeleton';
+import { useDisconnectWc } from '@/lib/walletconnect/hooks/use-wc-disconnect';
 type AccountPopover = React.HTMLAttributes<HTMLElement>;
 
 export const AccountPopover = ({ className }: AccountPopover) => {
+  const isUniversalConnected = useIsUniversalConnected();
   const { address } = useAccount();
-  const activeSessionsQuery = useActiveSessions();
+  const { disconnectWc } = useDisconnectWc();
+  const activeSessionsQuery = useActiveSessions({
+    enabled: isUniversalConnected,
+  });
 
   const sessions = useMemo(() => {
     if (!activeSessionsQuery.data) {
@@ -64,60 +69,62 @@ export const AccountPopover = ({ className }: AccountPopover) => {
               </Button>
             </DisconnectWalletElement>
           </div>
-          <div className="p-4">
-            {activeSessionsQuery.isLoading ||
-              (sessions && sessions.length === 0 && (
+          {isUniversalConnected && (
+            <div className="p-4">
+              {activeSessionsQuery.isLoading && (
+                <Skeleton className="w-full h-20" />
+              )}
+              {sessions && sessions.length === 0 && (
                 <div className="py-4 text-center font-medium text-neutral-500">
                   No active application connections
                 </div>
-              ))}
-            {activeSessionsQuery.isSuccess &&
-              sessions &&
-              sessions.length > 0 && (
-                <div className="flex flex-col gap-y-2">
-                  <span className="text-left font-semibold text-sm">
-                    Active Connections
-                  </span>
-                  {sessions.map((session) => (
-                    <div
-                      className="rounded-sm p-1 hover:bg-neutral-50"
-                      key={session?.topic}
-                    >
-                      <div className="flex items-center justify-between gap-x-2">
-                        <div className="flex items-center gap-x-2">
-                          <Image
-                            alt="logo"
-                            className="size-5 rounded-lg"
-                            src={
-                              session.peer.metadata.icons[0] ??
-                              '/images/logo-xl.png'
-                            }
-                            width={24}
-                            height={24}
-                          />
-                          <div className="font-bold">
-                            {session.peer.metadata.name}
-                          </div>
-                        </div>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={async () => {
-                            await walletKitClient?.disconnectSession({
-                              topic: session.topic,
-                              reason: getSdkError('USER_DISCONNECTED'),
-                            });
-                            await activeSessionsQuery.refetch();
-                          }}
-                        >
-                          <Unplug className="size-3" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
               )}
-          </div>
+              {activeSessionsQuery.isSuccess &&
+                sessions &&
+                sessions.length > 0 && (
+                  <div className="flex flex-col gap-y-2">
+                    <span className="text-left font-semibold text-sm">
+                      Active Connections
+                    </span>
+                    {sessions.map((session) => (
+                      <div
+                        className="rounded-sm p-1 hover:bg-neutral-50"
+                        key={session?.topic}
+                      >
+                        <div className="flex items-center justify-between gap-x-2">
+                          <div className="flex items-center gap-x-2">
+                            <Image
+                              alt="logo"
+                              className="size-5 rounded-lg"
+                              src={
+                                session.peer.metadata.icons[0] ??
+                                '/images/logo-xl.png'
+                              }
+                              width={24}
+                              height={24}
+                            />
+                            <div className="font-bold">
+                              {session.peer.metadata.name}
+                            </div>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            disabled={!disconnectWc}
+                            onClick={() =>
+                              disconnectWc?.({ topic: session.topic })
+                            }
+                          >
+                            <Unplug className="size-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+            </div>
+          )}
+
           <div className="border-t-2">
             <PWAInstallPrompt>
               <div className="bg-neutral-100/60 px-4 py-3">
