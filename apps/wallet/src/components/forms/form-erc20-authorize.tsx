@@ -19,7 +19,7 @@ import { Card } from '@/components/ui/card';
 import { useToast } from '@/lib/hooks/use-toast';
 import { useEffect } from 'react';
 import type { TokenItem } from 'universal-data';
-import { tokenList } from 'universal-data';
+import { findTokenByAddress, tokenList } from 'universal-data';
 import { useSignErc20TransferDelegation } from 'universal-delegations-sdk';
 
 const formSchema = z.object({
@@ -32,25 +32,35 @@ const formSchema = z.object({
 
 export type FormSchema = z.infer<typeof formSchema>;
 export type FormData = {
-  to?: string;
+  to?: Address;
   token?: TokenItem;
   amount?: string;
 };
 
 type FormErc20AuthorizeProps = {
+  defaultValues?: FormData;
   onFormChange?: (data?: FormData) => void;
+  tokenAddress?: Address;
 };
 
-function FormErc20Authorize({ onFormChange }: FormErc20AuthorizeProps) {
+function FormErc20Authorize({
+  tokenAddress,
+  defaultValues,
+  onFormChange,
+}: FormErc20AuthorizeProps) {
   const { address, chainId } = useAccount();
   const { signAndSaveDelegationAsync, isSuccess } =
     useSignErc20TransferDelegation();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      to: undefined,
-      token: undefined,
-      amount: undefined,
+      token: tokenAddress
+        ? findTokenByAddress(tokenAddress)
+        : defaultValues?.token
+          ? defaultValues.token
+          : undefined,
+      to: defaultValues?.to || undefined,
+      amount: defaultValues?.amount || undefined,
     },
   });
   const { toast } = useToast();

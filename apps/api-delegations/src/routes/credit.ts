@@ -1,18 +1,17 @@
 import { Hono } from 'hono';
+import { validator } from 'hono/validator';
 import { type Address, isAddress } from 'viem';
 import { z } from 'zod';
 import { getDelegationsCollectionDb } from '../db/actions/delegations/get-delegations-collection-db.js';
 
 const getCollectionQuery = z.object({
   type: z.string().optional(),
-  account: z.string().optional(),
-  accounts: z.string().optional(),
+  account: z.custom<Address>().optional(),
+  accounts: z.array(z.custom<Address>()).optional(),
 });
 
-const creditRouter = new Hono().get('/', async (c) => {
-  let accounts: Address[] = [];
-  const queryParams = getCollectionQuery.safeParse(c.req.query());
-
+const validateDidMiddleware = validator('json', async (value, c) => {
+  const queryParams = getCollectionQuery.safeParse(value);
   if (
     !queryParams.success ||
     (!queryParams?.data?.account && !queryParams?.data?.accounts)
@@ -26,21 +25,23 @@ const creditRouter = new Hono().get('/', async (c) => {
       400,
     );
   }
+  return queryParams.data;
+});
 
-  // Option 1: Accept a comma-separated list in a single 'accounts' query parameter (e.g., /credentials?accounts=account1,account2)
-  if (queryParams?.data?.accounts) {
-    accounts = queryParams?.data?.accounts
-      .split(',')
-      .map((did) => did.trim() as Address);
-  } else if (queryParams?.data?.account) {
-    // Option 2: Accept a single 'account' query parameter (e.g., /credentials?account=account1)
-    accounts = [queryParams?.data?.account as Address];
+const creditRouter = new Hono().post('/', validateDidMiddleware, async (c) => {
+  let accounts: Address[] = [];
+  const queryParams = c.req.valid('json');
+
+  if (queryParams?.accounts) {
+    accounts = queryParams?.accounts;
+  } else if (queryParams?.account) {
+    accounts = [queryParams?.account];
   }
 
   // Ensure 'accounts' is an array of valid addresses
   for (const account of accounts) {
     if (!isAddress(account)) {
-      return c.json({ error: 'Invalid account address' }, 400);
+      return c.json({ error: 'Invalid account addresses' }, 400);
     }
   }
 
@@ -49,7 +50,7 @@ const creditRouter = new Hono().get('/', async (c) => {
       accounts.map((_account) =>
         getDelegationsCollectionDb({
           address: _account,
-          type: queryParams?.data?.type || 'DebitAuthorization',
+          type: queryParams?.type || 'DebitAuthorization',
         }),
       ),
     );

@@ -9,10 +9,7 @@ const apiCredentialsUrl =
   process.env.CREDENTIALS_API_URL ?? 'http://localhost:3100/';
 const apiDelegationsUrl =
   process.env.DELEGATIONS_API_URL ?? 'http://localhost:3200/';
-const apiIdentityUrl =
-  process.env.IDENTITY_API_URL ?? 'http://localhost:3300/';
-
-  console.log(process.env.DELEGATIONS_API_URL)
+const apiIdentityUrl = process.env.IDENTITY_API_URL ?? 'http://localhost:3300/';
 
 export const apiCredentialsClient = hc<CredentialsApi>(apiCredentialsUrl);
 export const apiDelegationsClient = hc<DelegationsApi>(apiDelegationsUrl);

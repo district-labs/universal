@@ -9,8 +9,8 @@ export async function getLeaderboard(
   universalApiClient: UniversalApiClient,
   query: LeaderboardSearchParams,
 ) {
-  const res = await universalApiClient.leaderboard.$get({
-    query: query,
+  const res = await universalApiClient.leaderboard.$post({
+    json: query,
   });
 
   if (!res.ok) {

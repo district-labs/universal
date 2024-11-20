@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Orbit } from 'lucide-react';
 
-export default function HomePage() {
+export default function LeaderbaordPage() {
   return (
     <div className="space-y-6">
       <section className="border-b-2 bg-neutral-100/30 py-6">

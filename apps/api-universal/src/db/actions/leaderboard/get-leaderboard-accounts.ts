@@ -1,9 +1,9 @@
 import { and } from 'drizzle-orm';
 import { db } from '../../index.js';
 
-export function getLeaderboardAccounts({ limit }: { limit?: string }) {
+export function getLeaderboardAccounts({ limit }: { limit?: number }) {
   return db.query.accountsDb.findMany({
-    limit: Number(limit) || 25,
+    limit: limit || 25,
     where: (accounts, { eq }) => and(eq(accounts.isActive, true)),
   });
 }

@@ -6,24 +6,29 @@ import { Suspense } from 'react';
 
 import { DataTable } from '@/components/data-table/data-table';
 import { cn, formatNumber } from '@/lib/utils';
+import { EllipsisVertical } from 'lucide-react';
 import Image from 'next/image';
-import { findTokenBySymbol } from 'universal-data';
+import { findTokenByAddress } from 'universal-data';
 import { useGetLeaderboard } from 'universal-sdk';
-import { useAccount } from 'wagmi';
+import { baseSepolia } from 'viem/chains';
+import { AccountInteractDialog } from '../core/account-interact-dialog';
 import { CopyIconButton } from '../core/copy-icon-button';
 import { CredentialSocialIcon } from '../identity/credential-social-icon';
 import { Address } from '../onchain/address';
 import { ERC20Balance } from '../onchain/erc20-balance';
+import { Button } from '../ui/button';
 import { LinkComponent } from '../ui/link-component';
 
 type LeaderboardTableProps = React.HTMLAttributes<HTMLDivElement> & {};
 
+const DEFAULT_LEADERBOARD_ASSET = '0xE3Cfc3bB7c8149d76829426D0544e6A76BE5a00B';
+const DEFAULT_LEADERBOARD_CHAIN_ID = baseSepolia.id;
+
 const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ className }) => {
   const classes = cn('onchain-assets-table', className);
-  const { chainId } = useAccount();
   const { data } = useGetLeaderboard({
-    asset: '0xE3Cfc3bB7c8149d76829426D0544e6A76BE5a00B',
-    chainId: chainId,
+    asset: DEFAULT_LEADERBOARD_ASSET,
+    chainId: DEFAULT_LEADERBOARD_CHAIN_ID,
   });
 
   if (!data) {
@@ -49,18 +54,8 @@ export { LeaderboardTable };
 
 const columns = [
   {
-    accessorKey: 'address',
-    header: () => <h3 className="font-semibold text-base">Name</h3>,
-    cell: ({ row }) => (
-      <div className="flex items-center gap-1">
-        <Address truncate={true} address={row.original.address} />
-        <CopyIconButton value={row.original.address} />
-      </div>
-    ),
-  },
-  {
     accessorKey: 'credentials',
-    header: () => <h3 className="font-semibold text-base">Credentials</h3>,
+    header: () => <h3 className="font-semibold text-sm">Socials</h3>,
     cell: ({ row }) => (
       <div className="flex flex-col gap-1">
         {row.original.credentials.map((credential) => {
@@ -86,15 +81,23 @@ const columns = [
     ),
   },
   {
-    accessorKey: 'balance',
-    header: () => (
-      <h3 className="text-left font-semibold text-base">Balance</h3>
+    accessorKey: 'address',
+    header: () => <h3 className="font-semibold text-sm">Account</h3>,
+    cell: ({ row }) => (
+      <div className="flex items-center gap-1">
+        <Address truncate={true} address={row.original.address} />
+        <CopyIconButton value={row.original.address} />
+      </div>
     ),
+  },
+  {
+    accessorKey: 'balance',
+    header: () => <h3 className="text-left font-semibold text-sm">Balance</h3>,
     cell: ({ row }) => (
       <div className="flex items-center gap-1">
         <Image
           className="rounded-full border-2 border-white shadow-md"
-          src={findTokenBySymbol('USD')?.logoURI}
+          src={findTokenByAddress(DEFAULT_LEADERBOARD_ASSET)?.logoURI}
           alt="Ethereum"
           width={20}
           height={20}
@@ -102,7 +105,7 @@ const columns = [
         <ERC20Balance
           className="font-semibold text-neutral-500 text-sm md:text-lg"
           account={row.original.address}
-          address={findTokenBySymbol('USD')?.address}
+          address={findTokenByAddress(DEFAULT_LEADERBOARD_ASSET)?.address}
         />
       </div>
     ),
@@ -110,7 +113,7 @@ const columns = [
   {
     accessorKey: 'creditIn',
     header: () => (
-      <h3 className="text-right font-semibold text-base">Credit In</h3>
+      <h3 className="text-right font-semibold text-sm">Credit In</h3>
     ),
     cell: ({ row }) => (
       <div className="text-right">
@@ -127,7 +130,7 @@ const columns = [
   {
     accessorKey: 'creditOut',
     header: () => (
-      <h3 className="text-right font-semibold text-base">Credit Out</h3>
+      <h3 className="text-right font-semibold text-sm">Credit Out</h3>
     ),
     cell: ({ row }) => (
       <div className="text-right">
@@ -138,6 +141,22 @@ const columns = [
         >
           {formatNumber(row.original.creditOut)}
         </span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: 'actions',
+    header: () => <h3 className="text-right font-semibold text-xs">Actions</h3>,
+    cell: ({ row }) => (
+      <div className="flex justify-end">
+        <AccountInteractDialog
+          address={row.original.address}
+          chainId={DEFAULT_LEADERBOARD_CHAIN_ID}
+        >
+          <Button size="icon" variant={'outline'} className="text-xs">
+            <EllipsisVertical />
+          </Button>
+        </AccountInteractDialog>
       </div>
     ),
   },

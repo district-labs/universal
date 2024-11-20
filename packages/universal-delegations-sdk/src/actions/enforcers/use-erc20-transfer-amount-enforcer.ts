@@ -54,7 +54,7 @@ export function useErc20TransferAmountEnforcer({
     })
 
     const data = useMemo(() => {
-      if (client?.account && delegation && delegation?.caveats?.[0]?.terms && typeof spentMap.data === 'bigint') {
+      if (client?.multicall && delegation && delegation?.caveats?.[0]?.terms && typeof spentMap.data === 'bigint') {
         const decodedTerms = decodeEnforcerERC20TransferAmount(
           delegation.caveats[0].terms,
         );
@@ -113,7 +113,7 @@ export function useErc20TransferAmountEnforcer({
         }
       }
       return null;
-    }, [client?.account, client?.multicall, delegation, spentMap.data]);
+    }, [client?.multicall, delegation, spentMap.data]);
 
     const formatted = useMemo(() => {
       if(!spentMap) { return null }

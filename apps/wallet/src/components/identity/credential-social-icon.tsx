@@ -6,7 +6,7 @@ import type * as React from 'react';
 
 type CredentialSocialIconProps = React.HTMLAttributes<HTMLElement> & {
   size: number;
-  type: 'x' | 'github' | 'discord';
+  type: 'x' | 'github' | 'discord' | string;
 };
 
 export const CredentialSocialIcon = ({

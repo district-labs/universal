@@ -19,7 +19,21 @@ const credentialsApp = new Hono()
       return c.json({ error: 'No credentials found' }, 404);
     }
 
-    return c.json({ credentials }, 200);
+    const _credentials = credentials as {
+      id: number;
+      issuer: string;
+      subject: string;
+      type: string;
+      category: string;
+      credential: {
+        credentialSubject: {
+          id: string;
+          [key: string]: string | number | boolean | object;
+        };
+      };
+    }[];
+
+    return c.json({ credentials: _credentials }, 200);
   })
   .get('/credentials', async (c) => {
     let dids: string[] | undefined;

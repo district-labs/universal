@@ -28,16 +28,12 @@ export const AccountPopover = ({ className }: AccountPopover) => {
     return Object.values(activeSessionsQuery.data);
   }, [activeSessionsQuery.data]);
 
-  console.log(activeSessionsQuery.data, 'activeSessionsQuery');
-  console.log(sessions, 'sessions');
-
   return (
     <div>
       <Popover>
         <PopoverTrigger>
           <Button variant={'emerald'}>
             <Circle className="size-5" />
-            {/* <Address truncate={true} truncateLength={4} address={address} /> */}
           </Button>
         </PopoverTrigger>
         <PopoverContent

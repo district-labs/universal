@@ -1,11 +1,14 @@
 'use client';
+import {
+  type FormData,
+  FormErc20Authorize,
+} from '@/components/forms/form-erc20-authorize';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { KeyRound, SquareDashedKanban } from 'lucide-react';
 import { useState } from 'react';
 import { DebitCard } from 'universal-wallet-ui';
 import type { Address } from 'viem';
 import { useAccount } from 'wagmi';
-import { type FormData, FormErc20Authorize } from './form-erc20-authorize';
 import { ViewErc20AuthorizationsSent } from './view-erc20-authorizations-sent';
 
 export default function FinanceAuthorizationPage() {

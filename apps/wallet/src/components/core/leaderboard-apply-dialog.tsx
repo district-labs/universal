@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import { useToast } from '@/lib/hooks/use-toast';
 import { CREDENTIAL_OPTIONS } from 'app/settings';
+import { Orbit } from 'lucide-react';
 import type * as React from 'react';
 import { useMemo } from 'react';
 import { useGetCredentials } from 'universal-credential-sdk';
@@ -21,19 +22,6 @@ import { IsWalletConnected } from '../onchain/is-wallet-connected';
 import { IsWalletDisconnected } from '../onchain/is-wallet-disconnected';
 import { Button } from '../ui/button';
 import { Skeleton } from '../ui/skeleton';
-
-const MINT_ABI = [
-  {
-    type: 'function',
-    name: 'mint',
-    inputs: [
-      { name: 'to', type: 'address', internalType: 'address' },
-      { name: 'amount', type: 'uint256', internalType: 'uint256' },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-] as const;
 
 type LeaderboardApplyDialogProps = React.HTMLAttributes<HTMLElement>;
 
@@ -88,23 +76,25 @@ export const LeaderboardApplyDialog = ({
       <DialogContent className="px-10 pt-10 pb-14 md:max-w-screen-md">
         <div className="grid grid-cols-1 gap-x-5">
           <DialogHeader className="sm:text-center">
+            <Orbit className="mx-auto size-12" />
             <DialogTitle className="font-black text-4xl">
-              <span className="text-5xl">🤑</span>
-              <br />
-              Discover What's Possible
+              {/* <span className="text-5xl">🤑 </span> */}
+              <span className="inline-block">Universal Trust Network</span>
             </DialogTitle>
             <DialogDescription className=" text-base">
-              Join the <span className="font-bold">wild experiment</span> to
+              Join us in a <span className="font-bold">wild experiment</span> to
+              discover <span className="font-bold">what's possible</span>.
+              {/* Join the <span className="font-bold">wild experiment</span> to
               kickstart a <span className="font-bold">Universal Credit</span>{' '}
-              network!
+              network! */}
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col space-y-4 py-5">
             <ViewCredentials />
             <p className="text-center text-xs">
               We recommend verifying your social accounts before applying.{' '}
-              <br /> This will help us verify your identity and ensure you are a
-              real person.
+              <br /> This will help us verify your identity and increase your
+              chances of being accepted.
             </p>
           </div>
         </div>
@@ -153,13 +143,10 @@ export function ViewCredentials() {
   return (
     <div className="">
       <IsWalletDisconnected>
-        <div className="flex flex-col items-center justify-center pt-6">
-          <ConnectUniversalWalletButton
-            size="sm"
-            className="rounded-full py-3 text-lg"
-          >
-            Connect
-          </ConnectUniversalWalletButton>
+        <div className="flex flex-col items-center justify-center gap-y-4 ">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <Skeleton key={String(i)} className="h-14 w-full" />
+          ))}
         </div>
       </IsWalletDisconnected>
       <IsWalletConnected>

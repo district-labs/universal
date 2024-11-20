@@ -10,21 +10,17 @@ export async function insertAccount(
   delegationsApiClient: UniversalApiClient,
   data: InsertParams,
 ) {
-  try {
-    const res = await delegationsApiClient.accounts.$post({
-      json: data,
-    });
+  const res = await delegationsApiClient.accounts.$post({
+    json: data,
+  });
 
-    if (!res.ok) {
-      const { error } = await res.json();
-      throw new Error(error);
-    }
-
-    const { data: _data } = await res.json();
-    return _data;
-  } catch (error) {
-    throw error;
+  if (!res.ok) {
+    const { error } = await res.json();
+    throw new Error(error);
   }
+
+  const { data: _data } = await res.json();
+  return _data;
 }
 
 export function useInsertAccount() {
