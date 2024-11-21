@@ -5,7 +5,12 @@ import { addressSchema } from '@/lib/validation/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import type { Address } from 'viem';
-import { useAccount } from 'wagmi';
+import {
+  useAccount,
+  useChainId,
+  useSwitchAccount,
+  useSwitchChain,
+} from 'wagmi';
 import { z } from 'zod';
 
 import { AccountSelectAndInput } from '@/components/fields/account-select-and-input';
@@ -21,6 +26,7 @@ import { useEffect } from 'react';
 import type { TokenItem } from 'universal-data';
 import { findTokenByAddress, tokenList } from 'universal-data';
 import { useSignErc20TransferDelegation } from 'universal-delegations-sdk';
+import { baseSepolia } from 'viem/chains';
 
 const formSchema = z.object({
   to: addressSchema,
@@ -49,8 +55,10 @@ function FormErc20Authorize({
   onFormChange,
 }: FormErc20AuthorizeProps) {
   const { address, chainId } = useAccount();
+  const switchChainMutation = useSwitchChain();
   const { signAndSaveDelegationAsync, isSuccess } =
     useSignErc20TransferDelegation();
+
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -91,8 +99,10 @@ function FormErc20Authorize({
   }, [form, onFormChange]);
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    if (!chainId) {
-      return;
+    if (chainId !== baseSepolia.id) {
+      switchChainMutation.switchChain({
+        chainId: baseSepolia.id,
+      });
     }
     await signAndSaveDelegationAsync({
       chainId: chainId,
@@ -117,16 +127,29 @@ function FormErc20Authorize({
           {address && (
             <div className="">
               <IsUniversalWallet>
-                <Button
-                  disabled={!form.formState.isValid}
-                  className="w-full py-3 text-lg"
-                  type="submit"
-                  rounded={'full'}
-                  variant={'emerald'}
-                  size={'lg'}
-                >
-                  Authorize Credit Line
-                </Button>
+                {chainId === baseSepolia.id ? (
+                  <Button
+                    disabled={!form.formState.isValid}
+                    className="w-full py-3 text-lg"
+                    type="submit"
+                    rounded={'full'}
+                    variant={'emerald'}
+                    size={'lg'}
+                  >
+                    Authorize Credit Line
+                  </Button>
+                ) : (
+                  <Button
+                    className="w-full py-3 text-lg"
+                    type="submit"
+                    disabled={switchChainMutation.isPending}
+                    rounded={'full'}
+                    variant={'emerald'}
+                    size={'lg'}
+                  >
+                    Switch to Base Sepolia
+                  </Button>
+                )}
               </IsUniversalWallet>
               <IsNotUniversalWallet>
                 <Button

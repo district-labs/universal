@@ -19,7 +19,7 @@ import { baseSepolia } from 'viem/chains';
 export type DelegationWithHash = Delegation & { hash: Hex };
 export type DelegationWithAmount = Delegation & { amount: bigint };
 export type Erc20TransferEnforcerRedemption = {
-  delegationHash: Hex;
+  delegation: DelegationWithHash;
   amount: bigint;
 };
 
@@ -55,35 +55,16 @@ function encodeErc20TransferEnforcerCalldata(delegation: DelegationWithAmount) {
 
 export function formatErc20TransferEnforcerCalls({
   redemptions,
-  delegations,
 }: {
   redemptions: Erc20TransferEnforcerRedemption[];
-  delegations: DelegationWithHash[];
 }): CallParameters[] {
-  // TODO: Check delegation spentMap
-  const redeemedDelegations: (Omit<
-    Erc20TransferEnforcerRedemption,
-    'delegationHash'
-  > &
-    DelegationWithHash)[] = [];
-
-  for (const redemption of redemptions) {
-    const selectedDelegation = delegations.find(
-      ({ hash }) => hash === redemption.delegationHash,
-    );
-
-    if (selectedDelegation) {
-      redeemedDelegations.push({
-        ...selectedDelegation,
-        amount: redemption.amount,
-      });
-    }
-  }
-
-  const callParameters = redeemedDelegations.map((delegation) => ({
+  const callParameters = redemptions.map(({ amount, delegation }) => ({
     // TODO: Handle multichain
     to: universalDeployments[baseSepolia.id].DelegationManager,
-    data: encodeErc20TransferEnforcerCalldata(delegation),
+    data: encodeErc20TransferEnforcerCalldata({
+      amount,
+      ...delegation,
+    }),
   }));
 
   return callParameters;

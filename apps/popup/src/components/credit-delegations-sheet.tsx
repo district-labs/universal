@@ -20,7 +20,10 @@ import { type Address, formatUnits } from 'viem';
 import { RowBasic } from './row-basic';
 import { Card } from './ui/card';
 
-type CreditDelegationsSheet = Omit<React.HTMLAttributes<HTMLElement>, 'onSelect'> & {
+type CreditDelegationsSheet = Omit<
+  React.HTMLAttributes<HTMLElement>,
+  'onSelect'
+> & {
   address: Address;
   onSelect: (delegation: DelegationExecutions[]) => void;
 };

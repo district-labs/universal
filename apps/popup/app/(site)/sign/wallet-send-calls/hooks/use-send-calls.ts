@@ -10,17 +10,15 @@ import { useState, useMemo } from 'react';
 import type { CallParameters } from 'viem';
 import { toWebAuthnAccount } from 'viem/account-abstraction';
 import {
-  type DelegationWithHash,
-  type Erc20TransferEnforcerRedemption,
   formatErc20TransferEnforcerCalls,
+  Erc20TransferEnforcerRedemption,
 } from '@/lib/delegation-framework/enforcers/erc20-transfer-amount/format-erc20-transfer-enforcer-calls';
 
 type UseSendCallsParams = {
   redemptions: Erc20TransferEnforcerRedemption[] | undefined;
-  delegations: DelegationWithHash[] | undefined;
 };
 
-export function useSendCalls({ delegations, redemptions }: UseSendCallsParams) {
+export function useSendCalls({ redemptions }: UseSendCallsParams) {
   const [isLoadingUserOp, setIsLoadingUserOp] = useState(false);
   const [isLoadingSendTx, setIsLoadingSendTx] = useState(false);
   const { accountState } = useAccountState();
@@ -89,29 +87,16 @@ export function useSendCalls({ delegations, redemptions }: UseSendCallsParams) {
     // WIP: Credit line injection flow
     // For now always will evaluate to true, but will be updated to check if there are valid credit line delegations to be used
     let delegationCalls: CallParameters[] | undefined;
-    if (
-      delegations &&
-      delegations.length > 0 &&
-      redemptions &&
-      redemptions.length > 0
-    ) {
-      const filteredDelegations = delegations.filter(
-        ({ delegate }) =>
-          accountState &&
-          delegate.toLowerCase() ===
-          accountState.smartContractAddress.toLowerCase(),
-      );
-
+    if (redemptions && redemptions.length > 0) {
       delegationCalls = formatErc20TransferEnforcerCalls({
         redemptions,
-        delegations: filteredDelegations,
       });
     }
 
     return delegationCalls && delegationCalls?.length > 0
       ? [...delegationCalls, ...standardCalls]
       : standardCalls;
-  }, [standardCalls, delegations, redemptions, accountState]);
+  }, [standardCalls, redemptions, accountState]);
 
   return {
     sender: isValid ? accountState?.smartContractAddress : undefined,
