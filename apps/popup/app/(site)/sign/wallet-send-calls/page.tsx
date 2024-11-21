@@ -5,9 +5,9 @@ import { CreditDelegationsSheet } from '@/components/credit-delegations-sheet';
 import { Address } from '@/components/onchain/address';
 import { EthAmountFormatted } from '@/components/onchain/eth-formatted';
 import { Toggle } from '@/components/toggle';
-import { type ReactElement, useState } from 'react';
+import { type ReactElement, useState, useMemo } from 'react';
 import type { DelegationDb } from 'universal-delegations-sdk';
-import { parseUnits, type Address as AddressType, type Hex } from 'viem';
+import { type Address as AddressType, type Hex } from 'viem';
 import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
 import { ActionRequestMain } from '../components/action-request-main';
@@ -37,12 +37,17 @@ export default function PersonalSignPage() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
   const [delegationExecutions, setDelegationExecutions] =
     useState<DelegationExecutions[]>();
-  const { sendCalls, calls, isLoadingSendTx, isLoadingUserOp, from, sender } =
-    useSendCalls({
-      redemptions: delegationExecutions?.map(({ execution, delegation }) => ({
+  const redemptions = useMemo(
+    () =>
+      delegationExecutions?.map(({ execution, delegation }) => ({
         amount: execution.amount,
         delegation,
       })),
+    [delegationExecutions],
+  );
+  const { sendCalls, calls, isLoadingSendTx, isLoadingUserOp, from, sender } =
+    useSendCalls({
+      redemptions,
     });
 
   if (!calls) {

@@ -26,6 +26,24 @@ export function useSendCalls({ redemptions }: UseSendCallsParams) {
   const { sessionState } = useSessionState();
   const bundlerClient = useBundlerClient();
 
+  // TODO: Type check calls
+  const standardCalls = message?.params[0]?.calls;
+  const params = { accountState, message, sessionState, bundlerClient };
+  const isValid = validateMessageParams(params) && !!standardCalls;
+
+  const calls = useMemo(() => {
+    let delegationCalls: CallParameters[] | undefined;
+    if (redemptions && redemptions.length > 0) {
+      delegationCalls = formatErc20TransferEnforcerCalls({
+        redemptions,
+      });
+    }
+
+    return delegationCalls && delegationCalls?.length > 0
+      ? [...delegationCalls, ...standardCalls]
+      : standardCalls;
+  }, [standardCalls, redemptions]);
+
   const { mutate, mutateAsync, ...rest } = useMutation({
     mutationKey: ['send-calls'],
     mutationFn: async () => {
@@ -77,26 +95,6 @@ export function useSendCalls({ redemptions }: UseSendCallsParams) {
       });
     },
   });
-
-  // TODO: Type check calls
-  const standardCalls = message?.params[0]?.calls;
-  const params = { accountState, message, sessionState, bundlerClient };
-  const isValid = validateMessageParams(params) && !!standardCalls;
-
-  const calls = useMemo(() => {
-    // WIP: Credit line injection flow
-    // For now always will evaluate to true, but will be updated to check if there are valid credit line delegations to be used
-    let delegationCalls: CallParameters[] | undefined;
-    if (redemptions && redemptions.length > 0) {
-      delegationCalls = formatErc20TransferEnforcerCalls({
-        redemptions,
-      });
-    }
-
-    return delegationCalls && delegationCalls?.length > 0
-      ? [...delegationCalls, ...standardCalls]
-      : standardCalls;
-  }, [standardCalls, redemptions, accountState]);
 
   return {
     sender: isValid ? accountState?.smartContractAddress : undefined,

@@ -99,6 +99,9 @@ function FormErc20Authorize({
   }, [form, onFormChange]);
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
+    if (!chainId) {
+      return;
+    }
     if (chainId !== baseSepolia.id) {
       switchChainMutation.switchChain({
         chainId: baseSepolia.id,

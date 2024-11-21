@@ -4,7 +4,7 @@ import { EthAmountFormatted } from '@/components/onchain/eth-formatted';
 import { Toggle } from '@/components/toggle';
 import { Button } from '@/components/ui/button';
 import { useEstimateUserOpAssetChanges } from '@/lib/alchemy/hooks/use-simulate-user-op-asset-changes';
-import { type ReactElement, useState } from 'react';
+import { type ReactElement, useState, useMemo } from 'react';
 import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
 import { ActionRequestMain } from '../components/action-request-main';
@@ -14,13 +14,46 @@ import { ActionTransactionNetwork } from '../components/action-transaction-netwo
 import { ActionTransactionNetworkSimplified } from '../components/action-transaction-network-simplified';
 import { ActionTransactionPreview } from '../components/action-transaction-preview';
 import { useSendTransaction } from './hooks/use-send-transaction';
+import { DelegationDb } from 'universal-delegations-sdk';
+import { CreditDelegationsSheet } from '@/components/credit-delegations-sheet';
+
+export type DelegationExecutions = {
+  delegation: DelegationDb;
+  execution: {
+    hash: string;
+    amount: bigint;
+    amountFormatted: string;
+  };
+  token: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+};
 
 export default function SignEthSendTransactionPage() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
   const { isLoading: isLoadingEstimate, isError: isErrorEstimate } =
     useEstimateUserOpAssetChanges();
-  const { sendTransaction, txParams, isLoadingSendTx, isLoadingUserOp } =
-    useSendTransaction();
+  const [delegationExecutions, setDelegationExecutions] =
+    useState<DelegationExecutions[]>();
+  const redemptions = useMemo(
+    () =>
+      delegationExecutions?.map(({ execution, delegation }) => ({
+        amount: execution.amount,
+        delegation,
+      })),
+    [delegationExecutions],
+  );
+  const {
+    sendTransaction,
+    txParams,
+    isLoadingSendTx,
+    isLoadingUserOp,
+    sender,
+  } = useSendTransaction({
+    redemptions,
+  });
 
   if (!txParams) {
     return <div>Invalid Transaction</div>;
@@ -51,6 +84,32 @@ export default function SignEthSendTransactionPage() {
                 label="Application"
                 value={<Address truncate={true} address={txParams.to} />}
               />
+            </div>
+            <div className="space-y-2 border-t-2 bg-neutral-100/60 px-6 py-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Credit Lines</span>
+                {sender && (
+                  <CreditDelegationsSheet
+                    address={sender}
+                    onSelect={setDelegationExecutions}
+                  >
+                    <span className="cursor-pointer font-bold text-sm">
+                      Manage
+                    </span>
+                  </CreditDelegationsSheet>
+                )}
+              </div>
+              {delegationExecutions?.map((delegation) => (
+                <div
+                  key={delegation.execution.hash}
+                  className="flex justify-between"
+                >
+                  <span className="text-sm">{delegation?.token?.symbol}</span>
+                  <span className="font-bold text-sm">
+                    {delegation?.execution?.amountFormatted}
+                  </span>
+                </div>
+              ))}
             </div>
             <ActionTransactionPreview className="flex-1 text-center" />
           </>
