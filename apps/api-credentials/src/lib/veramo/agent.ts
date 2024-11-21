@@ -27,16 +27,16 @@ if (!process.env.API_CREDENTIALS_DNS) {
   throw new Error('API_CREDENTIALS_DNS env var is required');
 }
 
-export const alias = process.env.API_CREDENTIALS_DNS
+export const alias = process.env.API_CREDENTIALS_DNS;
 export const provider = `did:web:${alias}`;
 
 export const veramoAgent = createAgent<
   IDIDManager &
-  IKeyManager &
-  IDataStore &
-  IDataStoreORM &
-  IResolver &
-  ICredentialPlugin
+    IKeyManager &
+    IDataStore &
+    IDataStoreORM &
+    IResolver &
+    ICredentialPlugin
 >({
   plugins: [
     new KeyManager({

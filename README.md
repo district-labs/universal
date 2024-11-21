@@ -1,5 +1,4 @@
 ![!Universal Wallet](./banner.png)
-
 # Universal Wallet
 
 Universal is an Open Source stack for building *savage* smart wallets for Ethereum.

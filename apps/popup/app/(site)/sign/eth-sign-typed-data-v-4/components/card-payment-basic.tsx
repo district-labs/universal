@@ -22,7 +22,7 @@ export const CardPaymentBasic = ({
       typedData.caveats[0].terms,
     );
 
-    const token = findToken(chainId, formattedTerms[0] as Address);
+    const token = findToken(formattedTerms[0] as Address);
     if (!token) {
       // TODO: handle unknown token by fetching token data
       return {

@@ -36,10 +36,9 @@ export const AccountPopover = ({ className }: AccountPopover) => {
   return (
     <div>
       <Popover>
-        <PopoverTrigger>
+        <PopoverTrigger asChild={true}>
           <Button variant={'emerald'}>
             <Circle className="size-5" />
-            {/* <Address truncate={true} truncateLength={4} address={address} /> */}
           </Button>
         </PopoverTrigger>
         <PopoverContent

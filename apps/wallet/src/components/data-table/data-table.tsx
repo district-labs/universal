@@ -15,7 +15,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import * as React from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { DataTablePagination } from '@/components/data-table/data-table-pagination';
 import {
@@ -39,7 +39,6 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   pageCount: number;
-  disablePagination?: boolean;
   filterableColumns?: DataTableFilterableColumn<TData>[];
   searchableColumns?: DataTableSearchableColumn<TData>[];
   newRowLink?: string;
@@ -50,8 +49,6 @@ export function DataTable<TData, TValue>({
   tableName,
   columns,
   data,
-  pageCount,
-  disablePagination = false,
   filterableColumns = [],
   searchableColumns = [],
   newRowLink,
@@ -68,7 +65,7 @@ export function DataTable<TData, TValue>({
   const [column, order] = sort?.split('.') ?? [];
 
   // Create query string
-  const createQueryString = React.useCallback(
+  const createQueryString = useCallback(
     (params: Record<string, string | number | null>) => {
       const newSearchParams = new URLSearchParams(searchParams?.toString());
 
@@ -86,21 +83,17 @@ export function DataTable<TData, TValue>({
   );
 
   // Table states
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    [],
-  );
+  const [rowSelection, setRowSelection] = useState({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   // Handle server-side pagination
-  const [{ pageIndex, pageSize }, setPagination] =
-    React.useState<PaginationState>({
-      pageIndex: Number(page) - 1,
-      pageSize: Number(per_page),
-    });
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: Number(page) - 1,
+    pageSize: Number(per_page),
+  });
 
-  const pagination = React.useMemo(
+  const pagination = useMemo(
     () => ({
       pageIndex,
       pageSize,
@@ -108,14 +101,14 @@ export function DataTable<TData, TValue>({
     [pageIndex, pageSize],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     setPagination({
       pageIndex: Number(page) - 1,
       pageSize: Number(per_page),
     });
   }, [page, per_page]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     router.push(
       `${pathname}?${createQueryString({
         page: pageIndex + 1,
@@ -130,25 +123,44 @@ export function DataTable<TData, TValue>({
   }, [pageIndex, pageSize]);
 
   // Handle server-side sorting
-  const [sorting, setSorting] = React.useState<SortingState>([
-    {
-      id: column ?? '',
-      desc: order === 'desc',
-    },
-  ]);
+  const initialSorting: SortingState = useMemo(() => {
+    if (column) {
+      return [
+        {
+          id: column,
+          desc: order === 'desc',
+        },
+      ];
+    }
+    return [];
+  }, [column, order]);
 
-  React.useEffect(() => {
-    router.push(
-      `${pathname}?${createQueryString({
-        page,
-        sort: sorting[0]?.id
-          ? `${sorting[0]?.id}.${sorting[0]?.desc ? 'desc' : 'asc'}`
-          : null,
-      })}`,
-      {
-        scroll: false,
-      },
-    );
+  const [sorting, setSorting] = useState<SortingState>(initialSorting);
+
+  useEffect(() => {
+    if (sorting.length === 0) {
+      router.push(
+        `${pathname}?${createQueryString({
+          page,
+          sort: null,
+        })}`,
+        {
+          scroll: false,
+        },
+      );
+    } else {
+      router.push(
+        `${pathname}?${createQueryString({
+          page,
+          sort: sorting[0]?.id
+            ? `${sorting[0]?.id}.${sorting[0]?.desc ? 'desc' : 'asc'}`
+            : null,
+        })}`,
+        {
+          scroll: false,
+        },
+      );
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sorting]);
@@ -169,13 +181,13 @@ export function DataTable<TData, TValue>({
     return filterableColumns.find((column) => column.id === filter.id);
   });
 
-  React.useEffect(() => {
-    for (const column of debouncedSearchableColumnFilters) {
-      if (typeof column.value === 'string') {
+  useEffect(() => {
+    for (const columnFilter of debouncedSearchableColumnFilters) {
+      if (typeof columnFilter.value === 'string') {
         router.push(
           `${pathname}?${createQueryString({
             page: 1,
-            [column.id]: typeof column.value === 'string' ? column.value : null,
+            [columnFilter.id]: columnFilter.value,
           })}`,
           {
             scroll: false,
@@ -184,10 +196,10 @@ export function DataTable<TData, TValue>({
       }
     }
 
-    for (const key of Object.keys(searchParams)) {
+    for (const key of Array.from(searchParams.keys())) {
       if (
         searchableColumns.find((column) => column.id === key) &&
-        !debouncedSearchableColumnFilters.find((column) => column.id === key)
+        !debouncedSearchableColumnFilters.find((filter) => filter.id === key)
       ) {
         router.push(
           `${pathname}?${createQueryString({
@@ -203,13 +215,16 @@ export function DataTable<TData, TValue>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchableColumnFilters]);
 
-  React.useEffect(() => {
-    for (const column of filterableColumnFilters) {
-      if (typeof column.value === 'object' && Array.isArray(column.value)) {
+  useEffect(() => {
+    for (const columnFilter of filterableColumnFilters) {
+      if (
+        typeof columnFilter.value === 'object' &&
+        Array.isArray(columnFilter.value)
+      ) {
         router.push(
           `${pathname}?${createQueryString({
             page: 1,
-            [column.id]: column.value.join('.'),
+            [columnFilter.id]: columnFilter.value.join('.'),
           })}`,
           {
             scroll: false,
@@ -218,10 +233,10 @@ export function DataTable<TData, TValue>({
       }
     }
 
-    for (const key of searchParams.keys()) {
+    for (const key of Array.from(searchParams.keys())) {
       if (
         filterableColumns.find((column) => column.id === key) &&
-        !filterableColumnFilters.find((column) => column.id === key)
+        !filterableColumnFilters.find((filter) => filter.id === key)
       ) {
         router.push(
           `${pathname}?${createQueryString({
@@ -240,7 +255,7 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns,
-    pageCount: pageCount ?? -1,
+
     state: {
       pagination,
       sorting,
@@ -249,7 +264,7 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
     rowCount: data.length,
-    enableRowSelection: true,
+    enableRowSelection: false,
     onRowSelectionChange: setRowSelection,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
@@ -261,13 +276,10 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    manualPagination: true,
-    manualSorting: true,
-    manualFiltering: true,
   });
 
   return (
-    <div className="w-full space-y-3 overflow-auto">
+    <div className="w-full space-y-3">
       <DataTableToolbar
         tableName={tableName}
         table={table}
@@ -276,8 +288,8 @@ export function DataTable<TData, TValue>({
         newRowLink={newRowLink}
         deleteRowsAction={deleteRowsAction}
       />
-      <div className="overflow-x-auto rounded-md">
-        <Table className="min-w-full">
+      <div className="overflow-x-auto">
+        <Table className="w-full">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -326,7 +338,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      {disablePagination ? null : <DataTablePagination table={table} />}
+      <DataTablePagination table={table} />
     </div>
   );
 }

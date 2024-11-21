@@ -1,9 +1,10 @@
 import {
   ArrowLeftRight,
   Banknote,
+  Coins,
   IdCard,
   KeySquare,
-  LayoutDashboard,
+  Orbit,
   Search,
 } from 'lucide-react';
 
@@ -11,7 +12,12 @@ export const itemsCore = [
   {
     title: 'Assets',
     url: '/',
-    icon: LayoutDashboard,
+    icon: Coins,
+  },
+  {
+    title: 'Leaderboard',
+    url: '/leaderboard',
+    icon: Orbit,
   },
 ];
 
@@ -22,8 +28,8 @@ export const itemsFinance = [
     icon: ArrowLeftRight,
   },
   {
-    title: 'Smart Links',
-    url: '/finance/smart-links',
+    title: 'Authorizations',
+    url: '/finance/authorizations',
     icon: KeySquare,
   },
   {

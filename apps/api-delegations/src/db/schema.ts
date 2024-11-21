@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations } from 'drizzle-orm';
 import {
   bigint,
   integer,
@@ -7,22 +7,22 @@ import {
   text,
   boolean,
   varchar,
-} from "drizzle-orm/pg-core";
+} from 'drizzle-orm/pg-core';
 import type { Address, Hex } from 'viem';
-import { baseSepolia } from "viem/chains";
+import { baseSepolia } from 'viem/chains';
 
 // Utils
 const addressColumn = () => varchar({ length: 42 }).$type<Address>();
 const bytes32Column = () => varchar({ length: 66 }).$type<Hex>();
 const bytesColumn = () => text().$type<Hex>();
-const bigIntColumn = () => bigint({ mode: "number" }).$type<bigint>();
+const bigIntColumn = () => bigint({ mode: 'number' }).$type<bigint>();
 
 // ----------------------------------------------
 // Delegations
 // ----------------------------------------------
 
 // Table
-export const delegations = pgTable("delegations", {
+export const delegations = pgTable('delegations', {
   hash: bytes32Column().primaryKey(),
   verifyingContract: addressColumn().notNull(),
   type: varchar({ length: 256 }).notNull(),
@@ -45,8 +45,8 @@ export const delegationsRelations = relations(delegations, ({ many }) => ({
 // ----------------------------------------------
 
 // Table
-export const caveats = pgTable("caveats", {
-  id: serial("id").primaryKey(),
+export const caveats = pgTable('caveats', {
+  id: serial('id').primaryKey(),
   enforcerType: varchar({ length: 256 }).notNull(),
   enforcer: addressColumn().notNull(),
   terms: bytesColumn().notNull(),

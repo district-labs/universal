@@ -15,16 +15,16 @@ export default function HomePage() {
             <AddFundsTestnet>
               <Button rounded={'lg'}>
                 <PlusCircle className="size-5" />
-                Deposit
+                Mint Tokens
               </Button>
             </AddFundsTestnet>
           </div>
         </div>
       </section>
       <section>
-        <div className="container">
+        <div className="container max-w-[100vw] md:max-w-[1400px]">
           <Card className="p-6">
-            <OnchainAssetsTable address="0x1234" chainId={1} />
+            <OnchainAssetsTable />
           </Card>
         </div>
       </section>

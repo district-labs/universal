@@ -1,4 +1,11 @@
-import { app, type appRouter } from "./app.js";
-export type AppRouter = typeof appRouter;
-import type { InsertDelegationDb, SelectDelegationDb, InsertCaveatDb, SelectCaveatDb, DelegationDb } from "./db/schema.js";
-export { app, type InsertDelegationDb, type SelectDelegationDb, type InsertCaveatDb, type SelectCaveatDb, type DelegationDb }
+import { app } from './app.js';
+export type {
+  DelegationDb,
+  InsertCaveatDb,
+  InsertDelegationDb,
+  SelectCaveatDb,
+  SelectDelegationDb,
+} from './db/schema.js';
+export { app };
+export type AppRouter = typeof app;
+export type DelegationsApi = typeof app;

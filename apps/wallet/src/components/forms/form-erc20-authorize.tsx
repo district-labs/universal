@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Form, FormField, FormItem } from '@/components/ui/form';
+import { Form } from '@/components/ui/form';
 import { addressSchema } from '@/lib/validation/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -16,34 +16,68 @@ import { DisconnectWalletElement } from '@/components/onchain/disconnect-wallet-
 import { IsNotUniversalWallet } from '@/components/onchain/is-not-universal-wallet';
 import { IsUniversalWallet } from '@/components/onchain/is-universal-wallet';
 import { Card } from '@/components/ui/card';
+import { useToast } from '@/lib/hooks/use-toast';
 import { useEffect } from 'react';
 import type { TokenItem } from 'universal-data';
-import { tokenList } from 'universal-data';
+import { findTokenByAddress, tokenList } from 'universal-data';
 import { useSignErc20TransferDelegation } from 'universal-delegations-sdk';
 
 const formSchema = z.object({
   to: addressSchema,
-  token: z.custom<TokenItem>(),
-  amount: z.string(),
+  token: z.custom<TokenItem>().refine((value) => !!value?.address, {
+    message: 'Token is required',
+  }),
+  amount: z.string().min(1),
 });
 
 export type FormSchema = z.infer<typeof formSchema>;
 export type FormData = {
-  to?: string;
+  to?: Address;
   token?: TokenItem;
   amount?: string;
 };
 
 type FormErc20AuthorizeProps = {
+  defaultValues?: FormData;
   onFormChange?: (data?: FormData) => void;
+  tokenAddress?: Address;
 };
 
-function FormErc20Authorize({ onFormChange }: FormErc20AuthorizeProps) {
+function FormErc20Authorize({
+  tokenAddress,
+  defaultValues,
+  onFormChange,
+}: FormErc20AuthorizeProps) {
   const { address, chainId } = useAccount();
-  const { signAndSaveDelegationAsync } = useSignErc20TransferDelegation();
+  const { signAndSaveDelegationAsync, isSuccess } =
+    useSignErc20TransferDelegation();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      token: tokenAddress
+        ? findTokenByAddress(tokenAddress)
+        : defaultValues?.token
+          ? defaultValues.token
+          : undefined,
+      to: defaultValues?.to || undefined,
+      amount: defaultValues?.amount || undefined,
+    },
   });
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (isSuccess) {
+      form.reset({
+        to: undefined,
+        token: undefined,
+        amount: undefined,
+      });
+      toast({
+        title: 'Authorization Signed',
+        description: 'The authorization has been signed and saved.',
+      });
+    }
+  }, [toast, form, isSuccess]);
 
   useEffect(() => {
     const subscription = form.watch((data) => {
@@ -60,7 +94,7 @@ function FormErc20Authorize({ onFormChange }: FormErc20AuthorizeProps) {
     if (!chainId) {
       return;
     }
-    signAndSaveDelegationAsync({
+    await signAndSaveDelegationAsync({
       chainId: chainId,
       delegate: data.to,
       delegator: address as Address,
@@ -74,43 +108,10 @@ function FormErc20Authorize({ onFormChange }: FormErc20AuthorizeProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
         <Card className="rounded-3xl p-5">
-          <FormField
-            control={form.control}
-            name="to"
-            render={({ field }) => (
-              <FormItem>
-                <AccountSelectAndInput
-                  valueAccount={field.value}
-                  onAccountChange={(value) => field.onChange(value)}
-                  valueContact={field.value}
-                  onContactSelected={(account: string) => {
-                    field.onChange(account);
-                  }}
-                />
-              </FormItem>
-            )}
-          />
+          <AccountSelectAndInput />
         </Card>
         <Card className="rounded-3xl p-5">
-          <FormField
-            control={form.control}
-            name="token"
-            render={({ field }) => (
-              <FormItem>
-                <Erc20SelectAndAmount
-                  tokenList={tokenList}
-                  valueAmount={form.watch('amount')}
-                  onAmountChanged={(value) =>
-                    form.setValue('amount', value || '')
-                  }
-                  valueToken={field.value}
-                  onTokenSelected={(token: TokenItem) => {
-                    field.onChange(token);
-                  }}
-                />
-              </FormItem>
-            )}
-          />
+          <Erc20SelectAndAmount tokenList={tokenList} />
         </Card>
         <div className="mt-4">
           {address && (

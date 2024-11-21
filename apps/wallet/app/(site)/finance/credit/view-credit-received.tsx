@@ -6,6 +6,7 @@ import {
   CardFooter,
   CardHeader,
 } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import type * as React from 'react';
 import {
@@ -83,7 +84,7 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
   });
 
   if (!enforcerData) {
-    return null;
+    return <Skeleton className="h-72" />;
   }
 
   return (

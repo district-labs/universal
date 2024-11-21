@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useDelegationsApiClient, type DelegationsApiClient } from '../client.js';
+import { type DelegationsApiClient, useDelegationsApiClient } from '../client.js';
 
 type InsertDelegationParams = Parameters<
   DelegationsApiClient['delegations']['$post']
@@ -12,21 +12,17 @@ export async function insertDelegation(delegationsApiClient:DelegationsApiClient
     typeof value === 'bigint' ? value.toString() : value
   ));
 
-  try {
-    const res = await delegationsApiClient.delegations.$post({
-      json: format,
-    });
-  
-    if (!res.ok) {
-      const { error } = await res.json();
-      throw new Error(error);
-    }
-  
-    const { delegation } = await res.json();
-    return delegation;
-  } catch (error) {
-    throw error;
+  const res = await delegationsApiClient.delegations.$post({
+    json: format,
+  });
+
+  if (!res.ok) {
+    const { error } = await res.json();
+    throw new Error(error);
   }
+
+  const { delegation } = await res.json();
+  return delegation;
 }
 
 export function useInsertDelegation() {

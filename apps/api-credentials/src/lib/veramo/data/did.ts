@@ -21,12 +21,8 @@ export const webDid = {
       publicKeyHex: didPubKey,
     },
   ],
-  authentication: [
-    `did:web:${alias}#${didPubKey}`,
-  ],
-  assertionMethod: [
-    `did:web:${alias}#${didPubKey}`,
-  ],
+  authentication: [`did:web:${alias}#${didPubKey}`],
+  assertionMethod: [`did:web:${alias}#${didPubKey}`],
   keyAgreement: [],
   service: [],
 };

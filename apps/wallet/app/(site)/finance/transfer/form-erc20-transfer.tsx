@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Form, FormField, FormItem } from '@/components/ui/form';
+import { Form } from '@/components/ui/form';
 import { addressSchema } from '@/lib/validation/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -74,49 +74,21 @@ function FormerErc20Transfer() {
         },
       ],
     });
+    form.reset({
+      to: undefined,
+      token: undefined,
+      amount: undefined,
+    });
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
         <Card className="rounded-3xl p-5">
-          <FormField
-            control={form.control}
-            name="to"
-            render={({ field }) => (
-              <FormItem>
-                <AccountSelectAndInput
-                  valueAccount={form.watch('to')}
-                  onAccountChange={(value: Address) =>
-                    form.setValue('to', value)
-                  }
-                  valueContact={field.value}
-                  onContactSelected={(account: string) => {
-                    field.onChange(account);
-                  }}
-                />
-              </FormItem>
-            )}
-          />
+          <AccountSelectAndInput />
         </Card>
         <Card className="rounded-3xl p-5">
-          <FormField
-            control={form.control}
-            name="token"
-            render={({ field }) => (
-              <FormItem>
-                <Erc20SelectAndAmount
-                  tokenList={tokenList}
-                  valueAmount={form.watch('amount')}
-                  onAmountChanged={(value) => form.setValue('amount', value)}
-                  valueToken={field.value}
-                  onTokenSelected={(token: TokenItem) => {
-                    field.onChange(token);
-                  }}
-                />
-              </FormItem>
-            )}
-          />
+          <Erc20SelectAndAmount tokenList={tokenList} />
         </Card>
 
         {address && (

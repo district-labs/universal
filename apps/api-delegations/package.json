@@ -30,6 +30,7 @@
     "start": "tsx src/node.ts",
     "start:dist": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/esm/node.js",
     "check-types": "tsc --noemit",
+    "format": "biome format --write .",
     "lint": "eslint ./src --max-warnings 0 && pnpm check-types",
     "lint:fix": "eslint ./src --fix",
     "prettier": "prettier --write ./src"
