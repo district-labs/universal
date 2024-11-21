@@ -77,6 +77,9 @@ importers:
       typeorm:
         specifier: ^0.3.20
         version: 0.3.20(pg@8.13.1)(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3))
+      universal-identity-sdk:
+        specifier: workspace:*
+        version: link:../../packages/universal-identity-sdk
       viem:
         specifier: ^2.21.45
         version: 2.21.45(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)

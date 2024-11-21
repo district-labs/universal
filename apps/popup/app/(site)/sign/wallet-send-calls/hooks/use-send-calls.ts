@@ -35,6 +35,7 @@ export function useSendCalls({ redemptions }: UseSendCallsParams) {
   const params = { accountState, message, sessionState, bundlerClient };
   const isValid = validateMessageParams(params) && !!standardCalls;
 
+
   const calls = useMemo(() => {
     let delegationCalls: CallParameters[] | undefined;
     if (redemptions && redemptions.length > 0) {
