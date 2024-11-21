@@ -6,12 +6,23 @@ import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useSessionState } from '@/lib/state/use-session-state';
 import { useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import type { Address } from 'viem';
-import { toWebAuthnAccount } from 'viem/account-abstraction';
+import { useState, useMemo } from 'react';
+import type { CallParameters } from 'viem';
+import {
+  type EstimateUserOperationGasErrorType,
+  toWebAuthnAccount,
+} from 'viem/account-abstraction';
+import {
+  formatErc20TransferEnforcerCalls,
+  Erc20TransferEnforcerRedemption,
+} from '@/lib/delegation-framework/enforcers/erc20-transfer-amount/format-erc20-transfer-enforcer-calls';
+import { useEstimateUserOpPrice } from '@/lib/account-abstraction/hooks/use-estimate-user-op-price';
 
-export function useSendCalls() {
-  const [sender, setSender] = useState<Address>();
+type UseSendCallsParams = {
+  redemptions: Erc20TransferEnforcerRedemption[] | undefined;
+};
+
+export function useSendCalls({ redemptions }: UseSendCallsParams) {
   const [isLoadingUserOp, setIsLoadingUserOp] = useState(false);
   const [isLoadingSendTx, setIsLoadingSendTx] = useState(false);
   const { accountState } = useAccountState();
@@ -20,41 +31,34 @@ export function useSendCalls() {
   const bundlerClient = useBundlerClient();
 
   // TODO: Type check calls
-  const calls = message?.params[0]?.calls;
+  const standardCalls = message?.params[0]?.calls;
   const params = { accountState, message, sessionState, bundlerClient };
+  const isValid = validateMessageParams(params) && !!standardCalls;
 
-  useEffect(() => {
-    if (!validateMessageParams(params) || !calls) {
-      return;
+
+  const calls = useMemo(() => {
+    let delegationCalls: CallParameters[] | undefined;
+    if (redemptions && redemptions.length > 0) {
+      delegationCalls = formatErc20TransferEnforcerCalls({
+        redemptions,
+      });
     }
-    const { accountState, bundlerClient } = params;
-    const { credentialId, publicKey } = accountState;
 
-    const owner = toWebAuthnAccount({
-      credential: {
-        id: credentialId,
-        publicKey: publicKey,
-      },
-    });
+    return delegationCalls && delegationCalls?.length > 0
+      ? [...delegationCalls, ...standardCalls]
+      : standardCalls;
+  }, [standardCalls, redemptions]);
 
-    toUniversalAccount({
-      client: bundlerClient.client,
-      owners: [owner],
-    }).then((account) => {
-      setSender(account.address);
-    });
-    return () => {
-      setSender(undefined);
-    };
-  }, [calls]);
+  const estimateUserOpPriceQuery = useEstimateUserOpPrice({ calls });
 
   const { mutate, mutateAsync, ...rest } = useMutation({
     mutationKey: ['send-calls'],
     mutationFn: async () => {
-      if (!validateMessageParams(params) || !calls) {
+      if (!validateMessageParams(params) || !standardCalls) {
         return;
       }
 
+      // Regular send calls flow
       const { accountState, bundlerClient, message, sessionState } = params;
       const { credentialId, publicKey } = accountState;
 
@@ -69,13 +73,12 @@ export function useSendCalls() {
         client: bundlerClient.client,
         owners: [owner],
       });
-      setSender(account.address);
 
       setIsLoadingSendTx(true);
       const userOp = await bundlerClient
         .sendUserOperation({
           account,
-          calls: calls,
+          calls,
         })
         .catch((error) => {
           console.error('Error sending calls', error);
@@ -100,13 +103,15 @@ export function useSendCalls() {
     },
   });
 
-  const isValid = validateMessageParams(params) && !!calls;
-
+  const isValidUserOp = isValid && estimateUserOpPriceQuery.isSuccess;
   return {
-    sender: isValid ? sender : undefined,
+    sender: isValidUserOp ? accountState?.smartContractAddress : undefined,
     from: message?.sender,
-    sendCalls: isValid ? mutate : undefined,
-    sendCallsAsync: isValid ? mutateAsync : undefined,
+    sendCalls: isValidUserOp ? mutate : undefined,
+    sendCallsAsync: isValidUserOp ? mutateAsync : undefined,
+    userOpError:
+      estimateUserOpPriceQuery.error as EstimateUserOperationGasErrorType,
+    refetchUserOpPrice: estimateUserOpPriceQuery.refetch,
     calls,
     isLoadingSendTx,
     isLoadingUserOp,

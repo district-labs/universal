@@ -5,9 +5,9 @@ import { CreditDelegationsSheet } from '@/components/credit-delegations-sheet';
 import { Address } from '@/components/onchain/address';
 import { EthAmountFormatted } from '@/components/onchain/eth-formatted';
 import { Toggle } from '@/components/toggle';
-import { type ReactElement, useState } from 'react';
+import { type ReactElement, useState, useMemo } from 'react';
 import type { DelegationDb } from 'universal-delegations-sdk';
-import type { Address as AddressType } from 'viem';
+import { type Address as AddressType } from 'viem';
 import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
 import { ActionRequestMain } from '../components/action-request-main';
@@ -35,16 +35,32 @@ export type DelegationExecutions = {
 
 export default function PersonalSignPage() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
-  const { sendCalls, calls, isLoadingSendTx, isLoadingUserOp, from, sender } =
-    useSendCalls();
-
   const [delegationExecutions, setDelegationExecutions] =
     useState<DelegationExecutions[]>();
+  const redemptions = useMemo(
+    () =>
+      delegationExecutions?.map(({ execution, delegation }) => ({
+        amount: execution.amount,
+        delegation,
+      })),
+    [delegationExecutions],
+  );
+  const {
+    sendCalls,
+    refetchUserOpPrice,
+    calls,
+    isLoadingSendTx,
+    isLoadingUserOp,
+    from,
+    sender,
+    userOpError,
+  } = useSendCalls({
+    redemptions,
+  });
+
   if (!calls) {
     return <div>Invalid Transactions</div>;
   }
-
-  console.log(delegationExecutions, 'delegationExecutions');
 
   return (
     <ActionRequestView>
@@ -133,6 +149,20 @@ export default function PersonalSignPage() {
           </div>
         )}
       </ActionRequestMain>
+      {userOpError?.message && (
+        <div className="w-full p-2 font-medium max-w-screen-sm  mx-auto flex flex-col items-center  text-red-500 justify-between">
+          <div className="flex items-baseline gap-x-0.5">
+            Error while submitting transaction.{' '}
+            <Button
+              className="text-destructive"
+              onClick={() => refetchUserOpPrice()}
+              variant={'link'}
+            >
+              Retry
+            </Button>
+          </div>
+        </div>
+      )}
       <ActionRequestFooter>
         <Button
           className="w-full flex-1 rounded-full"

@@ -75,7 +75,22 @@ type UserOperationParams = {
   paymaster?: Address;
 };
 
-export function getUserOperationHash(params: UserOperationParams): Hex {
+type UserOperationEntrypoint07ReturnType = {
+  sender: Address;
+  nonce: bigint;
+  initCode_hashed: Hex;
+  initCode: Hex;
+  callData: Hex;
+  callData_hashed: Hex;
+  accountGasLimits: Hex;
+  preVerificationGas: bigint;
+  gasFees: Hex;
+  paymasterAndData: Hex;
+  paymasterAndData_hashed: Hex;
+};
+export function getUserOperationEntrypoint07Params(
+  params: UserOperationParams,
+): UserOperationEntrypoint07ReturnType {
   const {
     sender,
     callGasLimit,
@@ -93,9 +108,9 @@ export function getUserOperationHash(params: UserOperationParams): Hex {
     paymasterVerificationGasLimit,
   } = params;
 
-  const initCode_hashed = keccak256(
-    factory && factoryData ? concat([factory, factoryData]) : '0x',
-  );
+  const initCode =
+    factory && factoryData ? concat([factory, factoryData]) : '0x';
+  const initCode_hashed = keccak256(initCode);
   const callData_hashed = keccak256(callData);
   const accountGasLimits = concat([
     pad(numberToHex(verificationGasLimit), { size: 16 }),
@@ -105,20 +120,46 @@ export function getUserOperationHash(params: UserOperationParams): Hex {
     pad(numberToHex(maxPriorityFeePerGas), { size: 16 }),
     pad(numberToHex(maxFeePerGas), { size: 16 }),
   ]);
-  const paymasterAndData_hashed = keccak256(
-    paymaster
-      ? concat([
-          paymaster,
-          pad(numberToHex(paymasterVerificationGasLimit || 0), {
-            size: 16,
-          }),
-          pad(numberToHex(paymasterPostOpGasLimit || 0), {
-            size: 16,
-          }),
-          paymasterData || '0x',
-        ])
-      : '0x',
-  );
+  const paymasterAndData = paymaster
+    ? concat([
+        paymaster,
+        pad(numberToHex(paymasterVerificationGasLimit || 0), {
+          size: 16,
+        }),
+        pad(numberToHex(paymasterPostOpGasLimit || 0), {
+          size: 16,
+        }),
+        paymasterData || '0x',
+      ])
+    : '0x';
+  const paymasterAndData_hashed = keccak256(paymasterAndData);
+
+  return {
+    sender,
+    nonce,
+    initCode,
+    initCode_hashed,
+    callData,
+    callData_hashed,
+    accountGasLimits,
+    preVerificationGas,
+    gasFees,
+    paymasterAndData,
+    paymasterAndData_hashed,
+  };
+}
+
+export function getUserOperationHash(params: UserOperationParams): Hex {
+  const {
+    sender,
+    nonce,
+    initCode_hashed,
+    callData_hashed,
+    accountGasLimits,
+    preVerificationGas,
+    gasFees,
+    paymasterAndData_hashed,
+  } = getUserOperationEntrypoint07Params(params);
 
   return keccak256(
     encodeAbiParameters(

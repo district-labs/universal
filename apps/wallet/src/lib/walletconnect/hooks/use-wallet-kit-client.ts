@@ -5,5 +5,6 @@ export function useWalletKitClient() {
   return useQuery({
     queryKey: ['wc', 'create-client'],
     queryFn: () => createWalletKitClient(),
+    refetchOnWindowFocus: false,
   });
 }

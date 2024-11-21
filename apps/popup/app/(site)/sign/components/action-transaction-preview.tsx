@@ -1,4 +1,4 @@
-import { HTMLAttributes, useMemo } from 'react';
+import type { HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 import { FileWarning, Info } from 'lucide-react';
 import { useEstimateUserOpAssetChanges } from '@/lib/alchemy/hooks/use-simulate-user-op-asset-changes';
@@ -10,11 +10,8 @@ import {
 } from '@/components/ui/tooltip';
 
 import { useAccountState } from '@/lib/state/use-account-state';
-import {
-  AssetType,
-  Change,
-} from '@/lib/alchemy/actions/simulate-user-op-asset-changes';
-import { Address } from 'viem';
+import type { Change } from '@/lib/alchemy/actions/simulate-user-op-asset-changes';
+import { formatUnits, type Address } from 'viem';
 import { IconLoading } from '@/components/icon-loading';
 
 type ActionTransactionPreview = HTMLAttributes<HTMLElement>;
@@ -23,20 +20,12 @@ export function ActionTransactionPreview({
   className,
 }: ActionTransactionPreview) {
   const { accountState } = useAccountState();
-  const { data, isLoading, isError, error } = useEstimateUserOpAssetChanges();
-
-  const assets = useMemo(() => {
-    if (!data) return null;
-
-    const filterAssetsByType = (type: AssetType) =>
-      data.filter(({ assetType }) => assetType === type);
-
-    return {
-      erc721assets: filterAssetsByType('ERC721'),
-      erc1155assets: filterAssetsByType('ERC1155'),
-      erc20assets: filterAssetsByType('ERC20'),
-    };
-  }, [data]);
+  const {
+    data: assets,
+    isLoading,
+    isError,
+    error,
+  } = useEstimateUserOpAssetChanges();
 
   if (isError) {
     return (
@@ -56,7 +45,7 @@ export function ActionTransactionPreview({
     );
   }
 
-  if (isLoading || !assets) {
+  if (isLoading || !assets || !accountState) {
     return (
       <>
         <div
@@ -114,15 +103,15 @@ export function ActionTransactionPreview({
         <div className="max-h-[220px] overflow-auto pt-4">
           <AssetList
             assets={erc20assets}
-            smartContractAddress={accountState!.smartContractAddress}
+            smartContractAddress={accountState.smartContractAddress}
           />
           <AssetList
             assets={erc721assets}
-            smartContractAddress={accountState!.smartContractAddress}
+            smartContractAddress={accountState.smartContractAddress}
           />
           <AssetList
             assets={erc1155assets}
-            smartContractAddress={accountState!.smartContractAddress}
+            smartContractAddress={accountState.smartContractAddress}
           />
         </div>
       </div>
@@ -176,11 +165,7 @@ const AssetList = ({
                   equalAddress ? 'text-green-500' : 'text-red-500',
                 )}
               >
-                {(equalAddress ? '+' : '-') +
-                  ' ' +
-                  (amount || '') +
-                  ' ' +
-                  (assetType === 'ERC20' ? symbol : '')}
+                {`${equalAddress ? '+' : '-'} ${amount} ${assetType === 'ERC20' && symbol}`}
               </span>
             </div>
           );

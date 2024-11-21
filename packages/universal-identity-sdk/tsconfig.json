@@ -3,8 +3,8 @@
 	"include": [
 		"src/**/*.ts",
 		"src/api/actions/get-delegation-by-delegate-and-type.tsx",
-		"src/api/client.tsx",
-		"src/api/client.tsx"
+		"src/api/client.ts",
+		"src/api/client.ts"
 	],
 	"exclude": ["node_modules"]
 }

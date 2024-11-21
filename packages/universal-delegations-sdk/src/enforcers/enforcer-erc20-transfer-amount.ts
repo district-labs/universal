@@ -7,10 +7,10 @@ export function encodeEnforcerERC20TransferAmount(data: {
 }) {
     return encodePacked(
         [
-           "address", "uint256"
+            "address", "uint256"
         ],
         [
-            data.token, 
+            data.token,
             parseUnits(data.amount, data.decimals)
         ]
     )
@@ -28,5 +28,5 @@ export function decodeEnforcerERC20TransferAmount(data: Hex) {
     const amountHex = sliceHex(data, addressSize, addressSize + uint256Size);
     const amount = hexToBigInt(amountHex);
 
-    return [ token, BigInt(amount) ];
+    return [token, BigInt(amount)] as const
 }

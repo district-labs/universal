@@ -7,13 +7,20 @@ import { cn, formatNumber } from '@/lib/utils';
 export type ERC20Balance = React.HTMLAttributes<HTMLElement> & {
   address?: Address;
   account?: Address;
+  chainId?: number;
 };
 
-export const ERC20Balance = ({ className, address, account }: ERC20Balance) => {
+export const ERC20Balance = ({
+  className,
+  address,
+  account,
+  chainId,
+}: ERC20Balance) => {
   const { address: user } = useAccount();
   const classes = cn(className);
   const { data } = useReadContract({
     abi: erc20Abi,
+    chainId,
     address: address,
     functionName: 'balanceOf',
     args: [account || (user as Address)],
