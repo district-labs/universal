@@ -23,30 +23,30 @@ export function useSendCalls() {
   const calls = message?.params[0]?.calls;
   const params = { accountState, message, sessionState, bundlerClient };
 
-  useEffect( () => { 
+  useEffect(() => {
     if (!validateMessageParams(params) || !calls) {
       return;
     }
     const { accountState, bundlerClient } = params;
-      const { credentialId, publicKey } = accountState;
+    const { credentialId, publicKey } = accountState;
 
-      const owner = toWebAuthnAccount({
-        credential: {
-          id: credentialId,
-          publicKey: publicKey,
-        },
-      });
+    const owner = toWebAuthnAccount({
+      credential: {
+        id: credentialId,
+        publicKey: publicKey,
+      },
+    });
 
-      toUniversalAccount({
-        client: bundlerClient.client,
-        owners: [owner],
-      }).then((account) => {
-        setSender(account.address);
-      })
-      return () => {
-        setSender(undefined);
-      }
-  }, [calls])
+    toUniversalAccount({
+      client: bundlerClient.client,
+      owners: [owner],
+    }).then((account) => {
+      setSender(account.address);
+    });
+    return () => {
+      setSender(undefined);
+    };
+  }, [calls]);
 
   const { mutate, mutateAsync, ...rest } = useMutation({
     mutationKey: ['send-calls'],

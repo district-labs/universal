@@ -34,6 +34,7 @@ export const CreditDelegationsSheet = ({
   console.log(address, 'address');
   const { data } = useGetCredit({
     address,
+    chainId: 84532,
   });
 
   const [isOpen, toggleSheet] = useState(false);
@@ -52,12 +53,12 @@ export const CreditDelegationsSheet = ({
             </SheetDescription>
           </SheetHeader>
           <div className="mt-4 space-y-2">
-            {data?.map((delegation) => (
+            {data?.credit.map((delegation) => (
               <CardAuthorization
                 toggleSheet={toggleSheet}
                 onSelect={onSelect}
-                key={delegation.hash}
-                delegation={delegation as DelegationDb}
+                key={delegation.data.hash}
+                delegation={delegation.data as DelegationDb}
               />
             ))}
           </div>
@@ -87,7 +88,7 @@ const CardAuthorization = ({
   return (
     <Card
       key={delegation.hash}
-      className='flex cursor-pointer flex-col gap-y-3 p-4 hover:shadow-md'
+      className="flex cursor-pointer flex-col gap-y-3 p-4 hover:shadow-md"
       onClick={() => {
         onSelect([
           {

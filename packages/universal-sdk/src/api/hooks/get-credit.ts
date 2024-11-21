@@ -7,11 +7,16 @@ export async function getCredit(
   universalApiClient: UniversalApiClient,
   query: {
     address: Address;
+    chainId: number;
   },
 ) {
   const res = await universalApiClient.credit.delegate[':address'].$post({
     param: {
       address: query.address,
+    },
+    json: {
+      chainId: query.chainId,
+      type: 'DebitAuthorization',
     },
   });
 
@@ -20,17 +25,19 @@ export async function getCredit(
     throw new Error(error);
   }
 
-  const { credit } = await res.json();
-  return credit;
+  const data = await res.json();
+  return data;
 }
 
 export function useGetCredit(params: {
   address: Address;
+  chainId: number;
 }) {
   const universalApiClient = useUniversal();
+  console.log(params, 'paramsparams');
   return useQuery({
     queryKey: ['credit-get', params],
     queryFn: () => getCredit(universalApiClient, params),
-    enabled: !!(!!universalApiClient && !!params.address),
+    enabled: !!(!!universalApiClient && !!params.address && !!params.chainId),
   });
 }

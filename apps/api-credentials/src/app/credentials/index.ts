@@ -1,5 +1,20 @@
 import { Hono } from 'hono';
+import { validator } from 'hono/validator';
+import { deconstructDidIdentifier } from 'universal-identity-sdk';
+import { z } from 'zod';
 import { getCredentialDb } from '../../lib/db/actions/get-credential-db.js';
+
+const credentialsQuery = z.object({
+  dids: z.array(z.string()),
+});
+
+const validateCredentialsMiddleware = validator('json', async (value, c) => {
+  const queryParams = credentialsQuery.safeParse(value);
+  if (!queryParams.success) {
+    return c.json({ error: 'No DIDs provided' }, 400);
+  }
+  return queryParams.data;
+});
 
 const credentialsApp = new Hono()
   .get('/credentials/:did', async (c) => {
@@ -35,42 +50,16 @@ const credentialsApp = new Hono()
 
     return c.json({ credentials: _credentials }, 200);
   })
-  .get('/credentials', async (c) => {
-    let dids: string[] | undefined;
-    // Option 1: Accept multiple 'did' query parameters (e.g., /credentials?did=did1&did=did2)
-    const did = c.req.query('did');
 
-    // Option 2: Accept a comma-separated list in a single 'dids' query parameter (e.g., /credentials?dids=did1,did2)
-    if (did) {
-      dids = [did];
-    } else {
-      const didsParam = c.req.query('dids');
-      if (didsParam) {
-        dids = didsParam.split(',').map((did) => did.trim());
-      }
-    }
-
-    // Ensure 'dids' is an array
-    if (!Array.isArray(dids)) {
-      if (typeof dids === 'string') {
-        dids = [dids];
-      } else {
-        dids = [];
-      }
-    }
-
-    // If no DIDs are provided, return a bad request
-    if (dids.length === 0) {
-      return c.json({ error: 'No DIDs provided' }, 400);
-    }
-
+  .post('/credentials', validateCredentialsMiddleware, async (c) => {
+    const queryParams = c.req.valid('json');
     const issuer = c.req.query('issuer');
     const category = c.req.query('category');
     const type = c.req.query('type');
 
     try {
       // Fetch credentials for all DIDs in parallel
-      const credentialsPromises = dids.map((did) =>
+      const credentialsPromises = queryParams.dids.map((did) =>
         getCredentialDb({
           issuer,
           subject: did,
@@ -79,6 +68,7 @@ const credentialsApp = new Hono()
         }).then((credentials) => ({
           did,
           credentials: credentials || [],
+          account: deconstructDidIdentifier(did),
         })),
       );
 

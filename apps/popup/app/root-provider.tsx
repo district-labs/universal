@@ -24,14 +24,13 @@ export default function RootProvider({ children }: RootProviderProps) {
     >
       <MessageProvider>
         <QueryClientProvider client={queryClient}>
-        <UniversalProvider
-              apiUniversal={env.NEXT_PUBLIC_UNIVERSAL_API_URL}
-              apiDelegations={env.NEXT_PUBLIC_DELEGATIONS_API_URL}
-              apiIdentity={env.NEXT_PUBLIC_IDENTITY_API_URL}
-            >
-
-          {children}
-            </UniversalProvider>
+          <UniversalProvider
+            apiUniversal={env.NEXT_PUBLIC_UNIVERSAL_API_URL}
+            apiDelegations={env.NEXT_PUBLIC_DELEGATIONS_API_URL}
+            apiIdentity={env.NEXT_PUBLIC_IDENTITY_API_URL}
+          >
+            {children}
+          </UniversalProvider>
         </QueryClientProvider>
       </MessageProvider>
     </ThemeProvider>

@@ -68,7 +68,7 @@ export default function PersonalSignPage() {
                 value={<ActionTransactionNetworkSimplified />}
               />
             </div>
-            <div className='space-y-2 border-t-2 bg-neutral-100/60 px-6 py-3'>
+            <div className="space-y-2 border-t-2 bg-neutral-100/60 px-6 py-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm">Credit Lines</span>
                 {sender && (

@@ -54,9 +54,9 @@ const leaderboardRouter = new Hono().post(
       });
     });
 
-    const credentials = await apiCredentialsClient.credentials.$get({
-      query: {
-        dids: _dids.toString(),
+    const credentials = await apiCredentialsClient.credentials.$post({
+      json: {
+        dids: _dids,
       },
     });
 
