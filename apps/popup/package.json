@@ -51,6 +51,7 @@
     "universal-identity-sdk": "workspace:*",
     "universal-wallet-connector": "workspace:*",
     "universal-wallet-sdk": "workspace:*",
+    "universal-sdk": "workspace:*",
     "universal-wallet-ui": "workspace:*",
     "usehooks-ts": "^3.1.0",
     "viem": "^2.21.6",

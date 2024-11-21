@@ -1,6 +1,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 
+import { CreditDelegationsSheet } from '@/components/credit-delegations-sheet';
 import { Address } from '@/components/onchain/address';
 import { EthAmountFormatted } from '@/components/onchain/eth-formatted';
 import { Toggle } from '@/components/toggle';
@@ -19,8 +20,10 @@ import { useSendCalls } from './hooks/use-send-calls';
 
 export default function PersonalSignPage() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
-  const { sendCalls, calls, isLoadingSendTx, isLoadingUserOp, from } =
+  const { sendCalls, calls, isLoadingSendTx, isLoadingUserOp, from, sender } =
     useSendCalls();
+
+    console.log(sender, 'sendersender')
 
   if (!calls) {
     return <div>Invalid Transactions</div>;
@@ -47,6 +50,20 @@ export default function PersonalSignPage() {
                 label="Network"
                 value={<ActionTransactionNetworkSimplified />}
               />
+            </div>
+            <div className="border-t-2 bg-neutral-100/60 px-6 py-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Credit Lines</span>
+                {
+                  sender && (
+                  <CreditDelegationsSheet address={sender}>
+                    <span className='cursor-pointer font-bold text-sm'>
+                      Manage
+                    </span>
+                  </CreditDelegationsSheet>
+                  )
+                }
+              </div>
             </div>
             <ActionTransactionPreview className="flex-1 text-center" />
           </>

@@ -547,6 +547,9 @@ importers:
       universal-identity-sdk:
         specifier: workspace:*
         version: link:../../packages/universal-identity-sdk
+      universal-sdk:
+        specifier: workspace:*
+        version: link:../../packages/universal-sdk
       universal-wallet-connector:
         specifier: workspace:*
         version: link:../../packages/universal-wallet-connector
