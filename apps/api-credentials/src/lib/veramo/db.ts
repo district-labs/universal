@@ -1,6 +1,6 @@
 import { Entities, migrations } from '@veramo/data-store';
 import { DataSource } from 'typeorm';
-import { env } from '@/env.js';
+import { env } from '../../env.js';
 
 export const dbConnection = new DataSource({
   type: 'postgres',

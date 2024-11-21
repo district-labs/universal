@@ -1,4 +1,4 @@
-import { getCredentialDb } from '@/lib/db/actions/get-credential-db.js';
+import { getCredentialDb } from '../../lib/db/actions/get-credential-db.js';
 import { Hono } from 'hono';
 
 const credentialsApp = new Hono()

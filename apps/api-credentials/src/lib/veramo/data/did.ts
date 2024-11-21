@@ -1,4 +1,4 @@
-import { env } from '@/env.js';
+import { env } from '../../../env.js';
 import { alias } from '../agent.js';
 
 export const webDid = {

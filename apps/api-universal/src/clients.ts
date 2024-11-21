@@ -1,21 +1,16 @@
-import type { CredentialsApi } from 'api-credentials';
-import type { DelegationsApi } from 'api-delegations';
-import type { IdentityApi } from 'api-identity';
-import { hc } from 'hono/client';
-import { createPublicClient, http } from 'viem';
-import { baseSepolia } from 'viem/chains';
+import type { CredentialsApi } from "api-credentials";
+import type { DelegationsApi } from "api-delegations";
+import type { IdentityApi } from "api-identity";
+import { hc } from "hono/client";
+import { http, createPublicClient } from "viem";
+import { baseSepolia } from "viem/chains";
+import { env } from "./env.js";
 
-const apiCredentialsUrl =
-  process.env.CREDENTIALS_API_URL ?? 'http://localhost:3100/';
-const apiDelegationsUrl =
-  process.env.DELEGATIONS_API_URL ?? 'http://localhost:3200/';
-const apiIdentityUrl = process.env.IDENTITY_API_URL ?? 'http://localhost:3300/';
-
-export const apiCredentialsClient = hc<CredentialsApi>(apiCredentialsUrl);
-export const apiDelegationsClient = hc<DelegationsApi>(apiDelegationsUrl);
-export const apiIdentityClient = hc<IdentityApi>(apiIdentityUrl);
+export const apiCredentialsClient = hc<CredentialsApi>(env.CREDENTIALS_API_URL);
+export const apiDelegationsClient = hc<DelegationsApi>(env.DELEGATIONS_API_URL);
+export const apiIdentityClient = hc<IdentityApi>(env.IDENTITY_API_URL);
 
 export const baseSepoliaPublicClient = createPublicClient({
-  chain: baseSepolia,
-  transport: http(),
+	chain: baseSepolia,
+	transport: http(),
 });

@@ -1,5 +1,4 @@
 import { universalDeployments, universalResolverAbi } from "universal-data";
-import { zeroAddress } from "viem";
 import type { PostDid } from "./validation/did.js";
 import { getPublicClient } from "./viem/index.js";
 

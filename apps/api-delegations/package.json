@@ -6,7 +6,7 @@
 	"type": "module",
 	"exports": {
 		".": {
-			"default": "./src/app/index.ts"
+			"default": "./src/index.ts"
 		},
 		"./package.json": "./package.json"
 	},
@@ -15,7 +15,7 @@
 		"start": "tsx src/node.ts",
 		"format": "biome format --write",
 		"check": "biome check --write",
-		"typecheck": "tsc",
+		"check-types": "tsc",
 		"db:generate": "tsc -p tsconfig.json && drizzle-kit generate",
 		"db:migrate": "tsc -p tsconfig.json && drizzle-kit migrate"
 	},

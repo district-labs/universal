@@ -15,6 +15,12 @@
     "format": {
       "dependsOn": ["^format"]
     },
+    "check-types": {
+      "dependsOn": ["^check-types"]
+    },
+    "check": {
+      "dependsOn": ["^check"]
+    },
     "lint": {
       "dependsOn": ["^lint"]
     },

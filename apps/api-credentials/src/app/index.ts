@@ -1,6 +1,6 @@
-import { createCredential } from '@/lib/veramo/actions/create-credential.js';
-import { verifyCredential } from '@/lib/veramo/actions/verify-credential.js';
-import { webDid } from '@/lib/veramo/data/did.js';
+import { createCredential } from '../lib/veramo/actions/create-credential.js';
+import { verifyCredential } from '../lib/veramo/actions/verify-credential.js';
+import { webDid } from '../lib/veramo/data/did.js';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';

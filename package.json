@@ -6,6 +6,8 @@
     "build-packages": "turbo build --filter='./packages/**'",
     "dev": "turbo dev --parallel",
     "format": "turbo format",
+    "check": "turbo check",
+    "check-types": "turbo check-types",
     "lint": "turbo lint",
     "start": "turbo start"
   },

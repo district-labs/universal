@@ -1,4 +1,4 @@
-import { baseSepoliaPublicClient } from '@/lib/viem/client.js';
+import { baseSepoliaPublicClient } from '../../../lib/viem/client.js';
 import type { Context } from 'hono';
 import { deleteCookie, getCookie, setCookie } from 'hono/cookie';
 import { createMiddleware } from 'hono/factory';

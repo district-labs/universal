@@ -15,7 +15,7 @@
 	},
 	"exports": {
 		".": {
-			"default": "./src/app/index.ts"
+			"default": "./src/index.ts"
 		},
 		"./package.json": "./package.json"
 	},
