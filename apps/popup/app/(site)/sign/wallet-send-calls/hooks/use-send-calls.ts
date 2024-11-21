@@ -8,11 +8,15 @@ import { useSessionState } from '@/lib/state/use-session-state';
 import { useMutation } from '@tanstack/react-query';
 import { useState, useMemo } from 'react';
 import type { CallParameters } from 'viem';
-import { toWebAuthnAccount } from 'viem/account-abstraction';
+import {
+  type EstimateUserOperationGasErrorType,
+  toWebAuthnAccount,
+} from 'viem/account-abstraction';
 import {
   formatErc20TransferEnforcerCalls,
   Erc20TransferEnforcerRedemption,
 } from '@/lib/delegation-framework/enforcers/erc20-transfer-amount/format-erc20-transfer-enforcer-calls';
+import { useEstimateUserOpPrice } from '@/lib/account-abstraction/hooks/use-estimate-user-op-price';
 
 type UseSendCallsParams = {
   redemptions: Erc20TransferEnforcerRedemption[] | undefined;
@@ -43,6 +47,8 @@ export function useSendCalls({ redemptions }: UseSendCallsParams) {
       ? [...delegationCalls, ...standardCalls]
       : standardCalls;
   }, [standardCalls, redemptions]);
+
+  const estimateUserOpPriceQuery = useEstimateUserOpPrice({ calls });
 
   const { mutate, mutateAsync, ...rest } = useMutation({
     mutationKey: ['send-calls'],
@@ -96,11 +102,15 @@ export function useSendCalls({ redemptions }: UseSendCallsParams) {
     },
   });
 
+  const isValidUserOp = isValid && estimateUserOpPriceQuery.isSuccess;
   return {
-    sender: isValid ? accountState?.smartContractAddress : undefined,
+    sender: isValidUserOp ? accountState?.smartContractAddress : undefined,
     from: message?.sender,
-    sendCalls: isValid ? mutate : undefined,
-    sendCallsAsync: isValid ? mutateAsync : undefined,
+    sendCalls: isValidUserOp ? mutate : undefined,
+    sendCallsAsync: isValidUserOp ? mutateAsync : undefined,
+    userOpError:
+      estimateUserOpPriceQuery.error as EstimateUserOperationGasErrorType,
+    refetchUserOpPrice: estimateUserOpPriceQuery.refetch,
     calls,
     isLoadingSendTx,
     isLoadingUserOp,

@@ -51,6 +51,8 @@ export default function SignEthSendTransactionPage() {
     isLoadingSendTx,
     isLoadingUserOp,
     sender,
+    refetchUserOpPrice,
+    userOpError,
   } = useSendTransaction({
     redemptions,
   });
@@ -143,6 +145,20 @@ export default function SignEthSendTransactionPage() {
           </div>
         )}
       </ActionRequestMain>
+      {userOpError && (
+        <div className="w-full p-2 font-medium max-w-screen-sm  mx-auto flex flex-col items-center  text-red-500 justify-between">
+          <div className="flex items-baseline -gap-x-0.5">
+            Error while submitting transaction.{' '}
+            <Button
+              className="text-destructive"
+              onClick={() => refetchUserOpPrice()}
+              variant={'link'}
+            >
+              Retry
+            </Button>
+          </div>
+        </div>
+      )}
       <ActionRequestFooter>
         <Button
           className="w-full flex-1 rounded-full"
@@ -150,6 +166,7 @@ export default function SignEthSendTransactionPage() {
           disabled={
             isLoadingEstimate ||
             isErrorEstimate ||
+            isLoadingUserOp ||
             !sendTransaction ||
             isLoadingUserOp ||
             isLoadingSendTx

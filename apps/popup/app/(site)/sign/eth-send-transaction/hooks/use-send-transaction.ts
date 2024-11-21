@@ -9,10 +9,14 @@ import { useAccountState } from '@/lib/state/use-account-state';
 import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useSessionState } from '@/lib/state/use-session-state';
+import { useEstimateUserOpPrice } from '@/lib/account-abstraction/hooks/use-estimate-user-op-price';
 import { useMutation } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import type { CallParameters } from 'viem';
-import { toWebAuthnAccount } from 'viem/account-abstraction';
+import {
+  toWebAuthnAccount,
+  type EstimateUserOperationGasErrorType,
+} from 'viem/account-abstraction';
 
 type UseSendTransactionParams = {
   redemptions: Erc20TransferEnforcerRedemption[] | undefined;
@@ -41,6 +45,8 @@ export function useSendTransaction({ redemptions }: UseSendTransactionParams) {
       ? [...delegationCalls, txParams]
       : [txParams];
   }, [txParams, redemptions]);
+
+  const estimateUserOpPriceQuery = useEstimateUserOpPrice({ calls });
 
   const { mutate, mutateAsync, ...rest } = useMutation({
     mutationKey: ['send-transaction'],
@@ -93,12 +99,18 @@ export function useSendTransaction({ redemptions }: UseSendTransactionParams) {
     },
   });
 
-  const isValid = validateMessageParams(params) && !!txParams;
+  const isValid =
+    validateMessageParams(params) &&
+    !!txParams &&
+    estimateUserOpPriceQuery.isSuccess;
 
   return {
     sendTransaction: isValid ? mutate : undefined,
     sendTransactionAsync: isValid ? mutateAsync : undefined,
     sender: isValid ? accountState?.smartContractAddress : undefined,
+    userOpError:
+      estimateUserOpPriceQuery.error as EstimateUserOperationGasErrorType,
+    refetchUserOpPrice: estimateUserOpPriceQuery.refetch,
     txParams,
     calls,
     isLoadingSendTx,
