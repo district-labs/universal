@@ -51,12 +51,8 @@
           "name": "caveats_delegationHash_delegations_hash_fk",
           "tableFrom": "caveats",
           "tableTo": "delegations",
-          "columnsFrom": [
-            "delegationHash"
-          ],
-          "columnsTo": [
-            "hash"
-          ],
+          "columnsFrom": ["delegationHash"],
+          "columnsTo": ["hash"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }

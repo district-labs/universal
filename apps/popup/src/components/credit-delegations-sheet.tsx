@@ -20,7 +20,7 @@ import { type Address, formatUnits } from 'viem';
 import { RowBasic } from './row-basic';
 import { Card } from './ui/card';
 
-type CreditDelegationsSheet = React.HTMLAttributes<HTMLElement> & {
+type CreditDelegationsSheet = Omit<React.HTMLAttributes<HTMLElement>, 'onSelect'> & {
   address: Address;
   onSelect: (delegation: DelegationExecutions[]) => void;
 };
@@ -31,7 +31,6 @@ export const CreditDelegationsSheet = ({
   address,
   onSelect,
 }: CreditDelegationsSheet) => {
-  console.log(address, 'address');
   const { data } = useGetCredit({
     address,
   });
@@ -67,7 +66,7 @@ export const CreditDelegationsSheet = ({
   );
 };
 
-type CardAuthorization = React.HTMLAttributes<HTMLElement> & {
+type CardAuthorization = Omit<React.HTMLAttributes<HTMLElement>, 'onSelect'> & {
   delegation: DelegationDb;
   onSelect: (delegation: DelegationExecutions[]) => void;
   toggleSheet: (isOpen: boolean) => void;

@@ -7,7 +7,6 @@ import { EthAmountFormatted } from '@/components/onchain/eth-formatted';
 import { Toggle } from '@/components/toggle';
 import { type ReactElement, useState } from 'react';
 import type { DelegationDb } from 'universal-delegations-sdk';
-import type { Address as AddressType } from 'viem';
 import { parseUnits, type Address as AddressType, type Hex } from 'viem';
 import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
@@ -75,14 +74,14 @@ export type DelegationExecutions = {
 
 export default function PersonalSignPage() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
-  const { sendCalls, calls, isLoadingSendTx, isLoadingUserOp, from } =
+  const [delegationExecutions, setDelegationExecutions] =
+    useState<DelegationExecutions[]>();
+  const { sendCalls, calls, isLoadingSendTx, isLoadingUserOp, from, sender } =
     useSendCalls({
       delegations,
       redemptions,
     });
 
-  const [delegationExecutions, setDelegationExecutions] =
-    useState<DelegationExecutions[]>();
   if (!calls) {
     return <div>Invalid Transactions</div>;
   }

@@ -15,7 +15,6 @@ import {
   formatErc20TransferEnforcerCalls,
 } from '@/lib/delegation-framework/enforcers/erc20-transfer-amount/format-erc20-transfer-enforcer-calls';
 
-
 type UseSendCallsParams = {
   redemptions: Erc20TransferEnforcerRedemption[] | undefined;
   delegations: DelegationWithHash[] | undefined;
@@ -51,7 +50,6 @@ export function useSendCalls({ delegations, redemptions }: UseSendCallsParams) {
         client: bundlerClient.client,
         owners: [owner],
       });
-      setSender(account.address);
 
       setIsLoadingSendTx(true);
       const userOp = await bundlerClient
@@ -116,7 +114,7 @@ export function useSendCalls({ delegations, redemptions }: UseSendCallsParams) {
   }, [standardCalls, delegations, redemptions, accountState]);
 
   return {
-    sender: isValid ? accountState : undefined,
+    sender: isValid ? accountState?.smartContractAddress : undefined,
     from: message?.sender,
     sendCalls: isValid ? mutate : undefined,
     sendCallsAsync: isValid ? mutateAsync : undefined,
@@ -125,6 +123,4 @@ export function useSendCalls({ delegations, redemptions }: UseSendCallsParams) {
     isLoadingUserOp,
     ...rest,
   };
-
 }
-

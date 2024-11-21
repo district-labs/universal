@@ -9,7 +9,9 @@ const creditRouter = new Hono().post(
   async (c) => {
     const { address } = c.req.valid('param');
 
-    const delegations = await apiDelegationsClient.delegations.delegate[':address'][':type'].$get({
+    const delegations = await apiDelegationsClient.delegations.delegate[
+      ':address'
+    ][':type'].$get({
       param: {
         address: address,
         type: 'DebitAuthorization',
