@@ -7,6 +7,7 @@ import { SiteEnvironment } from '@/components/core/site-environment';
 import { AccountPopover } from '@/components/layout/account-popover';
 import { AppSidebar } from '@/components/layout/app-sidebar';
 import { MobileMenu } from '@/components/layout/mobile-menu';
+import { ChainManagementModal } from '@/components/onchain/chain-management-modal';
 import { ConnectButton } from '@/components/onchain/connect-button';
 import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
 import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                       isWalletConnectEnabled={isUniversalConnected}
                     />
                     <QRCodeGeneratedDialog />
+                    <ChainManagementModal />
                     <AccountPopover />
                   </div>
                 </IsWalletConnected>
