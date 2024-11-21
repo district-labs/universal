@@ -1,5 +1,8 @@
 {
   "name": "api-credentials",
+  "author": "District Labs, Inc <districtlabs.com>",
+  "version": "0.0.0",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/app/node.ts",
@@ -7,8 +10,8 @@
     "format": "biome format --write",
     "check": "biome check --write",
     "typecheck": "tsc",
-    "db:generate": "tsc -p tsconfig.json && drizzle-kit generate --config=drizzle.config.ts",
-    "db:migrate": "tsc -p tsconfig.json && drizzle-kit migrate --config=drizzle.config.ts"
+    "db:generate": "tsc -p tsconfig.json && drizzle-kit generate",
+    "db:migrate": "tsc -p tsconfig.json && drizzle-kit migrate"
   },
   "exports": {
     ".": {
@@ -25,7 +28,6 @@
     "@veramo/credential-w3c": "^6.0.0",
     "@veramo/data-store": "^6.0.0",
     "@veramo/did-manager": "^6.0.0",
-    "@veramo/did-provider-ethr": "^6.0.0",
     "@veramo/did-provider-web": "^6.0.0",
     "@veramo/did-resolver": "^6.0.0",
     "@veramo/key-manager": "^6.0.0",
@@ -33,7 +35,6 @@
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.35.2",
     "hono": "^4.6.10",
-    "pg": "^8.13.1",
     "postgres": "^3.4.5",
     "typeorm": "^0.3.20",
     "viem": "^2.21.45",

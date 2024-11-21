@@ -10,6 +10,7 @@
       "@/*": ["src/*"]
     },
     "types": ["node"],
+    "noEmit": true,
     "jsx": "react-jsx",
     "noImplicitReturns": false,
     "jsxImportSource": "hono/jsx"
