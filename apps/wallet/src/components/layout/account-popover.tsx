@@ -23,7 +23,7 @@ export const AccountPopover = ({ className }: AccountPopover) => {
   const isUniversalConnected = useIsUniversalConnected();
   const { address } = useAccount();
   const { disconnectWc } = useDisconnectWc();
-  const { data: walletKitClient } = useWalletKitClient()
+  const { data: walletKitClient } = useWalletKitClient();
   const activeSessionsQuery = useActiveSessions({
     enabled: isUniversalConnected,
   });
@@ -75,9 +75,7 @@ export const AccountPopover = ({ className }: AccountPopover) => {
           {isUniversalConnected && (
             <div className="p-4">
               {/* If no wallet connect client is set, show a skeleton */}
-              {!walletKitClient && (
-                <Skeleton className="w-full h-20" />
-              )}
+              {!walletKitClient && <Skeleton className="w-full h-20" />}
               {sessions && sessions.length === 0 && (
                 <div className="py-4 text-center font-medium text-neutral-500">
                   No active application connections

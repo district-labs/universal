@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { tokenList } from 'universal-data';
 import { ERC20Balance } from '../onchain/erc20-balance';
 import { TokenImageWithFallback } from '../onchain/token-image-with-fallback';
+import { baseSepolia } from 'viem/chains';
 
 const columns = [
   {
@@ -36,6 +37,7 @@ const columns = [
     cell: ({ row }) => (
       <div className="flex flex-col">
         <ERC20Balance
+          chainId={baseSepolia.id}
           address={row.original.address}
           className="font-semibold text-sm md:text-lg"
         />

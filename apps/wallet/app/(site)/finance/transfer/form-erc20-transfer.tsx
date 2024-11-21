@@ -5,7 +5,7 @@ import { addressSchema } from '@/lib/validation/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { type Address, parseUnits } from 'viem';
-import { useAccount } from 'wagmi';
+import { useAccount, useChainId, useSwitchChain } from 'wagmi';
 import { useWriteContracts } from 'wagmi/experimental';
 import { z } from 'zod';
 
@@ -15,6 +15,7 @@ import { ConnectUniversalWalletButton } from '@/components/onchain/connect-unive
 import { Card } from '@/components/ui/card';
 import type { TokenItem } from 'universal-data';
 import { tokenList } from 'universal-data';
+import { baseSepolia } from 'viem/chains';
 
 const formSchema = z.object({
   to: addressSchema,
@@ -24,34 +25,43 @@ const formSchema = z.object({
 
 function FormerErc20Transfer() {
   const { address } = useAccount();
+  const chainId = useChainId();
+  const { switchChain, isPending: isPendingSwitchChain } = useSwitchChain();
   const { writeContracts } = useWriteContracts();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
+    if (chainId !== baseSepolia.id) {
+      switchChain({
+        chainId: baseSepolia.id,
+      });
+      return;
+    }
     writeContracts({
       contracts: [
-        {
-          abi: [
-            {
-              type: 'function',
-              name: 'mint',
-              inputs: [
-                { name: 'to', type: 'address', internalType: 'address' },
-                { name: 'amount', type: 'uint256', internalType: 'uint256' },
-              ],
-              outputs: [],
-              stateMutability: 'nonpayable',
-            },
-          ],
-          address: data.token.address as Address,
-          functionName: 'mint',
-          args: [
-            address as Address,
-            parseUnits(data.amount.toString(), data.token.decimals),
-          ],
-        },
+        //  Removed mint for testing delegation
+        // {
+        //   abi: [
+        //     {
+        //       type: 'function',
+        //       name: 'mint',
+        //       inputs: [
+        //         { name: 'to', type: 'address', internalType: 'address' },
+        //         { name: 'amount', type: 'uint256', internalType: 'uint256' },
+        //       ],
+        //       outputs: [],
+        //       stateMutability: 'nonpayable',
+        //     },
+        //   ],
+        //   address: data.token.address as Address,
+        //   functionName: 'mint',
+        //   args: [
+        //     address as Address,
+        //     parseUnits(data.amount.toString(), data.token.decimals),
+        //   ],
+        // },
         {
           abi: [
             {
@@ -119,10 +129,10 @@ function FormerErc20Transfer() {
           />
         </Card>
 
-        {address && (
+        {address && chainId === baseSepolia.id && (
           <div className="">
             <Button
-              disabled={!form.formState.isValid}
+              // disabled={!form.formState.isValid}
               className="w-full py-3 text-lg"
               type="submit"
               rounded={'full'}
@@ -133,7 +143,18 @@ function FormerErc20Transfer() {
             </Button>
           </div>
         )}
-
+        {address && chainId !== baseSepolia.id && (
+          <Button
+            disabled={isPendingSwitchChain}
+            className="w-full py-3 text-lg"
+            type="submit"
+            rounded={'full'}
+            variant={'emerald'}
+            size={'lg'}
+          >
+            Switch to Base Sepolia
+          </Button>
+        )}
         {!address && (
           <ConnectUniversalWalletButton className="w-full rounded-full py-3 text-lg">
             Connect Universal Wallet
