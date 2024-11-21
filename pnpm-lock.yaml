@@ -47,9 +47,6 @@ importers:
       '@veramo/did-manager':
         specifier: ^6.0.0
         version: 6.0.0
-      '@veramo/did-provider-ethr':
-        specifier: ^6.0.0
-        version: 6.0.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@veramo/did-provider-web':
         specifier: ^6.0.0
         version: 6.0.0
@@ -99,6 +96,9 @@ importers:
       tsx:
         specifier: ^4.7.1
         version: 4.19.2
+      typescript:
+        specifier: ^5.6.3
+        version: 5.6.3
 
   apps/api-delegations:
     dependencies:
@@ -108,6 +108,9 @@ importers:
       '@hono/zod-validator':
         specifier: ^0.4.1
         version: 0.4.1(hono@4.6.10)(zod@3.23.8)
+      '@t3-oss/env-core':
+        specifier: ^0.11.1
+        version: 0.11.1(typescript@5.6.3)(zod@3.23.8)
       drizzle-orm:
         specifier: ^0.35.2
         version: 0.35.3(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@6.0.5))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
@@ -120,12 +123,6 @@ importers:
       postgres:
         specifier: ^3.4.5
         version: 3.4.5
-      ts-node:
-        specifier: ^10.9.2
-        version: 10.9.2(@types/node@20.17.6)(typescript@5.6.3)
-      tsconfig-paths:
-        specifier: ^4.2.0
-        version: 4.2.0
       viem:
         specifier: ^2.21.41
         version: 2.21.45(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@6.0.5)(zod@3.23.8)
@@ -139,36 +136,15 @@ importers:
       '@types/pg':
         specifier: ^8.11.10
         version: 8.11.10
-      dotenv:
-        specifier: ^16.4.5
-        version: 16.4.5
       drizzle-kit:
         specifier: ^0.26.2
         version: 0.26.2
-      eslint:
-        specifier: ^9.13.0
-        version: 9.14.0(jiti@2.4.0)
-      eslint-config-prettier:
-        specifier: ^9.1.0
-        version: 9.1.0(eslint@9.14.0(jiti@2.4.0))
-      eslint-plugin-prettier:
-        specifier: ^5.2.1
-        version: 5.2.1(eslint-config-prettier@9.1.0(eslint@9.14.0(jiti@2.4.0)))(eslint@9.14.0(jiti@2.4.0))(prettier@3.3.3)
-      eslint-plugin-unused-imports:
-        specifier: ^4.1.4
-        version: 4.1.4(@typescript-eslint/eslint-plugin@8.14.0(@typescript-eslint/parser@8.14.0(eslint@9.14.0(jiti@2.4.0))(typescript@5.6.3))(eslint@9.14.0(jiti@2.4.0))(typescript@5.6.3))(eslint@9.14.0(jiti@2.4.0))
-      prettier:
-        specifier: ^3.3.3
-        version: 3.3.3
       tsx:
         specifier: ^4.19.2
         version: 4.19.2
       typescript:
         specifier: ^5.6.3
         version: 5.6.3
-      typescript-eslint:
-        specifier: ^8.12.2
-        version: 8.14.0(eslint@9.14.0(jiti@2.4.0))(typescript@5.6.3)
 
   apps/api-identity:
     dependencies:
@@ -4750,9 +4726,6 @@ packages:
   '@veramo/did-manager@6.0.0':
     resolution: {integrity: sha512-sjF0d0ZE+h7Jw7WwGtyRhjT5MhKBwGLx2AsR2Ao0qqyloVAxVS9jDcl2DP1ZdCKC+7BR4X30E1ja99N7q3INDg==}
 
-  '@veramo/did-provider-ethr@6.0.0':
-    resolution: {integrity: sha512-m+cFD0ZwfGYlGvoKIMgQmEBhHvi+tqV1FsaLVjxAWCgRJMq/TjAi0Eqbcm2dgxb6Eu2vrapoe7BXzVPMNhCt0A==}
-
   '@veramo/did-provider-web@6.0.0':
     resolution: {integrity: sha512-7gaM4UOxqyv2NuwMw8YQVR6ZGMf6Oa61glAXQPNPt4vHl+FmWWYZ5YwbH9V4s1JMt9URbj18QGwBkk+k9ewkUA==}
 
@@ -6387,12 +6360,6 @@ packages:
   ethers@6.13.4:
     resolution: {integrity: sha512-21YtnZVg4/zKkCQPjrDj38B1r4nQvTZLopUGMLQ1ePU2zV/joCfDC3t3iKQjWRzjjjbzR+mdAIoikeBRNkdllA==}
     engines: {node: '>=14.0.0'}
-
-  ethr-did-resolver@10.1.5:
-    resolution: {integrity: sha512-wVCKhF6qQo2IewH9ui4lRBixbvT/A6szZFQoJkfvjP6EU/3MSb4KOP5QNpM37zmFU/rQGjHNt7bF13fNcmZ6wQ==}
-
-  ethr-did@3.0.21:
-    resolution: {integrity: sha512-2ojxqkGlujuhwtN5bSqESekfkpleOO+Nd3nwMyJmU4nB0K1fKe9+psL11VEh4AJ29+Rol+3gS4f/GjTCe3SF/Q==}
 
   event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
@@ -15210,18 +15177,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@veramo/did-provider-ethr@6.0.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
-    dependencies:
-      '@veramo/core-types': 6.0.0
-      '@veramo/did-manager': 6.0.0
-      debug: 4.3.7(supports-color@5.5.0)
-      ethers: 6.13.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      ethr-did: 3.0.21(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - supports-color
-      - utf-8-validate
-
   '@veramo/did-provider-web@6.0.0':
     dependencies:
       '@veramo/core-types': 6.0.0
@@ -17875,24 +17830,6 @@ snapshots:
       aes-js: 4.0.0-beta.5
       tslib: 2.7.0
       ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.5)
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
-  ethr-did-resolver@10.1.5(bufferutil@4.0.8)(utf-8-validate@5.0.10):
-    dependencies:
-      did-resolver: 4.1.0
-      ethers: 6.13.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-
-  ethr-did@3.0.21(bufferutil@4.0.8)(utf-8-validate@5.0.10):
-    dependencies:
-      did-jwt: 8.0.4
-      did-resolver: 4.1.0
-      ethers: 6.13.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-      ethr-did-resolver: 10.1.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
