@@ -4,13 +4,8 @@ import { Form } from '@/components/ui/form';
 import { addressSchema } from '@/lib/validation/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { type Address, parseUnits } from 'viem';
-import {
-  useAccount,
-  useChainId,
-  useSwitchChain,
-  useWriteContract,
-} from 'wagmi';
+import { type Address, parseUnits, erc20Abi } from 'viem';
+import { useAccount, useChainId, useSwitchChain } from 'wagmi';
 import { useWriteContracts } from 'wagmi/experimental';
 import { z } from 'zod';
 
@@ -32,7 +27,7 @@ function FormerErc20Transfer() {
   const { address } = useAccount();
   const chainId = useChainId();
   const { switchChain, isPending: isPendingSwitchChain } = useSwitchChain();
-  const { writeContract } = useWriteContract();
+  const { writeContracts } = useWriteContracts();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -44,50 +39,38 @@ function FormerErc20Transfer() {
       });
       return;
     }
-    writeContract({
-      // contracts: [
-      //  Removed mint for testing delegation
-      // {
-      //   abi: [
-      //     {
-      //       type: 'function',
-      //       name: 'mint',
-      //       inputs: [
-      //         { name: 'to', type: 'address', internalType: 'address' },
-      //         { name: 'amount', type: 'uint256', internalType: 'uint256' },
-      //       ],
-      //       outputs: [],
-      //       stateMutability: 'nonpayable',
-      //     },
-      //   ],
-      //   address: data.token.address as Address,
-      //   functionName: 'mint',
-      //   args: [
-      //     address as Address,
-      //     parseUnits(data.amount.toString(), data.token.decimals),
-      //   ],
-      // },
-
-      abi: [
+    writeContracts({
+      contracts: [
         {
-          type: 'function',
-          name: 'transfer',
-          inputs: [
-            { name: 'to', type: 'address', internalType: 'address' },
-            { name: 'amount', type: 'uint256', internalType: 'uint256' },
+          abi: [
+            {
+              type: 'function',
+              name: 'mint',
+              inputs: [
+                { name: 'to', type: 'address', internalType: 'address' },
+                { name: 'amount', type: 'uint256', internalType: 'uint256' },
+              ],
+              outputs: [],
+              stateMutability: 'nonpayable',
+            },
           ],
-          outputs: [],
-          stateMutability: 'nonpayable',
+          address: data.token.address as Address,
+          functionName: 'mint',
+          args: [
+            address as Address,
+            parseUnits(data.amount.toString(), data.token.decimals),
+          ],
+        },
+        {
+          abi: erc20Abi,
+          address: data.token.address as Address,
+          functionName: 'transfer',
+          args: [
+            data.to as Address,
+            parseUnits(data.amount.toString(), data.token.decimals),
+          ],
         },
       ],
-      address: data.token.address as Address,
-      functionName: 'transfer',
-      args: [
-        data.to as Address,
-        parseUnits(data.amount.toString(), data.token.decimals),
-      ],
-
-      // ],
     });
     form.reset({
       to: undefined,
