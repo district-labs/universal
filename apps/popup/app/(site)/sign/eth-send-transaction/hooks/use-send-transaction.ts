@@ -17,7 +17,7 @@ export function useSendTransaction() {
   const { sessionState } = useSessionState();
   const bundlerClient = useBundlerClient();
 
-  message?.sender
+  message?.sender;
   // TODO: Type check tx params
   const txParams = message?.params[0];
   const params = { accountState, message, sessionState, bundlerClient };

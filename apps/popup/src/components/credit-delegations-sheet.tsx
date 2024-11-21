@@ -87,7 +87,7 @@ const CardAuthorization = ({
   return (
     <Card
       key={delegation.hash}
-      className='flex cursor-pointer flex-col gap-y-3 p-4 hover:shadow-md'
+      className="flex cursor-pointer flex-col gap-y-3 p-4 hover:shadow-md"
       onClick={() => {
         onSelect([
           {

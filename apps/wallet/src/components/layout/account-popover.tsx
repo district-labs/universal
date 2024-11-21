@@ -16,12 +16,14 @@ import { Button } from '../ui/button';
 import { useIsUniversalConnected } from '@/lib/hooks/use-is-universal-connected';
 import { Skeleton } from '../ui/skeleton';
 import { useDisconnectWc } from '@/lib/walletconnect/hooks/use-wc-disconnect';
+import { useWalletKitClient } from '@/lib/walletconnect/hooks/use-wallet-kit-client';
 type AccountPopover = React.HTMLAttributes<HTMLElement>;
 
 export const AccountPopover = ({ className }: AccountPopover) => {
   const isUniversalConnected = useIsUniversalConnected();
   const { address } = useAccount();
   const { disconnectWc } = useDisconnectWc();
+  const { data: walletKitClient } = useWalletKitClient();
   const activeSessionsQuery = useActiveSessions({
     enabled: isUniversalConnected,
   });
@@ -71,9 +73,8 @@ export const AccountPopover = ({ className }: AccountPopover) => {
           </div>
           {isUniversalConnected && (
             <div className="p-4">
-              {activeSessionsQuery.isLoading && (
-                <Skeleton className="w-full h-20" />
-              )}
+              {/* If no wallet connect client is set, show a skeleton */}
+              {!walletKitClient && <Skeleton className="w-full h-20" />}
               {sessions && sessions.length === 0 && (
                 <div className="py-4 text-center font-medium text-neutral-500">
                   No active application connections
