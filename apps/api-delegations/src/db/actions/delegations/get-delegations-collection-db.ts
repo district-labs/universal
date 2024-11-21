@@ -8,27 +8,30 @@ export async function getDelegationsCollectionDb({
 }: { address: Address; type: string }) {
 	const lowercasedAddress = address.toLowerCase();
 
-	const delegate = await db.query.delegations.findMany({
-		where: (delegations, { eq }) =>
-			and(
-				eq(sql`LOWER(${delegations.delegate})`, lowercasedAddress),
-				eq(delegations.type, type),
-			),
-		with: {
-			caveats: true,
-		},
-	});
-
-	const delegator = await db.query.delegations.findMany({
-		where: (delegations, { eq }) =>
-			and(
-				eq(sql`LOWER(${delegations.delegator})`, lowercasedAddress),
-				eq(delegations.type, type),
-			),
-		with: {
-			caveats: true,
-		},
-	});
+	const [delegate, delegator] = await db.transaction(async (tx) =>
+		Promise.all([
+			tx.query.delegations.findMany({
+				where: (delegations, { eq }) =>
+					and(
+						eq(sql`LOWER(${delegations.delegate})`, lowercasedAddress),
+						eq(delegations.type, type),
+					),
+				with: {
+					caveats: true,
+				},
+			}),
+			tx.query.delegations.findMany({
+				where: (delegations, { eq }) =>
+					and(
+						eq(sql`LOWER(${delegations.delegator})`, lowercasedAddress),
+						eq(delegations.type, type),
+					),
+				with: {
+					caveats: true,
+				},
+			}),
+		]),
+	);
 
 	return {
 		delegate,
