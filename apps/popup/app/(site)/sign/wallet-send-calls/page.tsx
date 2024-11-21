@@ -6,6 +6,7 @@ import { Address } from '@/components/onchain/address';
 import { EthAmountFormatted } from '@/components/onchain/eth-formatted';
 import { Toggle } from '@/components/toggle';
 import { type ReactElement, useState } from 'react';
+import type { DelegationDb } from 'universal-delegations-sdk';
 import type { Address as AddressType } from 'viem';
 import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
@@ -18,16 +19,32 @@ import { ActionTransactionNetworkSimplified } from '../components/action-transac
 import { ActionTransactionPreview } from '../components/action-transaction-preview';
 import { useSendCalls } from './hooks/use-send-calls';
 
+export type DelegationExecutions = {
+  delegation: DelegationDb;
+  execution: {
+    hash: string;
+    amount: bigint;
+    amountFormatted: string;
+  };
+  token: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+};
+
 export default function PersonalSignPage() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
   const { sendCalls, calls, isLoadingSendTx, isLoadingUserOp, from, sender } =
     useSendCalls();
 
-    console.log(sender, 'sendersender')
-
+  const [delegationExecutions, setDelegationExecutions] =
+    useState<DelegationExecutions[]>();
   if (!calls) {
     return <div>Invalid Transactions</div>;
   }
+
+  console.log(delegationExecutions, 'delegationExecutions');
 
   return (
     <ActionRequestView>
@@ -51,19 +68,31 @@ export default function PersonalSignPage() {
                 value={<ActionTransactionNetworkSimplified />}
               />
             </div>
-            <div className="border-t-2 bg-neutral-100/60 px-6 py-3">
+            <div className='space-y-2 border-t-2 bg-neutral-100/60 px-6 py-3'>
               <div className="flex items-center justify-between">
                 <span className="text-sm">Credit Lines</span>
-                {
-                  sender && (
-                  <CreditDelegationsSheet address={sender}>
-                    <span className='cursor-pointer font-bold text-sm'>
+                {sender && (
+                  <CreditDelegationsSheet
+                    address={sender}
+                    onSelect={setDelegationExecutions}
+                  >
+                    <span className="cursor-pointer font-bold text-sm">
                       Manage
                     </span>
                   </CreditDelegationsSheet>
-                  )
-                }
+                )}
               </div>
+              {delegationExecutions?.map((delegation) => (
+                <div
+                  key={delegation.execution.hash}
+                  className="flex justify-between"
+                >
+                  <span className="text-sm">{delegation?.token?.symbol}</span>
+                  <span className="font-bold text-sm">
+                    {delegation?.execution?.amountFormatted}
+                  </span>
+                </div>
+              ))}
             </div>
             <ActionTransactionPreview className="flex-1 text-center" />
           </>
