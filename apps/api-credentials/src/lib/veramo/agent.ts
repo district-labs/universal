@@ -17,7 +17,6 @@ import { KeyManagementSystem, SecretBox } from '@veramo/kms-local';
 import { Resolver } from 'did-resolver';
 import { getResolver as webDidResolver } from 'web-did-resolver';
 import { dbConnection } from './db.js';
-import 'dotenv/config';
 import { env } from '@/env.js';
 
 export const alias = env.API_CREDENTIALS_DNS;
@@ -25,11 +24,11 @@ export const provider = `did:web:${alias}`;
 
 export const veramoAgent = createAgent<
   IDIDManager &
-    IKeyManager &
-    IDataStore &
-    IDataStoreORM &
-    IResolver &
-    ICredentialPlugin
+  IKeyManager &
+  IDataStore &
+  IDataStoreORM &
+  IResolver &
+  ICredentialPlugin
 >({
   plugins: [
     new KeyManager({

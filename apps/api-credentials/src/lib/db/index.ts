@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { env } from '@/env.js';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';

@@ -1,6 +1,0 @@
-{
-	"files": {
-		"maxSize": 2097152,
-		"ignore": ["dist/**"]
-	}
-}

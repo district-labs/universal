@@ -1,6 +1,5 @@
 import { Entities, migrations } from '@veramo/data-store';
 import { DataSource } from 'typeorm';
-import 'dotenv/config';
 import { env } from '@/env.js';
 
 export const dbConnection = new DataSource({

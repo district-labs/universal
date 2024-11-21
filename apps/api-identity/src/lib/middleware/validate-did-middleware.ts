@@ -5,13 +5,14 @@ import {
 	didDocumentSchema,
 	postDidSchema,
 } from "../validation/did.js";
-import { getPublicClientFromList } from "../viem/index.js";
+import { getPublicClient } from "../viem/index.js";
 
 function validateSignature(did: PostDid) {
-	const publicClient = getPublicClientFromList(did.chainId);
-
-	if (!universalDeployments?.[did.chainId]?.resolver)
-		throw new Error("Invalid chainId");
+	const publicClient = getPublicClient(did.chainId);
+	const resolver = universalDeployments?.[did.chainId]?.resolver;
+	if (!resolver) {
+		throw new Error(`Invalid resolver address ad chainId: ${did.chainId}`);
+	}
 
 	return publicClient.verifyTypedData({
 		address: did.address,
@@ -19,7 +20,7 @@ function validateSignature(did: PostDid) {
 			name: "Universal Resolver",
 			version: "1",
 			chainId: did.chainId,
-			verifyingContract: universalDeployments?.[did.chainId]?.resolver,
+			verifyingContract: resolver,
 		},
 		primaryType: "UniversalDID",
 		types: {
@@ -48,7 +49,6 @@ export const validateDidMiddleware = validator("json", async (value, c) => {
 		JSON.parse(parsedDid.data.document),
 	);
 
-	console.log(parsedDocument.error);
 	if (!parsedDocument.success) {
 		return c.json({ error: "Invalid did" }, 400);
 	}
