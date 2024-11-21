@@ -1,14 +1,11 @@
-import { DataSource } from 'typeorm';
 import { Entities, migrations } from '@veramo/data-store';
+import { DataSource } from 'typeorm';
 import 'dotenv/config';
-
-if (!process.env.KEYSTORE_DB_URL) {
-  throw new Error('KEYSTORE_DB_URL env var is required');
-}
+import { env } from '@/env.js';
 
 export const dbConnection = new DataSource({
   type: 'postgres',
-  url: process.env.KEYSTORE_DB_URL,
+  url: env.KEYSTORE_DB_URL,
   synchronize: false,
   migrations,
   migrationsRun: true,

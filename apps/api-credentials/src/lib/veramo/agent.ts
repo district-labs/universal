@@ -1,33 +1,26 @@
 import {
-  createAgent,
+  type ICredentialPlugin,
   type IDIDManager,
-  type IResolver,
   type IDataStore,
   type IDataStoreORM,
   type IKeyManager,
-  type ICredentialPlugin,
+  type IResolver,
+  createAgent,
 } from '@veramo/core';
+import { CredentialPlugin } from '@veramo/credential-w3c';
+import { DIDStore, KeyStore, PrivateKeyStore } from '@veramo/data-store';
 import { DIDManager } from '@veramo/did-manager';
 import { WebDIDProvider } from '@veramo/did-provider-web';
+import { DIDResolverPlugin } from '@veramo/did-resolver';
 import { KeyManager } from '@veramo/key-manager';
 import { KeyManagementSystem, SecretBox } from '@veramo/kms-local';
-import { CredentialPlugin } from '@veramo/credential-w3c';
-import { DIDResolverPlugin } from '@veramo/did-resolver';
 import { Resolver } from 'did-resolver';
 import { getResolver as webDidResolver } from 'web-did-resolver';
 import { dbConnection } from './db.js';
-import { KeyStore, DIDStore, PrivateKeyStore } from '@veramo/data-store';
 import 'dotenv/config';
+import { env } from '@/env.js';
 
-if (!process.env.KMS_SECRET_KEY) {
-  throw new Error('KMS_SECRET_KEY env var is required');
-}
-
-if (!process.env.API_CREDENTIALS_DNS) {
-  throw new Error('API_CREDENTIALS_DNS env var is required');
-}
-
-export const alias = process.env.API_CREDENTIALS_DNS;
+export const alias = env.API_CREDENTIALS_DNS;
 export const provider = `did:web:${alias}`;
 
 export const veramoAgent = createAgent<
@@ -43,10 +36,7 @@ export const veramoAgent = createAgent<
       store: new KeyStore(dbConnection),
       kms: {
         local: new KeyManagementSystem(
-          new PrivateKeyStore(
-            dbConnection,
-            new SecretBox(process.env.KMS_SECRET_KEY),
-          ),
+          new PrivateKeyStore(dbConnection, new SecretBox(env.KMS_SECRET_KEY)),
         ),
       },
     }),

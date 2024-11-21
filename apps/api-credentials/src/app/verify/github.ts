@@ -1,22 +1,15 @@
-import { Hono } from 'hono';
 import { githubAuth } from '@hono/oauth-providers/github';
 import type { VerifiableCredential } from '@veramo/core';
+import { Hono } from 'hono';
 
+import { env } from '@/env.js';
+import { insertCredentialDb } from '@/lib/db/actions/insert-credential-db.js';
+import { createCredential } from '@/lib/veramo/actions/create-credential.js';
 import { getCookie } from 'hono/cookie';
-import { createCredential } from '../../lib/veramo/actions/create-credential.js';
 import {
   deleteCookies,
   stateMiddleware,
 } from './middlewares/state-middleware.js';
-import { insertCredentialDb } from '../../lib/db/actions/insert-credential-db.js';
-
-if (
-  !process.env.GITHUB_OAUTH_CLIENT_ID ||
-  !process.env.GITHUB_OAUTH_CLIENT_SECRET ||
-  !process.env.GITHUB_OAUTH_REDIRECT_URI
-) {
-  throw new Error('Invalid GitHub OAuth credentials');
-}
 
 const verifyGithubApp = new Hono();
 
@@ -24,9 +17,9 @@ verifyGithubApp.get(
   '/verify/github/:did?/:signature?/:callbackUrl?',
   stateMiddleware('github'),
   githubAuth({
-    client_id: process.env.GITHUB_OAUTH_CLIENT_ID,
-    client_secret: process.env.GITHUB_OAUTH_CLIENT_SECRET,
-    redirect_uri: process.env.GITHUB_OAUTH_REDIRECT_URI,
+    client_id: env.GITHUB_OAUTH_CLIENT_ID,
+    client_secret: env.GITHUB_OAUTH_CLIENT_SECRET,
+    redirect_uri: env.GITHUB_OAUTH_REDIRECT_URI,
     oauthApp: true,
     scope: ['read:user', 'user'],
   }),

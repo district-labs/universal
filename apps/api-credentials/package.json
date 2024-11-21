@@ -4,7 +4,11 @@
   "scripts": {
     "dev": "tsx watch src/app/node.ts",
     "start": "tsx src/app/node.ts",
-    "format": "biome format --write ."
+    "format": "biome format --write",
+    "check": "biome check --write",
+    "typecheck": "tsc",
+    "db:generate": "tsc -p tsconfig.json && drizzle-kit generate --config=drizzle.config.ts",
+    "db:migrate": "tsc -p tsconfig.json && drizzle-kit migrate --config=drizzle.config.ts"
   },
   "exports": {
     ".": {
@@ -16,6 +20,7 @@
     "@hono/node-server": "^1.13.6",
     "@hono/oauth-providers": "^0.6.2",
     "@hono/zod-validator": "^0.4.1",
+    "@t3-oss/env-core": "^0.11.1",
     "@veramo/core": "^6.0.0",
     "@veramo/credential-w3c": "^6.0.0",
     "@veramo/data-store": "^6.0.0",

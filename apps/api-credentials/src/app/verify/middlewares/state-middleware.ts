@@ -1,9 +1,9 @@
+import { baseSepoliaPublicClient } from '@/lib/viem/client.js';
 import type { Context } from 'hono';
 import { deleteCookie, getCookie, setCookie } from 'hono/cookie';
 import { createMiddleware } from 'hono/factory';
 import { type Hex, isAddress, isHex } from 'viem';
 import { baseSepolia } from 'viem/chains';
-import { baseSepoliaPublicClient } from '../../../lib/viem/client.js';
 
 const eip712VerificationRequestType = {
   VerificationRequest: [

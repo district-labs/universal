@@ -5,6 +5,10 @@
     "strict": true,
     "verbatimModuleSyntax": true,
     "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "types": ["node"],
     "jsx": "react-jsx",
     "noImplicitReturns": false,
