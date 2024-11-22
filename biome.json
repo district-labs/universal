@@ -26,6 +26,9 @@
     "enabled": true,
     "rules": {
       "recommended": true,
+      "a11y": {
+        "useKeyWithClickEvents": "off"
+      },
       "correctness": {
         "noConstantMathMinMaxClamp": "error",
         "noNodejsModules": "error",
@@ -35,7 +38,13 @@
         "useArrayLiterals": "error"
       },
       "nursery": {
-        "useSortedClasses": "error"
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "safe"
+        }
+      },
+      "complexity": {
+        "noUselessFragments": "off"
       },
       "style": {
         "noImplicitBoolean": "error",
@@ -61,6 +70,15 @@
     }
   },
   "files": {
-    "ignore": ["coverage/**", ".next/**", "app/globals.css"]
+    "ignore": [
+      "db/migrations/**",
+      "coverage/**",
+      ".next/**",
+      "dist/**",
+      "node_modules/**",
+      "app/globals.css",
+      "tsconfig.*.json",
+      "dist"
+    ]
   }
 }

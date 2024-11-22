@@ -1,5 +1,5 @@
-import { boolean, pgTable, varchar } from "drizzle-orm/pg-core";
-import type { Address } from "viem";
+import { boolean, pgTable, varchar } from 'drizzle-orm/pg-core';
+import type { Address } from 'viem';
 
 // Utils
 const addressColumn = () => varchar({ length: 42 }).$type<Address>();
@@ -9,9 +9,9 @@ const addressColumn = () => varchar({ length: 42 }).$type<Address>();
 // ----------------------------------------------
 
 // Table
-export const accountsDb = pgTable("accounts", {
-	id: addressColumn().primaryKey(),
-	isActive: boolean().default(false).notNull(),
+export const accountsDb = pgTable('accounts', {
+  id: addressColumn().primaryKey(),
+  isActive: boolean().default(false).notNull(),
 });
 
 // Types
