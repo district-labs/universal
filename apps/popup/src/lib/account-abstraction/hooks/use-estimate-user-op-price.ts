@@ -1,16 +1,13 @@
+import { getEthPrice } from '@/lib/defi-llama/actions/get-eth-price';
+import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
 import { useAccountState } from '@/lib/state/use-account-state';
 import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useMessageContext } from '@/lib/state/use-message-context';
-import { useQuery } from '@tanstack/react-query';
-import {
-  EstimateUserOperationGasErrorType,
-  toWebAuthnAccount,
-} from 'viem/account-abstraction';
-import { toUniversalAccount } from '../account-adapters/to-universal-account';
-import { CallParameters, formatEther } from 'viem';
-import { getEthPrice } from '@/lib/defi-llama/actions/get-eth-price';
-import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
 import { useSessionState } from '@/lib/state/use-session-state';
+import { useQuery } from '@tanstack/react-query';
+import { type CallParameters, formatEther } from 'viem';
+import { toWebAuthnAccount } from 'viem/account-abstraction';
+import { toUniversalAccount } from '../account-adapters/to-universal-account';
 
 export function useEstimateUserOpPrice({
   calls: defaultCalls,

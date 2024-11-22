@@ -1,4 +1,9 @@
 import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
+import { useEstimateUserOpPrice } from '@/lib/account-abstraction/hooks/use-estimate-user-op-price';
+import {
+  type Erc20TransferEnforcerRedemption,
+  formatErc20TransferEnforcerCalls,
+} from '@/lib/delegation-framework/enforcers/erc20-transfer-amount/format-erc20-transfer-enforcer-calls';
 import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener';
 import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
 import { useAccountState } from '@/lib/state/use-account-state';
@@ -6,17 +11,12 @@ import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useSessionState } from '@/lib/state/use-session-state';
 import { useMutation } from '@tanstack/react-query';
-import { useState, useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { CallParameters } from 'viem';
 import {
   type EstimateUserOperationGasErrorType,
   toWebAuthnAccount,
 } from 'viem/account-abstraction';
-import {
-  formatErc20TransferEnforcerCalls,
-  Erc20TransferEnforcerRedemption,
-} from '@/lib/delegation-framework/enforcers/erc20-transfer-amount/format-erc20-transfer-enforcer-calls';
-import { useEstimateUserOpPrice } from '@/lib/account-abstraction/hooks/use-estimate-user-op-price';
 
 type UseSendCallsParams = {
   redemptions: Erc20TransferEnforcerRedemption[] | undefined;
@@ -34,7 +34,6 @@ export function useSendCalls({ redemptions }: UseSendCallsParams) {
   const standardCalls = message?.params[0]?.calls;
   const params = { accountState, message, sessionState, bundlerClient };
   const isValid = validateMessageParams(params) && !!standardCalls;
-
 
   const calls = useMemo(() => {
     let delegationCalls: CallParameters[] | undefined;
@@ -105,7 +104,7 @@ export function useSendCalls({ redemptions }: UseSendCallsParams) {
 
   const isValidUserOp = isValid && estimateUserOpPriceQuery.isSuccess;
   return {
-    sender: isValidUserOp ? accountState?.smartContractAddress : undefined,
+    sender: accountState?.smartContractAddress || undefined,
     from: message?.sender,
     sendCalls: isValidUserOp ? mutate : undefined,
     sendCallsAsync: isValidUserOp ? mutateAsync : undefined,

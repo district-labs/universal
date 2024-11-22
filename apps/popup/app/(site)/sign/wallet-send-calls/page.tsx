@@ -5,9 +5,10 @@ import { CreditDelegationsSheet } from '@/components/credit-delegations-sheet';
 import { Address } from '@/components/onchain/address';
 import { EthAmountFormatted } from '@/components/onchain/eth-formatted';
 import { Toggle } from '@/components/toggle';
-import { type ReactElement, useState, useMemo } from 'react';
+import { CreditCard } from 'lucide-react';
+import { type ReactElement, useMemo, useState } from 'react';
 import type { DelegationDb } from 'universal-delegations-sdk';
-import { type Address as AddressType } from 'viem';
+import type { Address as AddressType } from 'viem';
 import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
 import { ActionRequestMain } from '../components/action-request-main';
@@ -25,6 +26,10 @@ export type DelegationExecutions = {
     hash: string;
     amount: bigint;
     amountFormatted: string;
+    total: bigint;
+    totalFormatted: string;
+    spentMapAfter: bigint;
+    spentMapAfterFormatted: string;
   };
   token: {
     name: string;
@@ -84,9 +89,9 @@ export default function PersonalSignPage() {
                 value={<ActionTransactionNetworkSimplified />}
               />
             </div>
-            <div className="space-y-2 border-t-2 bg-neutral-100/60 px-6 py-3">
+            <div className='space-y-1 border-t-2 bg-neutral-100/60 px-5 pt-3 pb-3 shadow-top'>
               <div className="flex items-center justify-between">
-                <span className="text-sm">Credit Lines</span>
+                <span className="font-medium text-sm">Credit Lines</span>
                 {sender && (
                   <CreditDelegationsSheet
                     address={sender}
@@ -98,19 +103,34 @@ export default function PersonalSignPage() {
                   </CreditDelegationsSheet>
                 )}
               </div>
-              {delegationExecutions?.map((delegation) => (
-                <div
-                  key={delegation.execution.hash}
-                  className="flex justify-between"
-                >
-                  <span className="text-sm">{delegation?.token?.symbol}</span>
-                  <span className="font-bold text-sm">
-                    {delegation?.execution?.amountFormatted}
-                  </span>
-                </div>
-              ))}
+              <div className="">
+                {delegationExecutions?.map((delegation) => (
+                  <div
+                    key={delegation.execution.hash}
+                    className="flex justify-between"
+                  >
+                    <div className="">
+                      <Address
+                        className="text-xs"
+                        truncate={true}
+                        address={delegation.delegation.delegator}
+                      />
+                    </div>
+                    <div className="flex flex-row items-end justify-end gap-y-1">
+                      <span className="flex items-center gap-x-1 font-bold text-neutral-500 text-sm">
+                        {delegation?.execution?.amountFormatted}{' '}
+                        {delegation?.token?.symbol}
+                        <CreditCard className="size-4" />
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <ActionTransactionPreview className="flex-1 text-center" />
+            <ActionTransactionPreview
+              calls={calls}
+              className="flex-1 text-center shadow-top"
+            />
           </>
         )}
         {viewModeAdvanced === true && (
@@ -150,7 +170,7 @@ export default function PersonalSignPage() {
         )}
       </ActionRequestMain>
       {userOpError?.message && (
-        <div className="w-full p-2 font-medium max-w-screen-sm  mx-auto flex flex-col items-center  text-red-500 justify-between">
+        <div className="mx-auto flex w-full max-w-screen-sm flex-col items-center justify-between p-2 font-medium text-red-500">
           <div className="flex items-baseline gap-x-0.5">
             Error while submitting transaction.{' '}
             <Button

@@ -34,7 +34,6 @@ export function useGetCredit(params: {
   chainId: number;
 }) {
   const universalApiClient = useUniversal();
-  console.log(params, 'paramsparams');
   return useQuery({
     queryKey: ['credit-get', params],
     queryFn: () => getCredit(universalApiClient, params),

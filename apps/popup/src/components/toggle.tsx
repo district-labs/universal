@@ -1,14 +1,14 @@
 'use client';
 
-import * as React from 'react';
 import { cn } from '@/lib/utils';
+import * as React from 'react';
 
-type Toggle = React.HTMLAttributes<HTMLElement> & {
+type ToggleProps = React.HTMLAttributes<HTMLElement> & {
   label: string;
   handleIsTriggered: (isOn: boolean) => void;
 };
 
-const Toggle = ({ className, label, handleIsTriggered }: Toggle) => {
+export const Toggle = ({ className, label, handleIsTriggered }: ToggleProps) => {
   const [isOn, setIsOn] = React.useState(false);
 
   return (
@@ -25,7 +25,7 @@ const Toggle = ({ className, label, handleIsTriggered }: Toggle) => {
       >
         <span className="sr-only">Toggle switch</span>
         <span
-          className={`inline-block h-5 w-5 shadow-md transform rounded-full border-2 border-neutral-200 bg-white transition-transform ${
+          className={`inline-block h-5 w-5 transform rounded-full border-2 border-neutral-200 bg-white shadow-md transition-transform ${
             isOn ? 'translate-x-3 border-neutral-500' : 'translate-x-0'
           }`}
         />
@@ -33,4 +33,4 @@ const Toggle = ({ className, label, handleIsTriggered }: Toggle) => {
     </div>
   );
 };
-export { Toggle };
+

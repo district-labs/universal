@@ -19,6 +19,25 @@ import {
   baseSepoliaPublicClient,
 } from '../clients.js';
 
+interface DelegationMetadata {
+  data: DelegationDb;
+  metadata: {
+    available: {
+      amount: string;
+      amountFormatted: string;
+    };
+    spent: {
+      amount: string;
+      amountFormatted: string;
+    };
+    limit: {
+      amount: string;
+      amountFormatted: string;
+    };
+    token: TokenItem;
+  };
+}
+
 const routeDelegateAddressParams = z.object({
   address: z.custom<Address>((val) => val.length > 10 && val.startsWith('0x'), {
     message: 'invalid address',
@@ -62,21 +81,6 @@ const creditRouter = new Hono().post(
       return c.json({ error: 'delegations not found' }, 404);
     }
     const delegationsRes = await delegations.json();
-
-    interface DelegationMetadata {
-      data: DelegationDb;
-      metadata: {
-        spent: {
-          amount: string;
-          amountFormatted: string;
-        };
-        limit: {
-          amount: string;
-          amountFormatted: string;
-        };
-        token: TokenItem;
-      };
-    }
 
     const delegationWithMetadata: DelegationMetadata[] = [];
 
@@ -124,6 +128,13 @@ const creditRouter = new Hono().post(
       delegationWithMetadata.push({
         data: delegation,
         metadata: {
+          available: {
+            amount: (BigInt(_amount) - BigInt(res)).toString(),
+            amountFormatted: formatUnits(
+              BigInt(_amount) - BigInt(res),
+              token?.decimals || 18,
+            ),
+          },
           spent: {
             amount: BigInt(res).toString(),
             amountFormatted: formatUnits(BigInt(res), token?.decimals || 18),
@@ -141,7 +152,7 @@ const creditRouter = new Hono().post(
     }
 
     const dids = [
-      ...new Set(
+      ...(new Set(
         delegationsRes.delegations
           .map((delegation) => delegation.delegator)
           .map((_account) => {
@@ -152,7 +163,7 @@ const creditRouter = new Hono().post(
               address: _account,
             });
           }),
-      ),
+      ) as unknown as [string]),
     ];
 
     const credentials = await apiCredentialsClient.credentials.$post({

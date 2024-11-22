@@ -1,20 +1,26 @@
+import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
 import { useAccountState } from '@/lib/state/use-account-state';
 import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useMessageContext } from '@/lib/state/use-message-context';
-import { toWebAuthnAccount } from 'viem/account-abstraction';
-import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
 import { useQuery } from '@tanstack/react-query';
+import type { CallParameters } from 'viem';
+import { toWebAuthnAccount } from 'viem/account-abstraction';
 import {
   type AssetType,
   simulateUserOpAssetChanges,
 } from '../actions/simulate-user-op-asset-changes';
 
-export function useEstimateUserOpAssetChanges() {
+export function useEstimateUserOpAssetChanges({
+  calls: defaultCalls,
+}: {
+  calls?: CallParameters[];
+}) {
   const { message } = useMessageContext();
   const { accountState } = useAccountState();
   const bundlerClient = useBundlerClient();
 
-  const calls = message?.params?.[0]?.calls;
+  const messageCalls = message?.params?.[0]?.calls;
+  const calls = defaultCalls ?? messageCalls;
   const txParams = message?.params?.[0]?.data
     ? message?.params?.[0]
     : undefined;
