@@ -15,12 +15,11 @@
     "wagmi": "2.12.11"
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
     "turbo": "^2.1.2",
     "typescript": "^5.4.5"
   },
   "packageManager": "pnpm@9.11.0",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }

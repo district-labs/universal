@@ -26,6 +26,7 @@
     "build:esm+types": "tsc --project tsconfig.build.json --outDir ./dist/esm --declaration --declarationMap --declarationDir ./dist/types",
     "format": "biome format --write",
     "check": "biome check --write",
+    "check-types": "tsc",
     "clean": "rm -rf dist tsconfig.tsbuildinfo"
   },
   "dependencies": {
