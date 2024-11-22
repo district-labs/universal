@@ -7,7 +7,6 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-import type { DelegationExecutions } from 'app/(site)/sign/wallet-send-calls/page';
 import Image from 'next/image';
 import type * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -20,6 +19,24 @@ import { Toggle } from './toggle';
 import { Button } from './ui/button';
 import { Card, CardFooter, CardHeader } from './ui/card';
 import { Input } from './ui/input';
+
+export type DelegationExecutions = {
+  delegation: DelegationDb;
+  execution: {
+    hash: string;
+    amount: bigint;
+    amountFormatted: string;
+    total: bigint;
+    totalFormatted: string;
+    spentMapAfter: bigint;
+    spentMapAfterFormatted: string;
+  };
+  token: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+};
 
 type DelegationWithMetadata = {
   data: DelegationDb;
@@ -40,23 +57,25 @@ type DelegationWithMetadata = {
   };
 };
 
-type CreditDelegationsSheet = Omit<
+type DelegationsManagementSheet = Omit<
   React.HTMLAttributes<HTMLElement>,
   'onSelect'
 > & {
   address: Address;
+  chainId: number;
   onSelect: (delegation: DelegationExecutions[]) => void;
 };
 
-export const CreditDelegationsSheet = ({
+export const DelegationsManagementSheet = ({
   children,
   className,
   address,
+  chainId,
   onSelect,
-}: CreditDelegationsSheet) => {
+}: DelegationsManagementSheet) => {
   const { data } = useGetCredit({
     address,
-    chainId: 84532,
+    chainId,
   });
 
   const [isOpen, toggleSheet] = useState(false);
@@ -70,33 +89,39 @@ export const CreditDelegationsSheet = ({
     }
   }, [isOpen]);
 
-  const handleDisableDelegation = (hash: DelegationWithMetadata['data']['hash']) => {
+  const handleDisableDelegation = (
+    hash: DelegationWithMetadata['data']['hash'],
+  ) => {
     setDelegationExecutions(
       delegationExecutions.filter(
         (delegationExecution) => delegationExecution.delegation.hash !== hash,
       ),
     );
-  }
+  };
 
-  const handleDelegationAmountUpdate = (hash: DelegationWithMetadata['data']['hash'], amountFormatted: string) => {
+  const handleDelegationAmountUpdate = (
+    hash: DelegationWithMetadata['data']['hash'],
+    amountFormatted: string,
+  ) => {
     setDelegationExecutions(
-      delegationExecutions.map(
-        (delegationExecution) => {
-          if (delegationExecution.delegation.hash === hash) {
-            return {
-              ...delegationExecution,
-              execution: {
-                ...delegationExecution.execution,
+      delegationExecutions.map((delegationExecution) => {
+        if (delegationExecution.delegation.hash === hash) {
+          return {
+            ...delegationExecution,
+            execution: {
+              ...delegationExecution.execution,
+              amountFormatted,
+              amount: parseUnits(
                 amountFormatted,
-                amount: parseUnits(amountFormatted, delegationExecution.token.decimals),
-              }
-            }
-          }
-          return delegationExecution;
+                delegationExecution.token.decimals,
+              ),
+            },
+          };
         }
-      ),
+        return delegationExecution;
+      }),
     );
-  }
+  };
 
   const handleEnableDelegation = (
     delegationExecution: DelegationWithMetadata,
@@ -108,7 +133,7 @@ export const CreditDelegationsSheet = ({
         execution: {
           hash: delegationExecution.data.hash,
           amount: BigInt(0),
-          amountFormatted: "0",
+          amountFormatted: '0',
           total: BigInt(delegationExecution.metadata.limit.amount),
           totalFormatted: delegationExecution.metadata.limit.amountFormatted,
           spentMapAfter:
@@ -136,6 +161,7 @@ export const CreditDelegationsSheet = ({
         <SheetContent
           side="bottom"
           className="top-6 space-y-3 overflow-auto pt-2 pb-20"
+          isCloseDisabled={true}
         >
           <SheetHeader>
             <SheetTitle className="text-2xl">Credit Lines</SheetTitle>
@@ -144,19 +170,28 @@ export const CreditDelegationsSheet = ({
             </SheetDescription>
           </SheetHeader>
           <div className="mt-4 space-y-4">
-            {data?.credit.map((delegation) => (
-              <CreditDelegationCard
-                toggleSheet={toggleSheet}
-                onSelect={handleEnableDelegation}
-                handleDisableDelegation={handleDisableDelegation}
-                handleDelegationAmountUpdate={handleDelegationAmountUpdate}
-                key={delegation.data.hash}
-                delegationWithMetadata={delegation}
-                delegation={delegation.data}
-              />
-            ))}
+            {(data?.credit?.length ?? 0) === 0 && (
+              <Card className="flex items-center justify-center p-4">
+                <span className="font-semibold text-base text-neutral-500">
+                  No spending allowances available
+                </span>
+              </Card>
+            )}
+
+            {(data?.credit?.length ?? 0) > 0 &&
+              (data?.credit ?? []).map((delegation) => (
+                <CreditDelegationCard
+                  toggleSheet={toggleSheet}
+                  handleEnableDelegation={handleEnableDelegation}
+                  handleDisableDelegation={handleDisableDelegation}
+                  handleDelegationAmountUpdate={handleDelegationAmountUpdate}
+                  key={delegation.data.hash}
+                  delegationWithMetadata={delegation}
+                  delegation={delegation.data}
+                />
+              ))}
           </div>
-          <div className='fixed right-0 bottom-0 left-0 flex gap-x-4 border-t-2 bg-white px-4 py-3'>
+          <div className="fixed right-0 bottom-0 left-0 flex gap-x-4 border-t-2 bg-white px-4 py-3">
             <Button
               onClick={() => {
                 onSelect([]);
@@ -168,7 +203,7 @@ export const CreditDelegationsSheet = ({
               Cancel
             </Button>
             <Button onClick={handleOnSelect} className="w-full rounded-full">
-              Apply Credit
+              Apply
             </Button>
           </div>
         </SheetContent>
@@ -177,24 +212,30 @@ export const CreditDelegationsSheet = ({
   );
 };
 
-type CreditDelegationCard = Omit<React.HTMLAttributes<HTMLElement>, 'onSelect'> & {
+type CreditDelegationCard = Omit<
+  React.HTMLAttributes<HTMLElement>,
+  'handleEnableDelegation'
+> & {
   delegation: DelegationDb;
   delegationWithMetadata: DelegationWithMetadata;
-  onSelect: (delegation: DelegationWithMetadata) => void;
+  handleEnableDelegation: (delegation: DelegationWithMetadata) => void;
   handleDisableDelegation: (hash: DelegationDb['hash']) => void;
-  handleDelegationAmountUpdate: (hash: DelegationDb['hash'], amountFormatted: string) => void;
+  handleDelegationAmountUpdate: (
+    hash: DelegationDb['hash'],
+    amountFormatted: string,
+  ) => void;
   toggleSheet: (isOpen: boolean) => void;
 };
 
 const CreditDelegationCard = ({
   delegation,
   delegationWithMetadata,
-  onSelect,
+  handleEnableDelegation,
   handleDisableDelegation,
-  handleDelegationAmountUpdate
+  handleDelegationAmountUpdate,
 }: CreditDelegationCard) => {
   const [isEnabled, setIsEnabled] = useState<boolean>();
-  const [ pullAmount, setPullAmount ] = useState<string>()
+  const [pullAmount, setPullAmount] = useState<string>();
 
   return (
     <Card
@@ -231,14 +272,36 @@ const CreditDelegationCard = ({
               value={pullAmount}
               onChange={(e) => {
                 setPullAmount(e.target.value);
-                handleDelegationAmountUpdate(delegationWithMetadata.data.hash, e.target.value || '0');
+                handleDelegationAmountUpdate(
+                  delegationWithMetadata.data.hash,
+                  e.target.value || '0',
+                );
               }}
               className="max-w-[200px] border-transparent pr-0 text-right text-4xl shadow-none focus-visible:ring-0"
             />
           </span>
           <div className="flex items-center gap-x-0.5">
             <span className="font-semibold text-xs">{`${delegationWithMetadata.metadata.available.amountFormatted} ${delegationWithMetadata.metadata.token.symbol}`}</span>
-            <span className="bg-neutral-100 p-1 text-xs">Max</span>
+            <span
+              className="cursor-pointer bg-neutral-100 p-1 text-xs hover:bg-neutral-200/50"
+              onClick={
+                isEnabled
+                  ? () => {
+                      setPullAmount(
+                        delegationWithMetadata.metadata.available
+                          .amountFormatted,
+                      );
+                      handleDelegationAmountUpdate(
+                        delegationWithMetadata.data.hash,
+                        delegationWithMetadata.metadata.available
+                          .amountFormatted,
+                      );
+                    }
+                  : () => {}
+              }
+            >
+              Max
+            </span>
           </div>
         </div>
       </CardHeader>
@@ -259,7 +322,9 @@ const CreditDelegationCard = ({
           <Toggle
             label=""
             handleIsTriggered={(isEnabled) => {
-              isEnabled ? onSelect(delegationWithMetadata) : handleDisableDelegation(delegationWithMetadata.data.hash);
+              isEnabled
+                ? handleEnableDelegation(delegationWithMetadata)
+                : handleDisableDelegation(delegationWithMetadata.data.hash);
               setIsEnabled(isEnabled);
             }}
           />

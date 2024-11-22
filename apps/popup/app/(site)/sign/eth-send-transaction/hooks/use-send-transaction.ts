@@ -1,6 +1,7 @@
 import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
+import { useEstimateUserOpPrice } from '@/lib/account-abstraction/hooks/use-estimate-user-op-price';
 import {
-  Erc20TransferEnforcerRedemption,
+  type Erc20TransferEnforcerRedemption,
   formatErc20TransferEnforcerCalls,
 } from '@/lib/delegation-framework/enforcers/erc20-transfer-amount/format-erc20-transfer-enforcer-calls';
 import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener';
@@ -9,13 +10,12 @@ import { useAccountState } from '@/lib/state/use-account-state';
 import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useSessionState } from '@/lib/state/use-session-state';
-import { useEstimateUserOpPrice } from '@/lib/account-abstraction/hooks/use-estimate-user-op-price';
 import { useMutation } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import type { CallParameters } from 'viem';
 import {
-  toWebAuthnAccount,
   type EstimateUserOperationGasErrorType,
+  toWebAuthnAccount,
 } from 'viem/account-abstraction';
 
 type UseSendTransactionParams = {
@@ -108,6 +108,7 @@ export function useSendTransaction({ redemptions }: UseSendTransactionParams) {
     sendTransaction: isValid ? mutate : undefined,
     sendTransactionAsync: isValid ? mutateAsync : undefined,
     sender: isValid ? accountState?.smartContractAddress : undefined,
+    chainId: isValid ? params.message.chainId : undefined,
     userOpError:
       estimateUserOpPriceQuery.error as EstimateUserOperationGasErrorType,
     refetchUserOpPrice: estimateUserOpPriceQuery.refetch,

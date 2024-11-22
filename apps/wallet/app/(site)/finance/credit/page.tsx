@@ -1,17 +1,9 @@
 'use client';
 import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
-import { useGetCredit } from 'universal-sdk';
-import type { Address } from 'viem';
 import { useAccount } from 'wagmi';
 import { ViewCreditReceived } from './view-credit-received';
-export default function FinanceTransferPage() {
+export default function FinanceCreditPage() {
   const { address } = useAccount();
-  const { data } = useGetCredit({
-    address: address as Address,
-    chainId: 84532,
-  });
-
-  console.log(data, 'data');
 
   return (
     <div className="flex h-full flex-col">

@@ -1,8 +1,8 @@
 import type { UseAccountStateReturnType } from '@/lib/state/use-account-state';
-import { UseBundlerClientReturnType } from '@/lib/state/use-bundler-client';
+import type { UseBundlerClientReturnType } from '@/lib/state/use-bundler-client';
 import type { UseMessageContextReturnType } from '@/lib/state/use-message-context';
 import type { UseSessionStateReturnType } from '@/lib/state/use-session-state';
-import { NonUndefined } from '@/types/utils';
+import type { NonUndefined } from '@/types/utils';
 
 type Params = {
   accountState: UseAccountStateReturnType['accountState'];

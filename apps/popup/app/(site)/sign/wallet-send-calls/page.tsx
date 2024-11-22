@@ -1,13 +1,11 @@
 'use client';
 import { Button } from '@/components/ui/button';
 
-import { CreditDelegationsSheet } from '@/components/credit-delegations-sheet';
+import type { DelegationExecutions } from '@/components/delegations-management-sheet';
 import { Address } from '@/components/onchain/address';
 import { EthAmountFormatted } from '@/components/onchain/eth-formatted';
 import { Toggle } from '@/components/toggle';
-import { CreditCard } from 'lucide-react';
 import { type ReactElement, useMemo, useState } from 'react';
-import type { DelegationDb } from 'universal-delegations-sdk';
 import type { Address as AddressType } from 'viem';
 import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
@@ -18,30 +16,14 @@ import { ActionTransactionFeeEstimate } from '../components/action-transaction-f
 import { ActionTransactionNetwork } from '../components/action-transaction-network';
 import { ActionTransactionNetworkSimplified } from '../components/action-transaction-network-simplified';
 import { ActionTransactionPreview } from '../components/action-transaction-preview';
+import { DelegationManager } from '../components/delegation-manager';
 import { useSendCalls } from './hooks/use-send-calls';
 
-export type DelegationExecutions = {
-  delegation: DelegationDb;
-  execution: {
-    hash: string;
-    amount: bigint;
-    amountFormatted: string;
-    total: bigint;
-    totalFormatted: string;
-    spentMapAfter: bigint;
-    spentMapAfterFormatted: string;
-  };
-  token: {
-    name: string;
-    symbol: string;
-    decimals: number;
-  };
-};
-
-export default function PersonalSignPage() {
+export default function WalletSendCallsPage() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
-  const [delegationExecutions, setDelegationExecutions] =
-    useState<DelegationExecutions[]>();
+  const [delegationExecutions, setDelegationExecutions] = useState<
+    DelegationExecutions[]
+  >([]);
   const redemptions = useMemo(
     () =>
       delegationExecutions?.map(({ execution, delegation }) => ({
@@ -58,6 +40,7 @@ export default function PersonalSignPage() {
     isLoadingUserOp,
     from,
     sender,
+    chainId,
     userOpError,
   } = useSendCalls({
     redemptions,
@@ -71,7 +54,7 @@ export default function PersonalSignPage() {
     <ActionRequestView>
       <ActionRequestHeader className="flex items-center justify-between border-b-2">
         <ActionRequestTitle type="transaction">
-          Batch Transaction Request
+          Transaction Request
         </ActionRequestTitle>
         <span className="flex items-center gap-x-1">
           <Toggle
@@ -89,44 +72,13 @@ export default function PersonalSignPage() {
                 value={<ActionTransactionNetworkSimplified />}
               />
             </div>
-            <div className='space-y-1 border-t-2 bg-neutral-100/60 px-5 pt-3 pb-3 shadow-top'>
-              <div className="flex items-center justify-between">
-                <span className="font-medium text-sm">Credit Lines</span>
-                {sender && (
-                  <CreditDelegationsSheet
-                    address={sender}
-                    onSelect={setDelegationExecutions}
-                  >
-                    <span className="cursor-pointer font-bold text-sm">
-                      Manage
-                    </span>
-                  </CreditDelegationsSheet>
-                )}
-              </div>
-              <div className="">
-                {delegationExecutions?.map((delegation) => (
-                  <div
-                    key={delegation.execution.hash}
-                    className="flex justify-between"
-                  >
-                    <div className="">
-                      <Address
-                        className="text-xs"
-                        truncate={true}
-                        address={delegation.delegation.delegator}
-                      />
-                    </div>
-                    <div className="flex flex-row items-end justify-end gap-y-1">
-                      <span className="flex items-center gap-x-1 font-bold text-neutral-500 text-sm">
-                        {delegation?.execution?.amountFormatted}{' '}
-                        {delegation?.token?.symbol}
-                        <CreditCard className="size-4" />
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <DelegationManager
+              className="space-y-2 border-t-2 bg-neutral-100/60 px-6 py-3 shadow-top"
+              address={sender}
+              chainId={chainId}
+              setDelegationExecutions={setDelegationExecutions}
+              delegationExecutions={delegationExecutions}
+            />
             <ActionTransactionPreview
               calls={calls}
               className="flex-1 text-center shadow-top"

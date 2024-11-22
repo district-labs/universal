@@ -85,7 +85,9 @@ export function useSendCalls({ redemptions }: UseSendCallsParams) {
         });
       setIsLoadingSendTx(false);
 
-      if (!userOp) return;
+      if (!userOp) {
+        return;
+      }
 
       setIsLoadingUserOp(true);
       const { receipt } = await bundlerClient.waitForUserOperationReceipt({
@@ -105,6 +107,7 @@ export function useSendCalls({ redemptions }: UseSendCallsParams) {
   const isValidUserOp = isValid && estimateUserOpPriceQuery.isSuccess;
   return {
     sender: accountState?.smartContractAddress || undefined,
+    chainId: message?.chainId,
     from: message?.sender,
     sendCalls: isValidUserOp ? mutate : undefined,
     sendCallsAsync: isValidUserOp ? mutateAsync : undefined,

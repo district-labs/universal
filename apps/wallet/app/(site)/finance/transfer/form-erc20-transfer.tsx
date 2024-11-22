@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { type Address, erc20Abi, parseUnits } from 'viem';
 import { useAccount, useChainId, useSwitchChain } from 'wagmi';
-import { useWriteContracts } from 'wagmi/experimental';
 import { z } from 'zod';
 
 import { AccountSelectAndInput } from '@/components/fields/account-select-and-input';
@@ -16,6 +15,7 @@ import { Card } from '@/components/ui/card';
 import type { TokenItem } from 'universal-data';
 import { tokenList } from 'universal-data';
 import { baseSepolia } from 'viem/chains';
+import { useWriteContracts } from 'wagmi/experimental';
 
 const formSchema = z.object({
   to: addressSchema,
@@ -27,7 +27,8 @@ function FormerErc20Transfer() {
   const { address } = useAccount();
   const chainId = useChainId();
   const { switchChain, isPending: isPendingSwitchChain } = useSwitchChain();
-  const { data, writeContracts, error, status } = useWriteContracts();
+  // const { data, writeContract, error, status } = useWriteContract();
+  const { writeContracts } = useWriteContracts();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
@@ -39,6 +40,15 @@ function FormerErc20Transfer() {
       });
       return;
     }
+    // writeContract({
+    //   abi: erc20Abi,
+    //   address: data.token.address as Address,
+    //   functionName: 'transfer',
+    //   args: [
+    //     data.to as Address,
+    //     parseUnits(data.amount.toString(), data.token.decimals),
+    //   ],
+    // });
     writeContracts({
       contracts: [
         {

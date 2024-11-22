@@ -84,73 +84,105 @@ const creditRouter = new Hono().post(
 
     const delegationWithMetadata: DelegationMetadata[] = [];
 
+    // Once we have the delegations, we want to fetch the onchain data for each delegation.
+    // In the current implementation, we're fetching the spent map amount for
+    // the ERC20TransferAmount caveat, which is the only caveat we're using for now.
+    // We need to be much more robust in the future and fetch all the relevant data for all types.
     for (const delegation of delegationsRes.delegations) {
+      // Skip delegations with no caveats.
+      // This is a temporary solution to avoid crashing when there are no caveats.
+      if (!delegation.caveats[0]?.terms) {
+        continue;
+      }
+
       const [_token, _amount] = decodeEnforcerERC20TransferAmount(
-        delegation.caveats[0].terms,
+        delegation?.caveats[0]?.terms,
       );
+
+      // Find the token metadata for the delegation.
+      // TODO: Enable dynamic token metadata fetching.
       const token = findTokenByAddress(_token as Address);
 
       if (!token) {
         continue;
       }
 
-      const res = await baseSepoliaPublicClient.readContract({
-        abi: [
-          {
-            type: 'function',
-            name: 'spentMap',
-            inputs: [
-              {
-                name: 'delegationManager',
-                type: 'address',
-                internalType: 'address',
-              },
-              {
-                name: 'delegationHash',
-                type: 'bytes32',
-                internalType: 'bytes32',
-              },
-            ],
-            outputs: [
-              {
-                name: 'amount',
-                type: 'uint256',
-                internalType: 'uint256',
-              },
-            ],
-          },
-        ],
-        address: delegation.caveats[0].enforcer,
-        functionName: 'spentMap',
-        args: [delegation.verifyingContract, delegation.hash],
-      });
+      // Fetch the spent amount for the delegation.
+      // This is the amount that has been spent from the delegation.
+      try {
+        const res = (await baseSepoliaPublicClient.readContract({
+          abi: [
+            {
+              type: 'function',
+              name: 'spentMap',
+              inputs: [
+                {
+                  name: 'delegationManager',
+                  type: 'address',
+                  internalType: 'address',
+                },
+                {
+                  name: 'delegationHash',
+                  type: 'bytes32',
+                  internalType: 'bytes32',
+                },
+              ],
+              outputs: [
+                {
+                  name: 'amount',
+                  type: 'uint256',
+                  internalType: 'uint256',
+                },
+              ],
+            },
+          ],
+          address: delegation.caveats[0].enforcer,
+          functionName: 'spentMap',
+          args: [delegation.verifyingContract, delegation.hash],
+        })) as bigint;
 
-      delegationWithMetadata.push({
-        data: delegation,
-        metadata: {
-          available: {
-            amount: (BigInt(_amount) - BigInt(res)).toString(),
-            amountFormatted: formatUnits(
-              BigInt(_amount) - BigInt(res),
-              token?.decimals || 18,
-            ),
+        delegationWithMetadata.push({
+          data: delegation,
+          metadata: {
+            available: {
+              amount: (BigInt(_amount) - BigInt(res)).toString(),
+              amountFormatted: formatUnits(
+                BigInt(_amount) - BigInt(res),
+                token?.decimals || 18,
+              ),
+            },
+            spent: {
+              amount: BigInt(res).toString(),
+              amountFormatted: formatUnits(BigInt(res), token?.decimals || 18),
+            },
+            limit: {
+              amount: BigInt(_amount).toString(),
+              amountFormatted: formatUnits(
+                BigInt(_amount),
+                token?.decimals || 18,
+              ),
+            },
+            token: token,
           },
-          spent: {
-            amount: BigInt(res).toString(),
-            amountFormatted: formatUnits(BigInt(res), token?.decimals || 18),
-          },
-          limit: {
-            amount: BigInt(_amount).toString(),
-            amountFormatted: formatUnits(
-              BigInt(_amount),
-              token?.decimals || 18,
-            ),
-          },
-          token: token,
-        },
-      });
+        });
+      } catch (_error) {
+        console.error('Error fetching spent amount', _error);
+      }
     }
 
+    // TODO: Make a more robust filtering mechanism for the credit endpoint.
+    // Right now, we're filtering out delegations with no available amount.
+    // This is a temporary solution to avoid showing delegations with no available amount.
+    // Long-term we want to check onchain for revocations and other factors that may affect the available amount.
+    const filteredDelegationWithMetadata = delegationWithMetadata.filter(
+      (delegation) => {
+        return delegation.metadata.available.amount !== '0';
+      },
+    );
+
+    // Create a list of unique DIDs from the delegations delegators.
+    // We want to fetch their public credentials to display
+    // next to the delegations when relevant.
     const dids = [
       ...(new Set(
         delegationsRes.delegations
@@ -166,17 +198,25 @@ const creditRouter = new Hono().post(
       ) as unknown as [string]),
     ];
 
+    // Fetch the public credentials for the DIDs.
     const credentials = await apiCredentialsClient.credentials.$post({
       json: {
         dids: dids,
       },
     });
 
+    if (!credentials.ok) {
+      return c.json({ error: 'credentials not found' }, 404);
+    }
+
     const credentialsRes = await credentials.json();
 
     if (delegationsRes) {
       return c.json(
-        { credit: delegationWithMetadata, links: credentialsRes.credentials },
+        {
+          credit: filteredDelegationWithMetadata,
+          links: credentialsRes.credentials,
+        },
         200,
       );
     }

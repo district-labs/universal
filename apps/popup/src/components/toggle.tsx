@@ -8,7 +8,11 @@ type ToggleProps = React.HTMLAttributes<HTMLElement> & {
   handleIsTriggered: (isOn: boolean) => void;
 };
 
-export const Toggle = ({ className, label, handleIsTriggered }: ToggleProps) => {
+export const Toggle = ({
+  className,
+  label,
+  handleIsTriggered,
+}: ToggleProps) => {
   const [isOn, setIsOn] = React.useState(false);
 
   return (
@@ -33,4 +37,3 @@ export const Toggle = ({ className, label, handleIsTriggered }: ToggleProps) => 
     </div>
   );
 };
-
