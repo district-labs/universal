@@ -20,7 +20,9 @@ export const AccountSocialCredentialWeightedBadge = ({
   const highestWeightedCredential = findHighestWeightedCredential(credentials);
 
   if (!highestWeightedCredential) {
-    return <AddressRender address={address} />;
+    return (
+      <AddressRender truncate={true} className="text-sm" address={address} />
+    );
   }
   return (
     <LinkComponent
