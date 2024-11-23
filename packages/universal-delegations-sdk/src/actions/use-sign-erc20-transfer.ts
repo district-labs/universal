@@ -99,13 +99,13 @@ export function useSignErc20TransferDelegation() {
 				hash: getDelegationHash(_delegation),
 			};
 			mutate(__delegation);
-            return () => {
-                setDelegation(null);
-            }
+			return () => {
+				setDelegation(null);
+			}
 		}
-        return () => {
-            setDelegation(null);
-        }
+		return () => {
+			setDelegation(null);
+		}
 	}, [data, delegation, chainId, mutate]);
 
 	async function signAndSaveDelegationAsync({

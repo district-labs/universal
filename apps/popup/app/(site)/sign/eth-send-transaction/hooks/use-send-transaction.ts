@@ -1,15 +1,27 @@
+import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
+import { useEstimateUserOpPrice } from '@/lib/account-abstraction/hooks/use-estimate-user-op-price';
+import {
+  type Erc20TransferEnforcerRedemption,
+  formatErc20TransferEnforcerCalls,
+} from '@/lib/delegation-framework/enforcers/erc20-transfer-amount/format-erc20-transfer-enforcer-calls';
+import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener';
+import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
 import { useAccountState } from '@/lib/state/use-account-state';
+import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useSessionState } from '@/lib/state/use-session-state';
 import { useMutation } from '@tanstack/react-query';
-import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener';
-import { toWebAuthnAccount } from 'viem/account-abstraction';
-import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
-import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
-import { useBundlerClient } from '@/lib/state/use-bundler-client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import type { CallParameters } from 'viem';
+import {
+  type EstimateUserOperationGasErrorType,
+  toWebAuthnAccount,
+} from 'viem/account-abstraction';
 
-export function useSendTransaction() {
+type UseSendTransactionParams = {
+  redemptions: Erc20TransferEnforcerRedemption[] | undefined;
+};
+export function useSendTransaction({ redemptions }: UseSendTransactionParams) {
   const [isLoadingUserOp, setIsLoadingUserOp] = useState(false);
   const [isLoadingSendTx, setIsLoadingSendTx] = useState(false);
   const { accountState } = useAccountState();
@@ -20,6 +32,21 @@ export function useSendTransaction() {
   // TODO: Type check tx params
   const txParams = message?.params[0];
   const params = { accountState, message, sessionState, bundlerClient };
+
+  const calls = useMemo(() => {
+    let delegationCalls: CallParameters[] | undefined;
+    if (redemptions && redemptions.length > 0) {
+      delegationCalls = formatErc20TransferEnforcerCalls({
+        redemptions,
+      });
+    }
+
+    return delegationCalls && delegationCalls?.length > 0
+      ? [...delegationCalls, txParams]
+      : [txParams];
+  }, [txParams, redemptions]);
+
+  const estimateUserOpPriceQuery = useEstimateUserOpPrice({ calls });
 
   const { mutate, mutateAsync, ...rest } = useMutation({
     mutationKey: ['send-transaction'],
@@ -47,7 +74,7 @@ export function useSendTransaction() {
       const userOp = await bundlerClient
         .sendUserOperation({
           account,
-          calls: [txParams],
+          calls,
         })
         .catch((error) => {
           console.error('Error sending transaction', error);
@@ -72,12 +99,21 @@ export function useSendTransaction() {
     },
   });
 
-  const isValid = validateMessageParams(params) && !!txParams;
+  const isValid =
+    validateMessageParams(params) &&
+    !!txParams &&
+    estimateUserOpPriceQuery.isSuccess;
 
   return {
     sendTransaction: isValid ? mutate : undefined,
     sendTransactionAsync: isValid ? mutateAsync : undefined,
+    sender: isValid ? accountState?.smartContractAddress : undefined,
+    chainId: isValid ? params.message.chainId : undefined,
+    userOpError:
+      estimateUserOpPriceQuery.error as EstimateUserOperationGasErrorType,
+    refetchUserOpPrice: estimateUserOpPriceQuery.refetch,
     txParams,
+    calls,
     isLoadingSendTx,
     isLoadingUserOp,
     ...rest,

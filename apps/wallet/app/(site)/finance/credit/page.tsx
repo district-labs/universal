@@ -2,8 +2,7 @@
 import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
 import { useAccount } from 'wagmi';
 import { ViewCreditReceived } from './view-credit-received';
-
-export default function FinanceTransferPage() {
+export default function FinanceCreditPage() {
   const { address } = useAccount();
 
   return (

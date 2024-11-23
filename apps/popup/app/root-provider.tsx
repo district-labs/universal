@@ -1,11 +1,12 @@
 'use client';
 
-import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { WagmiProvider } from 'wagmi';
+import type { ReactNode } from 'react';
 
-import { ThemeProvider } from 'next-themes';
+import { env } from '@/env';
 import { MessageProvider } from '@/lib/state/use-message-context';
+import { ThemeProvider } from 'next-themes';
+import { UniversalProvider } from 'universal-sdk';
 
 const queryClient = new QueryClient();
 
@@ -23,7 +24,13 @@ export default function RootProvider({ children }: RootProviderProps) {
     >
       <MessageProvider>
         <QueryClientProvider client={queryClient}>
-          {children}
+          <UniversalProvider
+            apiUniversal={env.NEXT_PUBLIC_UNIVERSAL_API_URL}
+            apiDelegations={env.NEXT_PUBLIC_DELEGATIONS_API_URL}
+            apiIdentity={env.NEXT_PUBLIC_IDENTITY_API_URL}
+          >
+            {children}
+          </UniversalProvider>
         </QueryClientProvider>
       </MessageProvider>
     </ThemeProvider>

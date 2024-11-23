@@ -9,12 +9,13 @@ import {
 import type * as React from 'react';
 import { tokenList } from 'universal-data';
 import { type Address, parseUnits } from 'viem';
-import { useAccount } from 'wagmi';
+import { useAccount, useChainId, useSwitchChain } from 'wagmi';
 import { useWriteContracts } from 'wagmi/experimental';
 import { ConnectUniversalWalletButton } from '../onchain/connect-universal-wallet';
 import { IsWalletConnected } from '../onchain/is-wallet-connected';
 import { IsWalletDisconnected } from '../onchain/is-wallet-disconnected';
 import { Button } from '../ui/button';
+import { baseSepolia } from 'viem/chains';
 
 const MINT_ABI = [
   {
@@ -33,7 +34,9 @@ type AddFundsTestnet = React.HTMLAttributes<HTMLElement>;
 
 const AddFundsTestnet = ({ children }: AddFundsTestnet) => {
   const { address } = useAccount();
+  const chainId = useChainId();
   const { writeContracts } = useWriteContracts();
+  const { switchChain, isPending: isPendingSwitchChain } = useSwitchChain();
 
   function handleOnClick() {
     writeContracts({
@@ -96,14 +99,30 @@ const AddFundsTestnet = ({ children }: AddFundsTestnet) => {
           </ConnectUniversalWalletButton>
         </IsWalletDisconnected>
         <IsWalletConnected>
-          <Button
-            className="w-full text-lg"
-            rounded={'full'}
-            size={'lg'}
-            onClick={handleOnClick}
-          >
-            Mint Testnet Tokens
-          </Button>
+          {chainId === baseSepolia.id ? (
+            <Button
+              className="w-full text-lg"
+              rounded={'full'}
+              size={'lg'}
+              onClick={handleOnClick}
+            >
+              Mint Testnet Tokens
+            </Button>
+          ) : (
+            <Button
+              className="w-full text-lg"
+              rounded={'full'}
+              size={'lg'}
+              disabled={isPendingSwitchChain}
+              onClick={() =>
+                switchChain({
+                  chainId: baseSepolia.id,
+                })
+              }
+            >
+              Switch to Base Sepolia
+            </Button>
+          )}
         </IsWalletConnected>
       </DialogContent>
     </Dialog>

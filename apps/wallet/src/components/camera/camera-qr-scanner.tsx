@@ -123,7 +123,6 @@ export function CameraQrScanner({
             showViewFinder={false}
             className="h-full w-full object-cover"
             onError={(e) => {
-              console.log('error: ', e);
               setError(e.message);
             }}
             onScan={handleOnScan}
