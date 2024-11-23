@@ -47,6 +47,7 @@
     "react-hook-form": "^7.53.0",
     "siwe": "^2.3.2",
     "universal-data": "workspace:*",
+    "universal-credential-sdk": "workspace:*",
     "universal-delegations-sdk": "workspace:*",
     "universal-identity-sdk": "workspace:*",
     "universal-wallet-connector": "workspace:*",

@@ -1,9 +1,9 @@
 {
-  "name": "district-router-sdk",
+  "name": "universal-sdk",
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "build-packages": "turbo build --filter='./packages/**'",
+    "build:packages": "turbo build --filter='./packages/**'",
     "dev": "turbo dev --parallel",
     "format": "turbo format",
     "lint": "turbo lint",

@@ -1,11 +1,11 @@
 'use client';
 import { Button } from '@/components/ui/button';
 
-import type { DelegationExecutions } from '@/components/delegations-management-sheet';
 import { Address } from '@/components/onchain/address';
 import { EthAmountFormatted } from '@/components/onchain/eth-formatted';
 import { Toggle } from '@/components/toggle';
 import { type ReactElement, useMemo, useState } from 'react';
+import type { DelegationExecutions } from 'universal-data';
 import type { Address as AddressType } from 'viem';
 import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';

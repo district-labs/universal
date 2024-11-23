@@ -541,6 +541,9 @@ importers:
       siwe:
         specifier: ^2.3.2
         version: 2.3.2(ethers@6.13.4(bufferutil@4.0.8)(utf-8-validate@6.0.5))
+      universal-credential-sdk:
+        specifier: workspace:*
+        version: link:../../packages/universal-credential-sdk
       universal-data:
         specifier: workspace:*
         version: link:../../packages/universal-data
@@ -851,6 +854,9 @@ importers:
 
   packages/universal-data:
     dependencies:
+      api-delegations:
+        specifier: workspace:*
+        version: link:../../apps/api-delegations
       typescript:
         specifier: '>=5.0.4'
         version: 5.6.3

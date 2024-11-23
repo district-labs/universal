@@ -1,10 +1,8 @@
-import {
-  type DelegationExecutions,
-  DelegationsManagementSheet,
-} from '@/components/delegations-management-sheet';
+import { DelegationsManagementSheet } from '@/components/delegations-management-sheet';
 import { Address } from '@/components/onchain/address';
 import { CreditCard } from 'lucide-react';
 import type * as React from 'react';
+import type { DelegationExecutions } from 'universal-data';
 import type { Address as AddressType } from 'viem';
 
 type DelegationManager = React.HTMLAttributes<HTMLElement> & {

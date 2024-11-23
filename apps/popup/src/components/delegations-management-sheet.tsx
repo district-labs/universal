@@ -7,57 +7,26 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
+import { BadgeInfo } from 'lucide-react';
 import Image from 'next/image';
 import type * as React from 'react';
 import { useEffect, useState } from 'react';
-import type { TokenItem } from 'universal-data';
+import type {
+  DelegationExecutions,
+  DelegationWithMetadata,
+  SocialCredential,
+} from 'universal-data';
 import type { DelegationDb } from 'universal-delegations-sdk';
 import { useGetCredit } from 'universal-sdk';
 import { type Address, parseUnits } from 'viem';
-import { Address as AddressRender } from './onchain/address';
+import { DelegationDetailsSheet } from './delegation-details-sheet';
+import { AccountSocialCredentialWeightedBadge } from './identity/account-social-credential-weighted-badge';
 import { Toggle } from './toggle';
 import { Button } from './ui/button';
 import { Card, CardFooter, CardHeader } from './ui/card';
 import { Input } from './ui/input';
 
-export type DelegationExecutions = {
-  delegation: DelegationDb;
-  execution: {
-    hash: string;
-    amount: bigint;
-    amountFormatted: string;
-    total: bigint;
-    totalFormatted: string;
-    spentMapAfter: bigint;
-    spentMapAfterFormatted: string;
-  };
-  token: {
-    name: string;
-    symbol: string;
-    decimals: number;
-  };
-};
-
-type DelegationWithMetadata = {
-  data: DelegationDb;
-  metadata: {
-    available: {
-      amount: string;
-      amountFormatted: string;
-    };
-    spent: {
-      amount: string;
-      amountFormatted: string;
-    };
-    limit: {
-      amount: string;
-      amountFormatted: string;
-    };
-    token: TokenItem;
-  };
-};
-
-type DelegationsManagementSheet = Omit<
+export type DelegationsManagementSheet = Omit<
   React.HTMLAttributes<HTMLElement>,
   'onSelect'
 > & {
@@ -78,7 +47,7 @@ export const DelegationsManagementSheet = ({
     chainId,
   });
 
-  const [isOpen, toggleSheet] = useState(false);
+  const [isOpen, toggleIsOpen] = useState(false);
   const [delegationExecutions, setDelegationExecutions] = useState<
     DelegationExecutions[]
   >([]);
@@ -149,18 +118,18 @@ export const DelegationsManagementSheet = ({
 
   const handleOnSelect = () => {
     onSelect(delegationExecutions);
-    toggleSheet(false);
+    toggleIsOpen(false);
   };
 
   return (
     <div className={cn(className)}>
       <Sheet open={isOpen}>
-        <SheetTrigger asChild={true} onClick={() => toggleSheet(!isOpen)}>
+        <SheetTrigger asChild={true} onClick={() => toggleIsOpen(!isOpen)}>
           {children}
         </SheetTrigger>
         <SheetContent
           side="bottom"
-          className="top-6 space-y-3 overflow-auto pt-2 pb-20"
+          className="top-0 space-y-3 overflow-auto pt-2 pb-20"
           isCloseDisabled={true}
         >
           <SheetHeader>
@@ -181,13 +150,23 @@ export const DelegationsManagementSheet = ({
             {(data?.credit?.length ?? 0) > 0 &&
               (data?.credit ?? []).map((delegation) => (
                 <CreditDelegationCard
-                  toggleSheet={toggleSheet}
+                  toggleIsOpen={toggleIsOpen}
                   handleEnableDelegation={handleEnableDelegation}
                   handleDisableDelegation={handleDisableDelegation}
                   handleDelegationAmountUpdate={handleDelegationAmountUpdate}
                   key={delegation.data.hash}
                   delegationWithMetadata={delegation}
                   delegation={delegation.data}
+                  delegatorAccountSocialCredentials={
+                    (data?.links
+                      .filter(
+                        (link) =>
+                          link.account.address === delegation.data.delegator,
+                      )
+                      .map(
+                        (link) => link.credentials,
+                      )[0] as SocialCredential[]) ?? ([] as SocialCredential[])
+                  }
                 />
               ))}
           </div>
@@ -195,7 +174,7 @@ export const DelegationsManagementSheet = ({
             <Button
               onClick={() => {
                 onSelect([]);
-                toggleSheet(false);
+                toggleIsOpen(false);
               }}
               variant={'outline'}
               className="w-full rounded-full"
@@ -216,6 +195,7 @@ type CreditDelegationCard = Omit<
   React.HTMLAttributes<HTMLElement>,
   'handleEnableDelegation'
 > & {
+  delegatorAccountSocialCredentials: SocialCredential[];
   delegation: DelegationDb;
   delegationWithMetadata: DelegationWithMetadata;
   handleEnableDelegation: (delegation: DelegationWithMetadata) => void;
@@ -224,10 +204,11 @@ type CreditDelegationCard = Omit<
     hash: DelegationDb['hash'],
     amountFormatted: string,
   ) => void;
-  toggleSheet: (isOpen: boolean) => void;
+  toggleIsOpen: (isOpen: boolean) => void;
 };
 
 const CreditDelegationCard = ({
+  delegatorAccountSocialCredentials,
   delegation,
   delegationWithMetadata,
   handleEnableDelegation,
@@ -249,26 +230,38 @@ const CreditDelegationCard = ({
           'opacity-60': !isEnabled,
         })}
       >
-        <div className={cn('mt-4 flex flex-col gap-y-2')}>
-          <div className="flex items-center gap-x-1">
+        <div className={cn('mt-4 flex flex-col gap-y-3')}>
+          <div className="flex items-center gap-x-1.5">
             <Image
               width={20}
               height={20}
-              className="size-6 rounded-full"
+              className="size-5 rounded-full"
               src={delegationWithMetadata.metadata.token.logoURI}
               alt={delegationWithMetadata.metadata.token.name}
             />
             <div className="space-y-0">
-              <h3 className="font-black text-2xl leading-3">{`${delegationWithMetadata.metadata.token.symbol}`}</h3>
+              <h3 className="font-black text-xl leading-3">{`${delegationWithMetadata.metadata.token.symbol}`}</h3>
             </div>
           </div>
-          <span className="font-semibold text-xs">Details</span>
+          <DelegationDetailsSheet
+            credentials={delegatorAccountSocialCredentials}
+            delegation={delegationWithMetadata}
+          >
+            <span className="flex cursor-pointer items-center gap-x-1 font-semibold text-xs">
+              Authorization
+              <BadgeInfo className="size-3" />
+            </span>
+          </DelegationDetailsSheet>
         </div>
         <div className="flex flex-col items-end justify-start space-y-1">
           <span className="font-bold text-4xl">
             <Input
               disabled={!isEnabled}
-              placeholder="0.0"
+              placeholder={
+                isEnabled
+                  ? '0.0'
+                  : `${delegationWithMetadata.metadata.available.amountFormatted}.0`
+              }
               value={pullAmount}
               onChange={(e) => {
                 setPullAmount(e.target.value);
@@ -277,7 +270,17 @@ const CreditDelegationCard = ({
                   e.target.value || '0',
                 );
               }}
-              className="max-w-[200px] border-transparent pr-0 text-right text-4xl shadow-none focus-visible:ring-0"
+              className={cn(
+                'max-w-[200px] border-transparent pr-0 text-right text-4xl shadow-none placeholder:text-neutral-600 focus-visible:ring-0',
+                {
+                  'text-neutral-500': !isEnabled,
+                  'placeholder:text-neutral-300': isEnabled,
+                  'text-red-500':
+                    Number(
+                      delegationWithMetadata.metadata.available.amountFormatted,
+                    ) < Number(pullAmount) || '',
+                },
+              )}
             />
           </span>
           <div className="flex items-center gap-x-0.5">
@@ -307,10 +310,10 @@ const CreditDelegationCard = ({
       </CardHeader>
       <CardFooter className="flex items-center justify-between border-t-2 p-0 pt-2">
         <div className="flex items-center gap-x-1">
-          <AddressRender
+          <AccountSocialCredentialWeightedBadge
             className="text-xs"
-            truncate={true}
             address={delegationWithMetadata.data.delegator}
+            credentials={delegatorAccountSocialCredentials}
           />
         </div>
         <div className="flex items-center gap-x-1">
@@ -326,6 +329,7 @@ const CreditDelegationCard = ({
                 ? handleEnableDelegation(delegationWithMetadata)
                 : handleDisableDelegation(delegationWithMetadata.data.hash);
               setIsEnabled(isEnabled);
+              setPullAmount('');
             }}
           />
         </div>

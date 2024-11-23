@@ -66,6 +66,9 @@ const app = new Hono()
     },
   );
 
-export type CredentialsApi = typeof app;
-
+export type {
+  InsertCredentialDb,
+  SelectCredentialDb,
+} from '../lib/db/schema.js';
 export { app };
+export type CredentialsApi = typeof app;
