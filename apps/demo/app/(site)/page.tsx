@@ -5,15 +5,12 @@ import { TransactionHash } from '@/components/onchain/transaction-hash';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { base, baseSepolia } from 'viem/chains';
 
 import {
   useAccount,
-  useChainId,
   useDisconnect,
   useSignMessage,
   useSignTypedData,
-  useSwitchChain,
   useWalletClient,
   useWriteContract,
 } from 'wagmi';
@@ -207,14 +204,17 @@ function SendTransaction() {
           </div>
           <div className="flex flex-1 items-center justify-center">
             <Button
-              onClick={() =>
-                writeContract({
-                  address: myNFTAddress,
-                  abi: myNFTABI,
-                  functionName: 'safeMint',
-                  args: [address!],
-                })
-              }
+              disabled={!address}
+              onClick={() => {
+                if (address) {
+                  writeContract({
+                    address: myNFTAddress,
+                    abi: myNFTABI,
+                    functionName: 'safeMint',
+                    args: [address],
+                  });
+                }
+              }}
             >
               Sign Transaction
             </Button>
@@ -309,11 +309,13 @@ function WriteContracts() {
               </Button>
               <Button
                 disabled={!writeContractsData}
-                onClick={() =>
-                  showCallsStatus({
-                    id: writeContractsData!,
-                  })
-                }
+                onClick={() => {
+                  if (writeContractsData) {
+                    showCallsStatus({
+                      id: writeContractsData,
+                    });
+                  }
+                }}
               >
                 Show Calls Status
               </Button>
@@ -366,39 +368,6 @@ function AddChain() {
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
-}
-
-function SwitchChain() {
-  const chainId = useChainId();
-  const { switchChain } = useSwitchChain();
-
-  return (
-    <div>
-      <div>: {chainId}</div>
-      {chainId === base.id && (
-        <Button
-          onClick={() =>
-            switchChain({
-              chainId: baseSepolia.id,
-            })
-          }
-        >
-          Switch to Base Sepolia
-        </Button>
-      )}
-      {chainId === baseSepolia.id && (
-        <Button
-          onClick={() =>
-            switchChain({
-              chainId: base.id,
-            })
-          }
-        >
-          Switch to Base
-        </Button>
-      )}
     </div>
   );
 }

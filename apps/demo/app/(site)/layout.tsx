@@ -58,7 +58,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <main className="relative z-10 flex flex-1 flex-col justify-center">
           {children}
         </main>
-        <footer className="relative z-50 grid w-full grid-cols-1 gap-y-5 border-t-2 px-10 pt-6 pb-8 dark:border-neutral-600"></footer>
+        <footer className="relative z-50 grid w-full grid-cols-1 gap-y-5 border-t-2 px-10 pt-6 pb-8 dark:border-neutral-600" />
       </div>
     </>
   );

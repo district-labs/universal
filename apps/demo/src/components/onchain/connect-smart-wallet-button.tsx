@@ -8,7 +8,7 @@ import { Button } from '../ui/button';
 
 type ConnectSmartWalletButton = React.HTMLAttributes<HTMLElement>;
 
-const ConnectSmartWalletButton = ({
+export const ConnectSmartWalletButton = ({
   children,
   className,
 }: ConnectSmartWalletButton) => {
@@ -35,4 +35,3 @@ const ConnectSmartWalletButton = ({
     </Button>
   );
 };
-export type { ConnectSmartWalletButton };
