@@ -11,7 +11,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "dev": "tsx watch -r dotenv/config src/node.ts",
+    "dev": "tsx watch src/node.ts",
     "start": "tsx src/node.ts",
     "format": "biome format --write",
     "check": "biome check --write",
