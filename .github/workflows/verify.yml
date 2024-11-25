@@ -47,7 +47,7 @@ jobs:
         shell: bash
         run: pnpm install --frozen-lockfile
 
-      - name: Check Types
+      - name: Build Packages
         run: pnpm build:packages
 
   types:
@@ -69,6 +69,9 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: pnpm install --frozen-lockfile
+
+      - name: Build Packages
+        run: pnpm build:packages
 
       - name: Check Types
         run: pnpm check:types
