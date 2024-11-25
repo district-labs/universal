@@ -71,6 +71,9 @@ importers:
       typeorm:
         specifier: ^0.3.20
         version: 0.3.20(pg@8.13.1)(ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3))
+      universal-identity-sdk:
+        specifier: workspace:*
+        version: link:../../packages/universal-identity-sdk
       viem:
         specifier: ^2.21.45
         version: 2.21.45(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
@@ -436,6 +439,9 @@ importers:
       siwe:
         specifier: ^2.3.2
         version: 2.3.2(ethers@6.13.4(bufferutil@4.0.8)(utf-8-validate@6.0.5))
+      universal-credential-sdk:
+        specifier: workspace:*
+        version: link:../../packages/universal-credential-sdk
       universal-data:
         specifier: workspace:*
         version: link:../../packages/universal-data
@@ -445,6 +451,9 @@ importers:
       universal-identity-sdk:
         specifier: workspace:*
         version: link:../../packages/universal-identity-sdk
+      universal-sdk:
+        specifier: workspace:*
+        version: link:../../packages/universal-sdk
       universal-wallet-connector:
         specifier: workspace:*
         version: link:../../packages/universal-wallet-connector
@@ -739,6 +748,9 @@ importers:
 
   packages/universal-data:
     dependencies:
+      api-delegations:
+        specifier: workspace:*
+        version: link:../../apps/api-delegations
       typescript:
         specifier: '>=5.0.4'
         version: 5.6.3

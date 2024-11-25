@@ -42,6 +42,8 @@
     }
   },
   "dependencies": {
+    "api-delegations": "workspace:*",
     "universal-wallet-sdk": "workspace:*"
+    
   }
 }

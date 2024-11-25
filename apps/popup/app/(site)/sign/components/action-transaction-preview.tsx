@@ -7,42 +7,36 @@ import {
 import { useEstimateUserOpAssetChanges } from '@/lib/alchemy/hooks/use-simulate-user-op-asset-changes';
 import { cn } from '@/lib/utils';
 import { FileWarning, Info } from 'lucide-react';
-import { type HTMLAttributes, useMemo } from 'react';
+import type { HTMLAttributes } from 'react';
 
 import { IconLoading } from '@/components/icon-loading';
-import type {
-  AssetType,
-  Change,
-} from '@/lib/alchemy/actions/simulate-user-op-asset-changes';
+import type { Change } from '@/lib/alchemy/actions/simulate-user-op-asset-changes';
 import { useAccountState } from '@/lib/state/use-account-state';
-import type { Address } from 'viem';
+import type { Address, CallParameters } from 'viem';
 
-type ActionTransactionPreview = HTMLAttributes<HTMLElement>;
+type ActionTransactionPreview = HTMLAttributes<HTMLElement> & {
+  calls: CallParameters[];
+};
 
 export function ActionTransactionPreview({
   className,
+  calls,
 }: ActionTransactionPreview) {
   const { accountState } = useAccountState();
-  const { data, isLoading, isError, error } = useEstimateUserOpAssetChanges();
-
-  const assets = useMemo(() => {
-    if (!data) return null;
-
-    const filterAssetsByType = (type: AssetType) =>
-      data.filter(({ assetType }) => assetType === type);
-
-    return {
-      erc721assets: filterAssetsByType('ERC721'),
-      erc1155assets: filterAssetsByType('ERC1155'),
-      erc20assets: filterAssetsByType('ERC20'),
-    };
-  }, [data]);
+  const {
+    data: assets,
+    isLoading,
+    isError,
+    error,
+  } = useEstimateUserOpAssetChanges({
+    calls,
+  });
 
   if (isError) {
     return (
       <div
         className={cn(
-          'flex w-full flex-col items-center justify-center border-neutral-200 border-t-2 bg-neutral-100 p-8 py-10',
+          'flex w-full flex-col items-center justify-center border-neutral-200 border-t-2 bg-neutral-200/70 p-8 py-10',
           className,
         )}
       >
@@ -81,7 +75,7 @@ export function ActionTransactionPreview({
     return (
       <div
         className={cn(
-          'flex w-full flex-col items-center justify-center border-neutral-200 border-t-2 bg-neutral-100 px-6 py-10',
+          'flex w-full flex-col items-center justify-center border-neutral-200 border-t-2 bg-neutral-200/70 px-6 py-10',
           className,
         )}
       >
@@ -106,7 +100,7 @@ export function ActionTransactionPreview({
   return (
     <div
       className={cn(
-        'flex w-full flex-col items-start gap-y-2 border-neutral-200 border-t-2 bg-neutral-100 pb-2',
+        'flex w-full flex-col items-start gap-y-2 border-neutral-200 border-t-2 bg-neutral-200/40 pb-2',
         className,
       )}
     >
@@ -167,20 +161,18 @@ const AssetList = ({
               key={contractAddress + amount}
               className="flex items-center justify-between"
             >
-              <div className="flex items-center gap-x-2">
-                <h3 className="font-semibold text-sm">{name}</h3>
-              </div>
+              <span className="font-semibold text-base">{name}</span>
               <span
                 className={cn(
                   'text-base',
-                  equalAddress ? 'text-green-500' : 'text-red-500',
+                  equalAddress ? 'text-emerald-600' : 'text-red-600',
                 )}
               >
-                {`${equalAddress ? '+' : '-'} ${amount || ''} ${assetType === 'ERC20' ? symbol : ''} `}
-              </span>
-            </div>
+                {`${equalAddress ? '+' : '-'} ${amount} ${assetType === 'ERC20' && symbol}`}
+              </span >
+            </div >
           );
         },
       )}
-    </div>
+    </div >
   );

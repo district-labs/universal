@@ -5,17 +5,22 @@ import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useSessionState } from '@/lib/state/use-session-state';
 import { useQuery } from '@tanstack/react-query';
-import { formatEther } from 'viem';
+import { type CallParameters, formatEther } from 'viem';
 import { toWebAuthnAccount } from 'viem/account-abstraction';
 import { toUniversalAccount } from '../account-adapters/to-universal-account';
 
-export function useEstimateUserOpPrice() {
+export function useEstimateUserOpPrice({
+  calls: defaultCalls,
+}: {
+  calls?: CallParameters[];
+} = {}) {
   const { message } = useMessageContext();
   const { accountState } = useAccountState();
   const { sessionState } = useSessionState();
   const bundlerClient = useBundlerClient();
 
-  const calls = message?.params?.[0]?.calls;
+  const messageCalls = message?.params?.[0]?.calls;
+  const calls = defaultCalls ?? messageCalls;
   const txParams = message?.params?.[0]?.data
     ? message?.params?.[0]
     : undefined;
@@ -69,6 +74,8 @@ export function useEstimateUserOpPrice() {
 
       return gasEstimation;
     },
+    // Doesn't retry as we need to show an error message to the user
+    retry: false,
 
     enabled: isValidParams,
   });

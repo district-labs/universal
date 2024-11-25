@@ -30,5 +30,5 @@ export function decodeEnforcerERC20TransferAmount(data: Hex) {
   const amountHex = sliceHex(data, addressSize, addressSize + uint256Size);
   const amount = hexToBigInt(amountHex);
 
-  return [token, BigInt(amount)];
+  return [token, BigInt(amount)] as const;
 }

@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Address } from '@/components/onchain/address';
 import { EthAmountFormatted } from '@/components/onchain/eth-formatted';
 import { Toggle } from '@/components/toggle';
-import { type ReactElement, useState } from 'react';
+import { type ReactElement, useMemo, useState } from 'react';
+import type { DelegationExecutions } from 'universal-data';
 import type { Address as AddressType } from 'viem';
 import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
@@ -15,12 +16,35 @@ import { ActionTransactionFeeEstimate } from '../components/action-transaction-f
 import { ActionTransactionNetwork } from '../components/action-transaction-network';
 import { ActionTransactionNetworkSimplified } from '../components/action-transaction-network-simplified';
 import { ActionTransactionPreview } from '../components/action-transaction-preview';
+import { DelegationManager } from '../components/delegation-manager';
 import { useSendCalls } from './hooks/use-send-calls';
 
-export default function PersonalSignPage() {
+export default function WalletSendCallsPage() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
-  const { sendCalls, calls, isLoadingSendTx, isLoadingUserOp, from } =
-    useSendCalls();
+  const [delegationExecutions, setDelegationExecutions] = useState<
+    DelegationExecutions[]
+  >([]);
+  const redemptions = useMemo(
+    () =>
+      delegationExecutions?.map(({ execution, delegation }) => ({
+        amount: execution.amount,
+        delegation,
+      })),
+    [delegationExecutions],
+  );
+  const {
+    sendCalls,
+    refetchUserOpPrice,
+    calls,
+    isLoadingSendTx,
+    isLoadingUserOp,
+    from,
+    sender,
+    chainId,
+    userOpError,
+  } = useSendCalls({
+    redemptions,
+  });
 
   if (!calls) {
     return <div>Invalid Transactions</div>;
@@ -30,7 +54,7 @@ export default function PersonalSignPage() {
     <ActionRequestView>
       <ActionRequestHeader className="flex items-center justify-between border-b-2">
         <ActionRequestTitle type="transaction">
-          Batch Transaction Request
+          Transaction Request
         </ActionRequestTitle>
         <span className="flex items-center gap-x-1">
           <Toggle
@@ -48,7 +72,17 @@ export default function PersonalSignPage() {
                 value={<ActionTransactionNetworkSimplified />}
               />
             </div>
-            <ActionTransactionPreview className="flex-1 text-center" />
+            <DelegationManager
+              className="space-y-2 border-t-2 bg-neutral-100/60 px-6 py-3 shadow-top"
+              address={sender}
+              chainId={chainId}
+              setDelegationExecutions={setDelegationExecutions}
+              delegationExecutions={delegationExecutions}
+            />
+            <ActionTransactionPreview
+              calls={calls}
+              className="flex-1 text-center shadow-top"
+            />
           </>
         )}
         {viewModeAdvanced === true && (
@@ -87,6 +121,20 @@ export default function PersonalSignPage() {
           </div>
         )}
       </ActionRequestMain>
+      {userOpError?.message && (
+        <div className="mx-auto flex w-full max-w-screen-sm flex-col items-center justify-between p-2 font-medium text-red-500">
+          <div className="flex items-baseline gap-x-0.5">
+            Error while submitting transaction.{' '}
+            <Button
+              className="text-destructive"
+              onClick={() => refetchUserOpPrice()}
+              variant={'link'}
+            >
+              Retry
+            </Button>
+          </div>
+        </div>
+      )}
       <ActionRequestFooter>
         <Button
           className="w-full flex-1 rounded-full"
