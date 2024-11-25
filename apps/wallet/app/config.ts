@@ -10,7 +10,6 @@ interface SiteConfig {
   links?: {
 
 
-
     docs?: string;
     discord?: string;
     twitter?: string;
