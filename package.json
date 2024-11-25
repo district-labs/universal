@@ -23,14 +23,12 @@
   },
   "packageManager": "pnpm@9.11.0",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
-    "*": [
-      "pnpm format --"
-    ]
+    "*": ["pnpm format --"]
   }
 }
