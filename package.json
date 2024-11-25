@@ -9,7 +9,8 @@
     "check": "turbo check",
     "check:types": "turbo check:types",
     "lint": "turbo lint",
-    "start": "turbo start"
+    "start": "turbo start",
+    "prepare": "pnpm simple-git-hooks"
   },
   "resolutions": {
     "wagmi": "2.12.11"
