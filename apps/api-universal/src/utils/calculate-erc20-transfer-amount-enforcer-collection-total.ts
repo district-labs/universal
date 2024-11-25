@@ -1,6 +1,6 @@
 import {
-  decodeEnforcerERC20TransferAmount,
   type DelegationDb,
+  decodeEnforcerERC20TransferAmount,
 } from 'universal-delegations-sdk';
 import type { Address } from 'viem';
 

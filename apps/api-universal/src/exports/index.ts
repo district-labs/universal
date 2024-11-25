@@ -1,7 +1,7 @@
 import type { hc } from 'hono/client';
-import { app } from './app.js';
-import type { InsertAccountDb, SelectAccountDb } from './db/schema.js';
-import type { LeaderboardSearchParams } from './routes/leaderboard.js';
+import { app } from '../app.js';
+import type { InsertAccountDb, SelectAccountDb } from '../db/schema.js';
+import type { LeaderboardSearchParams } from '../routes/leaderboard.js';
 export {
   app,
   type InsertAccountDb,

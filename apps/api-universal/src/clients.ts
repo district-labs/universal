@@ -1,7 +1,7 @@
-import type { CredentialsApi } from 'universal-credentials-sdk';
-import type { DelegationsApi } from 'universal-delegations-sdk';
 import type { IdentityApi } from 'api-identity';
 import { hc } from 'hono/client';
+import type { CredentialsApi } from 'universal-credential-sdk';
+import type { DelegationsApi } from 'universal-delegations-sdk';
 import { http, createPublicClient } from 'viem';
 import { baseSepolia } from 'viem/chains';
 import { env } from './env.js';

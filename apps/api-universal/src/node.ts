@@ -1,5 +1,5 @@
 import { serve } from '@hono/node-server';
-import { app } from './index.js';
+import { app } from './exports/index.js';
 
 const port = 4200;
 serve({ ...app, port }, (info) => {

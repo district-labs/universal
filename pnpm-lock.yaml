@@ -191,12 +191,6 @@ importers:
       '@t3-oss/env-core':
         specifier: ^0.11.1
         version: 0.11.1(typescript@5.6.3)(zod@3.23.8)
-      api-delegations:
-        specifier: workspace:*
-        version: link:../api-delegations
-      api-identity:
-        specifier: workspace:*
-        version: link:../api-identity
       drizzle-orm:
         specifier: ^0.36.4
         version: 0.36.4(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@6.0.5))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
