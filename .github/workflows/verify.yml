@@ -49,3 +49,26 @@ jobs:
 
       - name: Check Types
         run: pnpm check:types
+  
+  build-packages:
+    name: Build Packages
+    needs: types
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install dependencies
+        shell: bash
+        run: pnpm install --frozen-lockfile
+
+      - name: Check Types
+        run: pnpm build:packages
