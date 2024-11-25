@@ -57,7 +57,6 @@ export const ethereumUriSchema = z
     const address = match[1];
     const paramsString = match.groups.params || '';
     const params: Record<string, string> = {};
-    // biome-ignore lint/complexity/noForEach: <explanation>
     paramsString.split('&').forEach((param) => {
       const [key, value] = param.split('=');
       if (key && value) {

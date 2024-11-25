@@ -1,8 +1,7 @@
-import * as React from 'react';
 import { CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons';
-import { type Column } from '@tanstack/react-table';
+import type { Column } from '@tanstack/react-table';
+import type * as React from 'react';
 
-import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,6 +19,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 export interface DataTableOption {
   label: string;
@@ -42,7 +42,7 @@ export function DataTableFacetedFilter<TData, TValue>({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild={true}>
         <Button
           aria-label="Filter rows"
           variant="outline"

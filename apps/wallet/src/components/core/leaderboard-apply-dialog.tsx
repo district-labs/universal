@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { credentialsApiClient } from '@/lib/api-credentials/client';
 import { useToast } from '@/lib/hooks/use-toast';
 import { CREDENTIAL_OPTIONS } from 'app/settings';
 import { Orbit } from 'lucide-react';
@@ -136,7 +137,7 @@ export function ViewCredentials() {
     [address, chainId],
   );
 
-  const credentialsQuery = useGetCredentials({
+  const credentialsQuery = useGetCredentials(credentialsApiClient, {
     did,
   });
 

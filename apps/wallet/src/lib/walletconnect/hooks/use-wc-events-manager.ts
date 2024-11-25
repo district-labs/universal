@@ -1,14 +1,14 @@
 import { useConfirmationDialog } from '@/components/core/confirmation-dialog-provider';
+import { createEmitter } from '@/lib/wagmi/emitter';
 import type { WalletKitTypes } from '@reown/walletkit';
+import { useQueryClient } from '@tanstack/react-query';
 import { buildApprovedNamespaces, getSdkError } from '@walletconnect/utils';
 import { useCallback, useEffect } from 'react';
 import { universalWallet } from 'universal-wallet-connector';
-import { base, baseSepolia, mainnet, sepolia } from 'viem/chains';
-import { useWalletKitClient } from './use-wallet-kit-client';
-import { useQueryClient } from '@tanstack/react-query';
-import { type ConnectorEventMap, createConfig, http } from 'wagmi';
-import { createEmitter } from '@/lib/wagmi/emitter';
+import { base, baseSepolia } from 'viem/chains';
+import { http, type ConnectorEventMap, createConfig } from 'wagmi';
 import { supportedChainIdsWc } from '../constants';
+import { useWalletKitClient } from './use-wallet-kit-client';
 
 const createUniversalWalletConnector = universalWallet({});
 
@@ -129,7 +129,7 @@ export function useWcEventsManager(initialized: boolean) {
               await universalWalletConnector?.switchChain({
                 chainId,
               });
-            } catch (error) {
+            } catch {
               return await walletKitClient.respondSessionRequest({
                 topic,
                 response: {

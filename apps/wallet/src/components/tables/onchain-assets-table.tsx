@@ -47,7 +47,7 @@ const columns = [
     header: () => (
       <h3 className="text-right font-semibold text-base">Credit</h3>
     ),
-    cell: ({ row }) => (
+    cell: () => (
       <div className="text-right">
         <span className="font-semibold text-sm md:text-lg">0.00</span>
       </div>

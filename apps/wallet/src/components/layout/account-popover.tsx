@@ -3,8 +3,10 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import { useIsUniversalConnected } from '@/lib/hooks/use-is-universal-connected';
 import { cn } from '@/lib/utils';
 import { useActiveSessions } from '@/lib/walletconnect/hooks/use-active-connections';
+import { useDisconnectWc } from '@/lib/walletconnect/hooks/use-wc-disconnect';
 import { Addreth } from 'addreth';
 import { Circle, LogOut, Unplug } from 'lucide-react';
 import Image from 'next/image';
@@ -13,9 +15,7 @@ import { useAccount } from 'wagmi';
 import { PWAInstallPrompt } from '../core/pwa-install-prompt';
 import { DisconnectWalletElement } from '../onchain/disconnect-wallet-element';
 import { Button } from '../ui/button';
-import { useIsUniversalConnected } from '@/lib/hooks/use-is-universal-connected';
 import { Skeleton } from '../ui/skeleton';
-import { useDisconnectWc } from '@/lib/walletconnect/hooks/use-wc-disconnect';
 type AccountPopover = React.HTMLAttributes<HTMLElement>;
 
 export const AccountPopover = ({ className }: AccountPopover) => {
@@ -72,7 +72,7 @@ export const AccountPopover = ({ className }: AccountPopover) => {
           {isUniversalConnected && (
             <div className="p-4">
               {activeSessionsQuery.isLoading && (
-                <Skeleton className="w-full h-20" />
+                <Skeleton className="h-20 w-full" />
               )}
               {sessions && sessions.length === 0 && (
                 <div className="py-4 text-center font-medium text-neutral-500">

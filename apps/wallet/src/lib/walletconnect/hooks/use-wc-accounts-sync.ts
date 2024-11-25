@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react';
 import { universalWalletConnectorId } from 'universal-wallet-connector';
-import { useAccount, useChainId } from 'wagmi';
-import { useWalletKitClient } from './use-wallet-kit-client';
 import type { Address } from 'viem';
+import { useAccount, useChainId } from 'wagmi';
 import { supportedChainIdsWc } from '../constants';
+import { useWalletKitClient } from './use-wallet-kit-client';
 
 /**
  * Hook for handling account changes from Universal Wallet accounts with WalletConnect.

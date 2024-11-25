@@ -34,7 +34,6 @@ export const CredentialOAuthSmall = ({
   did,
   type,
   iconSmall,
-  title,
   description,
   credential,
 }: CredentialOAuthSmallProps) => {
