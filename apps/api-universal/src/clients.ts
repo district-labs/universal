@@ -1,5 +1,5 @@
 import type { CredentialsApi } from 'universal-credentials-sdk';
-import type { DelegationsApi } from 'api-delegations';
+import type { DelegationsApi } from 'universal-delegations-sdk';
 import type { IdentityApi } from 'api-identity';
 import { hc } from 'hono/client';
 import { http, createPublicClient } from 'viem';

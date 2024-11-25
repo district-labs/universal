@@ -1,12 +1,14 @@
-// DelegationsApiClientContext.tsx
-import { createContext, useContext, type ReactNode } from 'react';
+import type { DelegationsApi } from 'api-delegations';
 import { hc } from 'hono/client';
-import type { AppRouter } from 'api-delegations';
+// DelegationsApiClientContext.tsx
+import { type ReactNode, createContext, useContext } from 'react';
 
-export type DelegationsApiClient = ReturnType<typeof hc<AppRouter>>;
+export type DelegationsApiClient = ReturnType<typeof hc<DelegationsApi>>;
 
 // Create the context with a default value of null
-const DelegationsApiClientContext = createContext<DelegationsApiClient | null>(null);
+const DelegationsApiClientContext = createContext<DelegationsApiClient | null>(
+  null,
+);
 
 interface DelegationsApiClientProviderProps {
   url: string;
@@ -14,9 +16,12 @@ interface DelegationsApiClientProviderProps {
 }
 
 // Provider component
-export function DelegationsApiClientProvider({ url, children }: DelegationsApiClientProviderProps) {
+export function DelegationsApiClientProvider({
+  url,
+  children,
+}: DelegationsApiClientProviderProps) {
   // Create the client instance
-  const client = hc<AppRouter>(url);
+  const client = hc<DelegationsApi>(url);
 
   return (
     <DelegationsApiClientContext.Provider value={client}>
@@ -29,7 +34,9 @@ export function DelegationsApiClientProvider({ url, children }: DelegationsApiCl
 export function useDelegationsApiClient(): DelegationsApiClient {
   const context = useContext(DelegationsApiClientContext);
   if (!context) {
-    throw new Error('useDelegationsApiClient must be used within a DelegationsApiClientProvider');
+    throw new Error(
+      'useDelegationsApiClient must be used within a DelegationsApiClientProvider',
+    );
   }
   return context;
 }

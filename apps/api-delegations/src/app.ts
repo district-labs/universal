@@ -18,4 +18,5 @@ const app = new Hono()
     return c.text('404 Not found', 404);
   });
 
+export type DelegationsApi = typeof app;
 export { app };

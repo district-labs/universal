@@ -1,5 +1,7 @@
-import type { DelegationDb } from 'api-delegations';
-import { decodeEnforcerERC20TransferAmount } from 'universal-delegations-sdk';
+import {
+  decodeEnforcerERC20TransferAmount,
+  type DelegationDb,
+} from 'universal-delegations-sdk';
 import type { Address } from 'viem';
 
 export function calculateERC20TransferAmountEnforcerCollectionTotal(

@@ -1,16 +1,23 @@
-import type { Hex } from 'viem';
-import { useDelegationsApiClient, type DelegationsApiClient } from '../client.js';
 import { useQuery } from '@tanstack/react-query';
+import type { Hex } from 'viem';
+import {
+  type DelegationsApiClient,
+  useDelegationsApiClient,
+} from '../client.js';
 
-export async function getDelegationByDelegateAndType(delegationsApiClient: DelegationsApiClient, {
+export async function getDelegationByDelegateAndType(
+  delegationsApiClient: DelegationsApiClient,
+  {
     address,
-    type
-}:{
-    address: Hex
-    type: string
-}) {
-
-  const res = await delegationsApiClient.delegations.delegate[':address'][":type"].$get({
+    type,
+  }: {
+    address: Hex;
+    type: string;
+  },
+) {
+  const res = await delegationsApiClient.delegations.delegate[':address'][
+    ':type'
+  ].$get({
     param: { address, type },
   });
 
@@ -24,13 +31,13 @@ export async function getDelegationByDelegateAndType(delegationsApiClient: Deleg
 }
 
 export function useGetDelegationByDelegateAndType(input: {
-    address: Hex
-    type: string
+  address: Hex;
+  type: string;
 }) {
   const delegationsApiClient = useDelegationsApiClient();
   return useQuery({
     queryKey: ['delegations-get-by-delegate-and-type', input],
     queryFn: () => getDelegationByDelegateAndType(delegationsApiClient, input),
-    enabled: !!delegationsApiClient
+    enabled: !!delegationsApiClient,
   });
 }

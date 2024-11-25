@@ -1,4 +1,4 @@
-import { encodePacked, type Hex } from 'viem';
+import { type Hex, encodePacked } from 'viem';
 
 import type { Execution } from '../types.js';
 
