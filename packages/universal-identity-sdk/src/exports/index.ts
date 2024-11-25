@@ -1,4 +1,4 @@
-export type { DidDocument } from 'api-identity';
+export type { DidDocument, IdentityApi } from 'api-identity';
 export { publicActionsUis } from '../actions/public-uis.js';
 export * from '../actions/resolve-did.js';
 export * from '../actions/sign-did-document.js';
