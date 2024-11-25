@@ -1,9 +1,9 @@
+import { closePopup } from '@/lib/pop-up/actions/close-pop-up';
 import {
-  encryptContent,
   deriveSharedSecret,
+  encryptContent,
   importKeyFromHexString,
 } from 'universal-wallet-sdk';
-import { closePopup } from '@/lib/pop-up/actions/close-pop-up';
 
 export async function sendMessageToOpener<Value>({
   requestId,

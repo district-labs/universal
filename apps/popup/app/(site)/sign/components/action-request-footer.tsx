@@ -1,13 +1,13 @@
-import * as React from 'react';
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { closePopup } from '@/lib/pop-up/actions/close-pop-up';
+import { cn } from '@/lib/utils';
+import type * as React from 'react';
 
 type ActionRequestFooter = React.HTMLAttributes<HTMLElement> & {
   isFixed?: boolean;
 };
 
-const ActionRequestFooter = ({
+export const ActionRequestFooter = ({
   children,
   className,
   isFixed,
@@ -15,16 +15,16 @@ const ActionRequestFooter = ({
   return (
     <div
       className={cn(
-        'flex items-center gap-x-4 w-full border-t-2 p-4 border-neutral-200 z-50 bg-white',
+        'z-50 flex w-full items-center gap-x-4 border-neutral-200 border-t-2 bg-white p-4',
         {
-          'fixed bottom-0 left-0 right-0': isFixed,
+          'fixed right-0 bottom-0 left-0': isFixed,
         },
         className,
       )}
     >
       <Button
         variant={'outline'}
-        className="flex-1 w-full rounded-full"
+        className="w-full flex-1 rounded-full"
         size="lg"
         onClick={() => closePopup()}
       >
@@ -34,4 +34,3 @@ const ActionRequestFooter = ({
     </div>
   );
 };
-export { ActionRequestFooter };

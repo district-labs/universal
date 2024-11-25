@@ -1,17 +1,21 @@
 import { RowBasic } from '@/components/row-basic';
 import { cn } from '@/lib/utils';
-import { useMemo } from 'react';
-import { TypedDataDefinition } from 'viem';
+import { Fragment, useMemo } from 'react';
+import type { TypedDataDefinition } from 'viem';
 
 type GenerateEip712Items = React.HTMLAttributes<HTMLElement> & {
   data: TypedDataDefinition['message'];
 };
 
-const GenerateEip712Items = ({ className, data }: GenerateEip712Items) => {
+export const GenerateEip712Items = ({
+  className,
+  data,
+}: GenerateEip712Items) => {
   const [objKeys, objData] = useMemo(() => {
     const entries = Object.entries(data);
 
     // Define a ranking function for the value types
+    // biome-ignore lint/suspicious/noExplicitAny: any
     const getTypeRank = (val: any) => {
       if (typeof val === 'string') return 1;
       if (typeof val === 'object') return 2;
@@ -35,40 +39,39 @@ const GenerateEip712Items = ({ className, data }: GenerateEip712Items) => {
 
   return (
     <div className={cn(className)}>
+      {/* biome-ignore lint/suspicious/noExplicitAny: any */}
       {objData.map((item: any, index: number) => {
         return (
-          <>
+          <Fragment key={item}>
             {Array.isArray(item) && (
               <div className="rounded-lg">
                 <h5 className="font-bold">{objKeys[index]}</h5>
-                {item.map((val, i) => {
+                {item.map((val) => {
                   return (
-                    <>
+                    <Fragment key={val}>
                       {typeof val === 'object' && (
                         <GenerateEip712Items data={val} />
                       )}
                       {typeof val === 'string' && (
                         <span className="mr-2">{val}</span>
                       )}
-                    </>
+                    </Fragment>
                   );
                 })}
               </div>
             )}
             {!Array.isArray(item) && typeof item === 'object' && (
-              <div className="bg-neutral-100 rounded-lg p-3">
+              <div className="rounded-lg bg-neutral-100 p-3">
                 <span className="font-bold capitalize">{objKeys[index]}</span>
                 <GenerateEip712Items data={item} />
               </div>
             )}
-            {typeof item == 'string' && (
-              <RowBasic key={index} label={objKeys[index]} value={item} />
+            {typeof item === 'string' && (
+              <RowBasic key={item} label={objKeys[index]} value={item} />
             )}
-          </>
+          </Fragment>
         );
       })}
     </div>
   );
 };
-
-export { GenerateEip712Items };

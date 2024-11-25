@@ -1,11 +1,10 @@
 'use client';
 
-import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { WagmiProvider } from 'wagmi';
+import type { ReactNode } from 'react';
 
-import { ThemeProvider } from 'next-themes';
 import { MessageProvider } from '@/lib/state/use-message-context';
+import { ThemeProvider } from 'next-themes';
 
 const queryClient = new QueryClient();
 

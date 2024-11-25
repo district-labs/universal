@@ -1,14 +1,14 @@
+import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
+import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener';
+import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
 import { useAccountState } from '@/lib/state/use-account-state';
+import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useSessionState } from '@/lib/state/use-session-state';
 import { useMutation } from '@tanstack/react-query';
-import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener';
-import { toWebAuthnAccount } from 'viem/account-abstraction';
-import { Hex, fromHex } from 'viem';
 import { useMemo } from 'react';
-import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
-import { useBundlerClient } from '@/lib/state/use-bundler-client';
-import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
+import { type Hex, fromHex } from 'viem';
+import { toWebAuthnAccount } from 'viem/account-abstraction';
 
 export function useSignMessage() {
   const { accountState } = useAccountState();
@@ -25,7 +25,7 @@ export function useSignMessage() {
     try {
       const messageParsed = JSON.parse(fromHex(messageHash, 'string'));
       return JSON.stringify(messageParsed, null, 2);
-    } catch (e) {
+    } catch {
       return fromHex(messageHash, 'string');
     }
   }, [messageHash]);

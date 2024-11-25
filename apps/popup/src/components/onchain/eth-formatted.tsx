@@ -8,12 +8,13 @@ type EthAmountFormatted = React.HTMLAttributes<HTMLElement> & {
   address?: Address;
 };
 
-const EthAmountFormatted = ({ className, amount }: EthAmountFormatted) => {
+export const EthAmountFormatted = ({
+  className,
+  amount,
+}: EthAmountFormatted) => {
   return (
     <span className={cn(className)}>
       {formatUnits(BigInt(amount ?? 0), 18)} Ξ
     </span>
   );
 };
-
-export { EthAmountFormatted };

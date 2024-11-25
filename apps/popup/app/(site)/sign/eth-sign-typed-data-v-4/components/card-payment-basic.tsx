@@ -1,7 +1,7 @@
 import { RowBasic } from '@/components/row-basic';
 import type { Delegation } from '@/lib/delegation-framework/types';
 import { cn } from '@/lib/utils';
-import * as React from 'react';
+import { useMemo } from 'react';
 import { findToken } from 'universal-data';
 import { decodeEnforcerERC20TransferAmount } from 'universal-delegations-sdk';
 import { DebitCard } from 'universal-wallet-ui';
@@ -17,7 +17,7 @@ export const CardPaymentBasic = ({
   typedData,
   chainId,
 }: CardPaymentBasic) => {
-  const data = React.useMemo(() => {
+  const data = useMemo(() => {
     const formattedTerms = decodeEnforcerERC20TransferAmount(
       typedData.caveats[0].terms,
     );

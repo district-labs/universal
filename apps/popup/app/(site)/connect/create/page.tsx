@@ -8,15 +8,15 @@ import {
   toWebAuthnAccount,
 } from 'viem/account-abstraction';
 
-import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
-import { useAccountState } from '@/lib/state/use-account-state';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useSaveCredential } from '@/lib/pop-up/hooks/use-save-credential';
+import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
 import { usePopUpMessage } from '@/lib/pop-up/hooks/use-pop-up-message';
+import { useSaveCredential } from '@/lib/pop-up/hooks/use-save-credential';
+import { useAccountState } from '@/lib/state/use-account-state';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { useBundlerClient } from '@/lib/state/use-bundler-client';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function Page() {
   const [name, setName] = useState<string>();
@@ -42,8 +42,8 @@ export default function Page() {
   }
   return (
     <section>
-      <div className="flex flex-col gap-y-6 mx-auto max-w-screen-sm px-10">
-        <div className="flex flex-col w-full gap-y-1.5">
+      <div className="mx-auto flex max-w-screen-sm flex-col gap-y-6 px-10">
+        <div className="flex w-full flex-col gap-y-1.5">
           <Label className="font-bold" htmlFor="name">
             Account Name
           </Label>
@@ -86,7 +86,7 @@ export default function Page() {
           variant={'ghost'}
           size="sm"
           onClick={router.back}
-          className="text-xs text-center cursor-pointer rounded-full"
+          className="cursor-pointer rounded-full text-center text-xs"
         >
           Cancel
         </Button>

@@ -1,4 +1,4 @@
-import { encodeAbiParameters, type Hex } from 'viem';
+import { type Hex, encodeAbiParameters } from 'viem';
 
 import type { Execution } from '../types';
 

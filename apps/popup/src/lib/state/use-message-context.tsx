@@ -1,8 +1,9 @@
-import { Chain } from '@/types';
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import type { Chain } from '@/types';
+import { type ReactNode, createContext, useContext, useState } from 'react';
 
 export type MessageContextType = {
   method: string;
+  // biome-ignore lint/suspicious/noExplicitAny: any
   params: any;
   requestId: string;
   sender: string;

@@ -1,4 +1,4 @@
-import { toHex, type Address, type Hex } from 'viem';
+import { type Address, type Hex, toHex } from 'viem';
 import { entryPoint07Address } from 'viem/account-abstraction';
 
 export type AssetType = 'NATIVE' | 'ERC20' | 'ERC721' | 'ERC1155';

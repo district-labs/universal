@@ -1,5 +1,5 @@
 import type { Chain } from '@/types';
-import { createPublicClient, http } from 'viem';
+import { http, createPublicClient } from 'viem';
 import { base, baseSepolia } from 'viem/chains';
 
 export const basePublicClient = createPublicClient({

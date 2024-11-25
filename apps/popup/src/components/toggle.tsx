@@ -1,15 +1,15 @@
 'use client';
 
-import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { useState } from 'react';
 
 type Toggle = React.HTMLAttributes<HTMLElement> & {
   label: string;
   handleIsTriggered: (isOn: boolean) => void;
 };
 
-const Toggle = ({ className, label, handleIsTriggered }: Toggle) => {
-  const [isOn, setIsOn] = React.useState(false);
+export const Toggle = ({ className, label, handleIsTriggered }: Toggle) => {
+  const [isOn, setIsOn] = useState(false);
 
   return (
     <div className={cn('flex items-center gap-x-2', className)}>
@@ -18,6 +18,7 @@ const Toggle = ({ className, label, handleIsTriggered }: Toggle) => {
         className={`relative inline-flex h-4 w-8 items-center rounded-full transition-colors ${
           isOn ? 'bg-neutral-400' : 'bg-gray-300'
         }`}
+        type="button"
         onClick={() => {
           setIsOn(!isOn);
           handleIsTriggered(!isOn);
@@ -25,7 +26,7 @@ const Toggle = ({ className, label, handleIsTriggered }: Toggle) => {
       >
         <span className="sr-only">Toggle switch</span>
         <span
-          className={`inline-block h-5 w-5 shadow-md transform rounded-full border-2 border-neutral-200 bg-white transition-transform ${
+          className={`inline-block h-5 w-5 transform rounded-full border-2 border-neutral-200 bg-white shadow-md transition-transform ${
             isOn ? 'translate-x-3 border-neutral-500' : 'translate-x-0'
           }`}
         />
@@ -33,4 +34,3 @@ const Toggle = ({ className, label, handleIsTriggered }: Toggle) => {
     </div>
   );
 };
-export { Toggle };

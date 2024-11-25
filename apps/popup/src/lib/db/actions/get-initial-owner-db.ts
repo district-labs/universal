@@ -1,7 +1,7 @@
-import { initialOwners as initialOwnersDb } from '../schema';
-import { db } from '..';
 import { eq } from 'drizzle-orm';
 import type { Address, Hex } from 'viem';
+import { db } from '..';
+import { initialOwners as initialOwnersDb } from '../schema';
 import { lower } from '../utils';
 
 export function getInitialOwnerByPublicKeyDb(publicKey: Hex) {

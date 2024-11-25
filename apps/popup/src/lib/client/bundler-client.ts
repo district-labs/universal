@@ -1,11 +1,11 @@
 import type { Chain } from '@/types';
+import { http } from 'viem';
 import {
   createBundlerClient,
   createPaymasterClient,
 } from 'viem/account-abstraction';
-import { basePublicClient, baseSepoliaPublicClient } from './public-client';
 import { base, baseSepolia } from 'viem/chains';
-import { http } from 'viem';
+import { basePublicClient, baseSepoliaPublicClient } from './public-client';
 
 function getBundlerUrl(chain: Chain) {
   return `/api/bundler/${chain.id}`;

@@ -1,8 +1,8 @@
 import type { HTMLAttributes } from 'react';
 import type { Address as AddressType } from 'viem';
 
-import { LinkComponent } from '../ui/link-component';
 import { baseSepolia } from 'viem/chains';
+import { LinkComponent } from '../ui/link-component';
 
 interface AddressProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
   address: AddressType;

@@ -1,13 +1,13 @@
+import { getEthPrice } from '@/lib/defi-llama/actions/get-eth-price';
+import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
 import { useAccountState } from '@/lib/state/use-account-state';
 import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useMessageContext } from '@/lib/state/use-message-context';
+import { useSessionState } from '@/lib/state/use-session-state';
 import { useQuery } from '@tanstack/react-query';
+import { formatEther } from 'viem';
 import { toWebAuthnAccount } from 'viem/account-abstraction';
 import { toUniversalAccount } from '../account-adapters/to-universal-account';
-import { formatEther } from 'viem';
-import { getEthPrice } from '@/lib/defi-llama/actions/get-eth-price';
-import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
-import { useSessionState } from '@/lib/state/use-session-state';
 
 export function useEstimateUserOpPrice() {
   const { message } = useMessageContext();
@@ -23,7 +23,7 @@ export function useEstimateUserOpPrice() {
   const isValidCalls = Boolean(
     calls && Array.isArray(calls) && calls.length > 0,
   );
-  const isValidTxParams = Boolean(txParams && txParams?.data && txParams?.to);
+  const isValidTxParams = Boolean(txParams?.data && txParams?.to);
 
   const isValidParams = Boolean(
     // Should have either calls or txParams
@@ -39,7 +39,7 @@ export function useEstimateUserOpPrice() {
       }
 
       const { accountState, bundlerClient } = params;
-      const { credentialId, publicKey } = accountState!;
+      const { credentialId, publicKey } = accountState;
 
       const owner = toWebAuthnAccount({
         credential: {

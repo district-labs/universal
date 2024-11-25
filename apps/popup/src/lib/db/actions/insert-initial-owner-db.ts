@@ -1,8 +1,8 @@
+import { db } from '..';
 import {
-  InsertInitialOwner,
+  type InsertInitialOwner,
   initialOwners as initialOwnersDb,
 } from '../schema';
-import { db } from '..';
 
 export function insertInitialOwnerDb(initialOwner: InsertInitialOwner) {
   return db

@@ -1,15 +1,15 @@
+import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
+import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener';
+import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
 import { useAccountState } from '@/lib/state/use-account-state';
+import { useBundlerClient } from '@/lib/state/use-bundler-client';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useSessionState } from '@/lib/state/use-session-state';
 import { useMutation } from '@tanstack/react-query';
-import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener';
-import { toWebAuthnAccount } from 'viem/account-abstraction';
-import type { TypedDataDefinition } from 'viem';
 import { useMemo } from 'react';
+import type { TypedDataDefinition } from 'viem';
+import { toWebAuthnAccount } from 'viem/account-abstraction';
 import { deserialize } from 'wagmi';
-import { validateMessageParams } from '@/lib/pop-up/utils/validate-message-params';
-import { useBundlerClient } from '@/lib/state/use-bundler-client';
-import { toUniversalAccount } from '@/lib/account-abstraction/account-adapters/to-universal-account';
 
 export function useSignTypedDataV4() {
   const { accountState } = useAccountState();

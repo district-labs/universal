@@ -1,5 +1,5 @@
-import type { Delegation } from '../types';
 import { delegationDeployments } from '../deployments';
+import type { Delegation } from '../types';
 
 export const signDelegationTypes = {
   Caveat: [

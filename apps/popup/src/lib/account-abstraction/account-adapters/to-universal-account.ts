@@ -1,45 +1,45 @@
 import type { Address, TypedData } from 'abitype';
 import {
-  type WebAuthnData,
-  parseSignature as parseP256Signature,
-} from 'webauthn-p256';
-import {
-  getPackedUserOperationTypedDataHash,
-  getUserOperationHash,
-} from '../utils';
-import {
-  type Client,
-  type Prettify,
   type Assign,
-  type TypedDataDefinition,
+  BaseError,
+  type Client,
+  type Hash,
   type Hex,
   type LocalAccount,
   type OneOf,
-  BaseError,
+  type Prettify,
+  type TypedDataDefinition,
   decodeFunctionData,
+  encodeAbiParameters,
   encodeFunctionData,
+  encodePacked,
   hashMessage,
   hashTypedData,
-  type Hash,
-  encodeAbiParameters,
-  size,
-  parseSignature,
-  encodePacked,
-  stringToHex,
   pad,
+  parseSignature,
+  size,
+  stringToHex,
   toPrefixedMessage,
 } from 'viem';
 import {
-  type WebAuthnAccount,
   type SmartAccount,
   type SmartAccountImplementation,
+  type WebAuthnAccount,
   entryPoint07Abi,
   entryPoint07Address,
   toSmartAccount,
 } from 'viem/account-abstraction';
 import { readContract } from 'viem/actions';
+import {
+  type WebAuthnData,
+  parseSignature as parseP256Signature,
+} from 'webauthn-p256';
 import { BATCH_EXECUTION_MODE } from '../../delegation-framework/constants';
 import { encodeBatchExecution } from '../../delegation-framework/execution-lib/encode-batch-execution';
+import {
+  getPackedUserOperationTypedDataHash,
+  getUserOperationHash,
+} from '../utils';
 
 export type ToCoinbaseSmartAccountParameters = {
   address?: Address | undefined;
@@ -135,6 +135,7 @@ export async function toUniversalAccount(
       }
 
       // TODO: handle executeBatch
+      // biome-ignore lint/suspicious/noExplicitAny: any
       return [] as any;
     },
 
@@ -241,7 +242,7 @@ export async function toUniversalAccount(
     },
 
     async signUserOperation(parameters) {
-      const { chainId = client.chain!.id, ...userOperation } = parameters;
+      const { chainId, ...userOperation } = parameters;
       const address = await this.getAddress();
 
       // @ts-ignore

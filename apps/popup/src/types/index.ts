@@ -1,3 +1,3 @@
-import { chains } from '../constants';
+import type { chains } from '../constants';
 
 export type Chain = (typeof chains)[number];

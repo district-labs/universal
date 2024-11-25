@@ -1,13 +1,16 @@
-import * as React from 'react';
 import { cn } from '@/lib/utils';
+import type * as React from 'react';
 
 type ActionRequestView = React.HTMLAttributes<HTMLElement>;
 
-const ActionRequestView = ({ children, className }: ActionRequestView) => {
+export const ActionRequestView = ({
+  children,
+  className,
+}: ActionRequestView) => {
   return (
     <div
       className={cn(
-        'flex flex-1 w-full flex-col h-full justify-between',
+        'flex h-full w-full flex-1 flex-col justify-between',
         className,
       )}
     >
@@ -15,4 +18,3 @@ const ActionRequestView = ({ children, className }: ActionRequestView) => {
     </div>
   );
 };
-export { ActionRequestView };

@@ -32,23 +32,25 @@ export function formatNumber(
   decimals = 2,
   maxDecimals?: number,
 ): string {
-  if (input === undefined || input === null) {
+  let number = input;
+
+  if (number === undefined || number === null) {
     return '0';
   }
-  if (typeof input === 'string') {
-    input = Number.parseFloat(input);
+  if (typeof number === 'string') {
+    number = Number.parseFloat(number);
   }
-  if (typeof input === 'bigint') {
-    input = Number(input);
+  if (typeof number === 'bigint') {
+    number = Number(number);
   }
-  if (input === 0) {
+  if (number === 0) {
     return '0';
   }
 
   // Determine the number of decimal places based on the magnitude of the number
   let dynamicDecimals = decimals;
-  if (Math.abs(input) < 0.01) {
-    const magnitude = Math.ceil(-Math.log10(Math.abs(input)));
+  if (Math.abs(number) < 0.01) {
+    const magnitude = Math.ceil(-Math.log10(Math.abs(number)));
     dynamicDecimals = Math.max(decimals, magnitude);
   }
 
@@ -58,7 +60,7 @@ export function formatNumber(
   }
 
   // Round the number to the effective number of decimal places
-  const roundedInput = Number.parseFloat(input.toFixed(dynamicDecimals));
+  const roundedInput = Number.parseFloat(number.toFixed(dynamicDecimals));
 
   // If the rounded value is 0, return "0"
   if (roundedInput === 0) {
@@ -66,21 +68,21 @@ export function formatNumber(
   }
 
   // Use toFixed for small numbers to avoid scientific notation
-  if (Math.abs(input) < 1e-6) {
-    return input.toFixed(dynamicDecimals);
+  if (Math.abs(number) < 1e-6) {
+    return number.toFixed(dynamicDecimals);
   }
 
   // For numbers less than 0.01 but not zero, keep up to two significant digits
-  if (Math.abs(input) < 0.01) {
+  if (Math.abs(number) < 0.01) {
     // Convert to string with two significant digits, then parse as a float to remove trailing zeros
-    return Number.parseFloat(input.toPrecision(decimals)).toString();
+    return Number.parseFloat(number.toPrecision(decimals)).toString();
   }
 
   // For numbers 0.01 and above, format to two decimal places with commas
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
-  }).format(input);
+  }).format(number);
 }
 
 export function formatUsd(value: number) {
