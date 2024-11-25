@@ -24,8 +24,10 @@
   },
   "scripts": {
     "build": "pnpm run clean && pnpm run build:esm+types",
-    "build:esm+types": "tsc --project tsconfig.build.json --outDir ./dist/esm --declaration --declarationMap --declarationDir ./dist/types",
+    "build:esm+types": "tsc --project tsconfig.json --outDir ./dist/esm --declaration --declarationMap --declarationDir ./dist/types",
     "check:types": "tsc --noEmit",
+    "check": "biome check --write",
+    "format": "biome format --write",
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "test:build": "publint --strict && attw --pack --ignore-rules cjs-resolves-to-esm"
   },

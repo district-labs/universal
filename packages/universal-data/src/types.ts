@@ -25,7 +25,7 @@ export type TokenItem = {
         }
       | undefined;
   };
-}
+};
 
 export type TokenList = {
   name: string;
@@ -44,4 +44,4 @@ export type TokenList = {
     minor: number;
     patch: number;
   };
-}
+};

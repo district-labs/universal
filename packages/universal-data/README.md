@@ -1,9 +1,9 @@
-# Universal Wallet Connector
+# Universal Data SDK
 
-The Universal Wallet Connector is a WAGMI connector for the `universal-wallet-sdk` package.
+This package provides a set of tools to interact with the Universal Data API.
 
 ## Installation
 
 ```bash
-pnpm add universal-wallet-connector
+pnpm add universal-data
 ```

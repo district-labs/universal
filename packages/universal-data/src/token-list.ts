@@ -16,8 +16,7 @@ export const tokenList = {
       symbol: 'USD',
       decimals: 18,
       chainId: 84532,
-      logoURI:
-        '/images/erc20/usd.png',
+      logoURI: '/images/erc20/usd.png',
     },
     {
       name: 'EUR Test',
@@ -25,8 +24,7 @@ export const tokenList = {
       symbol: 'EUR',
       decimals: 18,
       chainId: 84532,
-      logoURI:
-        '/images/erc20/eur.png',
+      logoURI: '/images/erc20/eur.png',
     },
     {
       name: 'Emerald Gems',
@@ -34,8 +32,7 @@ export const tokenList = {
       symbol: 'GEM',
       decimals: 18,
       chainId: 1,
-      logoURI:
-        '/images/erc20/gem.png',
+      logoURI: '/images/erc20/gem.png',
       extensions: {
         bridgeInfo: {
           '84532': {
