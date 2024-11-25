@@ -1,7 +1,8 @@
-// UniversalIdentityClientContext.tsx
-import { createContext, useContext, type ReactNode } from 'react';
+import type { IdentityApi } from 'api-identity';
 import { hc } from 'hono/client';
-import type { AppRouter, UniversalIdentityApiClient } from 'api-identity';
+// UniversalIdentityClientContext.tsx
+import { type ReactNode, createContext, useContext } from 'react';
+import type { UniversalIdentityApiClient } from '../types.js';
 
 // Create the context with a default value of null
 const UniversalIdentityClientContext =
@@ -18,7 +19,7 @@ export function UniversalIdentityClientProvider({
   children,
 }: UniversalIdentityClientProviderProps) {
   // Create the client instance
-  const client = hc<AppRouter>(url);
+  const client = hc<IdentityApi>(url);
 
   return (
     <UniversalIdentityClientContext.Provider value={client}>

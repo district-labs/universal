@@ -92,6 +92,7 @@ export async function resolveDid<
       parsed: JSON.parse(data.data),
     };
   } catch (error) {
+    console.error(error);
     const data = await readContract(client, {
       abi: resolverAbi,
       address: resolver,

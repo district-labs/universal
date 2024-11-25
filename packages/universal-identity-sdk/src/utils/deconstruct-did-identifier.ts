@@ -1,5 +1,5 @@
+import { type Address, zeroAddress } from 'viem';
 import { z } from 'zod';
-import { zeroAddress, type Address } from 'viem';
 
 const didSchema = z
   .string()
@@ -37,6 +37,7 @@ export function deconstructDidIdentifier(
       address: data.account as Address,
     };
   } catch (e) {
+    console.error(e);
     return {
       status: false,
       chainId: 0,

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import type { UniversalIdentityApiClient } from 'api-identity';
+import type { UniversalIdentityApiClient } from '../../types.js';
 import { useUniversalIdentityClient } from '../client.js';
 
 type InsertUniversalDidParams = Parameters<

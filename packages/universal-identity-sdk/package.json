@@ -23,10 +23,10 @@
   },
   "scripts": {
     "build": "pnpm run clean && pnpm run build:esm+types",
-    "build:esm+types": "tsc --project tsconfig.build.json --outDir ./dist/esm --declaration --declarationMap --declarationDir ./dist/types",
-    "dev": "tsx watch src/exports/index.ts",
+    "build:esm+types": "tsc --project tsconfig.json --outDir ./dist/esm --declaration --declarationMap --declarationDir ./dist/types",
     "format": "biome format --write",
     "check": "biome check --write",
+    "check:types": "tsc --noEmit",
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"

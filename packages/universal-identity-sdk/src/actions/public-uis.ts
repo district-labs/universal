@@ -1,13 +1,13 @@
 import type { Account, Chain, Client, Transport } from 'viem';
 import {
-  resolveDid,
   type ResolveUisParameters,
   type ResolveUisReturnType,
+  resolveDid,
 } from './resolve-did.js';
 import {
-  signDidDocument,
   type SignDidDocumentParameters,
   type SignDidDocumentReturnType,
+  signDidDocument,
 } from './sign-did-document.js';
 
 export type PublicActionsUis = {
