@@ -11,8 +11,6 @@ interface SiteConfig {
 
 
 
-
-
     docs?: string;
     discord?: string;
     twitter?: string;
