@@ -1,7 +1,7 @@
 import { and } from 'drizzle-orm';
 import type { Address } from 'viem';
 import { db } from '../../index.js';
-import { DelegationDb } from '../../schema.js';
+import type { DelegationDb } from '../../schema.js';
 
 export function getDelegationsByDelegatorAndTypeDb({
   delegator,

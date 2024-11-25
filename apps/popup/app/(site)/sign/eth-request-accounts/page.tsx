@@ -5,6 +5,7 @@ import { sendMessageToOpener } from '@/lib/pop-up/actions/send-message-to-opener
 import { useAccountState } from '@/lib/state/use-account-state';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useSessionState } from '@/lib/state/use-session-state';
+import Image from 'next/image';
 import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
 import { ActionRequestMain } from '../components/action-request-main';
@@ -17,7 +18,10 @@ export default function SignEthRequestsAccountsPage() {
   return (
     <div className="flex h-full w-full flex-1 flex-col justify-between">
       <ActionRequestHeader className="relative z-50 w-full bg-neutral-100 pt-4 pb-10 text-center">
-        <img
+        <Image
+          alt="App Logo"
+          width={32}
+          height={32}
           src={message?.params.appLogoUrl}
           className="mx-auto h-8 w-8 rounded-full"
         />

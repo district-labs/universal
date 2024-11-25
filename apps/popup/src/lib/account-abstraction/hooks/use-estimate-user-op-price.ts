@@ -28,7 +28,7 @@ export function useEstimateUserOpPrice({
   const isValidCalls = Boolean(
     calls && Array.isArray(calls) && calls.length > 0,
   );
-  const isValidTxParams = Boolean(txParams && txParams?.data && txParams?.to);
+  const isValidTxParams = Boolean(txParams?.data && txParams?.to);
 
   const isValidParams = Boolean(
     // Should have either calls or txParams
@@ -44,7 +44,7 @@ export function useEstimateUserOpPrice({
       }
 
       const { accountState, bundlerClient } = params;
-      const { credentialId, publicKey } = accountState!;
+      const { credentialId, publicKey } = accountState;
 
       const owner = toWebAuthnAccount({
         credential: {

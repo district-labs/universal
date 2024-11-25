@@ -84,7 +84,7 @@ export function DataTableLoading({
             <Skeleton className="h-8 w-24" />
             <Skeleton className="h-8 w-[70px]" />
           </div>
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+          <div className="flex w-[100px] items-center justify-center font-medium text-sm">
             <Skeleton className="h-8 w-20" />
           </div>
           <div className="flex items-center space-x-2">

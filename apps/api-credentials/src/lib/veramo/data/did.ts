@@ -1,10 +1,5 @@
+import { env } from '../../../env.js';
 import { alias } from '../agent.js';
-
-if (!process.env.DID_PUB_KEY) {
-  throw new Error('DID_PUB_KEY env var is required');
-}
-
-const didPubKey = process.env.DID_PUB_KEY;
 
 export const webDid = {
   '@context': [
@@ -15,14 +10,14 @@ export const webDid = {
   id: `did:web:${alias}`,
   verificationMethod: [
     {
-      id: `did:web:${alias}#${didPubKey}`,
+      id: `did:web:${alias}#${env.DID_PUB_KEY}`,
       type: 'EcdsaSecp256k1VerificationKey2019',
       controller: `did:web:${alias}`,
-      publicKeyHex: didPubKey,
+      publicKeyHex: env.DID_PUB_KEY,
     },
   ],
-  authentication: [`did:web:${alias}#${didPubKey}`],
-  assertionMethod: [`did:web:${alias}#${didPubKey}`],
+  authentication: [`did:web:${alias}#${env.DID_PUB_KEY}`],
+  assertionMethod: [`did:web:${alias}#${env.DID_PUB_KEY}`],
   keyAgreement: [],
   service: [],
 };

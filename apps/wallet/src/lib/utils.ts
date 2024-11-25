@@ -1,7 +1,7 @@
-import { isAddress } from 'viem';
-import { DateTime, Duration } from 'luxon';
 import { type ClassValue, clsx } from 'clsx';
+import { DateTime, Duration } from 'luxon';
 import { twMerge } from 'tailwind-merge';
+import { isAddress } from 'viem';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -40,18 +40,19 @@ export function formatPercent(
   input: number | string | undefined,
   decimals = 2,
 ) {
-  if (input === undefined || input === null) {
+  let number = input;
+  if (number === undefined || number === null) {
     return '0';
   }
-  if (typeof input === 'string') {
-    input = Number.parseFloat(input);
+  if (typeof number === 'string') {
+    number = Number.parseFloat(number);
   }
-  if (Number.isNaN(input)) {
+  if (Number.isNaN(number)) {
     return '0.00%';
   }
-  const formattedPercent = `${(input * 100).toFixed(decimals)}%`;
+  const formattedPercent = `${(number * 100).toFixed(decimals)}%`;
 
-  return formattedPercent === '0.00%' && input > 0
+  return formattedPercent === '0.00%' && number > 0
     ? '<0.01%'
     : formattedPercent;
 }
@@ -61,23 +62,25 @@ export function formatNumber(
   decimals = 2,
   maxDecimals?: number,
 ): string {
-  if (input === undefined || input === null) {
+  let number = input;
+
+  if (number === undefined || number === null) {
     return '0';
   }
-  if (typeof input === 'string') {
-    input = Number.parseFloat(input);
+  if (typeof number === 'string') {
+    number = Number.parseFloat(number);
   }
-  if (typeof input === 'bigint') {
-    input = Number(input);
+  if (typeof number === 'bigint') {
+    number = Number(number);
   }
-  if (input === 0) {
+  if (number === 0) {
     return '0';
   }
 
   // Determine the number of decimal places based on the magnitude of the number
   let dynamicDecimals = decimals;
-  if (Math.abs(input) < 0.01) {
-    const magnitude = Math.ceil(-Math.log10(Math.abs(input)));
+  if (Math.abs(number) < 0.01) {
+    const magnitude = Math.ceil(-Math.log10(Math.abs(number)));
     dynamicDecimals = Math.max(decimals, magnitude);
   }
 
@@ -87,7 +90,7 @@ export function formatNumber(
   }
 
   // Round the number to the effective number of decimal places
-  const roundedInput = Number.parseFloat(input.toFixed(dynamicDecimals));
+  const roundedInput = Number.parseFloat(number.toFixed(dynamicDecimals));
 
   // If the rounded value is 0, return "0"
   if (roundedInput === 0) {
@@ -95,21 +98,21 @@ export function formatNumber(
   }
 
   // Use toFixed for small numbers to avoid scientific notation
-  if (Math.abs(input) < 1e-6) {
-    return input.toFixed(dynamicDecimals);
+  if (Math.abs(number) < 1e-6) {
+    return number.toFixed(dynamicDecimals);
   }
 
   // For numbers less than 0.01 but not zero, keep up to two significant digits
-  if (Math.abs(input) < 0.01) {
+  if (Math.abs(number) < 0.01) {
     // Convert to string with two significant digits, then parse as a float to remove trailing zeros
-    return Number.parseFloat(input.toPrecision(decimals)).toString();
+    return Number.parseFloat(number.toPrecision(decimals)).toString();
   }
 
   // For numbers 0.01 and above, format to two decimal places with commas
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: decimals,
     maximumFractionDigits: decimals,
-  }).format(input);
+  }).format(number);
 }
 
 export function formatNumberCompact(input: number | bigint | string) {
@@ -177,7 +180,7 @@ export function isEqualAddress(a: string | undefined, b: string | undefined) {
   return a.trim().toLowerCase() === b.trim().toLowerCase();
 }
 
-export function isValidString(input: any): input is string {
+export function isValidString(input: unknown): input is string {
   return typeof input === 'string' && input.length > 0;
 }
 

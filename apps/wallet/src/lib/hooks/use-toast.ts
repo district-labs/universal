@@ -112,7 +112,7 @@ export const reducer = (state: State, action: Action): State => {
         ),
       };
     }
-    case 'REMOVE_TOAST':
+    case 'REMOVE_TOAST': {
       if (action.toastId === undefined) {
         return {
           ...state,
@@ -123,6 +123,7 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         toasts: state.toasts.filter((t) => t.id !== action.toastId),
       };
+    }
   }
 };
 
@@ -171,6 +172,7 @@ function toast({ ...props }: Toast) {
 function useToast() {
   const [state, setState] = React.useState<State>(memoryState);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: This is a custom hook
   React.useEffect(() => {
     listeners.push(setState);
     return () => {

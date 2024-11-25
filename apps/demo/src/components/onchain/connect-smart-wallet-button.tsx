@@ -1,14 +1,14 @@
 'use client';
 
-import * as React from 'react';
+import type * as React from 'react';
 
-import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { cn } from '@/lib/utils';
+import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { Button } from '../ui/button';
 
 type ConnectSmartWalletButton = React.HTMLAttributes<HTMLElement>;
 
-const ConnectSmartWalletButton = ({
+export const ConnectSmartWalletButton = ({
   children,
   className,
 }: ConnectSmartWalletButton) => {
@@ -35,4 +35,3 @@ const ConnectSmartWalletButton = ({
     </Button>
   );
 };
-export { ConnectSmartWalletButton };

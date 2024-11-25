@@ -1,16 +1,22 @@
 import { useMutation } from '@tanstack/react-query';
-import { type DelegationsApiClient, useDelegationsApiClient } from '../client.js';
+import {
+  type DelegationsApiClient,
+  useDelegationsApiClient,
+} from '../client.js';
 
 type InsertDelegationParams = Parameters<
   DelegationsApiClient['delegations']['$post']
 >[0]['json'];
 
-
-export async function insertDelegation(delegationsApiClient:DelegationsApiClient, data: InsertDelegationParams) {
-  
-  const format = JSON.parse(JSON.stringify(data, (_key, value) =>
-    typeof value === 'bigint' ? value.toString() : value
-  ));
+export async function insertDelegation(
+  delegationsApiClient: DelegationsApiClient,
+  data: InsertDelegationParams,
+) {
+  const format = JSON.parse(
+    JSON.stringify(data, (_key, value) =>
+      typeof value === 'bigint' ? value.toString() : value,
+    ),
+  );
 
   const res = await delegationsApiClient.delegations.$post({
     json: format,
@@ -28,6 +34,7 @@ export async function insertDelegation(delegationsApiClient:DelegationsApiClient
 export function useInsertDelegation() {
   const delegationsApiClient = useDelegationsApiClient();
   return useMutation({
-    mutationFn: (data: InsertDelegationParams) => insertDelegation(delegationsApiClient, data),
+    mutationFn: (data: InsertDelegationParams) =>
+      insertDelegation(delegationsApiClient, data),
   });
 }

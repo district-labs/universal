@@ -18,7 +18,6 @@
     "prebuild": "rm -rf ./dist && node -p \"'export const LIB_VERSION = \\'' + require('./package.json').version + '\\';'\" > src/version.ts",
     "build": "node compile-assets.js && tsc -p ./tsconfig.build.json && tsc-alias && cp -a src/vendor-js dist",
     "dev": "pnpm build && tsc --watch & nodemon --watch dist --delay 1 --exec tsc-alias",
-    "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts,.tsx --fix"
   },
   "dependencies": {

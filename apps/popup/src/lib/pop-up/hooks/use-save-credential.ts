@@ -1,6 +1,6 @@
+import type { InsertInitialOwner } from '@/lib/db/schema';
 import type { AccountState } from '@/lib/state/use-account-state';
 import { useMutation } from '@tanstack/react-query';
-import type { InsertInitialOwner } from '@/lib/db/schema';
 import type { Address, Hex } from 'viem';
 
 type UseSaveCredentialParams = {
@@ -23,7 +23,7 @@ export function useSaveCredential({
 
       try {
         await insertInitialOwner(params);
-      } catch (error) {
+      } catch {
         // If there is an error inserting the initial owner, remove the account state
         removeAccountState();
         throw new Error('Error saving credential');
@@ -39,7 +39,7 @@ export function useSaveCredential({
 }
 
 async function insertInitialOwner(params: InsertInitialOwner) {
-  const response = await fetch(`/api/initial-owners/`, {
+  const response = await fetch('/api/initial-owners/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

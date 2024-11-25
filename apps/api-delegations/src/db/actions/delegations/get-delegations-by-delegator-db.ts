@@ -1,6 +1,6 @@
 import type { Hex } from 'viem';
 import { db } from '../../index.js';
-import { DelegationDb } from '../../schema.js';
+import type { DelegationDb } from '../../schema.js';
 
 export function getDelegationsByDelegatorDb({
   delegator,

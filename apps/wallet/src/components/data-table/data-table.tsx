@@ -120,7 +120,7 @@ export function DataTable<TData, TValue>({
     );
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pageIndex, pageSize]);
+  }, [pageIndex, pageSize, createQueryString, pathname, router.push]);
 
   // Handle server-side sorting
   const initialSorting: SortingState = useMemo(() => {
@@ -163,7 +163,7 @@ export function DataTable<TData, TValue>({
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sorting]);
+  }, [sorting, createQueryString, pathname, router.push, page]);
 
   // Handle server-side filtering
   const debouncedSearchableColumnFilters = JSON.parse(
@@ -212,8 +212,14 @@ export function DataTable<TData, TValue>({
         );
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedSearchableColumnFilters]);
+  }, [
+    debouncedSearchableColumnFilters,
+    router.push,
+    createQueryString,
+    pathname,
+    searchParams.keys,
+    searchableColumns.find,
+  ]);
 
   useEffect(() => {
     for (const columnFilter of filterableColumnFilters) {
@@ -249,8 +255,14 @@ export function DataTable<TData, TValue>({
         );
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterableColumnFilters]);
+  }, [
+    filterableColumnFilters,
+    router.push,
+    createQueryString,
+    pathname,
+    searchParams.keys,
+    filterableColumns.find,
+  ]);
 
   const table = useReactTable({
     data,

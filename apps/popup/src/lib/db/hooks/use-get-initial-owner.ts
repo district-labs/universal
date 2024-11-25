@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { Address, Hex } from 'viem';
-import { SelectInitialOwner } from '../schema';
+import type { Address, Hex } from 'viem';
+import type { SelectInitialOwner } from '../schema';
 
 type UseGetInitialOwnersParams =
   | {

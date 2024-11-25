@@ -1,7 +1,8 @@
-import type { CredentialsApi } from "api-credentials";
-import { hc } from "hono/client";
+import type { CredentialsApi } from 'api-credentials';
+import { hc } from 'hono/client';
 
-const apiCredentialsUrl =
-	process.env.NEXT_PUBLIC_CREDENTIALS_API_URL ?? "http://localhost:3100/";
+export type GetApiCredentialsReturnType = ReturnType<typeof hc<CredentialsApi>>;
 
-export const apiCredentialsClient = hc<CredentialsApi>(apiCredentialsUrl);
+export function getApiCredentialsClient(url: string) {
+  return hc<CredentialsApi>(url);
+}

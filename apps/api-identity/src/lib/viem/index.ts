@@ -1,16 +1,13 @@
-import { base, baseSepolia } from "viem/chains";
-import { basePublicClient, baseSepoliaPublicClient } from "./clients.js";
-import type { PublicClient } from "viem";
+import { base, baseSepolia } from 'viem/chains';
+import { basePublicClient, baseSepoliaPublicClient } from './clients.js';
 
-export function getPublicClientFromList(chainId: number): PublicClient {
-	switch (chainId) {
-		case base.id:
-			// @ts-expect-error basePublicClient is not a PublicClientType
-			return basePublicClient;
-		case baseSepolia.id:
-			// @ts-expect-error baseSepoliaPublicClient is not a PublicClientType
-			return baseSepoliaPublicClient;
-		default:
-			throw new Error("Invalid chain ID");
-	}
+export function getPublicClient(chainId: number) {
+  switch (chainId) {
+    case base.id:
+      return basePublicClient;
+    case baseSepolia.id:
+      return baseSepoliaPublicClient;
+    default:
+      throw new Error('Invalid chain ID');
+  }
 }

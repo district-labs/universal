@@ -1,8 +1,8 @@
 'use client';
 
-import type { HTMLAttributes } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import type { HTMLAttributes } from 'react';
 
 import { cn } from '@/lib/utils';
 

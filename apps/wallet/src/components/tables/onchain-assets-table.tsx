@@ -7,9 +7,9 @@ import { Suspense } from 'react';
 import { DataTable } from '@/components/data-table/data-table';
 import { cn } from '@/lib/utils';
 import { tokenList } from 'universal-data';
+import { baseSepolia } from 'viem/chains';
 import { ERC20Balance } from '../onchain/erc20-balance';
 import { TokenImageWithFallback } from '../onchain/token-image-with-fallback';
-import { baseSepolia } from 'viem/chains';
 
 const columns = [
   {
@@ -49,7 +49,7 @@ const columns = [
     header: () => (
       <h3 className="text-right font-semibold text-base">Credit</h3>
     ),
-    cell: ({ row }) => (
+    cell: () => (
       <div className="text-right">
         <span className="font-semibold text-sm md:text-lg">0.00</span>
       </div>

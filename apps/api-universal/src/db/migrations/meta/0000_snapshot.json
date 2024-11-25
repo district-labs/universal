@@ -1,112 +1,25 @@
 {
-  "id": "edb0959c-3116-4f6a-a7d9-e48e8f32fe3d",
+  "id": "1e44adb5-773f-4a3e-8272-381d42d9c383",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.caveats": {
-      "name": "caveats",
+    "public.accounts": {
+      "name": "accounts",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "varchar(42)",
           "primaryKey": true,
           "notNull": true
         },
-        "enforcerType": {
-          "name": "enforcerType",
-          "type": "varchar(256)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "enforcer": {
-          "name": "enforcer",
-          "type": "varchar(42)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "terms": {
-          "name": "terms",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "args": {
-          "name": "args",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "delegationHash": {
-          "name": "delegationHash",
-          "type": "varchar(66)",
-          "primaryKey": false,
-          "notNull": true
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "caveats_delegationHash_delegations_hash_fk": {
-          "name": "caveats_delegationHash_delegations_hash_fk",
-          "tableFrom": "caveats",
-          "tableTo": "delegations",
-          "columnsFrom": ["delegationHash"],
-          "columnsTo": ["hash"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "public.delegations": {
-      "name": "delegations",
-      "schema": "",
-      "columns": {
-        "hash": {
-          "name": "hash",
-          "type": "varchar(66)",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "delegator": {
-          "name": "delegator",
-          "type": "varchar(42)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "chainId": {
-          "name": "chainId",
-          "type": "integer",
+        "isActive": {
+          "name": "isActive",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "default": 84532
-        },
-        "delegate": {
-          "name": "delegate",
-          "type": "varchar(42)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "authority": {
-          "name": "authority",
-          "type": "varchar(66)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "salt": {
-          "name": "salt",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "signature": {
-          "name": "signature",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
+          "default": false
         }
       },
       "indexes": {},

@@ -4,9 +4,9 @@ import { cn } from '@/lib/utils';
 import type { VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
 import { useCallback } from 'react';
+import { universalWalletConnectorId } from 'universal-wallet-connector';
 import { useConnect } from 'wagmi';
 import { Button, type buttonVariants } from '../ui/button';
-import { universalWalletConnectorId } from 'universal-wallet-connector';
 
 type ConnectUniversalWalletButton = React.HTMLAttributes<HTMLElement> &
   VariantProps<typeof buttonVariants>;

@@ -13,7 +13,7 @@ export async function verifyUniversalMessage({
   content: string;
   signature: Hex;
 }) {
-  if (chainId !== (await baseSepolia.id)) {
+  if (chainId !== baseSepolia.id) {
     throw new Error('Invalid chainId');
   }
 

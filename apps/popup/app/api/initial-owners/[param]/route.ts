@@ -1,10 +1,10 @@
-import type { Hex } from 'viem';
 import {
-  getInitialOwnerByPublicKeyDb,
   getInitialOwnerByCredentialIdDb,
+  getInitialOwnerByPublicKeyDb,
   getInitialOwnerBySmartContractAddressdDb,
 } from '@/lib/db/actions/get-initial-owner-db';
 import type { SelectInitialOwner } from '@/lib/db/schema';
+import type { Hex } from 'viem';
 
 export async function GET(
   request: Request,

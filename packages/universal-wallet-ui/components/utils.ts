@@ -167,7 +167,7 @@ export function isEqualAddress(a: string | undefined, b: string | undefined) {
 	return a.trim().toLowerCase() === b.trim().toLowerCase();
 }
 
-export function isValidString(input: any): input is string {
+export function isValidString(input: unknown): input is string {
 	return typeof input === "string" && input.length > 0;
 }
 

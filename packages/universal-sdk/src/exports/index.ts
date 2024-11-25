@@ -1,7 +1,12 @@
-// biome-ignore lint/performance/noBarrelFile: entrypoint module
-export * from '../api/client.js';
-export * from '../api/hooks/get-account.js';
-export * from '../api/hooks/get-credit.js';
-export * from '../api/hooks/get-leaderboard.js';
-export * from '../api/hooks/insert-account.js';
-export * from '../hooks/use-universal-message-sign.js';
+export { UniversalProvider, useUniversal } from '../api/client.js';
+export { getAccount, useGetAccount } from '../api/hooks/get-account.js';
+export { getCredit, useGetCredit } from '../api/hooks/get-credit.js';
+export {
+  getLeaderboard,
+  useGetLeaderboard,
+} from '../api/hooks/get-leaderboard.js';
+export {
+  insertAccount,
+  useInsertAccount,
+} from '../api/hooks/insert-account.js';
+export { useUniversalMessageSign } from '../hooks/use-universal-message-sign.js';

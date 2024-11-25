@@ -5,15 +5,12 @@ import { TransactionHash } from '@/components/onchain/transaction-hash';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { base, baseSepolia } from 'viem/chains';
 
 import {
   useAccount,
-  useChainId,
   useDisconnect,
   useSignMessage,
   useSignTypedData,
-  useSwitchChain,
   useWalletClient,
   useWriteContract,
 } from 'wagmi';
@@ -23,8 +20,8 @@ export default function HomePage() {
   const { address } = useAccount();
 
   return (
-    <div className="mt-0 flex w-full gap-y-4 flex-col justify-center items-center py-14 px-10 lg:px-20">
-      <h1 className="text-3xl font-bold">Discover What's Possible</h1>
+    <div className="mt-0 flex w-full flex-col items-center justify-center gap-y-4 px-10 py-14 lg:px-20">
+      <h1 className="font-bold text-3xl">Discover What's Possible</h1>
       {address && (
         <div className="w-full max-w-screen-md">
           <Address
@@ -33,7 +30,7 @@ export default function HomePage() {
               'w-full rounded-full',
             )}
             address={address}
-            isLink
+            isLink={true}
           />
           <div className="mt-4 flex flex-col gap-y-4">
             <Disconnect />
@@ -66,16 +63,16 @@ function SignMessage() {
   return (
     <>
       <Card className="p-5 pt-8">
-        <CardContent className="gap-x-4 flex flex-col md:flex-row gap-y-4 text-center md:text-left">
+        <CardContent className="flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left">
           <div className="flex-1">
-            <h3 className="font-bold text-3xl mb-4">Message</h3>
+            <h3 className="mb-4 font-bold text-3xl">Message</h3>
             <p className="text-xs">
               Sign a message using your personal smart wallet. This message will
               be signed with your wallet's private key and can be publicly
               verified.
             </p>
           </div>
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex flex-1 items-center justify-center">
             <Button onClick={() => signMessage({ message: message })}>
               Sign Message
             </Button>
@@ -100,16 +97,16 @@ function SignTypedData() {
   return (
     <>
       <Card className="p-5 pt-8">
-        <CardContent className="gap-x-4 flex flex-col md:flex-row gap-y-4 text-center md:text-left">
+        <CardContent className="flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left">
           <div className="flex-1">
-            <h3 className="font-bold text-3xl mb-4">Typed Data</h3>
+            <h3 className="mb-4 font-bold text-3xl">Typed Data</h3>
             <p className="text-xs">
               Sign a typed data (EIP-712) object using your personal smart
               wallet. This data will be signed with your wallet's private key
               and can be publicly verified.
             </p>
           </div>
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex flex-1 items-center justify-center">
             <Button
               onClick={() =>
                 signTypedData({
@@ -196,25 +193,28 @@ function SendTransaction() {
   return (
     <>
       <Card className="p-5 pt-8">
-        <CardContent className="gap-x-4 flex flex-col md:flex-row gap-y-4 text-center md:text-left">
+        <CardContent className="flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left">
           <div className="flex-1">
-            <h3 className="font-bold text-3xl mb-4">Transaction</h3>
+            <h3 className="mb-4 font-bold text-3xl">Transaction</h3>
             <p className="text-xs">
               Sign a transaction to mint an NFT using your personal smart
               wallet. This transaction will be signed with your wallet's private
               key and executed onchain.
             </p>
           </div>
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex flex-1 items-center justify-center">
             <Button
-              onClick={() =>
-                writeContract({
-                  address: myNFTAddress,
-                  abi: myNFTABI,
-                  functionName: 'safeMint',
-                  args: [address!],
-                })
-              }
+              disabled={!address}
+              onClick={() => {
+                if (address) {
+                  writeContract({
+                    address: myNFTAddress,
+                    abi: myNFTABI,
+                    functionName: 'safeMint',
+                    args: [address],
+                  });
+                }
+              }}
             >
               Sign Transaction
             </Button>
@@ -225,7 +225,7 @@ function SendTransaction() {
             <div className="w-full break-words">
               <span className="font-bold">Transaction Hash:</span> <br />
               <TransactionHash
-                isLink
+                isLink={true}
                 className={cn(buttonVariants({ variant: 'link' }))}
                 hash={writeContractData}
               />
@@ -274,17 +274,17 @@ function WriteContracts() {
   return (
     <>
       <Card className="p-5 pt-8">
-        <CardContent className="gap-x-4 flex flex-col md:flex-row gap-y-4 text-center md:text-left">
+        <CardContent className="flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left">
           <div className="flex-1">
-            <h3 className="font-bold text-3xl mb-4">Batch Transactions</h3>
+            <h3 className="mb-4 font-bold text-3xl">Batch Transactions</h3>
             <p className="text-xs">
               Execute multiple transactions in a single batch using your
               personal smart wallet. These transactions will be signed with your
               wallet's private key and executed onchain.
             </p>
           </div>
-          <div className="flex-1 flex items-center justify-center">
-            <div className="flex items-center justify-center flex-col gap-y-2">
+          <div className="flex flex-1 items-center justify-center">
+            <div className="flex flex-col items-center justify-center gap-y-2">
               <Button
                 onClick={() =>
                   writeContracts({
@@ -309,11 +309,13 @@ function WriteContracts() {
               </Button>
               <Button
                 disabled={!writeContractsData}
-                onClick={() =>
-                  showCallsStatus({
-                    id: writeContractsData!,
-                  })
-                }
+                onClick={() => {
+                  if (writeContractsData) {
+                    showCallsStatus({
+                      id: writeContractsData,
+                    });
+                  }
+                }}
               >
                 Show Calls Status
               </Button>
@@ -339,15 +341,15 @@ function AddChain() {
   return (
     <div>
       <Card className="p-5 pt-8">
-        <CardContent className="gap-x-4 flex flex-col md:flex-row gap-y-4 text-center md:text-left">
+        <CardContent className="flex flex-col gap-x-4 gap-y-4 text-center md:flex-row md:text-left">
           <div className="flex-1">
-            <h3 className="font-bold text-3xl mb-4">Unsupported Methods</h3>
-            <h3 className="font-bold text-lg mb-4">Watch Asset, Add Chain</h3>
+            <h3 className="mb-4 font-bold text-3xl">Unsupported Methods</h3>
+            <h3 className="mb-4 font-bold text-lg">Watch Asset, Add Chain</h3>
             <p className="text-xs">
               Currently not supported by the Universal Wallet SDK.
             </p>
           </div>
-          <div className="flex-1 flex items-center justify-center">
+          <div className="flex flex-1 items-center justify-center">
             <Button
               onClick={async () => {
                 if (!walletClient) return;
@@ -366,39 +368,6 @@ function AddChain() {
           </div>
         </CardContent>
       </Card>
-    </div>
-  );
-}
-
-function SwitchChain() {
-  const chainId = useChainId();
-  const { switchChain } = useSwitchChain();
-
-  return (
-    <div>
-      <div>: {chainId}</div>
-      {chainId === base.id && (
-        <Button
-          onClick={() =>
-            switchChain({
-              chainId: baseSepolia.id,
-            })
-          }
-        >
-          Switch to Base Sepolia
-        </Button>
-      )}
-      {chainId === baseSepolia.id && (
-        <Button
-          onClick={() =>
-            switchChain({
-              chainId: base.id,
-            })
-          }
-        >
-          Switch to Base
-        </Button>
-      )}
     </div>
   );
 }

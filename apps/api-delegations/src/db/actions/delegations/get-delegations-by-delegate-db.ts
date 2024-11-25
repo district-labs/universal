@@ -1,6 +1,6 @@
-import { db } from '../../index.js';
 import type { Address } from 'viem';
-import { DelegationDb } from '../../schema.js';
+import { db } from '../../index.js';
+import type { DelegationDb } from '../../schema.js';
 
 export function getDelegationsByDelegateDb({
   delegate,

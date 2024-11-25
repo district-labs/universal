@@ -1,5 +1,5 @@
-import { db } from '../index.js';
 import type { SQL } from 'drizzle-orm';
+import { db } from '../index.js';
 
 type GetCredentialDbParams = (
   | {

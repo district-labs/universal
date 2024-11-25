@@ -1,7 +1,7 @@
-import type { HTMLAttributes } from 'react';
-import { cn, formatNumber } from '@/lib/utils';
-import { useEstimateUserOpPrice } from '@/lib/account-abstraction/hooks/use-estimate-user-op-price';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useEstimateUserOpPrice } from '@/lib/account-abstraction/hooks/use-estimate-user-op-price';
+import { cn, formatNumber } from '@/lib/utils';
+import type { HTMLAttributes } from 'react';
 
 type ActionTransactionFeeEstimate = HTMLAttributes<HTMLElement>;
 
@@ -12,19 +12,19 @@ export function ActionTransactionFeeEstimate({
 
   if (isError) {
     return (
-      <div className={cn('text-sm text-red-500 font-medium', className)}>
+      <div className={cn('font-medium text-red-500 text-sm', className)}>
         Error estimating fee.
       </div>
     );
   }
 
   if (isLoading || !data) {
-    return <Skeleton className={cn('w-14 h-5', className)} />;
+    return <Skeleton className={cn('h-5 w-14', className)} />;
   }
 
   return (
     <div className={cn(className)}>
-      <span className="line-through	text-primary/60">
+      <span className="text-primary/60 line-through">
         ${formatNumber(data)}
       </span>{' '}
       | <span className="text-emerald-700">FREE</span>

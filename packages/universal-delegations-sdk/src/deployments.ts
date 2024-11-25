@@ -1,4 +1,4 @@
-import { type Address } from 'viem';
+import type { Address } from 'viem';
 import { baseSepolia } from 'viem/chains';
 
 export const delegationFrameworkDeployments: {
@@ -10,7 +10,7 @@ export const delegationFrameworkDeployments: {
     // Test
     erc20Mintable: '0x4C8Be898BdE148aE6f9B0AF86e7D2b5a0558A7d0',
     // Core
-    EntryPoint: "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+    EntryPoint: '0x0000000071727De22E5E9d8BAf0edAc6f37da032',
     DelegationManager: '0x42f53d86aF500b0Cc98B3B1275a36fd438060a32',
     UniversalWalletFactory: '0x6456c9F0B987b71e1c47c34F1A95aB6eED8DA2f0',
     // Enforcers
@@ -29,7 +29,8 @@ export const delegationFrameworkDeployments: {
     LimitedCallsEnforcer: '0x13B5B5381F736c49cefe151B03195Fe8A8cfbEBe',
     NativeBalanceGteEnforcer: '0x2DBA62f63b2b225e328c722253702488387C4c16',
     NativeTokenPaymentEnforcer: '0xfe153d10b52814c05707cbD8140C1c1C7ac71167',
-    NativeTokenTransferAmountEnforcer: '0x7f37B0e6d6e6e9D3f65db645a5b16a93AeD3A735',
+    NativeTokenTransferAmountEnforcer:
+      '0x7f37B0e6d6e6e9D3f65db645a5b16a93AeD3A735',
     NonceEnforcer: '0x253528ecAb6AB4125581c0d2737f0C2d5bC9c6cF',
     OwnershipTransferEnforcer: '0x1E0a044893eF5d294C3Bf40bbd1e1B0c78F61dAa',
     RedeemerEnforcer: '0x29D425443F4428897Dbb56d00c1Ee32484D7b268',

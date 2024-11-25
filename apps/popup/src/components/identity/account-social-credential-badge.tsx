@@ -18,7 +18,7 @@ export const AccountSocialCredentialBadge = ({
 }: AccountSocialCredentialBadge) => {
   if (credentials.length === 0) {
     return (
-      <AddressRender truncate={true} className='text-sm' address={address} />
+      <AddressRender truncate={true} className="text-sm" address={address} />
     );
   }
 

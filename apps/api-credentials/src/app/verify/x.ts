@@ -1,22 +1,15 @@
-import { Hono } from 'hono';
 import { xAuth } from '@hono/oauth-providers/x';
 import type { VerifiableCredential } from '@veramo/core';
+import { Hono } from 'hono';
 
 import { getCookie } from 'hono/cookie';
+import { env } from '../../env.js';
+import { insertCredentialDb } from '../../lib/db/actions/insert-credential-db.js';
 import { createCredential } from '../../lib/veramo/actions/create-credential.js';
 import {
   deleteCookies,
   stateMiddleware,
 } from './middlewares/state-middleware.js';
-import { insertCredentialDb } from '../../lib/db/actions/insert-credential-db.js';
-
-if (
-  !process.env.TWITTER_OAUTH_CLIENT_ID ||
-  !process.env.TWITTER_OAUTH_CLIENT_SECRET ||
-  !process.env.TWITTER_OAUTH_REDIRECT_URI
-) {
-  throw new Error('Invalid Twitter OAuth credentials');
-}
 
 const verifyXApp = new Hono();
 
@@ -26,9 +19,9 @@ verifyXApp.get(
   xAuth({
     scope: ['tweet.read', 'users.read'],
     fields: ['url', 'profile_image_url', 'username', 'id'],
-    client_id: process.env.TWITTER_OAUTH_CLIENT_ID,
-    client_secret: process.env.TWITTER_OAUTH_CLIENT_SECRET,
-    redirect_uri: process.env.TWITTER_OAUTH_REDIRECT_URI,
+    client_id: env.TWITTER_OAUTH_CLIENT_ID,
+    client_secret: env.TWITTER_OAUTH_CLIENT_SECRET,
+    redirect_uri: env.TWITTER_OAUTH_REDIRECT_URI,
   }),
   async (c) => {
     const did = getCookie(c, 'did');

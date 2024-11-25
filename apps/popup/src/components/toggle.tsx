@@ -22,6 +22,7 @@ export const Toggle = ({
         className={`relative inline-flex h-4 w-8 items-center rounded-full transition-colors ${
           isOn ? 'bg-neutral-400' : 'bg-gray-300'
         }`}
+        type="button"
         onClick={() => {
           setIsOn(!isOn);
           handleIsTriggered(!isOn);

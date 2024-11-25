@@ -4,6 +4,7 @@ import { ConnectUniversalWalletButton } from '@/components/onchain/connect-unive
 import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
 import { IsWalletDisconnected } from '@/components/onchain/is-wallet-disconnected';
 import { Skeleton } from '@/components/ui/skeleton';
+import { credentialsApiClient } from '@/lib/api-credentials/client';
 import { CREDENTIAL_OPTIONS } from 'app/settings';
 import { useMemo } from 'react';
 import { useGetCredentials } from 'universal-credential-sdk';
@@ -26,7 +27,7 @@ export function ViewCredentials() {
     [address, chainId],
   );
 
-  const credentialsQuery = useGetCredentials({
+  const credentialsQuery = useGetCredentials(credentialsApiClient, {
     did,
   });
 

@@ -1,7 +1,7 @@
 import { getBundlerClient } from '@/lib/client/bundler-client';
-import { Chain } from '@/types';
+import type { Chain } from '@/types';
 import { useQuery } from '@tanstack/react-query';
-import { Hex } from 'viem';
+import type { Hex } from 'viem';
 
 export function useWaitForUserOpReceipt({
   chainId,

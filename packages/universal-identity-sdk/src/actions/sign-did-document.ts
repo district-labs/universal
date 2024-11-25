@@ -1,27 +1,27 @@
 import {
-	type Account,
-	type Address,
-	type Chain,
-	type Client,
-	ClientChainNotConfiguredError,
-	type Hex,
-	type SignTypedDataErrorType,
-	type Transport,
-} from "viem";
+  type Account,
+  type Address,
+  type Chain,
+  type Client,
+  ClientChainNotConfiguredError,
+  type Hex,
+  type SignTypedDataErrorType,
+  type Transport,
+} from 'viem';
 
-import { signTypedData } from "viem/actions";
-import { constructDidDocument } from "../utils/construct-did-document.js";
+import { signTypedData } from 'viem/actions';
+import { constructDidDocument } from '../utils/construct-did-document.js';
 
 export type SignDidDocumentParameters = {
-	address: Address;
-	resolver: Address;
+  address: Address;
+  resolver: Address;
 };
 
 export type SignDidDocumentReturnType = Hex;
 
 export type SignDidDocumentErrorType =
-	| SignTypedDataErrorType
-	| ClientChainNotConfiguredError;
+  | SignTypedDataErrorType
+  | ClientChainNotConfiguredError;
 
 /**
  *  Signs a DID document using Sign Typed Data V4.
@@ -34,71 +34,71 @@ export type SignDidDocumentErrorType =
  *
  */
 export async function signDidDocument<
-	chain extends Chain | undefined,
-	account extends Account | undefined,
+  chain extends Chain | undefined,
+  account extends Account | undefined,
 >(
-	client: Client<Transport, chain, account>,
-	parameters: SignDidDocumentParameters,
+  client: Client<Transport, chain, account>,
+  parameters: SignDidDocumentParameters,
 ): Promise<SignDidDocumentReturnType> {
-	const { address, resolver } = parameters;
+  const { address, resolver } = parameters;
 
-	if (!client.chain) {
-		throw new ClientChainNotConfiguredError();
-	}
+  if (!client.chain) {
+    throw new ClientChainNotConfiguredError();
+  }
 
-	const chainId = client.chain.id;
+  const chainId = client.chain.id;
 
-	const didDocument = constructDidDocument({
-		address,
-		chainId,
-		resolver,
-	});
+  const didDocument = constructDidDocument({
+    address,
+    chainId,
+    resolver,
+  });
 
-	const payload = {
-		account: address,
-		types: {
-			UniversalDID: [
-				{
-					name: "document",
-					type: "string",
-				},
-			],
-		},
-		primaryType: "UniversalDID",
-		domain: {
-			chainId,
-			verifyingContract: resolver,
-		},
-		message: {
-			document: JSON.stringify(didDocument),
-		},
-	} as const;
+  const payload = {
+    account: address,
+    types: {
+      UniversalDID: [
+        {
+          name: 'document',
+          type: 'string',
+        },
+      ],
+    },
+    primaryType: 'UniversalDID',
+    domain: {
+      chainId,
+      verifyingContract: resolver,
+    },
+    message: {
+      document: JSON.stringify(didDocument),
+    },
+  } as const;
 
-	let signature: Hex;
-	const account = client.account;
-	if (typeof account === "object" && account.signTypedData) {
-		signature = await account.signTypedData(payload);
-	} else {
-		signature = await signTypedData(client, {
-			account: address,
-			types: {
-				UniversalDID: [
-					{
-						name: "document",
-						type: "string",
-					},
-				],
-			},
-			primaryType: "UniversalDID",
-			domain: {
-				chainId,
-				verifyingContract: resolver,
-			},
-			message: {
-				document: JSON.stringify(didDocument),
-			},
-		});
-	}
+  let signature: Hex;
+  const account = client.account;
+  if (typeof account === 'object' && account.signTypedData) {
+    signature = await account.signTypedData(payload);
+  } else {
+    signature = await signTypedData(client, {
+      account: address,
+      types: {
+        UniversalDID: [
+          {
+            name: 'document',
+            type: 'string',
+          },
+        ],
+      },
+      primaryType: 'UniversalDID',
+      domain: {
+        chainId,
+        verifyingContract: resolver,
+      },
+      message: {
+        document: JSON.stringify(didDocument),
+      },
+    });
+  }
 
-	return signature;
+  return signature;
 }

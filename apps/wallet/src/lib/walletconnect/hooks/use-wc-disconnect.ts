@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useWalletKitClient } from './use-wallet-kit-client';
-import { getSdkError } from '@walletconnect/utils';
 import type { IWalletKit } from '@reown/walletkit';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { getSdkError } from '@walletconnect/utils';
+import { useWalletKitClient } from './use-wallet-kit-client';
 
 export function useDisconnectWc() {
   const { data: walletKitClient } = useWalletKitClient();

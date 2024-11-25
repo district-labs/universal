@@ -1,13 +1,10 @@
-// biome-ignore lint/performance/noBarrelFile: entrypoint module
 export {
   type UniversalWalletParameters,
-  universalWallet as universalWallet,
+  universalWallet,
   universalWalletConnectorId,
-  universalWalletConnectorName
-} from "../universalWallet.js";
+  universalWalletConnectorName,
+} from '../universalWallet.js';
 
-export {
-  universalWalletRainbowkit
-} from "../raibow-kit/universal-wallet-rainbow-kit.js";
+export { universalWalletRainbowkit } from '../raibow-kit/universal-wallet-rainbow-kit.js';
 
-export { version } from "../version.js";
+export { version } from '../version.js';

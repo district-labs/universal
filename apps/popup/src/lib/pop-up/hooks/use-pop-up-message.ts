@@ -1,19 +1,20 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useMessageContext } from '@/lib/state/use-message-context';
-import { useAccountState } from '@/lib/state/use-account-state';
+import { chains } from '@/constants';
 import { closePopup } from '@/lib/pop-up/actions/close-pop-up';
+import { useAccountState } from '@/lib/state/use-account-state';
+import { useMessageContext } from '@/lib/state/use-message-context';
 import { useSessionState } from '@/lib/state/use-session-state';
+import type { Chain } from '@/types';
+import { useRouter } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   decryptContent,
   deriveSharedSecret,
   importKeyFromHexString,
 } from 'universal-wallet-sdk';
-import { chains } from '@/constants';
-import { Chain } from '@/types';
 
 const unsupportedMethodUrl = '/unsupported-method';
 
+// biome-ignore lint/suspicious/noExplicitAny: any
 function getMethodRoutes(message: { method: string; params: any } | undefined) {
   if (!message) {
     return;
@@ -130,7 +131,7 @@ export function usePopUpMessage() {
 
     setMessageQueue((prevQueue) => prevQueue.slice(1));
     processingRef.current = false;
-  }, [messageQueue]);
+  }, [messageQueue, sessionState, setMessage]);
 
   // Effects
   useEffect(() => {
@@ -158,7 +159,7 @@ export function usePopUpMessage() {
       return;
     }
     router.push(route);
-  }, [accountState, message]);
+  }, [accountState, message, router.push]);
 
   return {
     message,

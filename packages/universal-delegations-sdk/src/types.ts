@@ -9,6 +9,7 @@ export type Execution = {
 
 // From https://github.com/MetaMask/delegation-framework/blob/main/src/utils/Types.sol#L38-L42
 export type Caveat = {
+  enforcerType?: string;
   enforcer: Address;
   // Terms and args are bytes with different encodings by enforcer
   terms: Hex;
@@ -17,6 +18,7 @@ export type Caveat = {
 
 // From https://github.com/MetaMask/delegation-framework/blob/main/src/utils/Types.sol#L24-L31
 export type Delegation = {
+  chainId: number;
   delegate: Address;
   delegator: Address;
   authority: Hex;

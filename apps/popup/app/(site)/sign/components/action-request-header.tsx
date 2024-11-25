@@ -1,13 +1,15 @@
-import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 type ActionRequestHeader = React.HTMLAttributes<HTMLElement>;
 
-const ActionRequestHeader = ({ children, className }: ActionRequestHeader) => {
+export const ActionRequestHeader = ({
+  children,
+  className,
+}: ActionRequestHeader) => {
   return (
     <div
       className={cn(
-        'text-center bg-neutral-100 w-full pt-4 px-5 py-2 z-40 relative',
+        'relative z-40 w-full bg-neutral-100 px-5 py-2 pt-4 text-center',
         className,
       )}
     >
@@ -15,4 +17,3 @@ const ActionRequestHeader = ({ children, className }: ActionRequestHeader) => {
     </div>
   );
 };
-export { ActionRequestHeader };

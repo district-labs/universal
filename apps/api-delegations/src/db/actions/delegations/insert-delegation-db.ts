@@ -1,7 +1,7 @@
 import { db } from '../../index.js';
 import {
-  type InsertDelegationDb,
   type InsertCaveatDb,
+  type InsertDelegationDb,
   caveats as caveatsDb,
   delegations as delegationsDb,
 } from '../../schema.js';

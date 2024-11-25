@@ -1,13 +1,13 @@
 'use client';
 
 import '@rainbow-me/rainbowkit/styles.css';
-import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import type { ReactNode } from 'react';
 import { WagmiProvider } from 'wagmi';
 
 import { wagmiConfig } from '@/lib/wagmi/wagmi-config';
-import { ThemeProvider } from 'next-themes';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { ThemeProvider } from 'next-themes';
 
 const queryClient = new QueryClient();
 
@@ -20,8 +20,8 @@ export default function RootProvider({ children }: RootProviderProps) {
     <ThemeProvider
       attribute="class"
       defaultTheme="light"
-      enableSystem
-      disableTransitionOnChange
+      enableSystem={true}
+      disableTransitionOnChange={true}
     >
       <WagmiProvider config={wagmiConfig}>
         <QueryClientProvider client={queryClient}>

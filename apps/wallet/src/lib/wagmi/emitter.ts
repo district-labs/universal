@@ -2,6 +2,7 @@ import { EventEmitter } from 'eventemitter3';
 
 type EventMap = Record<string, object | never>;
 type EventKey<eventMap extends EventMap> = string & keyof eventMap;
+// biome-ignore lint/suspicious/noExplicitAny: any
 type EventFn<parameters extends unknown[] = any[]> = (
   ...parameters: parameters
 ) => void;
@@ -15,6 +16,7 @@ export type EventData<
 export class Emitter<eventMap extends EventMap> {
   _emitter = new EventEmitter();
 
+  // biome-ignore lint/style/noParameterProperties: any
   constructor(public uid: string) {}
 
   on<key extends EventKey<eventMap>>(

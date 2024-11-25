@@ -1,11 +1,11 @@
 import { relations } from 'drizzle-orm';
 import {
   bigint,
+  boolean,
   integer,
   pgTable,
   serial,
   text,
-  boolean,
   varchar,
 } from 'drizzle-orm/pg-core';
 import type { Address, Hex } from 'viem';

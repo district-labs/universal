@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { exportKeyToHexString, generateKeyPair } from 'universal-wallet-sdk';
 import { useLocalStorage } from 'usehooks-ts';
-import { generateKeyPair, exportKeyToHexString } from 'universal-wallet-sdk';
 
 export type SessionState =
   | {
@@ -16,27 +16,30 @@ export function useSessionState() {
   const [sessionState, setSessionState, removeSessionState] =
     useLocalStorage<SessionState>('sessionState', undefined);
 
-  async function generateSessionKeys(session: SessionState) {
-    // Generate a new session key pair
-    const sessionKeyPair = await generateKeyPair();
-    const [sessionPrivateKey, sessionPublicKey] = await Promise.all([
-      exportKeyToHexString('private', sessionKeyPair.privateKey),
-      exportKeyToHexString('public', sessionKeyPair.publicKey),
-    ]);
+  const generateSessionKeys = useCallback(
+    async (session: SessionState) => {
+      // Generate a new session key pair
+      const sessionKeyPair = await generateKeyPair();
+      const [sessionPrivateKey, sessionPublicKey] = await Promise.all([
+        exportKeyToHexString('private', sessionKeyPair.privateKey),
+        exportKeyToHexString('public', sessionKeyPair.publicKey),
+      ]);
 
-    setSessionState({
-      ...session,
-      sessionPrivateKey,
-      sessionPublicKey,
-    });
-  }
+      setSessionState({
+        ...session,
+        sessionPrivateKey,
+        sessionPublicKey,
+      });
+    },
+    [setSessionState],
+  );
 
   // If there's no sessionPrivateKey and sessionPublicKey, generate a new one
   useEffect(() => {
-    if (!sessionState?.sessionPrivateKey || !sessionState?.sessionPublicKey) {
+    if (!sessionState || !sessionState?.sessionPublicKey) {
       generateSessionKeys(sessionState).catch(console.error);
     }
-  }, [sessionState?.sessionPrivateKey, sessionState?.sessionPublicKey]);
+  }, [sessionState, generateSessionKeys]);
 
   return {
     sessionState,

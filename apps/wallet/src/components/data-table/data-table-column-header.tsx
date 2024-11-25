@@ -4,9 +4,8 @@ import {
   CaretSortIcon,
   EyeNoneIcon,
 } from '@radix-ui/react-icons';
-import { type Column } from '@tanstack/react-table';
+import type { Column } from '@tanstack/react-table';
 
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -15,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 
 interface DataTableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -34,14 +34,14 @@ export function DataTableColumnHeader<TData, TValue>({
   return (
     <div className={cn('flex items-center space-x-2', className)}>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger asChild={true}>
           <Button
             aria-label={
               column.getIsSorted() === 'desc'
-                ? `Sorted descending. Click to sort ascending.`
+                ? 'Sorted descending. Click to sort ascending.'
                 : column.getIsSorted() === 'asc'
-                  ? `Sorted ascending. Click to sort descending.`
-                  : `Not sorted. Click to sort ascending.`
+                  ? 'Sorted ascending. Click to sort descending.'
+                  : 'Not sorted. Click to sort ascending.'
             }
             variant="ghost"
             size="sm"

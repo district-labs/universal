@@ -5,7 +5,7 @@ export function useInsertInitialOwner() {
   const { mutate, mutateAsync, ...rest } = useMutation({
     mutationKey: ['insert-initialOwners'],
     mutationFn: async (params: InsertInitialOwner) => {
-      const response = await fetch(`/api/initial-owners/`, {
+      const response = await fetch('/api/initial-owners/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

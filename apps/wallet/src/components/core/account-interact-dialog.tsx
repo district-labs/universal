@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { credentialsApiClient } from '@/lib/api-credentials/client';
 import type * as React from 'react';
 import { useGetCredentials } from 'universal-credential-sdk';
 import { universalDeployments } from 'universal-data';
@@ -24,7 +25,7 @@ export const AccountInteractDialog = ({
   children,
   chainId,
 }: AccountInteractDialogProps) => {
-  const credentialsQuery = useGetCredentials({
+  const credentialsQuery = useGetCredentials(credentialsApiClient, {
     did: constructDidIdentifier({
       chainId: chainId as number,
       address,

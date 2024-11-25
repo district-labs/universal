@@ -5,12 +5,7 @@ import { addressSchema } from '@/lib/validation/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import type { Address } from 'viem';
-import {
-  useAccount,
-  useChainId,
-  useSwitchAccount,
-  useSwitchChain,
-} from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 import { z } from 'zod';
 
 import { AccountSelectAndInput } from '@/components/fields/account-select-and-input';

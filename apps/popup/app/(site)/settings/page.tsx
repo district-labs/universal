@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function SignEthRequestsAccountsPage() {
   const router = useRouter();
-  const { accountState, removeAccountState } = useAccountState();
+  const { removeAccountState } = useAccountState();
 
   function logout() {
     // Remove the current account state and redirect to the connect page
@@ -14,12 +14,12 @@ export default function SignEthRequestsAccountsPage() {
   }
 
   return (
-    <div className="flex flex-1 w-full flex-col justify-between lg:px-20 h-full">
-      <div className="flex-1 flex flex-col items-center justify-center px-12 z-10">
+    <div className="flex h-full w-full flex-1 flex-col justify-between lg:px-20">
+      <div className="z-10 flex flex-1 flex-col items-center justify-center px-12">
         <div className="">
           <Button
             variant={'outline'}
-            className="flex-1 w-full rounded-full"
+            className="w-full flex-1 rounded-full"
             size="lg"
             onClick={logout}
           >
