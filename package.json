@@ -26,12 +26,11 @@
     "node": ">=20"
   },
   "simple-git-hooks": {
-    "pre-commit": "lint-staged"
+    "pre-commit": "pnpm lint-staged"
   },
   "lint-staged": {
     "*": [
-      "format",
-      "git add"
+      "pnpm format --"
     ]
   }
 }
