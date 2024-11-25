@@ -50,7 +50,7 @@ export const validateDidMiddleware = validator('json', async (value, c) => {
   );
 
   if (!parsedDocument.success) {
-    return c.json({ error: "Invalid did" }, 400);
+    return c.json({ error: 'Invalid did' }, 400);
   }
   const did = parsedDid.data;
 

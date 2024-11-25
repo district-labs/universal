@@ -9,13 +9,13 @@ import {
 import type * as React from 'react';
 import { tokenList } from 'universal-data';
 import { type Address, parseUnits } from 'viem';
+import { baseSepolia } from 'viem/chains';
 import { useAccount, useChainId, useSwitchChain } from 'wagmi';
 import { useWriteContracts } from 'wagmi/experimental';
 import { ConnectUniversalWalletButton } from '../onchain/connect-universal-wallet';
 import { IsWalletConnected } from '../onchain/is-wallet-connected';
 import { IsWalletDisconnected } from '../onchain/is-wallet-disconnected';
 import { Button } from '../ui/button';
-import { baseSepolia } from 'viem/chains';
 
 const MINT_ABI = [
   {

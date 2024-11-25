@@ -7,9 +7,9 @@ import { Suspense } from 'react';
 import { DataTable } from '@/components/data-table/data-table';
 import { cn } from '@/lib/utils';
 import { tokenList } from 'universal-data';
+import { baseSepolia } from 'viem/chains';
 import { ERC20Balance } from '../onchain/erc20-balance';
 import { TokenImageWithFallback } from '../onchain/token-image-with-fallback';
-import { baseSepolia } from 'viem/chains';
 
 const columns = [
   {

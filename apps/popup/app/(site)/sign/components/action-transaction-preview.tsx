@@ -169,10 +169,10 @@ const AssetList = ({
                 )}
               >
                 {`${equalAddress ? '+' : '-'} ${amount} ${assetType === 'ERC20' && symbol}`}
-              </span >
-            </div >
+              </span>
+            </div>
           );
         },
       )}
-    </div >
+    </div>
   );

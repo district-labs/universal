@@ -91,23 +91,21 @@ export function useSignErc20TransferDelegation() {
 
   useEffect(() => {
     if (data && delegation) {
-      const _delegation = {
+      // @ts-ignore
+      mutate({
         ...delegation,
-        chainId: chainId,
+        chainId,
         signature: data,
-      };
-      const __delegation = {
-        ..._delegation,
+        // @ts-ignore
         hash: getDelegationHash(_delegation),
-      };
-      mutate(__delegation);
+      });
       return () => {
         setDelegation(null);
-      }
+      };
     }
     return () => {
       setDelegation(null);
-    }
+    };
   }, [data, delegation, chainId, mutate]);
 
   async function signAndSaveDelegationAsync({

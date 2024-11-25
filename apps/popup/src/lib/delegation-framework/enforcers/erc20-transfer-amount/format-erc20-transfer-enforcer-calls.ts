@@ -1,17 +1,17 @@
 import { universalDeployments } from 'universal-data';
 import {
-  encodeDelegations,
   type Delegation,
-  decodeEnforcerERC20TransferAmount,
-  encodeSingleExecution,
-  SINGLE_EXECUTION_MODE,
-  delegationManagerAbi,
   type Execution,
+  SINGLE_EXECUTION_MODE,
+  decodeEnforcerERC20TransferAmount,
+  delegationManagerAbi,
+  encodeDelegations,
+  encodeSingleExecution,
 } from 'universal-delegations-sdk';
 import {
-  encodeFunctionData,
   type CallParameters,
   type Hex,
+  encodeFunctionData,
   erc20Abi,
 } from 'viem';
 import { baseSepolia } from 'viem/chains';

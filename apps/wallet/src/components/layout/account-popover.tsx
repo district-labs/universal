@@ -6,6 +6,7 @@ import {
 import { useIsUniversalConnected } from '@/lib/hooks/use-is-universal-connected';
 import { cn } from '@/lib/utils';
 import { useActiveSessions } from '@/lib/walletconnect/hooks/use-active-connections';
+import { useWalletKitClient } from '@/lib/walletconnect/hooks/use-wallet-kit-client';
 import { useDisconnectWc } from '@/lib/walletconnect/hooks/use-wc-disconnect';
 import { Addreth } from 'addreth';
 import { Circle, LogOut, Unplug } from 'lucide-react';
@@ -16,8 +17,6 @@ import { PWAInstallPrompt } from '../core/pwa-install-prompt';
 import { DisconnectWalletElement } from '../onchain/disconnect-wallet-element';
 import { Button } from '../ui/button';
 import { Skeleton } from '../ui/skeleton';
-import { useDisconnectWc } from '@/lib/walletconnect/hooks/use-wc-disconnect';
-import { useWalletKitClient } from '@/lib/walletconnect/hooks/use-wallet-kit-client';
 type AccountPopover = React.HTMLAttributes<HTMLElement>;
 
 export const AccountPopover = ({ className }: AccountPopover) => {
@@ -75,7 +74,7 @@ export const AccountPopover = ({ className }: AccountPopover) => {
           {isUniversalConnected && (
             <div className="p-4">
               {/* If no wallet connect client is set, show a skeleton */}
-              {!walletKitClient && <Skeleton className="w-full h-20" />}
+              {!walletKitClient && <Skeleton className="h-20 w-full" />}
               {sessions && sessions.length === 0 && (
                 <div className="py-4 text-center font-medium text-neutral-500">
                   No active application connections

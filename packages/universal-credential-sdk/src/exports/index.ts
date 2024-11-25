@@ -1,6 +1,6 @@
-export type { InsertCredentialDb, SelectCredentialDb } from "api-credentials";
-export { apiCredentialsClient } from "../client.js";
 export {
   useGetCredentials,
   type UseGetCredentialsParams,
-} from "../hooks/use-get-credential.js";
+} from '../hooks/use-get-credential.js';
+export { getApiCredentialsClient } from '../client.js';
+export type { CredentialsApi } from 'api-credentials';

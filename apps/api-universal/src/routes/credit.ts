@@ -145,9 +145,9 @@ const creditRouter = new Hono().post(
           data: delegation,
           metadata: {
             available: {
-              amount: (BigInt(_amount) - BigInt(res)).toString(),
+              amount: (BigInt(_amount ?? 0) - BigInt(res)).toString(),
               amountFormatted: formatUnits(
-                BigInt(_amount) - BigInt(res),
+                BigInt(_amount ?? 0) - BigInt(res),
                 token?.decimals || 18,
               ),
             },
@@ -156,9 +156,9 @@ const creditRouter = new Hono().post(
               amountFormatted: formatUnits(BigInt(res), token?.decimals || 18),
             },
             limit: {
-              amount: BigInt(_amount).toString(),
+              amount: BigInt(_amount ?? 0).toString(),
               amountFormatted: formatUnits(
-                BigInt(_amount),
+                BigInt(_amount ?? 0),
                 token?.decimals || 18,
               ),
             },
