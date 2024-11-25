@@ -8,10 +8,6 @@ interface SiteConfig {
   description: string;
   localeDefault: string;
   links?: {
-
-
-
-
     docs?: string;
     discord?: string;
     twitter?: string;
