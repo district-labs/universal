@@ -26,9 +26,12 @@
     "node": ">=20"
   },
   "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
+    "pre-commit": "lint-staged"
   },
   "lint-staged": {
-    "*": "format"
+    "*": [
+      "format",
+      "git add"
+    ]
   }
 }
