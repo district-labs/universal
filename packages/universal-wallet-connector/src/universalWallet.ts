@@ -1,14 +1,14 @@
 import type {
-  UniversalWalletSDK,
   ProviderInterface,
-} from "universal-wallet-sdk";
+  UniversalWalletSDK,
+} from 'universal-wallet-sdk';
 import {
   ChainNotConfiguredError,
   type Connector,
   createConnector,
-} from "wagmi";
+} from 'wagmi';
 
-import type { Mutable, Omit } from "@wagmi/core/internal";
+import type { Mutable, Omit } from '@wagmi/core/internal';
 
 import {
   type AddEthereumChainParameter,
@@ -17,12 +17,12 @@ import {
   UserRejectedRequestError,
   getAddress,
   numberToHex,
-} from "viem";
+} from 'viem';
 
 export type UniversalWalletParameters = Mutable<
   Omit<
     ConstructorParameters<typeof UniversalWalletSDK>[0],
-    "appChainIds" // set via wagmi config
+    'appChainIds' // set via wagmi config
   >
 >;
 type Provider = ProviderInterface & {
@@ -30,19 +30,17 @@ type Provider = ProviderInterface & {
   close?(): void;
 };
 
-export const universalWalletConnectorId = "universalWalletSDK"
-export const universalWalletConnectorName = "Universal Wallet"
+export const universalWalletConnectorId = 'universalWalletSDK';
+export const universalWalletConnectorName = 'Universal Wallet';
 
-universalWallet.type = "universalWallet" as const;
-export function universalWallet(
-  parameters: UniversalWalletParameters = {} as any
-) {
+universalWallet.type = 'universalWallet' as const;
+export function universalWallet(parameters: UniversalWalletParameters = {}) {
   let sdk: UniversalWalletSDK | undefined;
   let walletProvider: Provider | undefined;
 
-  let accountsChanged: Connector["onAccountsChanged"] | undefined;
-  let chainChanged: Connector["onChainChanged"] | undefined;
-  let disconnect: Connector["onDisconnect"] | undefined;
+  let accountsChanged: Connector['onAccountsChanged'] | undefined;
+  let chainChanged: Connector['onChainChanged'] | undefined;
+  let disconnect: Connector['onDisconnect'] | undefined;
 
   return createConnector<Provider>((config) => ({
     id: universalWalletConnectorId,
@@ -54,27 +52,27 @@ export function universalWallet(
         const provider = await this.getProvider();
         const accounts = (
           (await provider.request({
-            method: "eth_requestAccounts",
+            method: 'eth_requestAccounts',
           })) as string[]
         ).map((x) => getAddress(x));
 
         if (!accountsChanged) {
           accountsChanged = this.onAccountsChanged.bind(this);
-          provider.on("accountsChanged", accountsChanged);
+          provider.on('accountsChanged', accountsChanged);
         }
         if (!chainChanged) {
           chainChanged = this.onChainChanged.bind(this);
-          provider.on("chainChanged", chainChanged);
+          provider.on('chainChanged', chainChanged);
         }
         if (!disconnect) {
           disconnect = this.onDisconnect.bind(this);
-          provider.on("disconnect", disconnect);
+          provider.on('disconnect', disconnect);
         }
 
         // Switch to chain if provided
         let currentChainId = await this.getChainId();
-        if (chainId && currentChainId !== chainId) {
-          const chain = await this.switchChain!({ chainId }).catch((error) => {
+        if (chainId && currentChainId !== chainId && this.switchChain) {
+          const chain = await this.switchChain({ chainId }).catch((error) => {
             if (error.code === UserRejectedRequestError.code) throw error;
             return { id: currentChainId };
           });
@@ -96,15 +94,15 @@ export function universalWallet(
       const provider = await this.getProvider();
 
       if (accountsChanged) {
-        provider.removeListener("accountsChanged", accountsChanged);
+        provider.removeListener('accountsChanged', accountsChanged);
         accountsChanged = undefined;
       }
       if (chainChanged) {
-        provider.removeListener("chainChanged", chainChanged);
+        provider.removeListener('chainChanged', chainChanged);
         chainChanged = undefined;
       }
       if (disconnect) {
-        provider.removeListener("disconnect", disconnect);
+        provider.removeListener('disconnect', disconnect);
         disconnect = undefined;
       }
 
@@ -114,14 +112,14 @@ export function universalWallet(
     async getAccounts() {
       const provider = await this.getProvider();
       const accounts = (await provider.request({
-        method: "eth_accounts",
+        method: 'eth_accounts',
       })) as string[];
       return accounts.map((x) => getAddress(x));
     },
     async getChainId() {
       const provider = await this.getProvider();
       const chainId = await provider.request({
-        method: "eth_chainId",
+        method: 'eth_chainId',
       });
       return Number(chainId);
     },
@@ -130,8 +128,8 @@ export function universalWallet(
         // Unwrapping import for Vite compatibility.
         // See: https://github.com/vitejs/vite/issues/9703
         const UniversalWalletSDK = await (async () => {
-          const { default: SDK } = await import("universal-wallet-sdk");
-          if (typeof SDK !== "function" && typeof SDK.default === "function")
+          const { default: SDK } = await import('universal-wallet-sdk');
+          if (typeof SDK !== 'function' && typeof SDK.default === 'function')
             return SDK.default;
           return SDK as unknown as typeof SDK.default;
         })();
@@ -162,7 +160,7 @@ export function universalWallet(
 
       try {
         await provider.request({
-          method: "wallet_switchEthereumChain",
+          method: 'wallet_switchEthereumChain',
           params: [{ chainId: numberToHex(chain.id) }],
         });
         return chain;
@@ -181,7 +179,7 @@ export function universalWallet(
             let rpcUrls: readonly string[];
             if (addEthereumChainParameter?.rpcUrls?.length)
               rpcUrls = addEthereumChainParameter.rpcUrls;
-            else rpcUrls = [chain.rpcUrls.default?.http[0] ?? ""];
+            else rpcUrls = [chain.rpcUrls.default?.http[0] ?? ''];
 
             const addEthereumChain = {
               blockExplorerUrls,
@@ -195,7 +193,7 @@ export function universalWallet(
             } satisfies AddEthereumChainParameter;
 
             await provider.request({
-              method: "wallet_addEthereumChain",
+              method: 'wallet_addEthereumChain',
               params: [addEthereumChain],
             });
 
@@ -211,31 +209,30 @@ export function universalWallet(
     onAccountsChanged(accounts) {
       if (accounts.length === 0) this.onDisconnect();
       else
-        config.emitter.emit("change", {
+        config.emitter.emit('change', {
           accounts: accounts.map((x) => getAddress(x)),
         });
     },
     onChainChanged(chain) {
       const chainId = Number(chain);
-      config.emitter.emit("change", { chainId });
+      config.emitter.emit('change', { chainId });
     },
     async onDisconnect(_error) {
-      config.emitter.emit("disconnect");
+      config.emitter.emit('disconnect');
 
       const provider = await this.getProvider();
       if (accountsChanged) {
-        provider.removeListener("accountsChanged", accountsChanged);
+        provider.removeListener('accountsChanged', accountsChanged);
         accountsChanged = undefined;
       }
       if (chainChanged) {
-        provider.removeListener("chainChanged", chainChanged);
+        provider.removeListener('chainChanged', chainChanged);
         chainChanged = undefined;
       }
       if (disconnect) {
-        provider.removeListener("disconnect", disconnect);
+        provider.removeListener('disconnect', disconnect);
         disconnect = undefined;
       }
     },
-  }))
-
+  }));
 }
