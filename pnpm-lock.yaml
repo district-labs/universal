@@ -11,9 +11,6 @@ importers:
 
   .:
     devDependencies:
-      prettier:
-        specifier: ^3.2.5
-        version: 3.3.3
       turbo:
         specifier: ^2.1.2
         version: 2.2.3
@@ -43,7 +40,7 @@ importers:
         version: 6.0.0(bufferutil@4.0.8)(encoding@0.1.13)(expo@52.0.4(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(bufferutil@4.0.8)(encoding@0.1.13)(react-native-webview@11.26.1(react-native@0.76.1(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1))(react-native@0.76.1(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1)(utf-8-validate@5.0.10))(msrcrypto@1.5.8)(react-native@0.76.1(@babel/core@7.26.0)(@babel/preset-env@7.26.0(@babel/core@7.26.0))(@types/react@18.3.12)(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10))(utf-8-validate@5.0.10)(web-streams-polyfill@3.3.3)
       '@veramo/data-store':
         specifier: ^6.0.0
-        version: 6.0.0(bufferutil@4.0.8)(encoding@0.1.13)(pg@8.13.1)(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3))(utf-8-validate@5.0.10)
+        version: 6.0.0(bufferutil@4.0.8)(encoding@0.1.13)(pg@8.13.1)(ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3))(utf-8-validate@5.0.10)
       '@veramo/did-manager':
         specifier: ^6.0.0
         version: 6.0.0
@@ -60,8 +57,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
       drizzle-orm:
-        specifier: ^0.35.2
-        version: 0.35.3(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
+        specifier: ^0.36.4
+        version: 0.36.4(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
       hono:
         specifier: ^4.6.10
         version: 4.6.10
@@ -73,7 +70,7 @@ importers:
         version: 3.4.5
       typeorm:
         specifier: ^0.3.20
-        version: 0.3.20(pg@8.13.1)(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3))
+        version: 0.3.20(pg@8.13.1)(ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3))
       viem:
         specifier: ^2.21.45
         version: 2.21.45(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)
@@ -84,9 +81,6 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@types/node':
-        specifier: ^20.11.17
-        version: 20.17.6
       drizzle-kit:
         specifier: ^0.26.2
         version: 0.26.2
@@ -109,8 +103,8 @@ importers:
         specifier: ^0.11.1
         version: 0.11.1(typescript@5.6.3)(zod@3.23.8)
       drizzle-orm:
-        specifier: ^0.35.2
-        version: 0.35.3(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@6.0.5))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
+        specifier: ^0.36.4
+        version: 0.36.4(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@6.0.5))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
       hono:
         specifier: ^4.6.8
         version: 4.6.10
@@ -127,9 +121,6 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@types/node':
-        specifier: ^20.11.17
-        version: 20.17.6
       '@types/pg':
         specifier: ^8.11.10
         version: 8.11.10
@@ -155,8 +146,8 @@ importers:
         specifier: ^0.11.1
         version: 0.11.1(typescript@5.6.3)(zod@3.23.8)
       drizzle-orm:
-        specifier: ^0.35.2
-        version: 0.35.3(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@6.0.5))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
+        specifier: ^0.36.4
+        version: 0.36.4(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@6.0.5))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
       hono:
         specifier: ^4.6.8
         version: 4.6.10
@@ -176,9 +167,6 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@types/node':
-        specifier: ^20.11.17
-        version: 20.17.6
       '@types/pg':
         specifier: ^8.11.10
         version: 8.11.10
@@ -203,9 +191,6 @@ importers:
       '@t3-oss/env-core':
         specifier: ^0.11.1
         version: 0.11.1(typescript@5.6.3)(zod@3.23.8)
-      api-credentials:
-        specifier: workspace:*
-        version: link:../api-credentials
       api-delegations:
         specifier: workspace:*
         version: link:../api-delegations
@@ -213,8 +198,8 @@ importers:
         specifier: workspace:*
         version: link:../api-identity
       drizzle-orm:
-        specifier: ^0.35.2
-        version: 0.35.3(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@6.0.5))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
+        specifier: ^0.36.4
+        version: 0.36.4(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@6.0.5))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
       hono:
         specifier: ^4.6.8
         version: 4.6.10
@@ -224,6 +209,9 @@ importers:
       postgres:
         specifier: ^3.4.5
         version: 3.4.5
+      universal-credential-sdk:
+        specifier: workspace:*
+        version: link:../../packages/universal-credential-sdk
       universal-data:
         specifier: workspace:*
         version: link:../../packages/universal-data
@@ -240,12 +228,6 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@biomejs/biome':
-        specifier: ^1.8.0
-        version: 1.9.4
-      '@types/node':
-        specifier: ^20.11.17
-        version: 20.17.6
       '@types/pg':
         specifier: ^8.11.10
         version: 8.11.10
@@ -431,8 +413,8 @@ importers:
         specifier: ^0.26.2
         version: 0.26.2
       drizzle-orm:
-        specifier: ^0.35.2
-        version: 0.35.3(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@6.0.5))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
+        specifier: ^0.36.4
+        version: 0.36.4(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@6.0.5))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1)
       lucide-react:
         specifier: ^0.446.0
         version: 0.446.0(react@18.3.1)
@@ -5772,15 +5754,15 @@ packages:
     resolution: {integrity: sha512-cMq8omEKywjIy5KcqUo6LvEFxkl8/zYHsgYjFVXjmPWWtuW4blcz+YW9+oIhoaALgs2ebRjzXwsJgN9i6P49Dw==}
     hasBin: true
 
-  drizzle-orm@0.35.3:
-    resolution: {integrity: sha512-Uv6N+b36x4BaZlxc96e+ag7RnMapBLGhc4SSi2F7RDwqYJipWjaU/P68RUp1FbW9r+mxoDp8nMz2Eece8PJxfA==}
+  drizzle-orm@0.36.4:
+    resolution: {integrity: sha512-1OZY3PXD7BR00Gl61UUOFihslDldfH4NFRH2MbP54Yxi0G/PKn4HfO65JYZ7c16DeP3SpM3Aw+VXVG9j6CRSXA==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=3'
-      '@electric-sql/pglite': '>=0.1.1'
+      '@electric-sql/pglite': '>=0.2.0'
       '@libsql/client': '>=0.10.0'
       '@libsql/client-wasm': '>=0.10.0'
-      '@neondatabase/serverless': '>=0.1'
+      '@neondatabase/serverless': '>=0.10.0'
       '@op-engineering/op-sqlite': '>=2'
       '@opentelemetry/api': ^1.4.1
       '@planetscale/database': '>=1'
@@ -5794,7 +5776,7 @@ packages:
       '@xata.io/client': '*'
       better-sqlite3: '>=7'
       bun-types: '*'
-      expo-sqlite: '>=13.2.0'
+      expo-sqlite: '>=14.0.0'
       knex: '*'
       kysely: '*'
       mysql2: '>=2'
@@ -5812,6 +5794,8 @@ packages:
       '@electric-sql/pglite':
         optional: true
       '@libsql/client':
+        optional: true
+      '@libsql/client-wasm':
         optional: true
       '@neondatabase/serverless':
         optional: true
@@ -12284,6 +12268,7 @@ snapshots:
     dependencies:
       '@libsql/core': 0.14.0
       js-base64: 3.7.7
+    optional: true
 
   '@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)':
     dependencies:
@@ -12312,6 +12297,7 @@ snapshots:
   '@libsql/core@0.14.0':
     dependencies:
       js-base64: 3.7.7
+    optional: true
 
   '@libsql/darwin-arm64@0.4.7':
     optional: true
@@ -14456,7 +14442,7 @@ snapshots:
 
   '@types/graceful-fs@4.1.9':
     dependencies:
-      '@types/node': 20.17.6
+      '@types/node': 22.7.5
 
   '@types/har-format@1.2.16': {}
 
@@ -14497,7 +14483,7 @@ snapshots:
 
   '@types/pg@8.11.10':
     dependencies:
-      '@types/node': 20.17.6
+      '@types/node': 22.7.5
       pg-protocol: 1.7.0
       pg-types: 4.0.2
 
@@ -14784,7 +14770,7 @@ snapshots:
       - utf-8-validate
       - web-streams-polyfill
 
-  '@veramo/data-store@6.0.0(bufferutil@4.0.8)(encoding@0.1.13)(pg@8.13.1)(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3))(utf-8-validate@5.0.10)':
+  '@veramo/data-store@6.0.0(bufferutil@4.0.8)(encoding@0.1.13)(pg@8.13.1)(ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3))(utf-8-validate@5.0.10)':
     dependencies:
       '@veramo/core-types': 6.0.0
       '@veramo/did-discovery': 6.0.0
@@ -14793,7 +14779,7 @@ snapshots:
       '@veramo/utils': 6.0.0(bufferutil@4.0.8)(encoding@0.1.13)(utf-8-validate@5.0.10)
       debug: 4.3.7(supports-color@5.5.0)
       did-jwt-vc: 4.0.4
-      typeorm: 0.3.20(pg@8.13.1)(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3))
+      typeorm: 0.3.20(pg@8.13.1)(ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3))
       uuid: 9.0.1
     transitivePeerDependencies:
       - '@google-cloud/spanner'
@@ -16850,22 +16836,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.35.3(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1):
-    dependencies:
-      '@libsql/client-wasm': 0.14.0
+  drizzle-orm@0.36.4(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1):
     optionalDependencies:
       '@libsql/client': 0.14.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      '@libsql/client-wasm': 0.14.0
       '@types/pg': 8.11.10
       '@types/react': 18.3.12
       pg: 8.13.1
       postgres: 3.4.5
       react: 18.3.1
 
-  drizzle-orm@0.35.3(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@6.0.5))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1):
-    dependencies:
-      '@libsql/client-wasm': 0.14.0
+  drizzle-orm@0.36.4(@libsql/client-wasm@0.14.0)(@libsql/client@0.14.0(bufferutil@4.0.8)(utf-8-validate@6.0.5))(@types/pg@8.11.10)(@types/react@18.3.12)(pg@8.13.1)(postgres@3.4.5)(react@18.3.1):
     optionalDependencies:
       '@libsql/client': 0.14.0(bufferutil@4.0.8)(utf-8-validate@6.0.5)
+      '@libsql/client-wasm': 0.14.0
       '@types/pg': 8.11.10
       '@types/react': 18.3.12
       pg: 8.13.1
@@ -18834,7 +18818,8 @@ snapshots:
 
   joycon@3.1.1: {}
 
-  js-base64@3.7.7: {}
+  js-base64@3.7.7:
+    optional: true
 
   js-sha3@0.8.0: {}
 
@@ -21503,6 +21488,25 @@ snapshots:
       yn: 3.1.1
     optional: true
 
+  ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3):
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.11
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.4
+      '@types/node': 22.7.5
+      acorn: 8.14.0
+      acorn-walk: 8.3.4
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 5.6.3
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+    optional: true
+
   tsc-alias@1.8.10:
     dependencies:
       chokidar: 3.6.0
@@ -21610,7 +21614,7 @@ snapshots:
     dependencies:
       is-typedarray: 1.0.0
 
-  typeorm@0.3.20(pg@8.13.1)(ts-node@10.9.2(@types/node@20.17.6)(typescript@5.6.3)):
+  typeorm@0.3.20(pg@8.13.1)(ts-node@10.9.2(@types/node@22.7.5)(typescript@5.6.3)):
     dependencies:
       '@sqltools/formatter': 1.2.5
       app-root-path: 3.1.0
@@ -21629,7 +21633,7 @@ snapshots:
       yargs: 17.7.2
     optionalDependencies:
       pg: 8.13.1
-      ts-node: 10.9.2(@types/node@20.17.6)(typescript@5.6.3)
+      ts-node: 10.9.2(@types/node@22.7.5)(typescript@5.6.3)
     transitivePeerDependencies:
       - supports-color
 

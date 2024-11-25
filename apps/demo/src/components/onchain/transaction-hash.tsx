@@ -1,8 +1,8 @@
-import { useMemo, type HTMLAttributes } from 'react';
+import { type HTMLAttributes, useMemo } from 'react';
 import type { Chain, Hex } from 'viem';
 
-import { LinkComponent } from '../ui/link-component';
 import { baseSepolia } from 'viem/chains';
+import { LinkComponent } from '../ui/link-component';
 
 interface TransactionHashProps
   extends Omit<HTMLAttributes<HTMLElement>, 'children'> {

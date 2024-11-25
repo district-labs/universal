@@ -1,14 +1,4 @@
 {
-	"compilerOptions": {
-		"target": "ESNext",
-		"module": "NodeNext",
-		"strict": true,
-		"verbatimModuleSyntax": true,
-		"skipLibCheck": true,
-		"noEmit": true,
-		"types": ["node"],
-		"jsx": "react-jsx",
-		"noImplicitReturns": false,
-		"jsxImportSource": "hono/jsx"
-	}
+  "extends": "../../tsconfig.hono.json",
+  "include": ["src/**/*.ts"]
 }

@@ -7,7 +7,7 @@
     "dev": "turbo dev --parallel",
     "format": "turbo format",
     "check": "turbo check",
-    "check-types": "turbo check-types",
+    "check:types": "turbo check:types",
     "lint": "turbo lint",
     "start": "turbo start"
   },

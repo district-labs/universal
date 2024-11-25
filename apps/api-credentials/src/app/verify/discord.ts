@@ -1,11 +1,11 @@
 import type { VerifiableCredential } from '@veramo/core';
 import { Hono } from 'hono';
 
+import { discordAuth } from '@hono/oauth-providers/discord';
+import { getCookie } from 'hono/cookie';
 import { env } from '../../env.js';
 import { insertCredentialDb } from '../../lib/db/actions/insert-credential-db.js';
 import { createCredential } from '../../lib/veramo/actions/create-credential.js';
-import { discordAuth } from '@hono/oauth-providers/discord';
-import { getCookie } from 'hono/cookie';
 import {
   deleteCookies,
   stateMiddleware,

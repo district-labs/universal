@@ -1,7 +1,7 @@
-import { serve } from "@hono/node-server";
-import { app } from "./app.js";
+import { serve } from '@hono/node-server';
+import { app } from './app.js';
 
 const port = 3300;
 serve({ ...app, port }, (info) => {
-	console.log(`Listening on http://localhost:${info.port}`);
+  console.log(`Listening on http://localhost:${info.port}`);
 });

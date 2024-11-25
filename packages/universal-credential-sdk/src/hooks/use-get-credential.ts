@@ -1,13 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
-import { apiCredentialsClient } from '../client.js';
+import type { GetApiCredentialsReturnType } from '../client.js';
 
 export type UseGetCredentialsParams = Partial<
   Parameters<
-    (typeof apiCredentialsClient.credentials)[':did']['$get']
+    GetApiCredentialsReturnType['credentials'][':did']['$get']
   >[0]['param']
 >;
 
-export function useGetCredentials({ did }: UseGetCredentialsParams) {
+export function useGetCredentials(
+  apiCredentialsClient: GetApiCredentialsReturnType,
+  { did }: UseGetCredentialsParams,
+) {
   return useQuery({
     queryKey: ['credentials-get', did],
     queryFn: async () => {

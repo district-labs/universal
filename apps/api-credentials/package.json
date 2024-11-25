@@ -9,13 +9,13 @@
     "start": "tsx src/app/node.ts",
     "format": "biome format --write",
     "check": "biome check --write",
-    "check-types": "tsc",
+    "check:types": "tsc --noEmit",
     "db:generate": "tsc -p tsconfig.json && drizzle-kit generate",
     "db:migrate": "tsc -p tsconfig.json && drizzle-kit migrate"
   },
   "exports": {
     ".": {
-      "default": "./src/app/index.ts"
+      "default": "./src/exports/index.ts"
     },
     "./package.json": "./package.json"
   },
@@ -32,7 +32,7 @@
     "@veramo/did-resolver": "^6.0.0",
     "@veramo/key-manager": "^6.0.0",
     "@veramo/kms-local": "^6.0.0",
-    "drizzle-orm": "^0.35.2",
+    "drizzle-orm": "^0.36.4",
     "hono": "^4.6.10",
     "pg": "^8.13.1",
     "postgres": "^3.4.5",
@@ -42,7 +42,6 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^20.11.17",
     "drizzle-kit": "^0.26.2",
     "tsx": "^4.7.1",
     "typescript": "^5.6.3"

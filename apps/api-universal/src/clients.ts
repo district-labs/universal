@@ -1,4 +1,4 @@
-import type { CredentialsApi } from 'api-credentials';
+import type { CredentialsApi } from 'universal-credentials-sdk';
 import type { DelegationsApi } from 'api-delegations';
 import type { IdentityApi } from 'api-identity';
 import { hc } from 'hono/client';

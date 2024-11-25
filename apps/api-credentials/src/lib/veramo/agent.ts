@@ -16,8 +16,8 @@ import { KeyManager } from '@veramo/key-manager';
 import { KeyManagementSystem, SecretBox } from '@veramo/kms-local';
 import { Resolver } from 'did-resolver';
 import { getResolver as webDidResolver } from 'web-did-resolver';
-import { dbConnection } from './db.js';
 import { env } from '../../env.js';
+import { dbConnection } from './db.js';
 
 export const alias = env.API_CREDENTIALS_DNS;
 export const provider = `did:web:${alias}`;

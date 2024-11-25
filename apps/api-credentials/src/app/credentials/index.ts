@@ -1,5 +1,5 @@
-import { getCredentialDb } from '../../lib/db/actions/get-credential-db.js';
 import { Hono } from 'hono';
+import { getCredentialDb } from '../../lib/db/actions/get-credential-db.js';
 
 const credentialsApp = new Hono()
   .get('/credentials/:did', async (c) => {

@@ -1,58 +1,58 @@
 {
-	"id": "86984dc5-d868-45e5-9694-74433d9c33ba",
-	"prevId": "fa025c35-f4b3-4705-8918-ce2fe53d3127",
-	"version": "7",
-	"dialect": "postgresql",
-	"tables": {
-		"public.dids": {
-			"name": "dids",
-			"schema": "",
-			"columns": {
-				"address": {
-					"name": "address",
-					"type": "text",
-					"primaryKey": true,
-					"notNull": true
-				},
-				"resolver": {
-					"name": "resolver",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": true
-				},
-				"identifier": {
-					"name": "identifier",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": true
-				},
-				"document": {
-					"name": "document",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": true
-				},
-				"signature": {
-					"name": "signature",
-					"type": "text",
-					"primaryKey": false,
-					"notNull": true
-				}
-			},
-			"indexes": {},
-			"foreignKeys": {},
-			"compositePrimaryKeys": {},
-			"uniqueConstraints": {},
-			"checkConstraints": {}
-		}
-	},
-	"enums": {},
-	"schemas": {},
-	"sequences": {},
-	"views": {},
-	"_meta": {
-		"columns": {},
-		"schemas": {},
-		"tables": {}
-	}
+  "id": "86984dc5-d868-45e5-9694-74433d9c33ba",
+  "prevId": "fa025c35-f4b3-4705-8918-ce2fe53d3127",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.dids": {
+      "name": "dids",
+      "schema": "",
+      "columns": {
+        "address": {
+          "name": "address",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "resolver": {
+          "name": "resolver",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "identifier": {
+          "name": "identifier",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "document": {
+          "name": "document",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "signature": {
+          "name": "signature",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
 }
