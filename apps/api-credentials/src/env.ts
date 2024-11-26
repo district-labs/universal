@@ -1,5 +1,6 @@
 import { createEnv } from '@t3-oss/env-core';
 import { z } from 'zod';
+import 'dotenv/config';
 
 export const env = createEnv({
   server: {
@@ -16,7 +17,7 @@ export const env = createEnv({
     TWITTER_OAUTH_REDIRECT_URI: z.string().url(),
     DID_PUB_KEY: z.string().length(130),
     KMS_SECRET_KEY: z.string().min(1),
-    API_CREDENTIALS_DNS: z.string().url(),
+    API_CREDENTIALS_DNS: z.string().min(1),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,

@@ -27,8 +27,8 @@
     "hono": "^4.6.8",
     "pg": "^8.13.1",
     "postgres": "^3.4.5",
-    "universal-data": "workspace:*",
     "universal-credential-sdk": "workspace:*",
+    "universal-data": "workspace:*",
     "universal-delegations-sdk": "workspace:*",
     "universal-identity-sdk": "workspace:*",
     "viem": "^2.21.41",
@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "@types/pg": "^8.11.10",
+    "dotenv": "^16.4.5",
     "drizzle-kit": "^0.26.2",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3"
