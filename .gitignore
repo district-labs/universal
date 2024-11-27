@@ -2,6 +2,7 @@
 .next
 .pnpm-debug.log*
 .turbo
+.ponder
 .vercel
 node_modules
 dist

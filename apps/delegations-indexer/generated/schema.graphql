@@ -18,32 +18,11 @@ type Meta {
 
 type Query {
   delegations(hash: String!, redeemer: String!): delegations
-  delegationss(
-    where: delegationsFilter
-    orderBy: String
-    orderDirection: String
-    before: String
-    after: String
-    limit: Int
-  ): delegationsPage!
+  delegationss(where: delegationsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): delegationsPage!
   caveats(id: String!): caveats
-  caveatss(
-    where: caveatsFilter
-    orderBy: String
-    orderDirection: String
-    before: String
-    after: String
-    limit: Int
-  ): caveatsPage!
+  caveatss(where: caveatsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): caveatsPage!
   enforcerEvents(id: String!): enforcerEvents
-  enforcerEventss(
-    where: enforcerEventsFilter
-    orderBy: String
-    orderDirection: String
-    before: String
-    after: String
-    limit: Int
-  ): enforcerEventsPage!
+  enforcerEventss(where: enforcerEventsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): enforcerEventsPage!
   _meta: Meta
 }
 
@@ -56,22 +35,8 @@ type delegations {
   delegator: String!
   authority: String!
   salt: BigInt!
-  caveats(
-    where: caveatsFilter
-    orderBy: String
-    orderDirection: String
-    before: String
-    after: String
-    limit: Int
-  ): caveatsPage
-  enforcerEvents(
-    where: enforcerEventsFilter
-    orderBy: String
-    orderDirection: String
-    before: String
-    after: String
-    limit: Int
-  ): enforcerEventsPage
+  caveats(where: caveatsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): caveatsPage
+  enforcerEvents(where: enforcerEventsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): enforcerEventsPage
 }
 
 type caveatsPage {
