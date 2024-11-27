@@ -19,7 +19,7 @@ type Meta {
 type Query {
   delegations(hash: String!): delegations
   delegationss(where: delegationsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): delegationsPage!
-  caveats(id: String!): caveats
+  caveats(delegationHash: String!, index: Float!): caveats
   caveatss(where: caveatsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): caveatsPage!
   enforcerEvents(id: String!): enforcerEvents
   enforcerEventss(where: enforcerEventsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): enforcerEventsPage!
@@ -46,7 +46,7 @@ type caveatsPage {
 }
 
 type caveats {
-  id: String!
+  index: Int!
   enforcerType: String!
   enforcer: String!
   terms: String!
@@ -58,16 +58,14 @@ type caveats {
 input caveatsFilter {
   AND: [caveatsFilter]
   OR: [caveatsFilter]
-  id: String
-  id_not: String
-  id_in: [String]
-  id_not_in: [String]
-  id_contains: String
-  id_not_contains: String
-  id_starts_with: String
-  id_ends_with: String
-  id_not_starts_with: String
-  id_not_ends_with: String
+  index: Int
+  index_not: Int
+  index_in: [Int]
+  index_not_in: [Int]
+  index_gt: Int
+  index_lt: Int
+  index_gte: Int
+  index_lte: Int
   enforcerType: String
   enforcerType_not: String
   enforcerType_in: [String]

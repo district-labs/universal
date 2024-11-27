@@ -1,4 +1,4 @@
-import { onchainTable, relations } from '@ponder/core';
+import { onchainTable, primaryKey, relations } from '@ponder/core';
 import { generateUUID } from './src/utils/uuid';
 
 // ----------------------------------------------
@@ -32,18 +32,21 @@ export type SelectDelegation = typeof delegations.$inferSelect;
 // ----------------------------------------------
 
 // Table
-export const caveats = onchainTable('caveats', (t) => ({
-  // Random UUID being generated for the caveat id since it doesn't have a unique identifier
-  id: t
-    .text()
-    .primaryKey()
-    .$default(() => generateUUID()),
-  enforcerType: t.text().notNull(),
-  enforcer: t.hex().notNull(),
-  terms: t.hex().notNull(),
-  args: t.hex().notNull(),
-  delegationHash: t.hex().notNull(),
-}));
+export const caveats = onchainTable(
+  'caveats',
+  (t) => ({
+    // index of the caveat in the caveats array of the delegation
+    index: t.integer().notNull(),
+    enforcerType: t.text().notNull(),
+    enforcer: t.hex().notNull(),
+    terms: t.hex().notNull(),
+    args: t.hex().notNull(),
+    delegationHash: t.hex().notNull(),
+  }),
+  (table) => ({
+    pk: primaryKey({ columns: [table.delegationHash, table.index] }),
+  }),
+);
 
 // Relations
 export const caveatsRelations = relations(caveats, ({ one }) => ({
