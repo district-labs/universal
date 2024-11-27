@@ -1,6 +1,6 @@
 import { ponder } from '@/generated';
 import { isAddress } from 'viem';
-import { delegations } from '../../ponder.schema';
+import { delegations } from '../ponder.schema';
 import { eq } from '@ponder/core';
 import {
   decodeEnforcerERC20TransferAmount,
