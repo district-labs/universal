@@ -17,7 +17,7 @@ type Meta {
 }
 
 type Query {
-  delegations(hash: String!, redeemer: String!): delegations
+  delegations(hash: String!): delegations
   delegationss(where: delegationsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): delegationsPage!
   caveats(id: String!): caveats
   caveatss(where: caveatsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): caveatsPage!
@@ -29,12 +29,12 @@ type Query {
 type delegations {
   hash: String!
   chainId: Int!
-  redeemer: String!
   delegationType: String!
   delegate: String!
   delegator: String!
   authority: String!
   salt: BigInt!
+  enabled: Boolean!
   caveats(where: caveatsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): caveatsPage
   enforcerEvents(where: enforcerEventsFilter, orderBy: String, orderDirection: String, before: String, after: String, limit: Int): enforcerEventsPage
 }
@@ -248,16 +248,6 @@ input delegationsFilter {
   chainId_lt: Int
   chainId_gte: Int
   chainId_lte: Int
-  redeemer: String
-  redeemer_not: String
-  redeemer_in: [String]
-  redeemer_not_in: [String]
-  redeemer_contains: String
-  redeemer_not_contains: String
-  redeemer_starts_with: String
-  redeemer_ends_with: String
-  redeemer_not_starts_with: String
-  redeemer_not_ends_with: String
   delegationType: String
   delegationType_not: String
   delegationType_in: [String]
@@ -306,4 +296,8 @@ input delegationsFilter {
   salt_lt: BigInt
   salt_gte: BigInt
   salt_lte: BigInt
+  enabled: Boolean
+  enabled_not: Boolean
+  enabled_in: [Boolean]
+  enabled_not_in: [Boolean]
 }

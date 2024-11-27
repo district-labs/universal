@@ -1,4 +1,4 @@
-import { onchainTable, primaryKey, relations } from '@ponder/core';
+import { onchainTable, relations } from '@ponder/core';
 import { generateUUID } from './src/utils/uuid';
 
 // ----------------------------------------------
@@ -6,20 +6,16 @@ import { generateUUID } from './src/utils/uuid';
 // ----------------------------------------------
 
 // Table
-export const delegations = onchainTable(
-  'delegations',
-  (t) => ({
-    hash: t.hex().notNull(),
-    chainId: t.integer().notNull(),
-    redeemer: t.hex().notNull(),
-    delegationType: t.text().notNull(),
-    delegate: t.hex().notNull(),
-    delegator: t.hex().notNull(),
-    authority: t.hex().notNull(),
-    salt: t.bigint().notNull(),
-  }),
-  (table) => ({ pk: primaryKey({ columns: [table.hash, table.redeemer] }) }),
-);
+export const delegations = onchainTable('delegations', (t) => ({
+  hash: t.hex().notNull().primaryKey(),
+  chainId: t.integer().notNull(),
+  delegationType: t.text().notNull(),
+  delegate: t.hex().notNull(),
+  delegator: t.hex().notNull(),
+  authority: t.hex().notNull(),
+  salt: t.bigint().notNull(),
+  enabled: t.boolean().notNull(),
+}));
 
 // Relations
 export const delegationsRelations = relations(delegations, ({ many }) => ({

@@ -9,10 +9,7 @@ import {
 import { baseSepolia } from 'viem/chains';
 
 const BASE_SEPOLIA_START_BLOCK = 17695840;
-console.log(
-  'process.env.PONDER_RPC_URL_BASE_SEPOLIA',
-  process.env.PONDER_RPC_URL_BASE_SEPOLIA,
-);
+
 export default createConfig({
   networks: {
     baseSepolia: {

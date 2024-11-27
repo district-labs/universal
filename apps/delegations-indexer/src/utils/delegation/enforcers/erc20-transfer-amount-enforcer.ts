@@ -1,15 +1,15 @@
+import { erc20TransferAmountAbi } from 'universal-data';
 import {
   type Address,
   type Hex,
-  getAbiItem,
   decodeAbiParameters,
   encodeAbiParameters,
   encodePacked,
+  getAbiItem,
   hexToBigInt,
   parseUnits,
   sliceHex,
 } from 'viem';
-import { erc20TransferAmountAbi } from 'universal-data';
 
 type Erc20TransferAmountEventInputs = {
   sender: Address;

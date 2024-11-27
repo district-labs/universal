@@ -31,7 +31,7 @@ function getDelegationType(caveats: InsertCaveat[]): string {
 ponder.on(
   'DelegationManager:RedeemedDelegation',
   async ({ event, context }) => {
-    const { delegation, redeemer } = event.args;
+    const { delegation } = event.args;
     const delegationHash = getDelegationHash({
       chainId: context.network.chainId,
       ...delegation,
@@ -51,7 +51,7 @@ ponder.on(
       .insert(delegations)
       .values({
         hash: delegationHash,
-        redeemer,
+        enabled: true,
         chainId: context.network.chainId,
         delegationType: getDelegationType(formattedCaveats),
         ...delegation,
