@@ -1,0 +1,344 @@
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+scalar BigInt
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Meta {
+  status: JSON
+}
+
+type Query {
+  delegations(hash: String!, redeemer: String!): delegations
+  delegationss(
+    where: delegationsFilter
+    orderBy: String
+    orderDirection: String
+    before: String
+    after: String
+    limit: Int
+  ): delegationsPage!
+  caveats(id: String!): caveats
+  caveatss(
+    where: caveatsFilter
+    orderBy: String
+    orderDirection: String
+    before: String
+    after: String
+    limit: Int
+  ): caveatsPage!
+  enforcerEvents(id: String!): enforcerEvents
+  enforcerEventss(
+    where: enforcerEventsFilter
+    orderBy: String
+    orderDirection: String
+    before: String
+    after: String
+    limit: Int
+  ): enforcerEventsPage!
+  _meta: Meta
+}
+
+type delegations {
+  hash: String!
+  chainId: Int!
+  redeemer: String!
+  delegationType: String!
+  delegate: String!
+  delegator: String!
+  authority: String!
+  salt: BigInt!
+  caveats(
+    where: caveatsFilter
+    orderBy: String
+    orderDirection: String
+    before: String
+    after: String
+    limit: Int
+  ): caveatsPage
+  enforcerEvents(
+    where: enforcerEventsFilter
+    orderBy: String
+    orderDirection: String
+    before: String
+    after: String
+    limit: Int
+  ): enforcerEventsPage
+}
+
+type caveatsPage {
+  items: [caveats!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type caveats {
+  id: String!
+  enforcerType: String!
+  enforcer: String!
+  terms: String!
+  args: String!
+  delegationHash: String!
+  delegation: delegations
+}
+
+input caveatsFilter {
+  AND: [caveatsFilter]
+  OR: [caveatsFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  enforcerType: String
+  enforcerType_not: String
+  enforcerType_in: [String]
+  enforcerType_not_in: [String]
+  enforcerType_contains: String
+  enforcerType_not_contains: String
+  enforcerType_starts_with: String
+  enforcerType_ends_with: String
+  enforcerType_not_starts_with: String
+  enforcerType_not_ends_with: String
+  enforcer: String
+  enforcer_not: String
+  enforcer_in: [String]
+  enforcer_not_in: [String]
+  enforcer_contains: String
+  enforcer_not_contains: String
+  enforcer_starts_with: String
+  enforcer_ends_with: String
+  enforcer_not_starts_with: String
+  enforcer_not_ends_with: String
+  terms: String
+  terms_not: String
+  terms_in: [String]
+  terms_not_in: [String]
+  terms_contains: String
+  terms_not_contains: String
+  terms_starts_with: String
+  terms_ends_with: String
+  terms_not_starts_with: String
+  terms_not_ends_with: String
+  args: String
+  args_not: String
+  args_in: [String]
+  args_not_in: [String]
+  args_contains: String
+  args_not_contains: String
+  args_starts_with: String
+  args_ends_with: String
+  args_not_starts_with: String
+  args_not_ends_with: String
+  delegationHash: String
+  delegationHash_not: String
+  delegationHash_in: [String]
+  delegationHash_not_in: [String]
+  delegationHash_contains: String
+  delegationHash_not_contains: String
+  delegationHash_starts_with: String
+  delegationHash_ends_with: String
+  delegationHash_not_starts_with: String
+  delegationHash_not_ends_with: String
+}
+
+type enforcerEventsPage {
+  items: [enforcerEvents!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type enforcerEvents {
+  id: String!
+  timestamp: BigInt!
+  event: String!
+  redeemer: String!
+  enforcer: String!
+  enforcerType: String!
+  args: String!
+  delegationHash: String!
+  delegation: delegations
+}
+
+input enforcerEventsFilter {
+  AND: [enforcerEventsFilter]
+  OR: [enforcerEventsFilter]
+  id: String
+  id_not: String
+  id_in: [String]
+  id_not_in: [String]
+  id_contains: String
+  id_not_contains: String
+  id_starts_with: String
+  id_ends_with: String
+  id_not_starts_with: String
+  id_not_ends_with: String
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_in: [BigInt]
+  timestamp_not_in: [BigInt]
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  event: String
+  event_not: String
+  event_in: [String]
+  event_not_in: [String]
+  event_contains: String
+  event_not_contains: String
+  event_starts_with: String
+  event_ends_with: String
+  event_not_starts_with: String
+  event_not_ends_with: String
+  redeemer: String
+  redeemer_not: String
+  redeemer_in: [String]
+  redeemer_not_in: [String]
+  redeemer_contains: String
+  redeemer_not_contains: String
+  redeemer_starts_with: String
+  redeemer_ends_with: String
+  redeemer_not_starts_with: String
+  redeemer_not_ends_with: String
+  enforcer: String
+  enforcer_not: String
+  enforcer_in: [String]
+  enforcer_not_in: [String]
+  enforcer_contains: String
+  enforcer_not_contains: String
+  enforcer_starts_with: String
+  enforcer_ends_with: String
+  enforcer_not_starts_with: String
+  enforcer_not_ends_with: String
+  enforcerType: String
+  enforcerType_not: String
+  enforcerType_in: [String]
+  enforcerType_not_in: [String]
+  enforcerType_contains: String
+  enforcerType_not_contains: String
+  enforcerType_starts_with: String
+  enforcerType_ends_with: String
+  enforcerType_not_starts_with: String
+  enforcerType_not_ends_with: String
+  args: String
+  args_not: String
+  args_in: [String]
+  args_not_in: [String]
+  args_contains: String
+  args_not_contains: String
+  args_starts_with: String
+  args_ends_with: String
+  args_not_starts_with: String
+  args_not_ends_with: String
+  delegationHash: String
+  delegationHash_not: String
+  delegationHash_in: [String]
+  delegationHash_not_in: [String]
+  delegationHash_contains: String
+  delegationHash_not_contains: String
+  delegationHash_starts_with: String
+  delegationHash_ends_with: String
+  delegationHash_not_starts_with: String
+  delegationHash_not_ends_with: String
+}
+
+type delegationsPage {
+  items: [delegations!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input delegationsFilter {
+  AND: [delegationsFilter]
+  OR: [delegationsFilter]
+  hash: String
+  hash_not: String
+  hash_in: [String]
+  hash_not_in: [String]
+  hash_contains: String
+  hash_not_contains: String
+  hash_starts_with: String
+  hash_ends_with: String
+  hash_not_starts_with: String
+  hash_not_ends_with: String
+  chainId: Int
+  chainId_not: Int
+  chainId_in: [Int]
+  chainId_not_in: [Int]
+  chainId_gt: Int
+  chainId_lt: Int
+  chainId_gte: Int
+  chainId_lte: Int
+  redeemer: String
+  redeemer_not: String
+  redeemer_in: [String]
+  redeemer_not_in: [String]
+  redeemer_contains: String
+  redeemer_not_contains: String
+  redeemer_starts_with: String
+  redeemer_ends_with: String
+  redeemer_not_starts_with: String
+  redeemer_not_ends_with: String
+  delegationType: String
+  delegationType_not: String
+  delegationType_in: [String]
+  delegationType_not_in: [String]
+  delegationType_contains: String
+  delegationType_not_contains: String
+  delegationType_starts_with: String
+  delegationType_ends_with: String
+  delegationType_not_starts_with: String
+  delegationType_not_ends_with: String
+  delegate: String
+  delegate_not: String
+  delegate_in: [String]
+  delegate_not_in: [String]
+  delegate_contains: String
+  delegate_not_contains: String
+  delegate_starts_with: String
+  delegate_ends_with: String
+  delegate_not_starts_with: String
+  delegate_not_ends_with: String
+  delegator: String
+  delegator_not: String
+  delegator_in: [String]
+  delegator_not_in: [String]
+  delegator_contains: String
+  delegator_not_contains: String
+  delegator_starts_with: String
+  delegator_ends_with: String
+  delegator_not_starts_with: String
+  delegator_not_ends_with: String
+  authority: String
+  authority_not: String
+  authority_in: [String]
+  authority_not_in: [String]
+  authority_contains: String
+  authority_not_contains: String
+  authority_starts_with: String
+  authority_ends_with: String
+  authority_not_starts_with: String
+  authority_not_ends_with: String
+  salt: BigInt
+  salt_not: BigInt
+  salt_in: [BigInt]
+  salt_not_in: [BigInt]
+  salt_gt: BigInt
+  salt_lt: BigInt
+  salt_gte: BigInt
+  salt_lte: BigInt
+}
