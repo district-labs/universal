@@ -81,7 +81,8 @@
       "node_modules/**",
       "app/globals.css",
       "tsconfig.*.json",
-      "dist"
+      "dist",
+      "ponder-env.d.ts"
     ]
   }
 }
