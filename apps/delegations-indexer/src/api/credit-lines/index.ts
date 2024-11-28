@@ -1,13 +1,15 @@
 import { ponder } from '@/generated';
 import { eq } from '@ponder/core';
 import { isAddress } from 'viem';
-import { delegations } from '../../ponder.schema';
+import { delegations } from '../../../ponder.schema.js';
 import {
   decodeEnforcerERC20TransferAmount,
   decodeErc20TransferAmountEvent,
-} from '../utils/delegation/enforcers/erc20-transfer-amount-enforcer';
+} from '../../utils/delegation/enforcers/erc20-transfer-amount-enforcer.js';
 
-const creditLineRoute = ponder.get('/credit-line/:redeemer', async (c) => {
+import type { CreditLineResponse } from './types.js';
+
+ponder.get('/credit-line/:redeemer', async (c) => {
   const redeemer = c.req.param('redeemer');
 
   try {
@@ -24,7 +26,7 @@ const creditLineRoute = ponder.get('/credit-line/:redeemer', async (c) => {
       },
     });
 
-    const decodedDelegations = redeemerDelegations
+    const creditLines = redeemerDelegations
       .filter((delegation) => delegation.delegationType === 'CreditLine')
       .map((delegation) => {
         const erc20TransferFromCaveat = delegation.caveats.find(
@@ -64,8 +66,8 @@ const creditLineRoute = ponder.get('/credit-line/:redeemer', async (c) => {
               ? event.args.spent
               : event.args.spent - (sortedEvents[index - 1]?.args.spent ?? 0n);
           return {
-            timestamp: event.timestamp,
-            redeemed,
+            timestamp: event.timestamp.toString(),
+            redeemed: redeemed.toString(),
           };
         });
 
@@ -75,25 +77,16 @@ const creditLineRoute = ponder.get('/credit-line/:redeemer', async (c) => {
             delegator: delegation.delegator,
           },
           token,
-          limit,
-          totalSpent,
+          limit: limit.toString(),
+          totalSpent: totalSpent.toString(),
           redemptions,
         };
       });
 
-    const formattedDelegations = JSON.parse(
-      JSON.stringify(
-        decodedDelegations,
-        (_, value) => (typeof value === 'bigint' ? value.toString() : value),
-        2,
-      ),
-    );
-    return c.json(
-      {
-        creditLines: formattedDelegations,
-      },
-      200,
-    );
+    const response: CreditLineResponse = {
+      creditLines,
+    };
+    return c.json(response, 200);
   } catch (e) {
     const error =
       e instanceof Error
@@ -102,5 +95,3 @@ const creditLineRoute = ponder.get('/credit-line/:redeemer', async (c) => {
     return c.json({ error }, 500);
   }
 });
-
-export type CreditLineRoute = typeof creditLineRoute;

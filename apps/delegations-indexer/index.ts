@@ -1,1 +1,1 @@
-export * from './event-handlers';
+export * from './src/event-handlers';

@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/exports/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "dev": "ponder dev",
     "start": "ponder start",

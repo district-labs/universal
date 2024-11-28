@@ -1,5 +1,11 @@
 {
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/(site)/credit-lines/view-credit-lines.tsx"
+  ],
   "exclude": ["node_modules"],
   "extends": "../../tsconfig.next.json",
   "compilerOptions": {
