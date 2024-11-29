@@ -1,4 +1,4 @@
-import { ponder, type Context } from '@/generated';
+import { type Context, ponder } from '@/generated';
 import { universalDeployments } from 'universal-data';
 import type { Address, Hex } from 'viem';
 import { baseSepolia } from 'viem/chains';

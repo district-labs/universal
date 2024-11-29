@@ -1,6 +1,6 @@
 import { ponder } from '@/generated';
-import { and, eq } from '@ponder/core';
 import { zValidator } from '@hono/zod-validator';
+import { and, eq } from '@ponder/core';
 import { delegations } from '../../../ponder.schema.js';
 import {
   decodeEnforcerERC20TransferAmount,
@@ -9,6 +9,7 @@ import {
 
 import type { RedeemedCreditLinesResponse } from './types.js';
 
+import { sqlLower } from '../../utils/db.js';
 import { redeemedCreditLineSchema } from '../../validation/credit-lines.js';
 
 ponder.get(
@@ -22,10 +23,14 @@ ponder.get(
       // Adds conditions to the query based on delegate and delegator
 
       if (delegate) {
-        conditions.push(eq(delegations.delegate, delegate));
+        conditions.push(
+          eq(sqlLower(delegations.delegate), delegate.toLowerCase()),
+        );
       }
       if (delegator) {
-        conditions.push(eq(delegations.delegator, delegator));
+        conditions.push(
+          eq(sqlLower(delegations.delegator), delegator.toLowerCase()),
+        );
       }
 
       const redeemerDelegations = await c.db.query.delegations.findMany({

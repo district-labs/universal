@@ -1,5 +1,5 @@
-import { z } from 'zod';
 import { isAddress } from 'viem';
+import { z } from 'zod';
 
 export const addressSchema = z.string().refine(isAddress);
 export const redeemedCreditLineSchema = z.union([

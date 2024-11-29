@@ -1,10 +1,10 @@
-import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { env } from '../env.js';
 import {
   type RedeemedCreditLinesResponse,
   redeemedCreditLineSchema,
 } from 'delegations-indexer';
+import { Hono } from 'hono';
+import { env } from '../env.js';
 
 const creditLineRouter = new Hono().post(
   '/redeemed-credit-lines',
