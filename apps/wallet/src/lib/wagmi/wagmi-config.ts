@@ -3,7 +3,7 @@ import { coinbaseWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
 import { universalWalletRainbowkit } from 'universal-wallet-connector';
 import { createPublicClient } from 'viem';
 import { http, createConfig } from 'wagmi';
-import { base, baseSepolia, mainnet } from 'wagmi/chains';
+import { base, mainnet } from 'wagmi/chains';
 
 const connectors = connectorsForWallets(
   [
@@ -19,11 +19,10 @@ const connectors = connectorsForWallets(
 );
 
 export const wagmiConfig = createConfig({
-  chains: [base, baseSepolia],
+  chains: [base],
   connectors,
   transports: {
     [base.id]: http(),
-    [baseSepolia.id]: http(),
   },
 });
 
