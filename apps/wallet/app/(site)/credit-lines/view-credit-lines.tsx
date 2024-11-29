@@ -2,9 +2,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
-import { useGetRedeemedCreditLines } from 'universal-sdk';
+import { useGetCreditLines } from 'universal-sdk';
 
 import { type Address, formatUnits } from 'viem';
+import { useChainId } from 'wagmi';
 
 type ViewCreditLinesProps = React.HTMLAttributes<HTMLElement> & {
   delegate: Address | undefined;
@@ -14,8 +15,10 @@ export const ViewCreditLines = ({
   className,
   delegate,
 }: ViewCreditLinesProps) => {
-  const { data, isLoading } = useGetRedeemedCreditLines({
+  const chainId = useChainId();
+  const { data, isLoading } = useGetCreditLines({
     delegate,
+    chainId,
   });
 
   if (isLoading || !data) {
@@ -32,34 +35,31 @@ export const ViewCreditLines = ({
 
   return (
     <div className={cn(className, 'grid grid-cols-1 gap-x-6 gap-y-10')}>
-      {data.creditLines.map(
-        ({ delegation, redemptions, limit, token, totalSpent }) => (
-          <Card key={delegation.hash}>
-            <CardContent className="p-4">
+      {data.creditLines.map(({ data: delegation, metadata }) => (
+        <Card key={delegation.hash}>
+          <CardContent className="p-4">
+            <div>
+              Delegation: {delegation.hash} <br />
+              Token: {metadata.token.symbol} <br />
+              Limit: {metadata.limit.amountFormatted} <br />
+              Total Spent: {metadata.spent.amountFormatted} <br />
+            </div>
+            <div>
+              <div>Redemptions:</div>
               <div>
-                Delegation: {delegation.hash} <br />
-                Token: {token} <br />
-                {/* TODO: Get decimals */}
-                Limit: {formatUnits(BigInt(limit), 18)} <br />
-                Total Spent: {formatUnits(BigInt(totalSpent), 18)} <br />
+                {metadata.redemptions.map((redemption) => (
+                  <div key={redemption.timestamp}>
+                    {formatUnits(BigInt(redemption.redeemed), 18)} at{' '}
+                    {new Date(
+                      Number(redemption.timestamp) * 1000,
+                    ).toISOString()}
+                  </div>
+                ))}
               </div>
-              <div>
-                <div>Redemptions:</div>
-                <div>
-                  {redemptions.map((redemption) => (
-                    <div key={redemption.timestamp}>
-                      {formatUnits(BigInt(redemption.redeemed), 18)} at{' '}
-                      {new Date(
-                        Number(redemption.timestamp) * 1000,
-                      ).toISOString()}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ),
-      )}
+            </div>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 };

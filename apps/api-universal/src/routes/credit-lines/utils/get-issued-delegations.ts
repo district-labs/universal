@@ -39,7 +39,6 @@ export async function getIssuedDelegations({
     return { ok: false, error: 'No delegate provided' };
   }
 
-  console.log('Fetching issued delegations for delegate', delegate, type);
   const issuedDelegationsResponse =
     await apiDelegationsClient.delegations.delegate[':address'][':type'].$get({
       param: {

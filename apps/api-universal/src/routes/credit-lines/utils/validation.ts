@@ -11,15 +11,18 @@ export const getCreditLineSchema = z.union([
     delegator: addressSchema,
     delegate: addressSchema.optional(),
     type: creditTypeSchema,
+    chainId: z.number(),
   }),
   z.object({
     delegator: addressSchema.optional(),
     delegate: addressSchema,
     type: creditTypeSchema,
+    chainId: z.number(),
   }),
   z.object({
     delegator: addressSchema,
     delegate: addressSchema,
     type: creditTypeSchema,
+    chainId: z.number(),
   }),
 ]);

@@ -9,15 +9,14 @@ import {
 import { cn } from '@/lib/utils';
 import { BadgeInfo } from 'lucide-react';
 import Image from 'next/image';
-import type * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type {
   DelegationExecutions,
   DelegationWithMetadata,
   SocialCredential,
 } from 'universal-data';
 import type { DelegationDb } from 'universal-delegations-sdk';
-import { useGetCredit } from 'universal-sdk';
+import { useGetCreditLines } from 'universal-sdk';
 import { type Address, parseUnits } from 'viem';
 import { DelegationDetailsSheet } from './delegation-details-sheet';
 import { AccountSocialCredentialWeightedBadge } from './identity/account-social-credential-weighted-badge';
@@ -42,10 +41,19 @@ export const DelegationsManagementSheet = ({
   chainId,
   onSelect,
 }: DelegationsManagementSheet) => {
-  const { data } = useGetCredit({
-    address,
+  const { data } = useGetCreditLines({
+    delegate: address,
     chainId,
   });
+
+  const creditLines = useMemo(() => {
+    if (!data?.creditLines) return;
+
+    // Filter out credit lines with no available balance
+    return data.creditLines.filter(
+      (delegation) => Number(delegation.metadata.available.amount) > 0,
+    );
+  }, [data?.creditLines]);
 
   const [isOpen, toggleIsOpen] = useState(false);
   const [delegationExecutions, setDelegationExecutions] = useState<
@@ -139,7 +147,7 @@ export const DelegationsManagementSheet = ({
             </SheetDescription>
           </SheetHeader>
           <div className="mt-4 space-y-4">
-            {(data?.credit?.length ?? 0) === 0 && (
+            {(creditLines?.length ?? 0) === 0 && (
               <Card className="flex items-center justify-center p-4">
                 <span className="font-semibold text-base text-neutral-500">
                   No spending allowances available
@@ -147,8 +155,8 @@ export const DelegationsManagementSheet = ({
               </Card>
             )}
 
-            {(data?.credit?.length ?? 0) > 0 &&
-              (data?.credit ?? []).map((delegation) => (
+            {(creditLines?.length ?? 0) > 0 &&
+              (creditLines ?? []).map((delegation) => (
                 <CreditDelegationCard
                   toggleIsOpen={toggleIsOpen}
                   handleEnableDelegation={handleEnableDelegation}
@@ -158,14 +166,8 @@ export const DelegationsManagementSheet = ({
                   delegationWithMetadata={delegation}
                   delegation={delegation.data}
                   delegatorAccountSocialCredentials={
-                    (data?.links
-                      .filter(
-                        (link) =>
-                          link.account.address === delegation.data.delegator,
-                      )
-                      .map(
-                        (link) => link.credentials,
-                      )[0] as SocialCredential[]) ?? ([] as SocialCredential[])
+                    (data?.credentials[delegation.data.delegator]
+                      ?.credentials ?? []) as SocialCredential[]
                   }
                 />
               ))}

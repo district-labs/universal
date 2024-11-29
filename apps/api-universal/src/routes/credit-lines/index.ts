@@ -6,7 +6,6 @@ import {
   decodeEnforcerERC20TransferAmount,
 } from 'universal-delegations-sdk';
 import { type Address, formatUnits } from 'viem';
-import { baseSepolia } from 'viem/chains';
 import { getCredentialsByAddresses } from './utils/get-credentials-by-addresses.js';
 import { getIssuedDelegations } from './utils/get-issued-delegations.js';
 import { getRedeemedCreditLines } from './utils/get-redeemed-credit-Lines.js';
@@ -42,7 +41,7 @@ const creditLineRouter = new Hono().post(
   '/',
   zValidator('json', getCreditLineSchema),
   async (c) => {
-    const { delegate, delegator, type } = c.req.valid('json');
+    const { delegate, delegator, type, chainId } = c.req.valid('json');
     try {
       const [redeemCreditLinesResponse, issuedDelegationsResponse] =
         await Promise.all([
@@ -70,8 +69,7 @@ const creditLineRouter = new Hono().post(
 
       const { credentials } = await getCredentialsByAddresses({
         addresses: Array.from(addresses),
-        // TODO: Remove hardcoded chainId
-        chainId: baseSepolia.id,
+        chainId,
       });
 
       const creditLines: DelegationMetadata[] =
@@ -139,7 +137,6 @@ const creditLineRouter = new Hono().post(
       return c.json(
         {
           creditLines,
-          redeemedCreditLines,
           credentials,
         },
         200,
