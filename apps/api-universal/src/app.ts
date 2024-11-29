@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { accountsRouter } from './routes/accounts.js';
 import { creditRouter } from './routes/credit.js';
-import { creditLineRouter } from './routes/credit-line.js';
+import { creditLineRouter } from './routes/credit-lines.js';
 import { leaderboardRouter } from './routes/leaderboard.js';
 
 const app = new Hono()

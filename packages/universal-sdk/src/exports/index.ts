@@ -1,9 +1,9 @@
 export { UniversalProvider, useUniversal } from '../api/client.js';
 export { getAccount, useGetAccount } from '../api/hooks/get-account.js';
 export {
-  getCreditLine,
-  useGetCreditLine,
-} from '../api/hooks/get-credit-line.js';
+  getRedeemedCreditLines,
+  useGetRedeemedCreditLines,
+} from '../api/hooks/get-redeemed-credit-lines.js';
 export { getCredit, useGetCredit } from '../api/hooks/get-credit.js';
 export {
   getLeaderboard,

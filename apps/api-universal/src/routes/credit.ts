@@ -11,7 +11,7 @@ import {
   decodeEnforcerERC20TransferAmount,
 } from 'universal-delegations-sdk';
 import { constructDidIdentifier } from 'universal-identity-sdk';
-import { type Address, formatUnits } from 'viem';
+import { type Address, formatUnits, isAddress } from 'viem';
 import { z } from 'zod';
 import {
   apiCredentialsClient,
@@ -39,8 +39,8 @@ interface DelegationMetadata {
 }
 
 const routeDelegateAddressParams = z.object({
-  address: z.custom<Address>((val) => val.length > 10 && val.startsWith('0x'), {
-    message: 'invalid address',
+  address: z.string().refine(isAddress, {
+    message: 'Invalid address',
   }),
 });
 

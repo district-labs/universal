@@ -25,7 +25,7 @@ export default function CreditLinePage() {
               </ConnectUniversalWalletButton>
             </div>
           )}
-          {address && <ViewCreditLines redeemer={address} />}
+          {address && <ViewCreditLines delegate={address} />}
         </div>
       </section>
     </div>

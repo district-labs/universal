@@ -2,20 +2,20 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
-import { useGetCreditLine } from 'universal-sdk';
+import { useGetRedeemedCreditLines } from 'universal-sdk';
 
 import { type Address, formatUnits } from 'viem';
 
 type ViewCreditLinesProps = React.HTMLAttributes<HTMLElement> & {
-  redeemer: Address | undefined;
+  delegate: Address | undefined;
 };
 
 export const ViewCreditLines = ({
   className,
-  redeemer,
+  delegate,
 }: ViewCreditLinesProps) => {
-  const { data, isLoading } = useGetCreditLine({
-    redeemer,
+  const { data, isLoading } = useGetRedeemedCreditLines({
+    delegate,
   });
 
   if (isLoading || !data) {

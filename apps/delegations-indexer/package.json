@@ -18,10 +18,12 @@
     "codegen": "ponder codegen"
   },
   "dependencies": {
-    "universal-data": "workspace:*",
+    "@hono/zod-validator": "^0.4.1",
     "@ponder/core": "^0.7.11",
     "hono": "^4.5.0",
-    "viem": "^2.21.3"
+    "universal-data": "workspace:*",
+    "viem": "^2.21.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20.9.0",
