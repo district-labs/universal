@@ -12,6 +12,8 @@ ponder.on(
     await context.db.insert(enforcerEvents).values({
       delegationHash,
       timestamp: event.block.timestamp,
+      blockNumber: event.block.number,
+      transactionHash: event.transaction.hash,
       args: encodedEventArgs,
       enforcer: event.log.address,
       redeemer,

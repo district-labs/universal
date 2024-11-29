@@ -25,6 +25,8 @@ export type RedeemedCreditLinesResponse = {
     limit: string;
     totalSpent: string;
     redemptions: {
+      transactionHash: string;
+      blockNumber: number;
       timestamp: string;
       redeemed: string;
     }[];

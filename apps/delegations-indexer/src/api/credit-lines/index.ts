@@ -83,6 +83,8 @@ ponder.get(
                 : event.args.spent -
                   (sortedEvents[index - 1]?.args.spent ?? 0n);
             return {
+              blockNumber: Number(event.blockNumber),
+              transactionHash: event.transactionHash,
               timestamp: event.timestamp.toString(),
               redeemed: redeemed.toString(),
             };

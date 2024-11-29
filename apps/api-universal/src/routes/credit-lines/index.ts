@@ -1,14 +1,16 @@
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
+import { type TokenItem, findTokenByAddress } from 'universal-data';
+import {
+  type DelegationDb,
+  decodeEnforcerERC20TransferAmount,
+} from 'universal-delegations-sdk';
+import { type Address, formatUnits } from 'viem';
+import { baseSepolia } from 'viem/chains';
+import { getCredentialsByAddresses } from './utils/get-credentials-by-addresses.js';
+import { getIssuedDelegations } from './utils/get-issued-delegations.js';
 import { getRedeemedCreditLines } from './utils/get-redeemed-credit-Lines.js';
 import { getCreditLineSchema } from './utils/validation.js';
-import { getIssuedDelegations } from './utils/get-issued-delegations.js';
-import {
-  decodeEnforcerERC20TransferAmount,
-  type DelegationDb,
-} from 'universal-delegations-sdk';
-import { type TokenItem, findTokenByAddress } from 'universal-data';
-import { formatUnits } from 'viem';
 
 type DelegationMetadata = {
   data: DelegationDb;
@@ -27,7 +29,10 @@ type DelegationMetadata = {
     };
     redemptions: {
       timestamp: string;
+      blockNumber: number;
+      transactionHash: string;
       redeemed: string;
+      redeemedFormatted: string;
     }[];
     token: TokenItem;
   };
@@ -55,6 +60,19 @@ const creditLineRouter = new Hono().post(
 
       const { creditLines: redeemedCreditLines } = redeemCreditLinesResponse;
       const { delegations: issuedDelegations } = issuedDelegationsResponse;
+      // Gets all addresses of delegates and delegators
+      const addresses: Set<Address> = new Set();
+
+      issuedDelegations.delegations.forEach(({ delegate, delegator }) => {
+        addresses.add(delegator);
+        addresses.add(delegate);
+      });
+
+      const { credentials } = await getCredentialsByAddresses({
+        addresses: Array.from(addresses),
+        // TODO: Remove hardcoded chainId
+        chainId: baseSepolia.id,
+      });
 
       const creditLines: DelegationMetadata[] =
         issuedDelegations.delegations.map((delegation) => {
@@ -87,6 +105,16 @@ const creditLineRouter = new Hono().post(
             : 0n;
           const available = limit - spent;
 
+          const redemptionsFormatted = redemptions?.redemptions.map(
+            (redemption) => ({
+              ...redemption,
+              redeemedFormatted: formatUnits(
+                BigInt(redemption.redeemed),
+                tokenData.decimals,
+              ),
+            }),
+          );
+
           return {
             data: delegation,
             metadata: {
@@ -103,7 +131,7 @@ const creditLineRouter = new Hono().post(
                 amount: limit.toString(),
                 amountFormatted: formatUnits(limit, tokenData.decimals),
               },
-              redemptions: redemptions?.redemptions ?? [],
+              redemptions: redemptionsFormatted ?? [],
             },
           };
         });
@@ -112,6 +140,7 @@ const creditLineRouter = new Hono().post(
         {
           creditLines,
           redeemedCreditLines,
+          credentials,
         },
         200,
       );

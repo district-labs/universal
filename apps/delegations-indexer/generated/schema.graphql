@@ -127,6 +127,8 @@ type enforcerEventsPage {
 type enforcerEvents {
   id: String!
   timestamp: BigInt!
+  blockNumber: BigInt!
+  transactionHash: String!
   event: String!
   redeemer: String!
   enforcer: String!
@@ -157,6 +159,24 @@ input enforcerEventsFilter {
   timestamp_lt: BigInt
   timestamp_gte: BigInt
   timestamp_lte: BigInt
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_in: [BigInt]
+  blockNumber_not_in: [BigInt]
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  transactionHash: String
+  transactionHash_not: String
+  transactionHash_in: [String]
+  transactionHash_not_in: [String]
+  transactionHash_contains: String
+  transactionHash_not_contains: String
+  transactionHash_starts_with: String
+  transactionHash_ends_with: String
+  transactionHash_not_starts_with: String
+  transactionHash_not_ends_with: String
   event: String
   event_not: String
   event_in: [String]
