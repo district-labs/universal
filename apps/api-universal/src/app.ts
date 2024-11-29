@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { accountsRouter } from './routes/accounts.js';
-import { creditLineRouter } from './routes/credit-lines.js';
+import { creditLineRouter } from './routes/credit-lines/index.js';
 import { creditRouter } from './routes/credit.js';
 import { leaderboardRouter } from './routes/leaderboard.js';
 

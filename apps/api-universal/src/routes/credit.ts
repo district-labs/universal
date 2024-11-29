@@ -19,7 +19,7 @@ import {
   baseSepoliaPublicClient,
 } from '../clients.js';
 
-interface DelegationMetadata {
+export type DelegationMetadata = {
   data: DelegationDb;
   metadata: {
     available: {
@@ -36,7 +36,7 @@ interface DelegationMetadata {
     };
     token: TokenItem;
   };
-}
+};
 
 const routeDelegateAddressParams = z.object({
   address: z.string().refine(isAddress, {
