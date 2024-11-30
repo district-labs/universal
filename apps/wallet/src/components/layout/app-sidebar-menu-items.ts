@@ -4,6 +4,7 @@ import {
   Coins,
   IdCard,
   KeySquare,
+  LayoutList,
   Orbit,
   Search,
 } from 'lucide-react';
@@ -13,6 +14,11 @@ export const itemsCore = [
     title: 'Assets',
     url: '/',
     icon: Coins,
+  },
+  {
+    title: 'Credit Lines',
+    url: '/finance/credit',
+    icon: Banknote,
   },
   {
     title: 'Leaderboard',
@@ -28,14 +34,14 @@ export const itemsFinance = [
     icon: ArrowLeftRight,
   },
   {
-    title: 'Authorizations',
+    title: 'Authorize',
     url: '/finance/authorizations',
     icon: KeySquare,
   },
   {
-    title: 'Credit',
-    url: '/finance/credit',
-    icon: Banknote,
+    title: 'Redemptions',
+    url: '/finance/redemptions',
+    icon: LayoutList,
   },
 ];
 

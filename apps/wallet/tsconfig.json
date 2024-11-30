@@ -4,7 +4,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/(site)/credit-lines/view-credit-lines.tsx"
+    "app/(site)/finance/redemptions/view-credit-lines.tsx"
   ],
   "exclude": ["node_modules"],
   "extends": "../../tsconfig.next.json",

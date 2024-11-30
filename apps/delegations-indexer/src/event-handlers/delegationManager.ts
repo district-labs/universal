@@ -80,11 +80,13 @@ async function updateDelegation({
       ...delegation,
     });
 
-  // Insert caveats if not already present
-  await context.db
-    .insert(caveats)
-    .values(formattedCaveats)
-    .onConflictDoNothing();
+  if (formattedCaveats) {
+    // Insert caveats if not already present
+    await context.db
+      .insert(caveats)
+      .values(formattedCaveats)
+      .onConflictDoNothing();
+  }
 }
 
 ponder.on(

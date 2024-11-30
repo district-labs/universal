@@ -20,6 +20,7 @@ export type RedeemedCreditLinesResponse = {
       hash: string;
       delegator: string;
       delegate: string;
+      isEnabled: boolean;
     };
     token: string;
     limit: string;

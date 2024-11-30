@@ -48,10 +48,12 @@ export const DelegationsManagementSheet = ({
 
   const creditLines = useMemo(() => {
     if (!data?.creditLines) return;
-
+    console.log(data.creditLines, 'data.creditLines');
     // Filter out credit lines with no available balance
     return data.creditLines.filter(
-      (delegation) => Number(delegation.metadata.available.amount) > 0,
+      (delegation) =>
+        Number(delegation.metadata.available.amount) > 0 &&
+        !delegation.data.isRevoked,
     );
   }, [data?.creditLines]);
 

@@ -11,8 +11,12 @@ import { getIssuedDelegations } from './utils/get-issued-delegations.js';
 import { getRedeemedCreditLines } from './utils/get-redeemed-credit-Lines.js';
 import { getCreditLineSchema } from './utils/validation.js';
 
+type DelegationDbWithOnchainData = DelegationDb & {
+  isRevoked: boolean;
+};
+
 type DelegationMetadata = {
-  data: DelegationDb;
+  data: DelegationDbWithOnchainData;
   metadata: {
     available: {
       amount: string;
@@ -48,6 +52,11 @@ const creditLineRouter = new Hono().post(
           getRedeemedCreditLines({ delegate, delegator }),
           getIssuedDelegations({ delegate, type }),
         ]);
+
+      console.log(
+        redeemCreditLinesResponse.creditLines?.creditLines,
+        'redeemCreditLinesResponse',
+      );
 
       if (!redeemCreditLinesResponse.ok) {
         return c.json({ error: redeemCreditLinesResponse.error }, 500);
@@ -113,8 +122,19 @@ const creditLineRouter = new Hono().post(
             }),
           );
 
+          console.log(
+            !redemptions?.delegation?.isEnabled,
+            'redemptions?.delegation?.isEnabled',
+          );
+
           return {
-            data: delegation,
+            data: {
+              ...delegation,
+              isRevoked:
+                typeof redemptions?.delegation?.isEnabled === 'undefined'
+                  ? false
+                  : !redemptions?.delegation?.isEnabled,
+            },
             metadata: {
               token: tokenData,
               available: {
