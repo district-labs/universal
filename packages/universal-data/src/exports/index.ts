@@ -4,6 +4,7 @@ export { universalDocumentAbi } from '../abis/universal-document-abi.js';
 export { universalResolverAbi } from '../abis/universal-resolver-abi.js';
 export { universalDeployments } from '../deployments.js';
 export { tokenList } from '../token-list.js';
+export { stablecoinTokenList } from '../token-list/stablecoin-token-list.js';
 export { tokenDeployments } from '../tokens.js';
 export type {
   Token,
