@@ -25,14 +25,6 @@ export default function ViewDocument() {
 
   return (
     <>
-      <section className="border-b-2 bg-neutral-100/30 py-6">
-        <div className="container flex w-full flex-col items-center gap-2 md:flex-row md:justify-between">
-          <h3 className="font-bold text-2xl ">Universal Document</h3>
-          <p className="hidden md:block">
-            Manage your universal identity document.
-          </p>
-        </div>
-      </section>
       <section className="h-full max-w-[100vw] bg-neutral-100 px-6 py-6">
         <div className={cn('mx-auto')}>
           <div

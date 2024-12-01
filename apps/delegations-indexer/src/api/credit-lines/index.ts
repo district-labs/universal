@@ -95,6 +95,7 @@ ponder.get(
               hash: delegation.hash,
               delegator: delegation.delegator,
               delegate: delegation.delegate,
+              isEnabled: delegation.enabled,
             },
             token,
             limit: limit.toString(),

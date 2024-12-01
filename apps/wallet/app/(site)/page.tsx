@@ -8,12 +8,12 @@ import { PlusCircle } from 'lucide-react';
 export default function HomePage() {
   return (
     <div className="space-y-6">
-      <section className="border-b-2 bg-neutral-100/30 py-6">
+      <section className="border-b-2 bg-neutral-100/30 py-3">
         <div className="container flex w-full flex-row items-center justify-between gap-2">
-          <h3 className="font-bold text-2xl">Assets</h3>
+          <h3 className="font-semibold text-lg lg:text-xl">Assets</h3>
           <div className="flex flex-1 items-center justify-end gap-x-2">
             <AddFundsTestnet>
-              <Button rounded={'lg'}>
+              <Button rounded={'full'}>
                 <PlusCircle className="size-5" />
                 Mint Tokens
               </Button>

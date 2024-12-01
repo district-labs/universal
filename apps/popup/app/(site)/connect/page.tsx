@@ -5,7 +5,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { getInitialOwners } from '@/lib/db/hooks/use-get-initial-owner';
 import { useAccountState } from '@/lib/state/use-account-state';
 import { cn } from '@/lib/utils';
-import { siteConfig } from 'app/config';
 import Link from 'next/link';
 import { toHex } from 'viem';
 import { sign } from 'webauthn-p256';
@@ -19,9 +18,6 @@ export default function Page() {
   if (accountState || !message?.method) {
     return (
       <div className="flex h-full w-full flex-1 flex-col justify-between">
-        <div className="relative z-50 w-full bg-neutral-00 py-6 text-center">
-          <h1 className="font-bold text-2xl">{siteConfig.name}</h1>
-        </div>
         <div className="z-10 mx-auto flex w-full max-w-screen-sm flex-1 flex-col items-center justify-center gap-y-5 px-12">
           <Skeleton className="h-16 w-full rounded-full" />
           <Skeleton className="h-16 w-full rounded-full" />
@@ -31,9 +27,6 @@ export default function Page() {
   }
   return (
     <div className="flex h-full w-full flex-1 flex-col justify-between">
-      <div className="relative z-50 w-full bg-neutral-00 py-6 text-center">
-        <h1 className="font-bold text-2xl">{siteConfig.name}</h1>
-      </div>
       <div className="z-10 mx-auto flex w-full max-w-screen-sm flex-1 flex-col items-center justify-center gap-y-5 px-12">
         <Button
           size="lg"

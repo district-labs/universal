@@ -9,7 +9,7 @@ interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  name: 'Universal Wallet',
+  name: 'Universal',
   company: 'District',
   description: "Discover What's Possible",
   localeDefault: 'en',

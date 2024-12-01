@@ -9,12 +9,13 @@ import { useActiveSessions } from '@/lib/walletconnect/hooks/use-active-connecti
 import { useWalletKitClient } from '@/lib/walletconnect/hooks/use-wallet-kit-client';
 import { useDisconnectWc } from '@/lib/walletconnect/hooks/use-wc-disconnect';
 import { Addreth } from 'addreth';
-import { Circle, LogOut, Unplug } from 'lucide-react';
+import { LogOut, Unplug } from 'lucide-react';
 import Image from 'next/image';
 import { useMemo } from 'react';
 import { useAccount } from 'wagmi';
 import { PWAInstallPrompt } from '../core/pwa-install-prompt';
 import { DisconnectWalletElement } from '../onchain/disconnect-wallet-element';
+import { WalletPFP } from '../onchain/wallet-pfp';
 import { Button } from '../ui/button';
 import { Skeleton } from '../ui/skeleton';
 type AccountPopover = React.HTMLAttributes<HTMLElement>;
@@ -36,12 +37,15 @@ export const AccountPopover = ({ className }: AccountPopover) => {
   }, [activeSessionsQuery.data]);
 
   return (
-    <div>
+    <div className={className}>
       <Popover>
         <PopoverTrigger asChild={true}>
-          <Button variant={'emerald'}>
-            <Circle className="size-5" />
-          </Button>
+          <span className="cursor-pointer">
+            <WalletPFP
+              address={address}
+              className="size-10 rounded-full border-[2px] border-white shadow-md transition-all hover:scale-105 hover:shadow-xl"
+            />
+          </span>
         </PopoverTrigger>
         <PopoverContent
           className={cn(
@@ -131,7 +135,7 @@ export const AccountPopover = ({ className }: AccountPopover) => {
               <div className="bg-neutral-100/60 px-4 py-3">
                 <div className="curs flex w-full items-center justify-between">
                   <span className="font-semibold text-neutral-600">
-                    Install Universal
+                    Install App Now
                   </span>
                   <Image
                     className="rounded-md shadow-md"

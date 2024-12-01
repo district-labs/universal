@@ -13,24 +13,42 @@ import { Erc20SelectAndAmount } from '@/components/fields/erc20-select-and-amoun
 import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
 import { Card } from '@/components/ui/card';
 import type { TokenItem } from 'universal-data';
-import { tokenList } from 'universal-data';
+import { findTokenByAddress, tokenList } from 'universal-data';
 import { baseSepolia } from 'viem/chains';
 import { useWriteContracts } from 'wagmi/experimental';
 
 const formSchema = z.object({
   to: addressSchema,
-  token: z.custom<TokenItem>(),
+  token: z.custom<TokenItem>().refine((value) => !!value?.address, {
+    message: 'Token is required',
+  }),
   amount: z.string(),
 });
 
-function FormerErc20Transfer() {
+export type FormData = {
+  to?: Address;
+  token?: Address;
+  amount?: string;
+};
+
+type FormerErc20TransferProps = {
+  defaultValues?: FormData;
+};
+
+function FormerErc20Transfer({ defaultValues }: FormerErc20TransferProps) {
   const { address } = useAccount();
   const chainId = useChainId();
   const { switchChain, isPending: isPendingSwitchChain } = useSwitchChain();
-  // const { data, writeContract, error, status } = useWriteContract();
   const { writeContracts } = useWriteContracts();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      token: defaultValues?.token
+        ? findTokenByAddress(defaultValues?.token)
+        : undefined,
+      to: defaultValues?.to || undefined,
+      amount: defaultValues?.amount || undefined,
+    },
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
@@ -40,15 +58,6 @@ function FormerErc20Transfer() {
       });
       return;
     }
-    // writeContract({
-    //   abi: erc20Abi,
-    //   address: data.token.address as Address,
-    //   functionName: 'transfer',
-    //   args: [
-    //     data.to as Address,
-    //     parseUnits(data.amount.toString(), data.token.decimals),
-    //   ],
-    // });
     writeContracts({
       contracts: [
         {
@@ -82,7 +91,7 @@ function FormerErc20Transfer() {
         {address && chainId === baseSepolia.id && (
           <div className="">
             <Button
-              // disabled={!form.formState.isValid}
+              disabled={!form.formState.isValid}
               className="w-full py-3 text-lg"
               type="submit"
               rounded={'full'}

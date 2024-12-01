@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import type { Address } from 'viem';
 import { Button } from '../ui/button';
+import { DialogDescription, DialogTitle } from '../ui/dialog';
 
 interface AccountSelectorProps {
   disabled?: boolean;
@@ -33,6 +34,12 @@ export function AccountSelector({ disabled }: AccountSelectorProps) {
         <span className="font-medium text-md">Select</span>
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
+        <DialogTitle className="mt-4 ml-6 font-bold text-lg">
+          Select Account
+        </DialogTitle>
+        <DialogDescription className="sr-only mt-2 ml-6 text-sm">
+          Search for an account by name, address or credential.
+        </DialogDescription>
         <CommandInput
           placeholder="Search name or paste address"
           value={searchValue}

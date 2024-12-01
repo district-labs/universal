@@ -8,12 +8,12 @@ export default function CreditLinePage() {
 
   return (
     <div className="flex h-full flex-col">
-      <section className="border-b-2 bg-neutral-100/30 py-6">
+      <section className="border-b-2 bg-neutral-100/30 py-3">
         <div className="container flex w-full flex-col items-center gap-2 md:flex-row md:justify-between">
-          <h3 className="font-bold text-2xl">Credit Lines</h3>
+          <h3 className="font-semibold text-lg lg:text-xl">Redemptions</h3>
         </div>
       </section>
-      <section className="flex-1 bg-neutral-100/50 py-4 md:py-8">
+      <section className="mt-6 flex-1 bg-neutral-100/50 pb-4 md:pb-8">
         <div className="container">
           {!address && (
             <div className="flex flex-col items-center justify-center">

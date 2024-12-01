@@ -11,11 +11,12 @@ import Image from 'next/image';
 import { findTokenByAddress } from 'universal-data';
 import { useGetLeaderboard } from 'universal-sdk';
 import { baseSepolia } from 'viem/chains';
-import { AccountInteractDialog } from '../core/account-interact-dialog';
+import { AccountInteractDialog } from '../core/account-authorize-credit-line-dialog';
 import { CopyIconButton } from '../core/copy-icon-button';
 import { CredentialSocialIcon } from '../identity/credential-social-icon';
 import { Address } from '../onchain/address';
 import { ERC20Balance } from '../onchain/erc20-balance';
+import { WalletPFP } from '../onchain/wallet-pfp';
 import { Button } from '../ui/button';
 import { LinkComponent } from '../ui/link-component';
 import { Skeleton } from '../ui/skeleton';
@@ -46,7 +47,7 @@ const LeaderboardTable: React.FC<LeaderboardTableProps> = () => {
   return (
     <Suspense fallback={null}>
       <DataTable
-        tableName="Leaderboard"
+        tableName="Universal Web of Trust"
         columns={columns}
         data={data}
         pageCount={1}
@@ -89,7 +90,11 @@ const columns = [
     accessorKey: 'address',
     header: () => <h3 className="font-semibold text-sm">Account</h3>,
     cell: ({ row }) => (
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
+        <WalletPFP
+          address={row.original.address}
+          className="size-6 rounded-full border-2 shadow-md shadow-md"
+        />
         <Address truncate={true} address={row.original.address} />
         <CopyIconButton value={row.original.address} />
       </div>

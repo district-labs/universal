@@ -74,7 +74,7 @@ const AddFundsTestnet = ({ children }: AddFundsTestnet) => {
 
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger asChild={true}>{children}</DialogTrigger>
       <DialogContent className="px-10 pt-10 pb-6">
         <DialogHeader className="sm:text-center">
           <DialogTitle className="font-black text-4xl">

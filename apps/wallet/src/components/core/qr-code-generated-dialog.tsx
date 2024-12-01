@@ -32,17 +32,7 @@ const QRCodeGeneratedDialog = () => {
       {address && chainId && (
         <DialogContent className="p-10 text-center">
           <Tabs defaultValue="account" className="w-full">
-            <TabsList className="w-full">
-              <TabsTrigger className="flex-1 gap-x-1" value="account">
-                <WalletMinimal className="size-4" />
-                Wallet
-              </TabsTrigger>
-              <TabsTrigger className="flex-1 gap-x-1" value="password">
-                <Fingerprint className="size-4" />
-                Identity
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent className="pt-4" value="account">
+            <TabsContent value="account">
               <DialogHeader className="items-center">
                 <DialogTitle className="sr-only font-bold text-3xl">
                   Wallet Address
@@ -54,7 +44,7 @@ const QRCodeGeneratedDialog = () => {
                 </div>
               </div>
             </TabsContent>
-            <TabsContent className="pt-4" value="password">
+            <TabsContent value="password">
               <DialogHeader className="items-center">
                 <DialogTitle className="sr-only font-bold text-3xl">
                   Wallet Address
@@ -75,6 +65,16 @@ const QRCodeGeneratedDialog = () => {
                 </div>
               </div>
             </TabsContent>
+            <TabsList className="mt-4 w-full">
+              <TabsTrigger className="flex-1 gap-x-1" value="account">
+                <WalletMinimal className="size-4" />
+                Wallet
+              </TabsTrigger>
+              <TabsTrigger className="flex-1 gap-x-1" value="password">
+                <Fingerprint className="size-4" />
+                Identity
+              </TabsTrigger>
+            </TabsList>
           </Tabs>
         </DialogContent>
       )}

@@ -20,14 +20,11 @@ import { DebitCard } from 'universal-wallet-ui';
 import { type Address, encodeFunctionData, erc20Abi } from 'viem';
 import { useAccount } from 'wagmi';
 
-type ViewCreditReceivedProps = React.HTMLAttributes<HTMLElement> & {
+type ViewCreditTableProps = React.HTMLAttributes<HTMLElement> & {
   delegate: Address;
 };
 
-const ViewCreditReceived = ({
-  className,
-  delegate,
-}: ViewCreditReceivedProps) => {
+const ViewCreditTable = ({ className, delegate }: ViewCreditTableProps) => {
   const { data } = useGetDelegationByDelegateAndType({
     address: delegate,
     type: 'DebitAuthorization',
@@ -152,4 +149,4 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
   );
 };
 
-export { ViewCreditReceived };
+export { ViewCreditTable };

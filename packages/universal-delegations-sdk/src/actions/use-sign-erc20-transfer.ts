@@ -97,7 +97,7 @@ export function useSignErc20TransferDelegation() {
         chainId,
         signature: data,
         // @ts-ignore
-        hash: getDelegationHash(_delegation),
+        hash: getDelegationHash(delegation),
       });
       return () => {
         setDelegation(null);
