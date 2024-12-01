@@ -1,3 +1,4 @@
+import { Ban, KeySquare } from 'lucide-react';
 import type * as React from 'react';
 import {
   type DelegationDb,
@@ -33,10 +34,20 @@ export const DelegationToggle = ({
     <Button
       onClick={status ? enable : disable}
       className={className}
-      // rounded={'full'}
-      variant={status ? 'emerald' : 'default'}
+      rounded={'full'}
+      variant={status ? 'emerald' : 'destructive'}
     >
-      {status ? 'Activate' : 'Revoke'}
+      {status ? (
+        <>
+          Re-activate
+          <KeySquare className="ml-0 size-2" />
+        </>
+      ) : (
+        <>
+          Revoke
+          <Ban className="ml-0 size-2" />
+        </>
+      )}
     </Button>
   );
 };

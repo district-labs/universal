@@ -12,7 +12,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { siteConfig } from 'app/config';
 import { CircleIcon, Earth, Fingerprint, SmartphoneNfc } from 'lucide-react';
 
 import { type breakpoints, useBreakpoint } from '@/lib/hooks/use-breakpoint';
@@ -20,6 +19,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { PWAInstallPrompt } from '../core/pwa-install-prompt';
+import { ChainManagementModal } from '../onchain/chain-management-modal';
 import { LinkComponent } from '../ui/link-component';
 import {
   itemsCore,
@@ -36,10 +36,12 @@ export function AppSidebar() {
   return (
     <Sidebar className="z-50">
       <SidebarHeader className="p-4">
-        <Link href="/" className="flex items-center">
-          <CircleIcon className="size-6 text-emerald-500 dark:text-emerald-100" />
-          <span className="ml-2 font-semibold text-lg">{siteConfig.name}</span>
-        </Link>
+        <div className="flex w-full justify-between">
+          <Link href="/" className="flex items-center">
+            <CircleIcon className="size-6 text-emerald-500 dark:text-emerald-100" />
+          </Link>
+          <ChainManagementModal />
+        </div>
       </SidebarHeader>
       <SidebarContent className="px-2">
         {/* Dashboard Group */}
@@ -137,8 +139,8 @@ export function AppSidebar() {
         <PWAInstallPrompt className="text-sm">
           <div className="bg-neutral-200/60 px-4 py-2">
             <div className="flex w-full items-center justify-between">
-              <span className="font-semibold text-neutral-600">
-                Install Universal
+              <span className="font-semibold text-neutral-600 text-xs">
+                Install App Now
               </span>
               <Image
                 className="rounded-md shadow-md"
@@ -160,7 +162,7 @@ export function AppSidebar() {
             </LinkComponent>
           </div>
           <div>
-            <span className="text-xs">v0.0.0-alpha</span>
+            <span className="text-xs">alpha release</span>
           </div>
         </div>
       </SidebarFooter>

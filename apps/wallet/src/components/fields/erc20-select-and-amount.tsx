@@ -34,7 +34,7 @@ export function Erc20SelectAndAmount({
                   <Input
                     disabled={disabled}
                     id="amount"
-                    className="block h-auto w-full flex-1 border-transparent bg-transparent py-1 pl-0 text-left font-medium text-5xl shadow-none placeholder:text-muted-foreground focus:border-transparent focus:ring-transparent focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-transparent"
+                    className="block h-auto w-full flex-1 border-transparent bg-transparent py-1 pl-0 text-left font-bold text-5xl shadow-none placeholder:text-muted-foreground focus:border-transparent focus:ring-transparent focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-transparent"
                     placeholder="0.0"
                     {...field}
                     value={field.value || ''}

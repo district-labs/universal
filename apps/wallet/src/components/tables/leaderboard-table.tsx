@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { findTokenByAddress } from 'universal-data';
 import { useGetLeaderboard } from 'universal-sdk';
 import { baseSepolia } from 'viem/chains';
-import { AccountInteractDialog } from '../core/account-interact-dialog';
+import { AccountInteractDialog } from '../core/account-authorize-credit-line-dialog';
 import { CopyIconButton } from '../core/copy-icon-button';
 import { CredentialSocialIcon } from '../identity/credential-social-icon';
 import { Address } from '../onchain/address';

@@ -1,28 +1,34 @@
-import { DelegationToggle } from '@/components/delegations/delegations-toggle';
-import { AccountSocialCredentialWeightedBadge } from '@/components/identity/account-social-credential-weighted-badge';
+import { AccountSocialCredentialBadge } from '@/components/identity/account-social-credential-badge';
 import { AccountAddress } from '@/components/onchain/account-address';
+import { IsNotUniversalWallet } from '@/components/onchain/is-not-universal-wallet';
+import { IsUniversalWallet } from '@/components/onchain/is-universal-wallet';
 import { WalletPFP } from '@/components/onchain/wallet-pfp';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
+import { Ban, KeySquare } from 'lucide-react';
 import type { SocialCredential } from 'universal-data';
+import { useDelegationExecute } from 'universal-delegations-sdk';
 
 import { useGetCreditLines } from 'universal-sdk';
 import { TimeFromEpoch } from 'universal-wallet-ui';
-import type { Address } from 'viem';
-import { useChainId } from 'wagmi';
+import { type Address, encodeFunctionData, erc20Abi } from 'viem';
+import { useAccount, useChainId } from 'wagmi';
 
-type ViewCreditLinesProps = React.HTMLAttributes<HTMLElement> & {
+type ViewCreditCardsProps = React.HTMLAttributes<HTMLElement> & {
   delegate: Address | undefined;
 };
 
-export const ViewCreditLines = ({
+export const ViewCreditCards = ({
   className,
   delegate,
-}: ViewCreditLinesProps) => {
+}: ViewCreditCardsProps) => {
+  const { address } = useAccount();
   const chainId = useChainId();
+  const execute = useDelegationExecute();
   const { data, isLoading } = useGetCreditLines({
-    delegator: delegate,
+    delegate,
     chainId,
   });
 
@@ -33,7 +39,7 @@ export const ViewCreditLines = ({
   if (data.creditLines.length === 0) {
     return (
       <Card className="p-8 text-center">
-        <h3 className="font-normal text-lg">No Credit Lines Issued</h3>
+        <h3 className="font-normal text-lg">No Active Credit Lines</h3>
       </Card>
     );
   }
@@ -77,10 +83,9 @@ export const ViewCreditLines = ({
                       truncate={true}
                       address={delegation.delegate}
                     />
-                    {/* <DelegationStatus className="text-xs" delegation={delegation} /> */}
                   </div>
                   <div className="flex items-center gap-x-3 text-sm">
-                    <AccountSocialCredentialWeightedBadge
+                    <AccountSocialCredentialBadge
                       address={delegation.delegate}
                       credentials={
                         (data.credentials[delegation.delegate]
@@ -107,7 +112,48 @@ export const ViewCreditLines = ({
               </div>
             </CardContent>
             <CardFooter className="flex w-full flex-row items-center justify-center gap-x-4 p-0 lg:w-auto">
-              <DelegationToggle delegation={delegation} className="w-full" />
+              {delegation.isRevoked ? (
+                <Button variant={'destructive'} rounded={'full'}>
+                  Revoked
+                  <Ban className="ml-0 size-2" />
+                </Button>
+              ) : (
+                <div className="space-x-3">
+                  <IsUniversalWallet>
+                    <Button variant={'emerald'} rounded={'full'}>
+                      Delegate <span className="text-xs">(Coming Soon)</span>
+                      <KeySquare className="ml-0 size-2" />
+                    </Button>
+                  </IsUniversalWallet>
+                  <IsNotUniversalWallet>
+                    <Button
+                      className="w-full"
+                      rounded={'full'}
+                      variant={'emerald'}
+                      onClick={() => {
+                        execute({
+                          delegationManager: delegation.verifyingContract,
+                          delegation: delegation,
+                          executions: {
+                            target: metadata.token.address as Address,
+                            calldata: encodeFunctionData({
+                              abi: erc20Abi,
+                              functionName: 'transfer',
+                              args: [
+                                address as Address,
+                                BigInt(metadata.available.amount),
+                              ],
+                            }),
+                            value: BigInt(0),
+                          },
+                        });
+                      }}
+                    >
+                      Claim
+                    </Button>
+                  </IsNotUniversalWallet>
+                </div>
+              )}
             </CardFooter>
           </Card>
           {metadata.redemptions.length > 0 && (

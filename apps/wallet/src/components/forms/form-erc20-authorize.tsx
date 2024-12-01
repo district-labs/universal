@@ -160,9 +160,9 @@ function FormErc20Authorize({
                   Requires Universal Wallet
                 </Button>
                 <p className="mt-4 text-center text-sm">
-                  You're connected with the{' '}
-                  <ConnectedWalletName className="font-bold" /> wallet. <br />{' '}
-                  Please connect with a{' '}
+                  You're connected with{' '}
+                  <ConnectedWalletName className="font-bold" />
+                  <br /> Connect a{' '}
                   <span className="font-bold">Universal Wallet</span> to
                   authorize credit lines.
                 </p>

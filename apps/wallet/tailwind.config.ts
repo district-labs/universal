@@ -16,6 +16,9 @@ const config: Config = {
       },
     },
     extend: {
+      fontSize: {
+        '2xs': '0.625rem',
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

@@ -68,8 +68,6 @@ const leaderboardRouter = new Hono().post(
     });
 
     if (!credentials.ok) {
-      console.log(credentials.headers);
-      console.log(credentials.statusText);
       return c.json({ error: 'credentials not found' }, 404);
     }
     const credentialsRes = await credentials.json();

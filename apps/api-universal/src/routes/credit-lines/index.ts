@@ -50,13 +50,8 @@ const creditLineRouter = new Hono().post(
       const [redeemCreditLinesResponse, issuedDelegationsResponse] =
         await Promise.all([
           getRedeemedCreditLines({ delegate, delegator }),
-          getIssuedDelegations({ delegate, type }),
+          getIssuedDelegations({ delegate, delegator, type }),
         ]);
-
-      console.log(
-        redeemCreditLinesResponse.creditLines?.creditLines,
-        'redeemCreditLinesResponse',
-      );
 
       if (!redeemCreditLinesResponse.ok) {
         return c.json({ error: redeemCreditLinesResponse.error }, 500);
@@ -120,11 +115,6 @@ const creditLineRouter = new Hono().post(
                 tokenData.decimals,
               ),
             }),
-          );
-
-          console.log(
-            !redemptions?.delegation?.isEnabled,
-            'redemptions?.delegation?.isEnabled',
           );
 
           return {

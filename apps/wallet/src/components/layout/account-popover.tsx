@@ -37,7 +37,7 @@ export const AccountPopover = ({ className }: AccountPopover) => {
   }, [activeSessionsQuery.data]);
 
   return (
-    <div>
+    <div className={className}>
       <Popover>
         <PopoverTrigger asChild={true}>
           <span className="cursor-pointer">
@@ -135,7 +135,7 @@ export const AccountPopover = ({ className }: AccountPopover) => {
               <div className="bg-neutral-100/60 px-4 py-3">
                 <div className="curs flex w-full items-center justify-between">
                   <span className="font-semibold text-neutral-600">
-                    Install Universal
+                    Install App Now
                   </span>
                   <Image
                     className="rounded-md shadow-md"
