@@ -1,3 +1,4 @@
+export { erc20TransferAmountAbi } from '../abis/erc20-transfer-amount-abi.js';
 export { delegationManagerAbi } from '../abis/delegation-manager-abi.js';
 export { universalDocumentAbi } from '../abis/universal-document-abi.js';
 export { universalResolverAbi } from '../abis/universal-resolver-abi.js';

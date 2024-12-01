@@ -1,0 +1,32 @@
+{
+  "name": "delegations-indexer",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/exports/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "dev": "ponder dev",
+    "start": "ponder start",
+    "format": "biome format --write",
+    "check": "biome check --write",
+    "check:types": "tsc --noEmit",
+    "codegen": "ponder codegen"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.4.1",
+    "@ponder/core": "^0.7.11",
+    "hono": "^4.5.0",
+    "universal-data": "workspace:*",
+    "viem": "^2.21.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "typescript": "^5.2.2"
+  }
+}

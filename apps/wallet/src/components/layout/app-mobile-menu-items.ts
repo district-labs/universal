@@ -1,10 +1,4 @@
-import {
-  ArrowLeftRight,
-  Banknote,
-  Coins,
-  Fingerprint,
-  KeySquare,
-} from 'lucide-react';
+import { ArrowLeftRight, Banknote, Coins, KeySquare } from 'lucide-react';
 
 export const mobileMenu = [
   {
@@ -23,13 +17,8 @@ export const mobileMenu = [
     icon: Banknote,
   },
   {
-    title: 'Authorizations',
+    title: 'Authorize',
     url: '/finance/authorizations',
     icon: KeySquare,
-  },
-  {
-    title: 'Identity',
-    url: '/identity/manage',
-    icon: Fingerprint,
   },
 ];

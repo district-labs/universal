@@ -8,8 +8,10 @@ import { DataTable } from '@/components/data-table/data-table';
 import { cn } from '@/lib/utils';
 import { tokenList } from 'universal-data';
 import { baseSepolia } from 'viem/chains';
+import { AccountTransferDialog } from '../core/account-transfer-dialog';
 import { ERC20Balance } from '../onchain/erc20-balance';
 import { TokenImageWithFallback } from '../onchain/token-image-with-fallback';
+import { Button } from '../ui/button';
 
 const columns = [
   {
@@ -45,13 +47,15 @@ const columns = [
     ),
   },
   {
-    accessorKey: 'credit',
-    header: () => (
-      <h3 className="text-right font-semibold text-base">Credit</h3>
-    ),
-    cell: () => (
-      <div className="text-right">
-        <span className="font-semibold text-sm md:text-lg">0.00</span>
+    accessorKey: 'actions',
+    header: () => null,
+    cell: ({ row }) => (
+      <div className="flex justify-end">
+        <AccountTransferDialog token={row.original.address}>
+          <Button size={'sm'} variant={'outline'} className="text-xs">
+            Transfer
+          </Button>
+        </AccountTransferDialog>
       </div>
     ),
   },

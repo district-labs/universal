@@ -16,16 +16,18 @@ export const ChainManagementModal = () => {
           <Button
             type="button"
             variant={'outline'}
-            size={'icon'}
+            size={'sm'}
             onClick={openChainModal}
           >
+            {/* <span className='text-2xs'>ETH</span> */}
             <Image
               alt={chain?.name ?? 'Chain Icon'}
-              width={18}
-              height={18}
+              width={16}
+              height={16}
               src={chain?.iconUrl as string}
               className="mx-0"
             />
+            <span className="text-2xs">L2</span>
           </Button>
         );
       }}

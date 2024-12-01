@@ -8,6 +8,10 @@ export const env = createEnv({
     CREDENTIALS_API_URL: z.string().url().default('http://localhost:3100/'),
     DELEGATIONS_API_URL: z.string().url().default('http://localhost:3200/'),
     IDENTITY_API_URL: z.string().url().default('http://localhost:3300/'),
+    DELEGATIONS_INDEXER_API_URL: z
+      .string()
+      .url()
+      .default('http://localhost:42069'),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,

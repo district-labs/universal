@@ -28,6 +28,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <div className="grid w-full grid-cols-3 items-center justify-between px-6 py-4">
             <div className="col-span-1 flex items-center">
               <CircleIcon className="size-6 text-emerald-500 dark:text-emerald-100" />
+              <span className="ml-2 font-bold text-lg">{siteConfig.name}</span>
             </div>
             <div className="col-span-2 flex items-center justify-end">
               <Sheet>
@@ -50,10 +51,6 @@ export default function RootLayout({ children }: RootLayoutProps) {
                   </SheetHeader>
                   <p className="mt-4 text-center">
                     Thank you for being an early adopter!
-                  </p>
-                  <p className="mt-4 text-center">
-                    We are excited to have you on board. Please feel free to
-                    reach out to us with any feedback or suggestions.
                   </p>
                 </SheetContent>
               </Sheet>

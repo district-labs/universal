@@ -21,7 +21,7 @@ export function ViewCredentials() {
         ? constructDidIdentifier({
             chainId: chainId as number,
             address,
-            resolver: universalDeployments?.[chainId as number].resolver,
+            resolver: universalDeployments?.[chainId as number]?.resolver,
           })
         : undefined,
     [address, chainId],
@@ -33,14 +33,6 @@ export function ViewCredentials() {
 
   return (
     <div className="flex h-full flex-col">
-      <section className="border-b-2 bg-neutral-100/30 py-6">
-        <div className="container flex w-full flex-col items-center gap-2 md:flex-row md:justify-between">
-          <h3 className="font-bold text-2xl">Universal Credentials</h3>
-          <p className="hidden md:block">
-            Verify your online accounts to create a universal identity.
-          </p>
-        </div>
-      </section>
       <IsWalletDisconnected>
         <div className="flex flex-col items-center justify-center pt-6">
           <ConnectUniversalWalletButton

@@ -81,7 +81,9 @@
       "node_modules/**",
       "app/globals.css",
       "tsconfig.*.json",
-      "dist"
+      "dist",
+      "**/*.graphql",
+      "ponder-env.d.ts"
     ]
   }
 }

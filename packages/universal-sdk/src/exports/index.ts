@@ -1,6 +1,9 @@
 export { UniversalProvider, useUniversal } from '../api/client.js';
 export { getAccount, useGetAccount } from '../api/hooks/get-account.js';
-export { getCredit, useGetCredit } from '../api/hooks/get-credit.js';
+export {
+  getCreditLines,
+  useGetCreditLines,
+} from '../api/hooks/get-credit-lines.js';
 export {
   getLeaderboard,
   useGetLeaderboard,

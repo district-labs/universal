@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 import { useCallback, useMemo, useState } from 'react';
 import type { TokenItem, TokenList } from 'universal-data';
 import { Button } from '../ui/button';
+import { DialogDescription, DialogTitle } from '../ui/dialog';
 
 interface TokenSelectorProps {
   disabled?: boolean;
@@ -81,9 +82,14 @@ export function TokenSelector({
         {!value && <span className="font-medium text-md">Select Token</span>}
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <h2 className="mt-4 ml-6 font-bold text-sm">Select a token</h2>
+        <DialogTitle className="mt-4 ml-6 font-bold text-lg">
+          Select Token
+        </DialogTitle>
+        <DialogDescription className="sr-only mt-2 ml-6 text-sm">
+          Search for a token by name, symbol or address.
+        </DialogDescription>
         <CommandInput
-          placeholder="Search name or paste address"
+          placeholder="Search for a token by name, symbol or address."
           value={searchValue}
           onValueChange={(value) => setSearchValue(value)}
         />

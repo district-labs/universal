@@ -27,6 +27,7 @@
     "hono": "^4.6.8",
     "pg": "^8.13.1",
     "postgres": "^3.4.5",
+    "delegations-indexer": "workspace:*",
     "universal-credential-sdk": "workspace:*",
     "universal-data": "workspace:*",
     "universal-delegations-sdk": "workspace:*",

@@ -2,6 +2,7 @@ import { and } from 'drizzle-orm';
 import type { Address } from 'viem';
 import { db } from '../../index.js';
 import type { DelegationDb } from '../../schema.js';
+import { sqlLower } from '../../utils.js';
 
 export function getDelegationsByDelegatorAndTypeDb({
   delegator,
@@ -9,7 +10,10 @@ export function getDelegationsByDelegatorAndTypeDb({
 }: { delegator: Address; type: string }): Promise<DelegationDb[]> {
   return db.query.delegations.findMany({
     where: (delegations, { eq }) =>
-      and(eq(delegations.delegator, delegator), eq(delegations.type, type)),
+      and(
+        eq(sqlLower(delegations.delegator), delegator.toLowerCase()),
+        eq(delegations.type, type),
+      ),
     with: {
       caveats: true,
     },

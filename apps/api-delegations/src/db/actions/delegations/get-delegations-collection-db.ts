@@ -1,6 +1,7 @@
-import { and, sql } from 'drizzle-orm';
+import { and } from 'drizzle-orm';
 import type { Address } from 'viem';
 import { db } from '../../index.js';
+import { sqlLower } from '../../utils.js';
 
 export async function getDelegationsCollectionDb({
   address,
@@ -13,7 +14,7 @@ export async function getDelegationsCollectionDb({
       tx.query.delegations.findMany({
         where: (delegations, { eq }) =>
           and(
-            eq(sql`LOWER(${delegations.delegate})`, lowercasedAddress),
+            eq(sqlLower(delegations.delegate), lowercasedAddress),
             eq(delegations.type, type),
           ),
         with: {
@@ -23,7 +24,7 @@ export async function getDelegationsCollectionDb({
       tx.query.delegations.findMany({
         where: (delegations, { eq }) =>
           and(
-            eq(sql`LOWER(${delegations.delegator})`, lowercasedAddress),
+            eq(sqlLower(delegations.delegator), lowercasedAddress),
             eq(delegations.type, type),
           ),
         with: {
