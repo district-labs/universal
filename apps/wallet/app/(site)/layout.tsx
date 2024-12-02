@@ -42,12 +42,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
               </div>
               <div className="order-1 flex w-full items-end justify-end md:order-2 md:flex-1">
                 <IsWalletConnected>
-                  <div className="flex w-full items-center gap-x-2">
+                  <div className="flex w-full items-center gap-x-5">
                     <div className="order-2 flex flex-1 items-center justify-end gap-x-2">
+                      <QRCodeGeneratedDialog />
                       <CameraQrScanner
                         isWalletConnectEnabled={isUniversalConnected}
                       />
-                      <QRCodeGeneratedDialog />
                     </div>
                     <AccountPopover className="order-1 flex-1 md:order-2 md:flex-none" />
                   </div>

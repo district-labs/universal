@@ -19,12 +19,14 @@ import { SvgIcon } from '../core/svg-icon';
 import { Input } from '../ui/input';
 
 type CameraQrScannerProps = {
+  className?: string;
   onScanSuccess?: (data: string) => void;
   isWalletConnectEnabled?: boolean;
 };
 
 // Scanner Component
 export function CameraQrScanner({
+  className,
   onScanSuccess,
   isWalletConnectEnabled,
 }: CameraQrScannerProps) {
@@ -102,7 +104,11 @@ export function CameraQrScanner({
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild={true}>
-        <Button variant="outline" size="icon">
+        <Button
+          variant="outline"
+          size="icon"
+          className={cn('border-blue-500 text-blue-500', className)}
+        >
           <span>
             <ScanQrCode width={24} height={24} className="size-8 text-lg" />
             <span className="sr-only">Open QR scanner</span>
