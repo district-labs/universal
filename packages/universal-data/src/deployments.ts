@@ -2,8 +2,7 @@ export const universalDeployments = {
   // Test
   Erc20Mintable: '0x4C8Be898BdE148aE6f9B0AF86e7D2b5a0558A7d0',
   // Universal Identity
-  // TODO: Redeploy with Safe Singleton
-  Resolver: '0x305f57c997A35E79F6a59CF09A9d07d2408b5935',
+  Resolver: '0xd32121B30762fC193141AabBE09E53Af28553be4',
   // Delegation Framework Core
   EntryPoint: '0x0000000071727De22E5E9d8BAf0edAc6f37da032',
   DelegationManager: '0x259333aBf1b66309bc1b7B7e76f84681e6852651',
