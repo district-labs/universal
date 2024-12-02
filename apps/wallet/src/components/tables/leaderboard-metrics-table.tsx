@@ -53,7 +53,7 @@ const columns = [
   {
     accessorKey: 'address',
     header: () => <h3 className="font-semibold text-sm">Network</h3>,
-    cell: ({ row }) => (
+    cell: () => (
       <div className="flex items-center gap-1">
         <img
           className="size-4"
