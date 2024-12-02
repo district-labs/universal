@@ -25,7 +25,7 @@ const QRCodeGeneratedDialog = () => {
         <Button
           variant="outline"
           size="icon"
-          className="border-emerald-500 text-emerald-600"
+          className="border-emerald-500 text-emerald-600 hover:text-emerald-700"
         >
           <span>
             <QrCode />

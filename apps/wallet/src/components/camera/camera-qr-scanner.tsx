@@ -107,7 +107,10 @@ export function CameraQrScanner({
         <Button
           variant="outline"
           size="icon"
-          className={cn('border-blue-500 text-blue-500', className)}
+          className={cn(
+            'border-blue-500 text-blue-500 hover:text-blue-700',
+            className,
+          )}
         >
           <span>
             <ScanQrCode width={24} height={24} className="size-8 text-lg" />

@@ -27,19 +27,19 @@ export default function LeaderboardPage() {
               <div className="flex flex-1 items-center justify-end gap-x-6">
                 <TabsList className="max-w-screen-sm">
                   <TabsTrigger value="swap">
-                    <ArrowLeftRight className="mr-1 size-4" />
+                    <ArrowLeftRight className="size-4 md:mr-1" />
                     <span className="hidden md:inline">Swap</span>
                   </TabsTrigger>
                   <TabsTrigger value="earn">
-                    <CircleDollarSign className="mr-1 size-4" />
+                    <CircleDollarSign className="size-4 md:mr-1" />
                     <span className="hidden md:inline">Earn</span>
                   </TabsTrigger>
                   <TabsTrigger value="collect">
-                    <MessageCircleHeart className="mr-1 size-4" />
+                    <MessageCircleHeart className="size-4 md:mr-1" />
                     <span className="hidden md:inline">Collect</span>
                   </TabsTrigger>
                   <TabsTrigger value="all">
-                    <Globe className="mr-1 size-4" />
+                    <Globe className="size-4 md:mr-1" />
                     <span className="hidden md:inline">All</span>
                   </TabsTrigger>
                 </TabsList>
