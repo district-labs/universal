@@ -5,24 +5,17 @@ import { useQueryClient } from '@tanstack/react-query';
 import { buildApprovedNamespaces, getSdkError } from '@walletconnect/utils';
 import { useCallback, useEffect } from 'react';
 import { universalWallet } from 'universal-wallet-connector';
-import { base, baseSepolia } from 'viem/chains';
-import { http, type ConnectorEventMap, createConfig } from 'wagmi';
+
+import { wagmiConfig } from '@/lib/wagmi/wagmi-config';
+import type { ConnectorEventMap } from 'wagmi';
 import { supportedChainIdsWc } from '../constants';
 import { useWalletKitClient } from './use-wallet-kit-client';
 
 const createUniversalWalletConnector = universalWallet({});
 
-const config = createConfig({
-  chains: [base, baseSepolia],
-  transports: {
-    [base.id]: http(),
-    [baseSepolia.id]: http(),
-  },
-});
-
 const emitter = createEmitter<ConnectorEventMap>(crypto.randomUUID());
 const universalWalletConnector = createUniversalWalletConnector({
-  ...config,
+  ...wagmiConfig,
   emitter,
 });
 

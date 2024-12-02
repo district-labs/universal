@@ -1,8 +1,6 @@
-import { base, baseSepolia, mainnet, sepolia } from 'viem/chains';
+import { productionChainIds, testnetChainIds } from 'universal-data';
 
 export const supportedChainIdsWc = [
-  mainnet.id,
-  sepolia.id,
-  base.id,
-  baseSepolia.id,
+  ...productionChainIds,
+  ...testnetChainIds,
 ] as const;

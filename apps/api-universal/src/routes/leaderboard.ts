@@ -1,6 +1,10 @@
 import { Hono } from 'hono';
 import { validator } from 'hono/validator';
-import { findTokenByAddress, universalDeployments } from 'universal-data';
+import {
+  findToken,
+  getDefaultTokenList,
+  universalDeployments,
+} from 'universal-data';
 import { constructDidIdentifier } from 'universal-identity-sdk';
 import { type Address, formatUnits } from 'viem';
 import { base, baseSepolia } from 'viem/chains';
@@ -88,7 +92,11 @@ const leaderboardRouter = new Hono().post(
         delegator: [],
       };
 
-      const _token = findTokenByAddress(params.asset);
+      const tokenList = getDefaultTokenList({
+        chainId: Number(params.chainId),
+      });
+
+      const _token = findToken({ address: params.asset, tokenList });
       if (!_token) {
         return c.json({ error: 'Token not supported' }, 404);
       }

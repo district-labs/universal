@@ -1,5 +1,5 @@
-export const tokenList = {
-  name: 'Universal Default',
+export const testnetTokenList = {
+  name: 'Universal Testnet',
   timestamp: '2023-09-08T19:28:15.497Z',
   version: {
     major: 1,
