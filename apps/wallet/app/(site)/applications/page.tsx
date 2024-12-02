@@ -222,7 +222,7 @@ const APPLICATIONS = [
     name: 'PoolTogether',
     logoURI:
       'https://d392zik6ho62y0.cloudfront.net/images/pooltogether-logo.png',
-    description: 'Deposit tokens to win prizes in a no-loss lottery',
+    description: 'Deposit tokens to win prizes in a prize savings account',
     tags: ['earn'],
     href: 'https://app.cabana.fi/',
   },
@@ -255,6 +255,13 @@ const APPLICATIONS = [
     href: 'https://moonwell.fi/',
   },
   {
+    name: 'Aave',
+    logoURI: 'https://d392zik6ho62y0.cloudfront.net/images/aave-logo.png',
+    description: 'Liquidity Market Protocol',
+    tags: ['earn'],
+    href: 'https://app.aave.com/',
+  },
+  {
     name: 'OpenSea',
     logoURI: 'https://d392zik6ho62y0.cloudfront.net/images/opensea-logo.png',
     description: 'Discover and collect NFTs',
@@ -282,8 +289,8 @@ const selectVariant = (tag: string) =>
     ? 'green'
     : tag === 'earn'
       ? 'blue'
-      : tag === 'orange'
-        ? 'destructive'
+      : tag === 'collect'
+        ? 'orange'
         : ('default' as const);
 
 type ApplicationCard = React.HTMLAttributes<HTMLElement> & {
