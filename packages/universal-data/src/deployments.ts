@@ -1,42 +1,34 @@
-import type { Address } from 'viem';
-import { baseSepolia } from 'viem/chains';
-
-export const universalDeployments: {
-  [chainId: number]: {
-    [name: string]: Address;
-  };
-} = {
-  [baseSepolia.id as number]: {
-    // Test
-    erc20Mintable: '0x4C8Be898BdE148aE6f9B0AF86e7D2b5a0558A7d0',
-    // Universal Identity
-    resolver: '0x305f57c997A35E79F6a59CF09A9d07d2408b5935',
-    // Delegation Framework Core
-    EntryPoint: '0x0000000071727De22E5E9d8BAf0edAc6f37da032',
-    DelegationManager: '0x42f53d86aF500b0Cc98B3B1275a36fd438060a32',
-    UniversalWalletFactory: '0x6456c9F0B987b71e1c47c34F1A95aB6eED8DA2f0',
-    // Delegation Framework Enforcers
-    AllowedCalldataEnforcer: '0xFc3EB7631CDb35c33aA37B9525621D1eaAb9a769',
-    AllowedMethodsEnforcer: '0x415AeC704272b3Ee51670b694eaffb580C4d9388',
-    AllowedTargetsEnforcer: '0x2ABc28723ee570C2fCB30A64470956e776872388',
-    ArgsEqualityCheckEnforcer: '0xB4C876eC47Da402D0214F041358Efe13cD244EdF',
-    BlockNumberEnforcer: '0xbeCB77bf771f3E569a0f517120890A9fA1b05428',
-    DeployedEnforcer: '0xAE75c246C0eC90c9a29136bB216301c64D7591EE',
-    ERC20BalanceGteEnforcer: '0xA701FD16679908F2C6B47e173101698d9A93Db63',
-    ERC20TransferAmountEnforcer: '0xF2887a650f688a12758f660AE9b0cb4306BF536D',
-    ERC721BalanceGteEnforcer: '0x5c9FB4Bdf7b76bD5734931769738D52FceCe182A',
-    ERC721TransferEnforcer: '0x8883efab27b5c9cCc934C74e2E6152010D3Ba78a',
-    ERC1155BalanceGteEnforcer: '0xF51d0d346409BBeFccF2Bb16cA3f576D0A7A5ECE',
-    IdEnforcer: '0x73b0a5bD5CAb215ddC985d0b3C81c484Cb032e29',
-    LimitedCallsEnforcer: '0x13B5B5381F736c49cefe151B03195Fe8A8cfbEBe',
-    NativeBalanceGteEnforcer: '0x2DBA62f63b2b225e328c722253702488387C4c16',
-    NativeTokenPaymentEnforcer: '0xfe153d10b52814c05707cbD8140C1c1C7ac71167',
-    NativeTokenTransferAmountEnforcer:
-      '0x7f37B0e6d6e6e9D3f65db645a5b16a93AeD3A735',
-    NonceEnforcer: '0x253528ecAb6AB4125581c0d2737f0C2d5bC9c6cF',
-    OwnershipTransferEnforcer: '0x1E0a044893eF5d294C3Bf40bbd1e1B0c78F61dAa',
-    RedeemerEnforcer: '0x29D425443F4428897Dbb56d00c1Ee32484D7b268',
-    TimestampEnforcer: '0xf2510525240E25e2FbA8ba90c0529D4844a63C4E',
-    ValueLteEnforcer: '0x9f5FDc0f59C0b681a7995c100CA2566451d83384',
-  },
+export const universalDeployments = {
+  // Test
+  Erc20Mintable: '0x4C8Be898BdE148aE6f9B0AF86e7D2b5a0558A7d0',
+  // Universal Identity
+  // TODO: Redeploy with Safe Singleton
+  Resolver: '0x305f57c997A35E79F6a59CF09A9d07d2408b5935',
+  // Delegation Framework Core
+  EntryPoint: '0x0000000071727De22E5E9d8BAf0edAc6f37da032',
+  DelegationManager: '0x259333aBf1b66309bc1b7B7e76f84681e6852651',
+  UniversalWalletFactory: '0x59ea58813F44aE8BF9246Fe5BA7Ee77966fF22cd',
+  // Delegation Framework Enforcers
+  AllowedCalldataEnforcer: '0x16F74238A5A0593816ece1d6F5c7063910529866',
+  AllowedMethodsEnforcer: '0xd5d342f4e0d0C3B4A60aD19a2AaCF2cC7513b491',
+  AllowedTargetsEnforcer: '0xCf664Dee9013D988f08CE3C284E6d212C1BBfdFD',
+  ArgsEqualityCheckEnforcer: '0x0C7fcF1140441eE967849b26833EDac1673a6987',
+  BlockNumberEnforcer: '0x41AC4f87f1c41A9f65e2a7184a09EF35FB97e1a7',
+  DeployedEnforcer: '0x8197383Fc911097189174e34437Ad53A185333CD',
+  ERC20BalanceGteEnforcer: '0x970B0d6912A1FbE1A8Ca078931BDBe9b4b47C574',
+  ERC20TransferAmountEnforcer: '0xCe09401479B70f31607884321B268Ac550E413AB',
+  ERC721BalanceGteEnforcer: '0xeFeC78484dc2869D742C48bDa0c8947748f966A5',
+  ERC721TransferEnforcer: '0xe9Cb0A16F406Dc9f6bF6313392350c26dDe060f1',
+  ERC1155BalanceGteEnforcer: '0x5532F46847721a6b29E7f54277385110B1E5AC7F',
+  IdEnforcer: '0x74bB1338bf639520AF4F3B0F5211880bd28709ff',
+  LimitedCallsEnforcer: '0xe8128C0444E47e5D9c2dA3E913d41203BA0E268D',
+  NativeBalanceGteEnforcer: '0xf2B0063a7Df6A6e038f95d36A7B9DcA79D400846',
+  NativeTokenPaymentEnforcer: '0x6af62642f3A7D705CAAbB8F314F72e49f19E51a8',
+  NativeTokenTransferAmountEnforcer:
+    '0x8EE92De416326625A49cc2B3dFEE5491821C0862',
+  NonceEnforcer: '0x4Ad3479784Aa92fAa4c6D2A5A37681a2383D3992',
+  OwnershipTransferEnforcer: '0xa6cAF93F28554eE7846ceD74e521328aadc5790a',
+  RedeemerEnforcer: '0xFd3ded3600A84DB92accC270A1f592FBe5EcDCfF',
+  TimestampEnforcer: '0x3CE07E63d72590ba9988FFAbb1F1F788A9dAe228',
+  ValueLteEnforcer: '0xDa788aF3E906E9ECef331D1E2D12CC81730892c4',
 } as const;

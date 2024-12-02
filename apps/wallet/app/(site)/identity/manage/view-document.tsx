@@ -19,7 +19,7 @@ export default function ViewDocument() {
   const { signAndSaveDid } = useDidSign();
   const { address, chainId } = useAccount();
   const { query } = useUniversalResolver({
-    resolver: universalDeployments[chainId as number]?.resolver,
+    resolver: universalDeployments.Resolver,
     address: address,
   });
 
@@ -71,14 +71,11 @@ export default function ViewDocument() {
                                 signAndSaveDid({
                                   address: address as Address,
                                   verifyingContract:
-                                    universalDeployments[chainId as number]
-                                      .resolver,
+                                    universalDeployments.Resolver,
                                   document: JSON.stringify(
                                     constructDidDocument({
                                       chainId: chainId as number,
-                                      resolver:
-                                        universalDeployments[chainId as number]
-                                          .resolver,
+                                      resolver: universalDeployments.Resolver,
                                       address: address as Address,
                                     }),
                                   ),
@@ -95,10 +92,8 @@ export default function ViewDocument() {
                         <span className="mt-2 block break-all font-bold text-neutral-500">
                           dis:uis:
                           <span>{chainId}</span>:
-                          <span>
-                            {universalDeployments[chainId as number].resolver}
-                          </span>
-                          :<span>{address}</span>
+                          <span>{universalDeployments.Resolver}</span>:
+                          <span>{address}</span>
                         </span>
                       </Card>
                       <Card className="mt-4 w-full p-5">

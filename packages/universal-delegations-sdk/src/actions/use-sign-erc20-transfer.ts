@@ -6,7 +6,7 @@ import { useInsertDelegation } from '../api/actions/insert-delegation.js';
 import { ROOT_AUTHORITY, SALT } from '../constants.js';
 import { eip712DelegationTypes } from '../delegation/eip712-delegation-type.js';
 import { getDelegationHash } from '../delegation/get-delegation-hash.js';
-import { delegationFrameworkDeployments } from '../deployments.js';
+import { universalDeployments } from 'universal-data';
 import { encodeEnforcerERC20TransferAmount } from '../enforcers/enforcer-erc20-transfer-amount.js';
 import type { Delegation } from '../types.js';
 
@@ -36,7 +36,6 @@ export function useSignErc20TransferDelegation() {
     decimals = 18,
     amount = '0',
   }: SignDelegationParams) {
-    if (!delegationFrameworkDeployments[chainId]) return;
     setDelegation({
       chainId: chainId,
       delegate: delegate,
@@ -47,8 +46,7 @@ export function useSignErc20TransferDelegation() {
       caveats: [
         {
           enforcerType: 'ERC20TransferAmount',
-          enforcer: delegationFrameworkDeployments[chainId]
-            .ERC20TransferAmountEnforcer as Address,
+          enforcer: universalDeployments.ERC20TransferAmountEnforcer,
           terms: encodeEnforcerERC20TransferAmount({
             token: erc20,
             amount: amount,
@@ -66,8 +64,7 @@ export function useSignErc20TransferDelegation() {
         name: 'DelegationManager',
         version: '1',
         chainId: chainId,
-        verifyingContract:
-          delegationFrameworkDeployments[chainId].DelegationManager,
+        verifyingContract: universalDeployments.DelegationManager,
       },
       message: {
         delegate: delegate,
@@ -76,8 +73,7 @@ export function useSignErc20TransferDelegation() {
         salt: salt,
         caveats: [
           {
-            enforcer: delegationFrameworkDeployments[chainId]
-              .ERC20TransferAmountEnforcer as Address,
+            enforcer: universalDeployments.ERC20TransferAmountEnforcer,
             terms: encodeEnforcerERC20TransferAmount({
               token: erc20,
               amount: amount,
@@ -117,7 +113,6 @@ export function useSignErc20TransferDelegation() {
     decimals = 18,
     amount = '0',
   }: SignDelegationParams) {
-    if (!delegationFrameworkDeployments[chainId]) return;
     const signature = await signTypedDataAsync({
       types: eip712DelegationTypes,
       primaryType: 'Delegation',
@@ -125,8 +120,7 @@ export function useSignErc20TransferDelegation() {
         name: 'DelegationManager',
         version: '1',
         chainId: chainId,
-        verifyingContract:
-          delegationFrameworkDeployments[chainId].DelegationManager,
+        verifyingContract: universalDeployments.DelegationManager,
       },
       message: {
         delegate: delegate,
@@ -135,8 +129,7 @@ export function useSignErc20TransferDelegation() {
         salt: salt,
         caveats: [
           {
-            enforcer: delegationFrameworkDeployments[chainId]
-              .ERC20TransferAmountEnforcer as Address,
+            enforcer: universalDeployments.ERC20TransferAmountEnforcer,
             terms: encodeEnforcerERC20TransferAmount({
               token: erc20,
               amount: amount,
@@ -147,17 +140,16 @@ export function useSignErc20TransferDelegation() {
       },
     });
     const _delegation = {
-      signature: signature as Hex,
-      chainId: chainId,
-      delegate: delegate as Address,
-      delegator: delegator as Address,
-      authority: ROOT_AUTHORITY as Hex,
+      signature,
+      chainId,
+      delegate,
+      delegator,
+      authority: ROOT_AUTHORITY,
       salt: salt,
       caveats: [
         {
           enforcerType: 'ERC20TransferAmount',
-          enforcer: delegationFrameworkDeployments[chainId]
-            .ERC20TransferAmountEnforcer as Address,
+          enforcer: universalDeployments.ERC20TransferAmountEnforcer,
           terms: encodeEnforcerERC20TransferAmount({
             token: erc20,
             amount: amount,
@@ -171,8 +163,7 @@ export function useSignErc20TransferDelegation() {
     setDelegation(_delegation);
     mutate({
       ..._delegation,
-      verifyingContract: delegationFrameworkDeployments[chainId]
-        .DelegationManager as Address,
+      verifyingContract: universalDeployments.DelegationManager,
       type: 'DebitAuthorization',
       signature: signature,
       salt: salt.toString(),

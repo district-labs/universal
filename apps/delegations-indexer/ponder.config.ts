@@ -21,14 +21,13 @@ export default createConfig({
     DelegationManager: {
       network: 'baseSepolia',
       abi: delegationManagerAbi,
-      address: universalDeployments[baseSepolia.id]?.DelegationManager,
+      address: universalDeployments.DelegationManager,
       startBlock: BASE_SEPOLIA_START_BLOCK,
     },
     ERC20TransferAmountEnforcer: {
       network: 'baseSepolia',
       abi: erc20TransferAmountAbi,
-      address:
-        universalDeployments[baseSepolia.id]?.ERC20TransferAmountEnforcer,
+      address: universalDeployments.ERC20TransferAmountEnforcer,
       startBlock: BASE_SEPOLIA_START_BLOCK,
     },
   },

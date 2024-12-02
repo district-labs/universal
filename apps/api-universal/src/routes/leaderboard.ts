@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { validator } from 'hono/validator';
 import { findTokenByAddress, universalDeployments } from 'universal-data';
 import { constructDidIdentifier } from 'universal-identity-sdk';
-import { type Address, formatUnits, isAddress } from 'viem';
+import { type Address, formatUnits } from 'viem';
 import { base, baseSepolia } from 'viem/chains';
 import { z } from 'zod';
 import { apiCredentialsClient, apiDelegationsClient } from '../clients.js';
@@ -40,10 +40,12 @@ const leaderboardRouter = new Hono().post(
         limit: params.limit || 50,
       });
 
-    const _resolver = universalDeployments?.[Number(params.chainId)]?.resolver;
-    if (!_resolver || !isAddress(_resolver)) {
-      return c.json({ error: 'Resolver not found' }, 404);
-    }
+    const _resolver = universalDeployments.Resolver;
+
+    // TODO: Check if chainID is supported
+    // if (!_resolver || !isAddress(_resolver)) {
+    //   return c.json({ error: 'Resolver not found' }, 404);
+    // }
 
     const _accounts = accounts.map((_account) => _account.id);
     const _dids = _accounts.map((_account) => {

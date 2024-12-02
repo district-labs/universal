@@ -29,6 +29,7 @@ import {
   entryPoint07Address,
   toSmartAccount,
 } from 'viem/account-abstraction';
+import { universalDeployments } from 'universal-data';
 import { readContract } from 'viem/actions';
 import {
   type WebAuthnData,
@@ -67,8 +68,6 @@ export type CoinbaseSmartAccountImplementation = Assign<
   }
 >;
 
-const factoryAddress = '0x6456c9F0B987b71e1c47c34F1A95aB6eED8DA2f0';
-
 /**
  * @description Create a Universal Wallet Account.
  *
@@ -99,7 +98,7 @@ export async function toUniversalAccount(
   } as const;
   const factory = {
     abi: factoryAbi,
-    address: factoryAddress,
+    address: universalDeployments.UniversalWalletFactory,
   } as const;
 
   const owners_bytes = owners.map((owner) =>

@@ -1,7 +1,7 @@
 import type { Delegation } from '@/lib/delegation-framework/types';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';
-import { delegationFrameworkDeployments } from 'universal-delegations-sdk';
+import { universalDeployments } from 'universal-data';
 import type { Chain } from 'viem';
 import { CardPaymentBasic } from './card-payment-basic';
 
@@ -25,15 +25,14 @@ export const DelegationDefaultParsedView = ({
     }
     if (typedData.caveats.length === 1) {
       switch (typedData.caveats[0].enforcer) {
-        case delegationFrameworkDeployments[chainId]
-          .ERC20TransferAmountEnforcer:
-        case delegationFrameworkDeployments[chainId].NativeTokenPaymentEnforcer:
+        case universalDeployments.ERC20TransferAmountEnforcer:
+        case universalDeployments.NativeTokenPaymentEnforcer:
           return 'CardPayment';
         default:
           return 'Default';
       }
     }
-  }, [typedData, chainId]);
+  }, [typedData]);
 
   if (!delegationType) {
     return 'Unknown';

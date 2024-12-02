@@ -10,18 +10,19 @@ import { useMemo } from 'react';
 import { useGetCredentials } from 'universal-credential-sdk';
 import { universalDeployments } from 'universal-data';
 import { constructDidIdentifier } from 'universal-identity-sdk';
-import { useAccount } from 'wagmi';
+import { useAccount, useChainId } from 'wagmi';
 
 export function ViewCredentials() {
-  const { address, chainId } = useAccount();
+  const chainId = useChainId();
+  const { address } = useAccount();
 
   const did = useMemo(
     () =>
       address
         ? constructDidIdentifier({
-            chainId: chainId as number,
+            chainId,
             address,
-            resolver: universalDeployments?.[chainId as number]?.resolver,
+            resolver: universalDeployments.Resolver,
           })
         : undefined,
     [address, chainId],
