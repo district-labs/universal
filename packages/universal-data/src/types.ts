@@ -17,15 +17,8 @@ export type TokenItem = {
   logoURI: string;
   tags?: string[];
   extensions?: {
-    bridgeInfo?:
-      | {
-          [key: string]:
-            | {
-                tokenAddress: string;
-              }
-            | undefined;
-        }
-      | undefined;
+    // biome-ignore lint/suspicious/noExplicitAny: <We expect anything here>
+    [key: string]: any;
   };
 };
 

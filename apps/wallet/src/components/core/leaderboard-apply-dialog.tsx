@@ -83,11 +83,8 @@ export const LeaderboardApplyDialog = ({
               <span className="inline-block">Universal Trust Network</span>
             </DialogTitle>
             <DialogDescription className=" text-base">
-              Join us in a <span className="font-bold">wild experiment</span> to
-              discover <span className="font-bold">what's possible</span>.
-              {/* Join the <span className="font-bold">wild experiment</span> to
-              kickstart a <span className="font-bold">Universal Credit</span>{' '}
-              network! */}
+              Join the <span className="font-bold">Web of Trust</span> and
+              discover what's possible.
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col space-y-4 py-5">
@@ -114,7 +111,7 @@ export const LeaderboardApplyDialog = ({
             size={'lg'}
             onClick={signVerificationRequestAsync}
           >
-            Apply to Join Early Beta
+            Apply Now - Universal Beta
           </Button>
         </IsWalletConnected>
       </DialogContent>
