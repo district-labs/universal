@@ -128,7 +128,7 @@ export function ViewCredentials() {
         ? constructDidIdentifier({
             chainId: chainId as number,
             address,
-            resolver: universalDeployments?.[chainId as number]?.resolver,
+            resolver: universalDeployments.Resolver,
           })
         : undefined,
     [address, chainId],

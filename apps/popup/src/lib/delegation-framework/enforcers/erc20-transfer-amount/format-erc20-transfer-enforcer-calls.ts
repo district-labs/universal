@@ -14,7 +14,6 @@ import {
   encodeFunctionData,
   erc20Abi,
 } from 'viem';
-import { baseSepolia } from 'viem/chains';
 
 export type DelegationWithHash = Delegation & { hash: Hex };
 export type DelegationWithAmount = Delegation & { amount: bigint };
@@ -59,8 +58,7 @@ export function formatErc20TransferEnforcerCalls({
   redemptions: Erc20TransferEnforcerRedemption[];
 }): CallParameters[] {
   const callParameters = redemptions.map(({ amount, delegation }) => ({
-    // TODO: Handle multichain
-    to: universalDeployments[baseSepolia.id].DelegationManager,
+    to: universalDeployments.DelegationManager,
     data: encodeErc20TransferEnforcerCalldata({
       amount,
       ...delegation,

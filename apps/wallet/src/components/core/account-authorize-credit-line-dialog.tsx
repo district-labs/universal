@@ -27,9 +27,9 @@ export const AccountInteractDialog = ({
 }: AccountInteractDialogProps) => {
   const credentialsQuery = useGetCredentials(credentialsApiClient, {
     did: constructDidIdentifier({
-      chainId: chainId as number,
+      chainId,
       address,
-      resolver: universalDeployments?.[chainId as number]?.resolver,
+      resolver: universalDeployments.Resolver,
     }),
   });
 

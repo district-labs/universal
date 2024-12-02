@@ -61,7 +61,6 @@ export {
 } from '../constants.js';
 export type { Delegation, Caveat, Execution } from '../types.js';
 export { delegationManagerAbi } from '../abis/delegation-manager-abi.js';
-export { delegationFrameworkDeployments } from '../deployments.js';
 export type {
   DelegationsApi,
   InsertDelegationDb,

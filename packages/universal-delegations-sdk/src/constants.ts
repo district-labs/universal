@@ -1,9 +1,10 @@
-import { type Hex, keccak256, toHex } from 'viem';
+import { type Address, type Hex, keccak256, toHex } from 'viem';
 
 // Delegation constants
-export const ANY_DELEGATE = '0x0000000000000000000000000000000000000a11';
+export const ANY_DELEGATE =
+  '0x0000000000000000000000000000000000000a11' as Address;
 export const ROOT_AUTHORITY =
-  '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff';
+  '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff' as Hex;
 
 // Execution Modes
 export const BATCH_EXECUTION_MODE = [

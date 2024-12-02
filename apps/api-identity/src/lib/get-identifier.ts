@@ -4,7 +4,7 @@ import { getPublicClient } from './viem/index.js';
 
 export function getIdentifier(did: PostDid) {
   const publicClient = getPublicClient(did.chainId);
-  const resolver = universalDeployments?.[did.chainId]?.resolver;
+  const resolver = universalDeployments.Resolver;
   if (!resolver) {
     throw new Error(`Invalid resolver address ad chainId: ${did.chainId}`);
   }

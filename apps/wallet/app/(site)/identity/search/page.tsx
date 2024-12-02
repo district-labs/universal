@@ -10,10 +10,8 @@ import { universalDeployments } from 'universal-data';
 import { useUniversalResolver } from 'universal-identity-sdk';
 import { type Address, isAddress } from 'viem';
 import { normalize } from 'viem/ens';
-import { useAccount } from 'wagmi';
 
 export default function IdentitySearchPage() {
-  const { chainId } = useAccount();
   const { resolve } = useUniversalResolver();
   const [searchInput, setSearchInput] = useState<string>('');
   const [requestStatus, setRequestStatus] = useState<boolean>(false);
@@ -23,7 +21,7 @@ export default function IdentitySearchPage() {
       'identity',
       {
         address: searchInput as Address,
-        resolver: universalDeployments[chainId as number]?.resolver,
+        resolver: universalDeployments.Resolver,
       },
     ],
     queryFn: async () => {
@@ -46,7 +44,7 @@ export default function IdentitySearchPage() {
 
       const identity = await resolve({
         address: _address as Address,
-        resolver: universalDeployments[chainId as number]?.resolver,
+        resolver: universalDeployments.Resolver,
       });
       if (!identity) {
         throw new Error('Identity not found');

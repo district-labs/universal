@@ -1,16 +1,13 @@
 import { type Context, ponder } from '@/generated';
 import { universalDeployments } from 'universal-data';
 import type { Address, Hex } from 'viem';
-import { baseSepolia } from 'viem/chains';
 import { type InsertCaveat, caveats, delegations } from '../../ponder.schema';
 import { getDelegationHash } from '../utils/delegation/get-delegation-hash';
 
 function getEnforcerType(enforcer: Address): string {
   if (
     enforcer.toLowerCase() ===
-    universalDeployments[
-      baseSepolia.id
-    ]?.ERC20TransferAmountEnforcer?.toLowerCase()
+    universalDeployments.ERC20TransferAmountEnforcer?.toLowerCase()
   ) {
     return 'ERC20TransferAmountEnforcer';
   }

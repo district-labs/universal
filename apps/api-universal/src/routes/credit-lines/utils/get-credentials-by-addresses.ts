@@ -32,11 +32,12 @@ export async function getCredentialsByAddresses({
   addresses,
   chainId,
 }: GetCredentialsByAddressesParams): Promise<GetCredentialsByAddressesReturnType> {
-  const resolver = universalDeployments?.[chainId]?.resolver;
+  const resolver = universalDeployments.Resolver;
 
-  if (!resolver) {
-    throw new Error(`No resolver found for chainId ${chainId}`);
-  }
+  // TODO: Check if chainID is supported
+  // if (!resolver) {
+  //   throw new Error(`No resolver found for chainId ${chainId}`);
+  // }
 
   // Uses a Set to remove duplicates
   const filteredAddresses = Array.from(new Set(addresses));
