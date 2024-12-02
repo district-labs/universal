@@ -28,19 +28,19 @@ export default function LeaderboardPage() {
                 <TabsList className="max-w-screen-sm">
                   <TabsTrigger value="swap">
                     <ArrowLeftRight className="mr-1 size-4" />
-                    Swap
+                    <span className="hidden md:inline">Swap</span>
                   </TabsTrigger>
                   <TabsTrigger value="earn">
                     <CircleDollarSign className="mr-1 size-4" />
-                    Earn
+                    <span className="hidden md:inline">Earn</span>
                   </TabsTrigger>
                   <TabsTrigger value="collect">
                     <MessageCircleHeart className="mr-1 size-4" />
-                    Collect
+                    <span className="hidden md:inline">Collect</span>
                   </TabsTrigger>
                   <TabsTrigger value="all">
                     <Globe className="mr-1 size-4" />
-                    All
+                    <span className="hidden md:inline">All</span>
                   </TabsTrigger>
                 </TabsList>
               </div>
@@ -48,7 +48,7 @@ export default function LeaderboardPage() {
           </section>
           <div className="mt-6 flex-1 space-y-6 lg:h-auto">
             <div className="container">
-              <Card className="flex flex-col items-center gap-y-1 p-8 lg:flex-row">
+              <Card className="flex flex-col items-center gap-y-1 p-5 lg:flex-row lg:p-8">
                 <div className="flex flex-col items-center gap-x-4 lg:w-8/12 lg:flex-row">
                   <img
                     src="https://1000logos.net/wp-content/uploads/2022/05/WalletConnect-Logo.jpg"
@@ -68,11 +68,10 @@ export default function LeaderboardPage() {
                   </div>
                 </div>
                 <div className="flex flex-col items-center gap-x-2 lg:w-5/12 lg:flex-row lg:justify-end">
-                  <span className="flex items-center gap-x-1 text-right text-xs">
+                  <span className="flex items-center gap-x-1 text-right text-sm">
                     Click the scan{' '}
                     <span className="flex items-center text-blue-500 lg:hidden">
-                      (
-                      <ScanQrCode className="size-3 text-lg" />)
+                      <ScanQrCode className="size-5 text-lg" />
                     </span>{' '}
                     icon in <br className="hidden lg:inline" />
                     the top right to get started
@@ -145,16 +144,20 @@ export default function LeaderboardPage() {
                         Simple, secure, and easy to use.
                       </span>
                     </p>
-                    <div className="flex flex-col items-center gap-x-2 py-2 md:flex-row">
+                    <div className="flex flex-col items-center gap--2 py-2 md:flex-row">
                       <div className="flex items-center gap-x-2">
-                        <img
-                          src="https://cdn-icons-png.flaticon.com/512/174/174836.png"
-                          alt="Universal Wallet"
+                        <Image
+                          height={20}
+                          width={20}
+                          src="/images/platforms/android.png"
+                          alt="Anrdoid Smartphone"
                           className="size-7"
                         />
-                        <img
-                          src="https://cdn.iconscout.com/icon/free/png-256/free-apple-icon-download-in-svg-png-gif-file-formats--logo-ios-operating-system-iphone-font-awesome-pack-user-interface-icons-44425.png?f=webp&w=256"
-                          alt="Universal Wallet"
+                        <Image
+                          height={20}
+                          width={20}
+                          src="/images/platforms/ios.webp"
+                          alt="iOS Smartphone"
                           className="size-7"
                         />
                       </div>

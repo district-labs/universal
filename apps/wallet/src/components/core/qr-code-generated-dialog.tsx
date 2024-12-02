@@ -22,9 +22,13 @@ const QRCodeGeneratedDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild={true}>
-        <Button variant="outline" size="icon" className="border-indigo-500">
+        <Button
+          variant="outline"
+          size="icon"
+          className="border-emerald-500 text-emerald-600"
+        >
           <span>
-            <QrCode className="text-indigo-600" />
+            <QrCode />
             <span className="sr-only">Open QR scanner</span>
           </span>
         </Button>
