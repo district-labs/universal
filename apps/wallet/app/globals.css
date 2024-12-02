@@ -150,7 +150,9 @@
     @apply bg-background text-foreground;
   }
 
-  .content p {
+  .content p,
+  .content ul,
+  .content ol {
     @apply mb-3;
   }
 

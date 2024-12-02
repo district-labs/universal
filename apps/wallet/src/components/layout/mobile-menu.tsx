@@ -15,7 +15,7 @@ export const MobileMenu = ({ className }: MobileMenu) => {
   return (
     <div
       className={cn(
-        'fixed right-0 bottom-0 left-0 z-20 flex items-center justify-center gap-x-12 border-2 bg-white p-4 pb-5 md:hidden',
+        'fixed right-0 bottom-0 left-0 z-20 flex items-center justify-center gap-x-12 border-2 bg-white p-4 pb-7 md:hidden',
         className,
       )}
     >
@@ -30,7 +30,6 @@ export const MobileMenu = ({ className }: MobileMenu) => {
                     <Menu className="size-5" />
                   </Card>
                 </SidebarTrigger>
-                {/* <Menu className='size-6' /> */}
               </div>
               <LinkComponent
                 key={item.url}
@@ -41,7 +40,6 @@ export const MobileMenu = ({ className }: MobileMenu) => {
                 )}
               >
                 <item.icon />
-                {/* <span className="text-xs">{item.title}</span> */}
               </LinkComponent>
             </>
           );
@@ -56,7 +54,6 @@ export const MobileMenu = ({ className }: MobileMenu) => {
             )}
           >
             <item.icon />
-            {/* <span className="text-xs">{item.title}</span> */}
           </LinkComponent>
         );
       })}

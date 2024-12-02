@@ -1,6 +1,7 @@
 import {
   ArrowLeftRight,
   Banknote,
+  Cable,
   Coins,
   IdCard,
   KeySquare,
@@ -24,6 +25,11 @@ export const itemsCore = [
     title: 'Leaderboard',
     url: '/leaderboard',
     icon: Orbit,
+  },
+  {
+    title: 'Applications',
+    url: '/applications',
+    icon: Cable,
   },
 ];
 
