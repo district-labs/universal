@@ -1,12 +1,12 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { universalDeployments } from 'universal-data';
 import type { Address, Hex } from 'viem';
 import { useChainId, useSignTypedData } from 'wagmi';
 import { useInsertDelegation } from '../api/actions/insert-delegation.js';
 import { ROOT_AUTHORITY, SALT } from '../constants.js';
 import { eip712DelegationTypes } from '../delegation/eip712-delegation-type.js';
 import { getDelegationHash } from '../delegation/get-delegation-hash.js';
-import { universalDeployments } from 'universal-data';
 import { encodeEnforcerERC20TransferAmount } from '../enforcers/enforcer-erc20-transfer-amount.js';
 import type { Delegation } from '../types.js';
 

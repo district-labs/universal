@@ -1,4 +1,4 @@
-import { type Hex, keccak256, toHex, type Address } from 'viem';
+import { type Address, type Hex, keccak256, toHex } from 'viem';
 
 // Delegation constants
 export const ANY_DELEGATE =

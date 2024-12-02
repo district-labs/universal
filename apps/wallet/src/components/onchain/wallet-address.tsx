@@ -1,4 +1,4 @@
-import { HTMLAttributes } from 'react';
+import type { HTMLAttributes } from 'react';
 import { useAccount } from 'wagmi';
 
 import { Address } from './address';

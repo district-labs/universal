@@ -1,4 +1,4 @@
-import { delegationDeployments } from '../deployments';
+import { universalDeployments } from 'universal-data';
 import type { Delegation } from '../types';
 
 export const signDelegationTypes = {
@@ -44,7 +44,7 @@ export function getSignDelegationPayload(delegation: Delegation) {
       name: 'DelegationManager',
       version: '1',
       chainId: 84532,
-      verifyingContract: delegationDeployments[84532].delegationManager,
+      verifyingContract: universalDeployments.DelegationManager,
     },
     message: delegation,
   } as const;

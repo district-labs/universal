@@ -1,4 +1,5 @@
 import type { Address, TypedData } from 'abitype';
+import { universalDeployments } from 'universal-data';
 import {
   type Assign,
   BaseError,
@@ -29,7 +30,6 @@ import {
   entryPoint07Address,
   toSmartAccount,
 } from 'viem/account-abstraction';
-import { universalDeployments } from 'universal-data';
 import { readContract } from 'viem/actions';
 import {
   type WebAuthnData,
