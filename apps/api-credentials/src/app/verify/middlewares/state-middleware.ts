@@ -2,8 +2,9 @@ import type { Context } from 'hono';
 import { deleteCookie, getCookie, setCookie } from 'hono/cookie';
 import { createMiddleware } from 'hono/factory';
 import { type Hex, isAddress, isHex } from 'viem';
-import { baseSepolia } from 'viem/chains';
-import { baseSepoliaPublicClient } from '../../../lib/viem/client.js';
+import { wagmiConfig } from '../../../lib/wagmi.js';
+import { isValidChain } from 'universal-data';
+import { verifyTypedData } from '@wagmi/core';
 
 const eip712VerificationRequestType = {
   VerificationRequest: [
@@ -31,13 +32,13 @@ async function verifyDidSignature({
 
   const { address, chainId } = didUis;
 
-  // Only supporting baseSepolia fow now
-  if (chainId !== baseSepolia.id) {
+  if (!isValidChain(chainId)) {
     return false;
   }
 
-  const isValidSignature = await baseSepoliaPublicClient.verifyTypedData({
+  const isValidSignature = await verifyTypedData(wagmiConfig, {
     signature,
+    chainId,
     address,
     types: eip712VerificationRequestType,
     primaryType: 'VerificationRequest',
