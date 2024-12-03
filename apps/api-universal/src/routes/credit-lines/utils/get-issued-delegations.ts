@@ -54,7 +54,7 @@ export async function getIssuedDelegations({
       ].$get({
         param: {
           type,
-          chainId: '8453',
+          chainId: chainId.toString(),
           // TODO: support delegator filtering
           address: delegate,
         },
