@@ -1,0 +1,1 @@
+ALTER TABLE "delegations" ALTER COLUMN "chainId" DROP DEFAULT;

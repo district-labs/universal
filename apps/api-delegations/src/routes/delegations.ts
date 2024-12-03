@@ -1,6 +1,6 @@
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
-import type { Address, Hex } from 'viem';
+import { isAddress, type Address, type Hex, isHex } from 'viem';
 import { z } from 'zod';
 import { getDelegationsByDelegateAndTypeDb } from '../db/actions/delegations/get-delegations-by-delegate-and-type-db.js';
 import { getDelegationsByDelegateDb } from '../db/actions/delegations/get-delegations-by-delegate-db.js';
@@ -10,25 +10,34 @@ import { getDelegationsDb } from '../db/actions/delegations/get-delegations-db.j
 import { insertDelegationDb } from '../db/actions/delegations/insert-delegation-db.js';
 import { invalidateDelegationDb } from '../db/actions/delegations/invalidate-delegation-db.js';
 import type { DelegationDb, SelectDelegationDb } from '../db/schema.js';
+import { isValidChain } from 'universal-data';
+
+const hexSchema = z
+  .custom<Hex>()
+  .refine((val) => val.length === 66 && isHex(val), {
+    message: 'invalid hash',
+  });
+
+const addressSchema = z.string().refine(isAddress, {
+  message: 'invalid address',
+});
+
+const chainIdSchema = z.number().refine(isValidChain, {
+  message: 'invalid chainId',
+});
 
 const getDelegationSchema = z.object({
-  hash: z
-    .custom<Hex>()
-    .refine((val) => val.length === 66 && val.startsWith('0x'), {
-      message: 'invalid hash',
-    }),
+  hash: hexSchema,
 });
 
 const getDelegationByDelegatorOrDelegateSchema = z.object({
-  address: z.custom<Address>((val) => val.length > 10 && val.startsWith('0x'), {
-    message: 'invalid address',
-  }),
+  address: addressSchema,
+  chainId: chainIdSchema,
 });
 
 const getDelegationByDelegatorOrDelegateWithTypeSchema = z.object({
-  address: z.custom<Address>((val) => val.length > 10 && val.startsWith('0x'), {
-    message: 'invalid address',
-  }),
+  address: addressSchema,
+  chainId: chainIdSchema,
   type: z.string().refine((val) => val.length > 0, {
     message: 'invalid type',
   }),
@@ -74,9 +83,10 @@ const delegationsRouter = new Hono()
     '/delegator/:address',
     zValidator('param', getDelegationByDelegatorOrDelegateSchema),
     async (c) => {
-      const { address } = c.req.valid('param');
+      const { address, chainId } = c.req.valid('param');
       const delegations: SelectDelegationDb[] | undefined =
         await getDelegationsByDelegatorDb({
+          chainId,
           delegator: address,
         });
 
@@ -93,9 +103,10 @@ const delegationsRouter = new Hono()
     '/delegator/:address/:type',
     zValidator('param', getDelegationByDelegatorOrDelegateWithTypeSchema),
     async (c) => {
-      const { address, type } = c.req.valid('param');
+      const { address, chainId, type } = c.req.valid('param');
       const delegations: DelegationDb[] | undefined =
         await getDelegationsByDelegatorAndTypeDb({
+          chainId,
           delegator: address,
           type,
         });
@@ -113,9 +124,10 @@ const delegationsRouter = new Hono()
     '/delegate/:address',
     zValidator('param', getDelegationByDelegatorOrDelegateSchema),
     async (c) => {
-      const { address } = c.req.valid('param');
+      const { address, chainId } = c.req.valid('param');
       const delegations: DelegationDb[] | undefined =
         await getDelegationsByDelegateDb({
+          chainId,
           delegate: address,
         });
 
@@ -132,9 +144,10 @@ const delegationsRouter = new Hono()
     '/delegate/:address/:type',
     zValidator('param', getDelegationByDelegatorOrDelegateWithTypeSchema),
     async (c) => {
-      const { address, type } = c.req.valid('param');
+      const { address, type, chainId } = c.req.valid('param');
       const delegations: DelegationDb[] | undefined =
         await getDelegationsByDelegateAndTypeDb({
+          chainId,
           delegate: address,
           type,
         });

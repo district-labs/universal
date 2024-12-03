@@ -5,8 +5,9 @@ import { sqlLower } from '../../utils.js';
 
 export async function getDelegationsCollectionDb({
   address,
+  chainId,
   type,
-}: { address: Address; type: string }) {
+}: { address: Address; chainId: number; type: string }) {
   const lowercasedAddress = address.toLowerCase();
 
   const [delegate, delegator] = await db.transaction(async (tx) =>
@@ -16,6 +17,7 @@ export async function getDelegationsCollectionDb({
           and(
             eq(sqlLower(delegations.delegate), lowercasedAddress),
             eq(delegations.type, type),
+            eq(delegations.chainId, chainId),
           ),
         with: {
           caveats: true,
@@ -26,6 +28,7 @@ export async function getDelegationsCollectionDb({
           and(
             eq(sqlLower(delegations.delegator), lowercasedAddress),
             eq(delegations.type, type),
+            eq(delegations.chainId, chainId),
           ),
         with: {
           caveats: true,

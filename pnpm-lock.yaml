@@ -132,6 +132,9 @@ importers:
       postgres:
         specifier: ^3.4.5
         version: 3.4.5
+      universal-data:
+        specifier: workspace:*
+        version: link:../../packages/universal-data
       viem:
         specifier: ^2.21.41
         version: 2.21.45(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@6.0.5)(zod@3.23.8)
@@ -809,9 +812,6 @@ importers:
 
   packages/universal-data:
     dependencies:
-      api-delegations:
-        specifier: workspace:*
-        version: link:../../apps/api-delegations
       typescript:
         specifier: '>=5.0.4'
         version: 5.6.3

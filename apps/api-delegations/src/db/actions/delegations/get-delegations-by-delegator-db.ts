@@ -4,11 +4,18 @@ import type { DelegationDb } from '../../schema.js';
 import { sqlLower } from '../../utils.js';
 
 export function getDelegationsByDelegatorDb({
+  chainId,
   delegator,
-}: { delegator: Hex }): Promise<DelegationDb[]> {
+}: {
+  chainId: number;
+  delegator: Hex;
+}): Promise<DelegationDb[]> {
   return db.query.delegations.findMany({
-    where: (delegations, { eq }) =>
-      eq(sqlLower(delegations.delegator), delegator.toLowerCase()),
+    where: (delegations, { and, eq }) =>
+      and(
+        eq(sqlLower(delegations.delegator), delegator.toLowerCase()),
+        eq(delegations.chainId, chainId),
+      ),
     with: {
       caveats: true,
     },

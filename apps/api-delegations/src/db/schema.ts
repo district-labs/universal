@@ -9,7 +9,6 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core';
 import type { Address, Hex } from 'viem';
-import { baseSepolia } from 'viem/chains';
 
 // Utils
 const addressColumn = () => varchar({ length: 42 }).$type<Address>();
@@ -27,7 +26,7 @@ export const delegations = pgTable('delegations', {
   verifyingContract: addressColumn().notNull(),
   type: varchar({ length: 256 }).notNull(),
   delegator: addressColumn().notNull(),
-  chainId: integer().notNull().default(baseSepolia.id),
+  chainId: integer().notNull(),
   delegate: addressColumn().notNull(),
   authority: bytes32Column().notNull(),
   salt: bigIntColumn().notNull(),
