@@ -39,9 +39,10 @@ const columns = [
     cell: ({ row }) => (
       <div className="flex flex-col">
         <ERC20Balance
+          className="font-semibold text-sm md:text-lg"
           chainId={defaultChain.id}
           address={row.original.address}
-          className="font-semibold text-sm md:text-lg"
+          decimals={row.original.decimals}
         />
       </div>
     ),

@@ -38,7 +38,6 @@ export default function WalletSendCallsPage() {
     calls,
     isLoadingSendTx,
     isLoadingUserOp,
-    from,
     sender,
     chainId,
     userOpError,
@@ -95,7 +94,9 @@ export default function WalletSendCallsPage() {
             />
             <Row
               label="Wallet (From)"
-              value={<Address truncate={true} address={from as AddressType} />}
+              value={
+                <Address truncate={true} address={sender as AddressType} />
+              }
             />
             <Row
               label="ETH Amount (Value)"

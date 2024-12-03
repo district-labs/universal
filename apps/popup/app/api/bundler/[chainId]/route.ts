@@ -1,5 +1,5 @@
-import { isValidChain } from 'universal-data';
 import { env } from '@/env';
+import { isValidChain } from 'universal-data';
 
 export async function POST(
   request: Request,

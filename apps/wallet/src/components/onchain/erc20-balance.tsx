@@ -8,6 +8,7 @@ export type ERC20Balance = React.HTMLAttributes<HTMLElement> & {
   address?: Address;
   account?: Address;
   chainId?: number;
+  decimals?: number;
 };
 
 export const ERC20Balance = ({
@@ -15,6 +16,7 @@ export const ERC20Balance = ({
   address,
   account,
   chainId,
+  decimals = 18,
 }: ERC20Balance) => {
   const { address: user } = useAccount();
   const classes = cn(className);
@@ -34,5 +36,7 @@ export const ERC20Balance = ({
     return <span className={classes}>0.00</span>;
   }
 
-  return <span className={classes}>{formatNumber(formatUnits(data, 18))}</span>;
+  return (
+    <span className={classes}>{formatNumber(formatUnits(data, decimals))}</span>
+  );
 };
