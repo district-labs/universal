@@ -52,7 +52,6 @@ jobs:
 
   types:
     name: Types
-    needs: build-packages
     runs-on: ubuntu-latest
     steps:
       - name: Clone Repo
@@ -69,9 +68,6 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: pnpm install --frozen-lockfile
-
-      - name: Build Packages
-        run: pnpm build:packages
 
       - name: Check Types
         run: pnpm check:types

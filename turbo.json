@@ -13,35 +13,21 @@
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
     "format": {
-      "dependsOn": ["^format"]
+      "dependsOn": []
     },
     "check:types": {
-      "dependsOn": ["^check:types"]
+      "dependsOn": ["^build"]
     },
     "check": {
-      "dependsOn": ["^check"]
+      "dependsOn": []
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": []
     },
     "start": {
-      "dependsOn": ["^start"],
+      "dependsOn": [],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
-    },
-    "universal-wallet-app#build": {
-      "dependsOn": [
-        "universal-credential-sdk#build",
-        "universal-delegations-sdk#build",
-        "universal-identity-sdk#build",
-        "universal-sdk#build",
-        "universal-wallet-connector#build"
-      ],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
-    },
-    "universal-wallet-connector#build": {
-      "dependsOn": ["universal-wallet-sdk#build"],
-      "outputs": ["dist/**"]
     }
   },
   "globalEnv": ["DATABASE_URL"]
