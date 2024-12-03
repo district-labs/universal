@@ -93,7 +93,6 @@ const creditLineRouter = new Hono().post(
           if (!terms) {
             throw new Error('No terms found for delegation');
           }
-          console.log('chainId', chainId);
 
           const [token, limit] = decodeEnforcerERC20TransferAmount(terms);
           const tokenList = getDefaultTokenList({ chainId });
