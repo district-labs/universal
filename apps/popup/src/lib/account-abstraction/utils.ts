@@ -191,13 +191,15 @@ export function getUserOperationHash(params: UserOperationParams): Hex {
 
 export function getPackedUserOperationTypedDataHash({
   address,
+  chainId,
   packedUserOperationHash,
 }: {
   address: Address;
+  chainId: number;
   packedUserOperationHash: Hex;
 }): Hex {
   const parts: Hex[] = ['0x1901'];
-  const domainSeparator = buildDomainSeparator({ address, chainId: 84532 });
+  const domainSeparator = buildDomainSeparator({ address, chainId });
   parts.push(domainSeparator);
   parts.push(packedUserOperationHash);
 
