@@ -5,16 +5,15 @@ import { addressSchema } from '@/lib/validation/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { type Address, erc20Abi, parseUnits } from 'viem';
-import { useAccount, useChainId, useSwitchChain } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 import { z } from 'zod';
 
 import { AccountSelectAndInput } from '@/components/fields/account-select-and-input';
 import { Erc20SelectAndAmount } from '@/components/fields/erc20-select-and-amount';
 import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
 import { Card } from '@/components/ui/card';
-import type { TokenItem } from 'universal-data';
-import { findTokenByAddress, tokenList } from 'universal-data';
-import { baseSepolia } from 'viem/chains';
+import { defaultTokenList, useIsValidChain } from '@/lib/chains';
+import { type TokenItem, findToken, getDefaultTokenList } from 'universal-data';
 import { useWriteContracts } from 'wagmi/experimental';
 
 const formSchema = z.object({
@@ -37,14 +36,18 @@ type FormerErc20TransferProps = {
 
 function FormerErc20Transfer({ defaultValues }: FormerErc20TransferProps) {
   const { address } = useAccount();
-  const chainId = useChainId();
   const { switchChain, isPending: isPendingSwitchChain } = useSwitchChain();
   const { writeContracts } = useWriteContracts();
+
+  const { isValidChain, chainId, defaultChain } = useIsValidChain();
+
+  const tokenList = getDefaultTokenList({ chainId });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       token: defaultValues?.token
-        ? findTokenByAddress(defaultValues?.token)
+        ? findToken({ address: defaultValues?.token, tokenList })
         : undefined,
       to: defaultValues?.to || undefined,
       amount: defaultValues?.amount || undefined,
@@ -52,9 +55,9 @@ function FormerErc20Transfer({ defaultValues }: FormerErc20TransferProps) {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    if (chainId !== baseSepolia.id) {
+    if (!isValidChain) {
       switchChain({
-        chainId: baseSepolia.id,
+        chainId: defaultChain.id,
       });
       return;
     }
@@ -85,10 +88,9 @@ function FormerErc20Transfer({ defaultValues }: FormerErc20TransferProps) {
           <AccountSelectAndInput />
         </Card>
         <Card className="rounded-3xl p-5">
-          <Erc20SelectAndAmount tokenList={tokenList} />
+          <Erc20SelectAndAmount tokenList={defaultTokenList} />
         </Card>
-
-        {address && chainId === baseSepolia.id && (
+        {address && isValidChain && (
           <div className="">
             <Button
               disabled={!form.formState.isValid}
@@ -102,7 +104,7 @@ function FormerErc20Transfer({ defaultValues }: FormerErc20TransferProps) {
             </Button>
           </div>
         )}
-        {address && chainId !== baseSepolia.id && (
+        {address && !isValidChain && (
           <Button
             disabled={isPendingSwitchChain}
             className="w-full py-3 text-lg"
@@ -111,7 +113,7 @@ function FormerErc20Transfer({ defaultValues }: FormerErc20TransferProps) {
             variant={'emerald'}
             size={'lg'}
           >
-            Switch to Base Sepolia
+            Switch Chains
           </Button>
         )}
         {!address && (

@@ -9,16 +9,22 @@ export async function getDelegationByDelegatorAndType(
   delegationsApiClient: DelegationsApiClient,
   {
     address,
+    chainId,
     type,
   }: {
     address: Hex;
+    chainId: number;
     type: string;
   },
 ) {
-  const res = await delegationsApiClient.delegations.delegator[':address'][
-    ':type'
-  ].$get({
-    param: { address, type },
+  const res = await delegationsApiClient.delegations.delegator[':chainId'][
+    ':address'
+  ][':type'].$get({
+    param: {
+      address,
+      chainId: chainId.toString(),
+      type,
+    },
   });
 
   if (!res.ok) {
@@ -32,6 +38,7 @@ export async function getDelegationByDelegatorAndType(
 
 export function useGetDelegationByDelegatorAndType(input: {
   address: Hex;
+  chainId: number;
   type: string;
 }) {
   const delegationsApiClient = useDelegationsApiClient();

@@ -1,4 +1,4 @@
-import { chains } from '@/constants';
+import { validChains } from 'universal-data';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';
@@ -10,7 +10,7 @@ export const ActionTransactionNetwork = ({
 }: ActionTransactionNetwork) => {
   const { message } = useMessageContext();
   const chain = useMemo(
-    () => chains.find(({ id }) => message?.chainId === id),
+    () => validChains.find(({ id }) => message?.chainId === id),
     [message],
   );
   return <div className={cn(className)}>Ethereum | {chain?.name}</div>;

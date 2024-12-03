@@ -1,5 +1,8 @@
+import { env } from '@/env';
+import { isValidChain } from 'universal-data';
 import { type Address, type Hex, toHex } from 'viem';
 import { entryPoint07Address } from 'viem/account-abstraction';
+import { base, baseSepolia } from 'viem/chains';
 
 export type AssetType = 'NATIVE' | 'ERC20' | 'ERC721' | 'ERC1155';
 export type ChangeType = 'APPROVE' | 'TRANSFER';
@@ -48,22 +51,36 @@ type SimulateUserOpAssetChangesParams = {
   paymasterData?: Hex;
 };
 
-// TODO: Support multiple chain ids
-export async function simulateUserOpAssetChanges(
-  params: SimulateUserOpAssetChangesParams,
-) {
-  const payload = formatPayloadParams(params);
+function getAlchemyEndpoint(chainId: number) {
+  if (chainId === base.id && env.NEXT_PUBLIC_RPC_URL_BASE) {
+    return env.NEXT_PUBLIC_RPC_URL_BASE;
+  }
 
-  const response = await fetch(
-    'https://base-sepolia.g.alchemy.com/v2/gPW_TpAq6uZgoH5cf3hYm5KxTLMQ2cCZ',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
+  if (chainId === baseSepolia.id && env.NEXT_PUBLIC_RPC_URL_BASE_SEPOLIA) {
+    return env.NEXT_PUBLIC_RPC_URL_BASE_SEPOLIA;
+  }
+
+  if (!isValidChain(chainId)) {
+    throw new Error('Chain not supported');
+  }
+
+  throw new Error('invalid alchemy configuration');
+}
+
+// TODO: Support multiple chain ids
+export async function simulateUserOpAssetChanges({
+  chainId,
+  params,
+}: { chainId: number; params: SimulateUserOpAssetChangesParams }) {
+  const payload = formatPayloadParams(params);
+  const alchemyEndpoint = getAlchemyEndpoint(chainId);
+  const response = await fetch(alchemyEndpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
+    body: JSON.stringify(payload),
+  });
 
   if (!response.ok) {
     throw new Error('Failed to fetch ETH price');

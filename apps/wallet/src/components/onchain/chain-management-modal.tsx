@@ -9,7 +9,17 @@ export const ChainManagementModal = () => {
     <ConnectButtonRainbowkit.Custom>
       {({ chain, openChainModal }) => {
         if (!chain?.iconUrl) {
-          return null;
+          return (
+            <Button
+              type="button"
+              variant={'outline'}
+              size={'sm'}
+              onClick={openChainModal}
+            >
+              {' '}
+              <span className="text-2xs">Select Network</span>{' '}
+            </Button>
+          );
         }
 
         return (
@@ -19,7 +29,6 @@ export const ChainManagementModal = () => {
             size={'sm'}
             onClick={openChainModal}
           >
-            {/* <span className='text-2xs'>ETH</span> */}
             <Image
               alt={chain?.name ?? 'Chain Icon'}
               width={16}

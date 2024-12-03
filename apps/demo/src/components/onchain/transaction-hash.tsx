@@ -1,7 +1,6 @@
 import { type HTMLAttributes, useMemo } from 'react';
 import type { Chain, Hex } from 'viem';
-
-import { baseSepolia } from 'viem/chains';
+import { testnetChains } from 'universal-data';
 import { LinkComponent } from '../ui/link-component';
 
 interface TransactionHashProps
@@ -13,13 +12,15 @@ interface TransactionHashProps
   chain?: Chain;
 }
 
+const defaultChain = testnetChains[0];
+
 export const TransactionHash = ({
   hash,
   className,
   truncate,
   truncateLength = 8,
   isLink,
-  chain = baseSepolia,
+  chain = defaultChain,
   ...props
 }: TransactionHashProps) => {
   const blockExplorerUrl = chain?.blockExplorers?.default.url;

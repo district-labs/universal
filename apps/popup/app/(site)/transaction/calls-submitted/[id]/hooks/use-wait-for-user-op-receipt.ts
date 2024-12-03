@@ -1,5 +1,5 @@
 import { getBundlerClient } from '@/lib/client/bundler-client';
-import type { Chain } from '@/types';
+import type { ValidChain } from 'universal-data';
 import { useQuery } from '@tanstack/react-query';
 import type { Hex } from 'viem';
 
@@ -7,7 +7,7 @@ export function useWaitForUserOpReceipt({
   chainId,
   hash,
 }: {
-  chainId: Chain['id'] | undefined;
+  chainId: ValidChain['id'] | undefined;
   hash: Hex | undefined;
 }) {
   return useQuery({

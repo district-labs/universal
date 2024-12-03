@@ -31,6 +31,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
+    "universal-data": "workspace:*",
     "universal-wallet-connector": "workspace:*",
     "universal-wallet-sdk": "workspace:*",
     "viem": "^2.21.6",

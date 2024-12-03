@@ -71,6 +71,7 @@ export const enforcerEvents = onchainTable('enforcer_events', (t) => ({
     .text()
     .primaryKey()
     .$default(() => generateUUID()),
+  chainId: t.integer().notNull(),
   timestamp: t.bigint().notNull(),
   blockNumber: t.bigint().notNull(),
   transactionHash: t.hex().notNull(),

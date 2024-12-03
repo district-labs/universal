@@ -7,13 +7,21 @@ import { useMessageContext } from '@/lib/state/use-message-context';
 import { cn } from '@/lib/utils';
 import { LucideCheckCircle2, LucideXCircle } from 'lucide-react';
 import Link from 'next/link';
-import type { Hex } from 'viem';
-import { baseSepolia } from 'viem/chains';
+import type { Chain, Hex } from 'viem';
 import { useWaitForUserOpReceipt } from './hooks/use-wait-for-user-op-receipt';
+import { productionChains } from 'universal-data';
+
+type ViewTransactionLinkProps = {
+  transactionHash: Hex | undefined;
+  chain?: Chain;
+};
+
+const defaultChain = productionChains[0];
 
 function ViewTransactionLink({
+  chain = defaultChain,
   transactionHash,
-}: { transactionHash: Hex | undefined }) {
+}: ViewTransactionLinkProps) {
   if (!transactionHash) {
     return <Skeleton className="h-18" />;
   }
@@ -21,7 +29,7 @@ function ViewTransactionLink({
     <Link
       target="_blank"
       rel="noopener noreferrer"
-      href={`${baseSepolia.blockExplorers.default.url}/tx/${transactionHash}`}
+      href={`${chain.blockExplorers?.default.url || defaultChain.blockExplorers.default.url}/tx/${transactionHash}`}
       className={cn(buttonVariants())}
     >
       View Transaction

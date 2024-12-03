@@ -5,14 +5,20 @@ import type { DelegationDb } from '../../schema.js';
 import { sqlLower } from '../../utils.js';
 
 export function getDelegationsByDelegatorAndTypeDb({
+  chainId,
   delegator,
   type,
-}: { delegator: Address; type: string }): Promise<DelegationDb[]> {
+}: {
+  chainId: number;
+  delegator: Address;
+  type: string;
+}): Promise<DelegationDb[]> {
   return db.query.delegations.findMany({
     where: (delegations, { eq }) =>
       and(
         eq(sqlLower(delegations.delegator), delegator.toLowerCase()),
         eq(delegations.type, type),
+        eq(delegations.chainId, chainId),
       ),
     with: {
       caveats: true,

@@ -24,6 +24,10 @@ export const env = createEnv({
       .string()
       .url()
       .default('http://localhost:4200'),
+    // RPC URLs
+    NEXT_PUBLIC_RPC_URL_BASE: z.string().url().optional(),
+    NEXT_PUBLIC_RPC_URL_BASE_SEPOLIA: z.string().url().optional(),
+    NEXT_PUBLIC_RPC_URL_MAINNET: z.string().url().optional(),
   },
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
@@ -35,5 +39,9 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_DELEGATIONS_API_URL,
     NEXT_PUBLIC_IDENTITY_API_URL: process.env.NEXT_PUBLIC_IDENTITY_API_URL,
     NEXT_PUBLIC_UNIVERSAL_API_URL: process.env.NEXT_PUBLIC_UNIVERSAL_API_URL,
+    NEXT_PUBLIC_RPC_URL_BASE: process.env.NEXT_PUBLIC_RPC_URL_BASE,
+    NEXT_PUBLIC_RPC_URL_BASE_SEPOLIA:
+      process.env.NEXT_PUBLIC_RPC_URL_BASE_SEPOLIA,
+    NEXT_PUBLIC_RPC_URL_MAINNET: process.env.NEXT_PUBLIC_RPC,
   },
 });

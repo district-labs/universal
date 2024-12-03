@@ -1,12 +1,12 @@
 'use client';
 import type { DelegationDb } from 'api-delegations';
 import { useMemo } from 'react';
-import { findToken } from 'universal-data';
 import { type Address, erc20Abi, formatUnits } from 'viem';
 import { usePublicClient, useReadContract } from 'wagmi';
 import { erc20TransferAmountEnforcerAbi } from '../../abis/erc20-transfer-amount-enforcer-abi.js';
 import { getDelegationHash } from '../../delegation/get-delegation-hash.js';
 import { decodeEnforcerERC20TransferAmount } from '../../enforcers/enforcer-erc20-transfer-amount.js';
+import { findToken, getDefaultTokenList } from 'universal-data';
 
 export function useErc20TransferAmountEnforcer({
   delegationManager,
@@ -39,8 +39,14 @@ export function useErc20TransferAmountEnforcer({
       const decodedTerms = decodeEnforcerERC20TransferAmount(
         delegation.caveats[0].terms,
       );
-
-      const token = findToken(decodedTerms[0] as Address);
+      const tokenList = getDefaultTokenList({
+        chainId: delegation.chainId,
+      });
+      const address = decodedTerms[0] as Address;
+      const token = findToken({
+        address,
+        tokenList,
+      });
       if (token) {
         return {
           to: delegation.delegate,

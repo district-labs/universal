@@ -22,11 +22,17 @@ import { useAccount } from 'wagmi';
 
 type ViewCreditTableProps = React.HTMLAttributes<HTMLElement> & {
   delegate: Address;
+  chainId: number;
 };
 
-const ViewCreditTable = ({ className, delegate }: ViewCreditTableProps) => {
+const ViewCreditTable = ({
+  className,
+  chainId,
+  delegate,
+}: ViewCreditTableProps) => {
   const { data } = useGetDelegationByDelegateAndType({
     address: delegate,
+    chainId,
     type: 'DebitAuthorization',
   });
 

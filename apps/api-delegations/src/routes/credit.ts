@@ -2,11 +2,13 @@ import { Hono } from 'hono';
 import { validator } from 'hono/validator';
 import { type Address, isAddress } from 'viem';
 import { z } from 'zod';
+import { isValidChain } from 'universal-data';
 import { getDelegationsCollectionDb } from '../db/actions/delegations/get-delegations-collection-db.js';
 
 const getCollectionQuery = z.object({
   type: z.string().optional(),
   account: z.custom<Address>().optional(),
+  chainId: z.number(),
   accounts: z.array(z.custom<Address>()).optional(),
 });
 
@@ -17,6 +19,10 @@ const validateDidMiddleware = validator('json', async (value, c) => {
     (!queryParams?.data?.account && !queryParams?.data?.accounts)
   ) {
     return c.json({ error: 'No accounts provided' }, 400);
+  }
+
+  if (!isValidChain(queryParams?.data?.chainId)) {
+    return c.json({ error: 'Invalid chainId' }, 400);
   }
 
   if (queryParams?.data?.account && queryParams?.data?.accounts) {
@@ -50,6 +56,7 @@ const creditRouter = new Hono().post('/', validateDidMiddleware, async (c) => {
       accounts.map((_account) =>
         getDelegationsCollectionDb({
           address: _account,
+          chainId: queryParams?.chainId,
           type: queryParams?.type || 'DebitAuthorization',
         }),
       ),

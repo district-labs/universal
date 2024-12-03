@@ -5,12 +5,12 @@ import type React from 'react';
 import { Suspense } from 'react';
 
 import { DataTable } from '@/components/data-table/data-table';
+import { defaultChain, isProductionEnv } from '@/lib/chains';
 import { cn, formatNumber } from '@/lib/utils';
 import { EllipsisVertical } from 'lucide-react';
 import Image from 'next/image';
-import { findTokenByAddress } from 'universal-data';
+import { findToken, getDefaultTokenList } from 'universal-data';
 import { useGetLeaderboard } from 'universal-sdk';
-import { baseSepolia } from 'viem/chains';
 import { AccountInteractDialog } from '../core/account-authorize-credit-line-dialog';
 import { CopyIconButton } from '../core/copy-icon-button';
 import { CredentialSocialIcon } from '../identity/credential-social-icon';
@@ -23,8 +23,14 @@ import { Skeleton } from '../ui/skeleton';
 
 type LeaderboardTableProps = React.HTMLAttributes<HTMLDivElement> & {};
 
-const DEFAULT_LEADERBOARD_ASSET = '0xE3Cfc3bB7c8149d76829426D0544e6A76BE5a00B';
-const DEFAULT_LEADERBOARD_CHAIN_ID = baseSepolia.id;
+// TODO: Update logic once we have support for multiple chains in each environment
+const DEFAULT_LEADERBOARD_ASSET = isProductionEnv
+  ? '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913'
+  : '0xE3Cfc3bB7c8149d76829426D0544e6A76BE5a00B';
+const DEFAULT_LEADERBOARD_CHAIN_ID = defaultChain.id;
+const defaultTokenList = getDefaultTokenList({
+  chainId: DEFAULT_LEADERBOARD_CHAIN_ID,
+});
 
 const LeaderboardTable: React.FC<LeaderboardTableProps> = () => {
   const { data } = useGetLeaderboard({
@@ -93,7 +99,7 @@ const columns = [
       <div className="flex items-center gap-2">
         <WalletPFP
           address={row.original.address}
-          className="size-6 rounded-full border-2 shadow-md shadow-md"
+          className="size-6 rounded-full border-2 shadow-md"
         />
         <Address truncate={true} address={row.original.address} />
         <CopyIconButton value={row.original.address} />
@@ -107,7 +113,12 @@ const columns = [
       <div className="flex items-center gap-1">
         <Image
           className="rounded-full border-2 border-white shadow-md"
-          src={findTokenByAddress(DEFAULT_LEADERBOARD_ASSET)?.logoURI}
+          src={
+            findToken({
+              address: DEFAULT_LEADERBOARD_ASSET,
+              tokenList: defaultTokenList,
+            })?.logoURI
+          }
           alt="Ethereum"
           width={20}
           height={20}
@@ -115,7 +126,12 @@ const columns = [
         <ERC20Balance
           className="font-semibold text-neutral-500 text-sm md:text-lg"
           account={row.original.address}
-          address={findTokenByAddress(DEFAULT_LEADERBOARD_ASSET)?.address}
+          address={
+            findToken({
+              address: DEFAULT_LEADERBOARD_ASSET,
+              tokenList: defaultTokenList,
+            })?.address
+          }
         />
       </div>
     ),

@@ -1,12 +1,13 @@
 import type { Address } from 'viem';
 import { apiDelegationsClient } from '../../../clients.js';
+import { isValidChain } from 'universal-data';
 
 export type IssuedDelegations = Exclude<
   Awaited<
     ReturnType<
       Awaited<
         ReturnType<
-          (typeof apiDelegationsClient.delegations.delegate)[':address'][':type']['$get']
+          (typeof apiDelegationsClient.delegations.delegate)[':chainId'][':address'][':type']['$get']
         >
       >['json']
     >
@@ -15,6 +16,7 @@ export type IssuedDelegations = Exclude<
 >;
 
 export type GetIssuedDelegationsParams = {
+  chainId: number;
   delegator?: Address;
   delegate?: Address;
   type: string;
@@ -32,6 +34,7 @@ export type GetIssuedDelegationsReturnType =
     };
 
 export async function getIssuedDelegations({
+  chainId,
   delegate,
   delegator,
   type,
@@ -40,20 +43,26 @@ export async function getIssuedDelegations({
     return { ok: false, error: 'No delegate provided' };
   }
 
+  if (!isValidChain(chainId)) {
+    return { ok: false, error: 'Invalid chainId' };
+  }
+
   if (delegate) {
     const issuedDelegationsResponse =
-      await apiDelegationsClient.delegations.delegate[':address'][':type'].$get(
-        {
-          param: {
-            type,
-            // TODO: support delegator filtering
-            address: delegate,
-          },
+      await apiDelegationsClient.delegations.delegate[':chainId'][':address'][
+        ':type'
+      ].$get({
+        param: {
+          type,
+          chainId: chainId.toString(),
+          // TODO: support delegator filtering
+          address: delegate,
         },
-      );
+      });
 
     if (!issuedDelegationsResponse.ok) {
-      return { ok: false, error: 'Error fetching issued delegations' };
+      const error = await issuedDelegationsResponse.text();
+      return { ok: false, error };
     }
 
     const issuedDelegations = await issuedDelegationsResponse.json();
@@ -62,12 +71,13 @@ export async function getIssuedDelegations({
   }
   if (delegator) {
     const issuedDelegationsResponse =
-      await apiDelegationsClient.delegations.delegator[':address'][
+      await apiDelegationsClient.delegations.delegator[':chainId'][':address'][
         ':type'
       ].$get({
         param: {
           type,
           address: delegator,
+          chainId: chainId.toString(),
         },
       });
 

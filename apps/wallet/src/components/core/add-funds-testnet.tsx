@@ -6,11 +6,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { defaultTokenList, useIsValidChain } from '@/lib/chains';
 import type * as React from 'react';
-import { tokenList } from 'universal-data';
 import { type Address, parseUnits } from 'viem';
-import { baseSepolia } from 'viem/chains';
-import { useAccount, useChainId, useSwitchChain } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 import { useWriteContracts } from 'wagmi/experimental';
 import { ConnectUniversalWalletButton } from '../onchain/connect-universal-wallet';
 import { IsWalletConnected } from '../onchain/is-wallet-connected';
@@ -34,7 +33,7 @@ type AddFundsTestnet = React.HTMLAttributes<HTMLElement>;
 
 const AddFundsTestnet = ({ children }: AddFundsTestnet) => {
   const { address } = useAccount();
-  const chainId = useChainId();
+  const { isValidChain, chainId } = useIsValidChain();
   const { writeContracts } = useWriteContracts();
   const { switchChain, isPending: isPendingSwitchChain } = useSwitchChain();
 
@@ -43,29 +42,29 @@ const AddFundsTestnet = ({ children }: AddFundsTestnet) => {
       contracts: [
         {
           abi: MINT_ABI,
-          address: tokenList.tokens[0].address as Address,
+          address: defaultTokenList.tokens[0].address as Address,
           functionName: 'mint',
           args: [
             address as Address,
-            parseUnits('250', tokenList.tokens[0].decimals),
+            parseUnits('250', defaultTokenList.tokens[0].decimals),
           ],
         },
         {
           abi: MINT_ABI,
-          address: tokenList.tokens[1].address as Address,
+          address: defaultTokenList.tokens[1].address as Address,
           functionName: 'mint',
           args: [
             address as Address,
-            parseUnits('250', tokenList.tokens[1].decimals),
+            parseUnits('250', defaultTokenList.tokens[1].decimals),
           ],
         },
         {
           abi: MINT_ABI,
-          address: tokenList.tokens[2].address as Address,
+          address: defaultTokenList.tokens[2].address as Address,
           functionName: 'mint',
           args: [
             address as Address,
-            parseUnits('25', tokenList.tokens[2].decimals),
+            parseUnits('25', defaultTokenList.tokens[2].decimals),
           ],
         },
       ],
@@ -99,7 +98,7 @@ const AddFundsTestnet = ({ children }: AddFundsTestnet) => {
           </ConnectUniversalWalletButton>
         </IsWalletDisconnected>
         <IsWalletConnected>
-          {chainId === baseSepolia.id ? (
+          {isValidChain ? (
             <Button
               className="w-full text-lg"
               rounded={'full'}
@@ -116,11 +115,11 @@ const AddFundsTestnet = ({ children }: AddFundsTestnet) => {
               disabled={isPendingSwitchChain}
               onClick={() =>
                 switchChain({
-                  chainId: baseSepolia.id,
+                  chainId,
                 })
               }
             >
-              Switch to Base Sepolia
+              Switch Chains
             </Button>
           )}
         </IsWalletConnected>

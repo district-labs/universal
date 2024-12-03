@@ -1,4 +1,25 @@
-import type { DelegationDb } from 'api-delegations';
+import type { Address, Hex } from 'viem';
+
+type DelegationDb = {
+  hash: Hex;
+  verifyingContract: Address;
+  type: string;
+  delegator: Address;
+  chainId: number;
+  delegate: Address;
+  authority: Hex;
+  salt: bigint;
+  signature: Hex;
+  isValid: boolean;
+  caveats: {
+    id: number;
+    enforcerType: string;
+    enforcer: Address;
+    terms: Hex;
+    args: Hex;
+    delegationHash: Hex;
+  }[];
+};
 
 export type Token = {
   address: string;

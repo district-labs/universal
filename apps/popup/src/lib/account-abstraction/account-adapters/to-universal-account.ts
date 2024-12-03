@@ -1,5 +1,5 @@
 import type { Address, TypedData } from 'abitype';
-import { universalDeployments } from 'universal-data';
+import { isValidChain, universalDeployments } from 'universal-data';
 import {
   type Assign,
   BaseError,
@@ -241,14 +241,18 @@ export async function toUniversalAccount(
     },
 
     async signUserOperation(parameters) {
-      const { chainId, ...userOperation } = parameters;
+      const { chainId: userOpChainId, ...userOperation } = parameters;
       const address = await this.getAddress();
+      const chainId = userOpChainId ?? client?.chain?.id;
 
+      if (!isValidChain(chainId)) {
+        throw new BaseError('Invalid chainId');
+      }
       // @ts-ignore
       const packedUserOperationHash = getUserOperationHash(userOperation);
-
       const packedUserOpTypedHash = getPackedUserOperationTypedDataHash({
         address,
+        chainId,
         packedUserOperationHash,
       });
 

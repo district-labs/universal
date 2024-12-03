@@ -1,4 +1,3 @@
-import type { Chain } from '@/types';
 import { http } from 'viem';
 import {
   createBundlerClient,
@@ -6,8 +5,9 @@ import {
 } from 'viem/account-abstraction';
 import { base, baseSepolia } from 'viem/chains';
 import { basePublicClient, baseSepoliaPublicClient } from './public-client';
+import type { ValidChain } from 'universal-data';
 
-function getBundlerUrl(chain: Chain) {
+function getBundlerUrl(chain: ValidChain) {
   return `/api/bundler/${chain.id}`;
 }
 
@@ -32,7 +32,7 @@ export const baseSepoliaBundlerClient = createBundlerClient({
 export function getBundlerClient({
   chainId,
 }: {
-  chainId: Chain['id'];
+  chainId: ValidChain['id'];
 }) {
   switch (chainId) {
     case base.id:

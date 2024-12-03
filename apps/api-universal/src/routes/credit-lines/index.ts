@@ -1,6 +1,6 @@
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
-import { type TokenItem, findTokenByAddress } from 'universal-data';
+import { type TokenItem, findToken, getDefaultTokenList } from 'universal-data';
 import {
   type DelegationDb,
   decodeEnforcerERC20TransferAmount,
@@ -49,8 +49,8 @@ const creditLineRouter = new Hono().post(
     try {
       const [redeemCreditLinesResponse, issuedDelegationsResponse] =
         await Promise.all([
-          getRedeemedCreditLines({ delegate, delegator }),
-          getIssuedDelegations({ delegate, delegator, type }),
+          getRedeemedCreditLines({ chainId, delegate, delegator }),
+          getIssuedDelegations({ chainId, delegate, delegator, type }),
         ]);
 
       if (!redeemCreditLinesResponse.ok) {
@@ -95,7 +95,8 @@ const creditLineRouter = new Hono().post(
           }
 
           const [token, limit] = decodeEnforcerERC20TransferAmount(terms);
-          const tokenData = findTokenByAddress(token);
+          const tokenList = getDefaultTokenList({ chainId });
+          const tokenData = findToken({ address: token, tokenList });
 
           if (!tokenData) {
             throw new Error('Token not found');

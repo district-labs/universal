@@ -1,7 +1,9 @@
-import { tokenList } from '../token-list.js';
-import type { TokenItem } from '../types.js';
+import type { TokenItem, TokenList } from '../types.js';
 
-export function findToken(address: string): TokenItem | undefined {
+export function findToken({
+  address,
+  tokenList,
+}: { address: string; tokenList: TokenList }): TokenItem | undefined {
   return tokenList.tokens.find(
     (token) => token.address.toLowerCase() === address.toLowerCase(),
   );

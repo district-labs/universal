@@ -152,27 +152,45 @@ const AssetList = ({
 }) =>
   assets.length > 0 && (
     <div className="flex w-full flex-col gap-y-1.5 px-5 font-bold text-lg">
-      {assets.map(
-        ({ to, name, symbol, amount, assetType, contractAddress }) => {
-          const equalAddress = isEqualAddress(to, smartContractAddress);
+      {assets
+        .filter(
+          ({ to, from }) =>
+            to.toLowerCase() === smartContractAddress.toLowerCase() ||
+            from.toLowerCase() === smartContractAddress.toLowerCase(),
+        )
+        .reverse()
+        .map(
+          ({
+            to,
+            name,
+            symbol,
+            amount,
+            assetType,
+            contractAddress,
+            changeType,
+          }) => {
+            const equalAddress = isEqualAddress(to, smartContractAddress);
 
-          return (
-            <div
-              key={contractAddress + amount}
-              className="flex items-center justify-between"
-            >
-              <span className="font-semibold text-base">{name}</span>
-              <span
-                className={cn(
-                  'text-base',
-                  equalAddress ? 'text-emerald-600' : 'text-red-600',
-                )}
+            return (
+              <div
+                key={contractAddress + amount}
+                className="flex items-center justify-between"
               >
-                {`${equalAddress ? '+' : '-'} ${amount} ${assetType === 'ERC20' && symbol}`}
-              </span>
-            </div>
-          );
-        },
-      )}
+                <span className="font-semibold text-base">{name}</span>
+                <div className="flex flex-col items-end ">
+                  <span
+                    className={cn(
+                      'text-base',
+                      equalAddress ? 'text-emerald-600' : 'text-red-600',
+                    )}
+                  >
+                    {`${equalAddress ? '+' : '-'} ${amount} ${assetType === 'ERC20' && symbol}`}
+                  </span>
+                  <span className="font-normal text-xs">{changeType}</span>
+                </div>
+              </div>
+            );
+          },
+        )}
     </div>
   );

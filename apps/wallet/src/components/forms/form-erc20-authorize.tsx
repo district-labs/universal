@@ -16,12 +16,11 @@ import { DisconnectWalletElement } from '@/components/onchain/disconnect-wallet-
 import { IsNotUniversalWallet } from '@/components/onchain/is-not-universal-wallet';
 import { IsUniversalWallet } from '@/components/onchain/is-universal-wallet';
 import { Card } from '@/components/ui/card';
+import { defaultTokenList, useIsValidChain } from '@/lib/chains';
 import { useToast } from '@/lib/hooks/use-toast';
 import { useEffect } from 'react';
-import type { TokenItem } from 'universal-data';
-import { findTokenByAddress, tokenList } from 'universal-data';
+import { type TokenItem, findToken, getDefaultTokenList } from 'universal-data';
 import { useSignErc20TransferDelegation } from 'universal-delegations-sdk';
-import { baseSepolia } from 'viem/chains';
 
 const formSchema = z.object({
   to: addressSchema,
@@ -49,16 +48,19 @@ function FormErc20Authorize({
   defaultValues,
   onFormChange,
 }: FormErc20AuthorizeProps) {
-  const { address, chainId } = useAccount();
+  const { address } = useAccount();
   const switchChainMutation = useSwitchChain();
   const { signAndSaveDelegationAsync, isSuccess } =
     useSignErc20TransferDelegation();
-
+  const { isValidChain, chainId, defaultChain } = useIsValidChain();
+  const tokenList = getDefaultTokenList({
+    chainId,
+  });
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       token: tokenAddress
-        ? findTokenByAddress(tokenAddress)
+        ? findToken({ address: tokenAddress, tokenList })
         : defaultValues?.token
           ? defaultValues.token
           : undefined,
@@ -85,7 +87,7 @@ function FormErc20Authorize({
   useEffect(() => {
     const subscription = form.watch((data) => {
       onFormChange?.({
-        to: data.to,
+        to: data.to as Address,
         token: data.token as TokenItem,
         amount: data.amount,
       });
@@ -94,17 +96,14 @@ function FormErc20Authorize({
   }, [form, onFormChange]);
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    if (!chainId) {
-      return;
-    }
-    if (chainId !== baseSepolia.id) {
+    if (!isValidChain) {
       switchChainMutation.switchChain({
-        chainId: baseSepolia.id,
+        chainId: defaultChain.id,
       });
     }
     await signAndSaveDelegationAsync({
       chainId: chainId,
-      delegate: data.to,
+      delegate: data.to as Address,
       delegator: address as Address,
       erc20: data.token.address as Address,
       decimals: data.token.decimals,
@@ -119,13 +118,13 @@ function FormErc20Authorize({
           <AccountSelectAndInput />
         </Card>
         <Card className="rounded-3xl p-5">
-          <Erc20SelectAndAmount tokenList={tokenList} />
+          <Erc20SelectAndAmount tokenList={defaultTokenList} />
         </Card>
         <div className="mt-4">
           {address && (
             <div className="">
               <IsUniversalWallet>
-                {chainId === baseSepolia.id ? (
+                {isValidChain ? (
                   <Button
                     disabled={!form.formState.isValid}
                     className="w-full py-3 text-lg"
@@ -145,7 +144,7 @@ function FormErc20Authorize({
                     variant={'emerald'}
                     size={'lg'}
                   >
-                    Switch to Base Sepolia
+                    Switch Chains
                   </Button>
                 )}
               </IsUniversalWallet>

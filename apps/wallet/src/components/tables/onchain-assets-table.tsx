@@ -6,12 +6,12 @@ import { Suspense } from 'react';
 
 import { DataTable } from '@/components/data-table/data-table';
 import { cn } from '@/lib/utils';
-import { tokenList } from 'universal-data';
-import { baseSepolia } from 'viem/chains';
 import { AccountTransferDialog } from '../core/account-transfer-dialog';
 import { ERC20Balance } from '../onchain/erc20-balance';
 import { TokenImageWithFallback } from '../onchain/token-image-with-fallback';
 import { Button } from '../ui/button';
+
+import { defaultChain, defaultTokenList } from '@/lib/chains';
 
 const columns = [
   {
@@ -39,9 +39,10 @@ const columns = [
     cell: ({ row }) => (
       <div className="flex flex-col">
         <ERC20Balance
-          chainId={baseSepolia.id}
-          address={row.original.address}
           className="font-semibold text-sm md:text-lg"
+          chainId={defaultChain.id}
+          address={row.original.address}
+          decimals={row.original.decimals}
         />
       </div>
     ),
@@ -74,7 +75,7 @@ const OnchainAssetsTable: React.FC<OnchainAssetsTableProps> = ({
         <DataTable
           tableName="Tokens"
           columns={columns}
-          data={tokenList.tokens}
+          data={defaultTokenList.tokens}
           pageCount={10}
           disablePagination={true}
         />
