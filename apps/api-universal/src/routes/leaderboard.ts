@@ -3,21 +3,20 @@ import { validator } from 'hono/validator';
 import {
   findToken,
   getDefaultTokenList,
+  isValidChain,
   universalDeployments,
 } from 'universal-data';
 import { constructDidIdentifier } from 'universal-identity-sdk';
 import { type Address, formatUnits } from 'viem';
-import { base, baseSepolia } from 'viem/chains';
 import { z } from 'zod';
 import { apiCredentialsClient, apiDelegationsClient } from '../clients.js';
 import { getLeaderboardAccounts } from '../db/actions/leaderboard/get-leaderboard-accounts.js';
 import type { SelectAccountDb } from '../db/schema.js';
 import { calculateERC20TransferAmountEnforcerCollectionTotal } from '../utils/calculate-erc20-transfer-amount-enforcer-collection-total.js';
 
-const allowedChainIds = [Number(base.id), Number(baseSepolia.id)]; // List of allowed chain IDs
 const leaderboardQuery = z.object({
   asset: z.custom<Address>(),
-  chainId: z.number().refine((value) => allowedChainIds.includes(value), {
+  chainId: z.number().refine(isValidChain, {
     message: 'Invalid chainId',
   }),
   limit: z.number().optional(),
@@ -46,11 +45,6 @@ const leaderboardRouter = new Hono().post(
 
     const _resolver = universalDeployments.Resolver;
 
-    // TODO: Check if chainID is supported
-    // if (!_resolver || !isAddress(_resolver)) {
-    //   return c.json({ error: 'Resolver not found' }, 404);
-    // }
-
     const _accounts = accounts.map((_account) => _account.id);
     const _dids = _accounts.map((_account) => {
       return constructDidIdentifier({
@@ -69,6 +63,7 @@ const leaderboardRouter = new Hono().post(
     const delegations = await apiDelegationsClient.credit.$post({
       json: {
         accounts: _accounts,
+        chainId: params.chainId,
         type: 'DebitAuthorization',
       },
     });

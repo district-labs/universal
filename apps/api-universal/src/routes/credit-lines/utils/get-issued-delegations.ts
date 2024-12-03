@@ -1,5 +1,6 @@
 import type { Address } from 'viem';
 import { apiDelegationsClient } from '../../../clients.js';
+import { isValidChain } from 'universal-data';
 
 export type IssuedDelegations = Exclude<
   Awaited<
@@ -15,6 +16,7 @@ export type IssuedDelegations = Exclude<
 >;
 
 export type GetIssuedDelegationsParams = {
+  chainId: number;
   delegator?: Address;
   delegate?: Address;
   type: string;
@@ -32,6 +34,7 @@ export type GetIssuedDelegationsReturnType =
     };
 
 export async function getIssuedDelegations({
+  chainId,
   delegate,
   delegator,
   type,
@@ -40,12 +43,17 @@ export async function getIssuedDelegations({
     return { ok: false, error: 'No delegate provided' };
   }
 
+  if (!isValidChain(chainId)) {
+    return { ok: false, error: 'Invalid chainId' };
+  }
+
   if (delegate) {
     const issuedDelegationsResponse =
       await apiDelegationsClient.delegations.delegate[':address'][':type'].$get(
         {
           param: {
             type,
+            chainId: chainId.toString(),
             // TODO: support delegator filtering
             address: delegate,
           },
@@ -68,6 +76,7 @@ export async function getIssuedDelegations({
         param: {
           type,
           address: delegator,
+          chainId: chainId.toString(),
         },
       });
 

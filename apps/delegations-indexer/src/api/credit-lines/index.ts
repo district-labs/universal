@@ -16,11 +16,13 @@ ponder.get(
   '/redeemed-credit-lines',
   zValidator('query', redeemedCreditLineSchema),
   async (c) => {
-    const { delegate, delegator } = c.req.valid('query');
+    const { delegate, delegator, chainId } = c.req.valid('query');
 
     try {
       const conditions: ReturnType<typeof eq>[] = [];
       // Adds conditions to the query based on delegate and delegator
+
+      conditions.push(eq(delegations.chainId, chainId));
 
       if (delegate) {
         conditions.push(

@@ -1,6 +1,6 @@
 import type { Address, Hex } from 'viem';
-import { baseSepolia } from 'viem/chains';
-import { baseSepoliaPublicClient } from '../clients.js';
+import { getPublicClient } from '../clients.js';
+import { isValidChain } from 'universal-data';
 
 export async function verifyUniversalMessage({
   chainId,
@@ -13,11 +13,11 @@ export async function verifyUniversalMessage({
   content: string;
   signature: Hex;
 }) {
-  if (chainId !== baseSepolia.id) {
+  if (!isValidChain(chainId)) {
     throw new Error('Invalid chainId');
   }
-
-  const isValidSignature = await baseSepoliaPublicClient.verifyTypedData({
+  const publicClient = getPublicClient(chainId);
+  const isValidSignature = await publicClient.verifyTypedData({
     signature,
     address,
     types: { UniversalMessage: [{ name: 'content', type: 'string' }] },

@@ -50,7 +50,7 @@ const creditLineRouter = new Hono().post(
       const [redeemCreditLinesResponse, issuedDelegationsResponse] =
         await Promise.all([
           getRedeemedCreditLines({ delegate, delegator }),
-          getIssuedDelegations({ delegate, delegator, type }),
+          getIssuedDelegations({ chainId, delegate, delegator, type }),
         ]);
 
       if (!redeemCreditLinesResponse.ok) {
