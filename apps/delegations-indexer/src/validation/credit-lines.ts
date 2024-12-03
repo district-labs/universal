@@ -3,7 +3,9 @@ import { isAddress } from 'viem';
 import { z } from 'zod';
 
 export const addressSchema = z.string().refine(isAddress);
-export const chainIdSchema = z.number().refine(isValidChain);
+export const chainIdSchema = z.coerce
+  .number()
+  .refine((val) => isValidChain(Number(val)));
 export const redeemedCreditLineSchema = z.union([
   z.object({
     chainId: chainIdSchema,

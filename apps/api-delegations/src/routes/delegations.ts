@@ -22,7 +22,7 @@ const addressSchema = z.string().refine(isAddress, {
   message: 'invalid address',
 });
 
-const chainIdSchema = z.number().refine(isValidChain, {
+const chainIdSchema = z.coerce.number().refine((val) => isValidChain(val), {
   message: 'invalid chainId',
 });
 
@@ -80,7 +80,7 @@ const delegationsRouter = new Hono()
 
   // Get a delegations by its delegator
   .get(
-    '/delegator/:address',
+    '/delegator/:chainId/:address',
     zValidator('param', getDelegationByDelegatorOrDelegateSchema),
     async (c) => {
       const { address, chainId } = c.req.valid('param');
@@ -100,7 +100,7 @@ const delegationsRouter = new Hono()
 
   // Get a delegations by its delegator
   .get(
-    '/delegator/:address/:type',
+    '/delegator/:chainId/:address/:type',
     zValidator('param', getDelegationByDelegatorOrDelegateWithTypeSchema),
     async (c) => {
       const { address, chainId, type } = c.req.valid('param');
@@ -121,7 +121,7 @@ const delegationsRouter = new Hono()
 
   // Get a delegations by its delegator
   .get(
-    '/delegate/:address',
+    '/delegate/:chainId/:address',
     zValidator('param', getDelegationByDelegatorOrDelegateSchema),
     async (c) => {
       const { address, chainId } = c.req.valid('param');
@@ -141,10 +141,11 @@ const delegationsRouter = new Hono()
 
   // Get a delegations by its delegator
   .get(
-    '/delegate/:address/:type',
+    '/delegate/:chainId/:address/:type',
     zValidator('param', getDelegationByDelegatorOrDelegateWithTypeSchema),
     async (c) => {
       const { address, type, chainId } = c.req.valid('param');
+      console.log({ address, type, chainId });
       const delegations: DelegationDb[] | undefined =
         await getDelegationsByDelegateAndTypeDb({
           chainId,

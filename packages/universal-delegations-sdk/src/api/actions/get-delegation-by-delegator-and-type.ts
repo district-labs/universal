@@ -17,9 +17,9 @@ export async function getDelegationByDelegatorAndType(
     type: string;
   },
 ) {
-  const res = await delegationsApiClient.delegations.delegator[':address'][
-    ':type'
-  ].$get({
+  const res = await delegationsApiClient.delegations.delegator[':chainId'][
+    ':address'
+  ][':type'].$get({
     param: {
       address,
       chainId: chainId.toString(),

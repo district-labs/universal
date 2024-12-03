@@ -10,7 +10,7 @@ export const hexSchema = z.string().refine(isHex, {
   message: 'Invalid hex',
 });
 
-export const chainIdSchema = z
+export const chainIdSchema = z.coerce
   .number()
   .refine((value) => validChains.some(({ id }) => id === value), {
     message: 'Invalid chain ID',

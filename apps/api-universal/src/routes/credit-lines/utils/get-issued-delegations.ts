@@ -7,7 +7,7 @@ export type IssuedDelegations = Exclude<
     ReturnType<
       Awaited<
         ReturnType<
-          (typeof apiDelegationsClient.delegations.delegate)[':address'][':type']['$get']
+          (typeof apiDelegationsClient.delegations.delegate)[':chainId'][':address'][':type']['$get']
         >
       >['json']
     >
@@ -49,19 +49,20 @@ export async function getIssuedDelegations({
 
   if (delegate) {
     const issuedDelegationsResponse =
-      await apiDelegationsClient.delegations.delegate[':address'][':type'].$get(
-        {
-          param: {
-            type,
-            chainId: chainId.toString(),
-            // TODO: support delegator filtering
-            address: delegate,
-          },
+      await apiDelegationsClient.delegations.delegate[':chainId'][':address'][
+        ':type'
+      ].$get({
+        param: {
+          type,
+          chainId: '8453',
+          // TODO: support delegator filtering
+          address: delegate,
         },
-      );
+      });
 
     if (!issuedDelegationsResponse.ok) {
-      return { ok: false, error: 'Error fetching issued delegations' };
+      const error = await issuedDelegationsResponse.text();
+      return { ok: false, error };
     }
 
     const issuedDelegations = await issuedDelegationsResponse.json();
@@ -70,7 +71,7 @@ export async function getIssuedDelegations({
   }
   if (delegator) {
     const issuedDelegationsResponse =
-      await apiDelegationsClient.delegations.delegator[':address'][
+      await apiDelegationsClient.delegations.delegator[':chainId'][':address'][
         ':type'
       ].$get({
         param: {

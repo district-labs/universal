@@ -15,14 +15,14 @@ export async function getDelegationByDelegator(
     chainId: number;
   },
 ) {
-  const res = await delegationsApiClient.delegations.delegator[':address'].$get(
-    {
-      param: {
-        address,
-        chainId: chainId.toString(),
-      },
+  const res = await delegationsApiClient.delegations.delegator[':chainId'][
+    ':address'
+  ].$get({
+    param: {
+      address,
+      chainId: chainId.toString(),
     },
-  );
+  });
 
   if (!res.ok) {
     const { error } = await res.json();
