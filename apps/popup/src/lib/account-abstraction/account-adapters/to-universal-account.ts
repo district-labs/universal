@@ -241,19 +241,17 @@ export async function toUniversalAccount(
     },
 
     async signUserOperation(parameters) {
-      const { chainId, ...userOperation } = parameters;
+      const { ...userOperation } = parameters;
       const address = await this.getAddress();
-
-      if (!isValidChain(chainId)) {
+      const _chainId = client?.chain?.id;
+      if (typeof _chainId !== 'number' || !isValidChain(_chainId)) {
         throw new BaseError('Invalid chainId');
       }
-
       // @ts-ignore
       const packedUserOperationHash = getUserOperationHash(userOperation);
-
       const packedUserOpTypedHash = getPackedUserOperationTypedDataHash({
         address,
-        chainId,
+        chainId: _chainId,
         packedUserOperationHash,
       });
 
