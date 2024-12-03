@@ -34,7 +34,12 @@ export function isTestnetChain(chainId: number): chainId is TestnetChain['id'] {
   return testnetChainIds.includes(chainId as TestnetChain['id']);
 }
 
-export function isValidChain(chainId: number): chainId is ValidChain['id'] {
+export function isValidChain(
+  chainId: number | undefined,
+): chainId is ValidChain['id'] {
+  if (chainId === undefined) {
+    return false;
+  }
   return isProductionChain(chainId) || isTestnetChain(chainId);
 }
 
