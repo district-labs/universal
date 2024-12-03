@@ -1,11 +1,11 @@
-import { chains } from '@/constants';
+import { validChains } from 'universal-data';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useMemo } from 'react';
 
 export function useGetMessageChainId() {
   const { message } = useMessageContext();
   return useMemo(
-    () => chains.find(({ id }) => message?.chainId === id),
+    () => validChains.find(({ id }) => message?.chainId === id),
     [message],
   );
 }

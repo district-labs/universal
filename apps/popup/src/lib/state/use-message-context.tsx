@@ -1,4 +1,4 @@
-import type { Chain } from '@/types';
+import type { ValidChain } from 'universal-data';
 import { type ReactNode, createContext, useContext, useState } from 'react';
 
 export type MessageContextType = {
@@ -7,7 +7,7 @@ export type MessageContextType = {
   params: any;
   requestId: string;
   sender: string;
-  chainId: Chain['id'];
+  chainId: ValidChain['id'];
   origin: string;
 };
 

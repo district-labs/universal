@@ -61,8 +61,12 @@ export function useEstimateUserOpAssetChanges({
         calls: isValidCalls ? calls : [txParams],
       });
 
-      const simulatedAssetChanges =
-        await simulateUserOpAssetChanges(preparedUserOp);
+      const chainId = bundlerClient.client.chain.id;
+
+      const simulatedAssetChanges = await simulateUserOpAssetChanges({
+        params: preparedUserOp,
+        chainId,
+      });
 
       if (!simulatedAssetChanges) {
         throw new Error('Failed to simulate asset changes');

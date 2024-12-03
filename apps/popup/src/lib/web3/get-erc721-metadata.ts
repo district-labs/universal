@@ -1,3 +1,4 @@
+import { type ValidChain, isValidChain } from 'universal-data';
 import { base, baseSepolia } from 'viem/chains';
 
 function openSeaEndpoint(chainId: number) {
@@ -8,9 +9,7 @@ function openSeaEndpoint(chainId: number) {
   return 'https://testnets-api.opensea.io';
 }
 
-const OPENSEA_NETWORKS: {
-  [key: number]: string;
-} = {
+const OPENSEA_NETWORKS: Record<ValidChain['id'], string> = {
   [base.id]: 'base',
   [baseSepolia.id]: 'base_sepolia',
 };
@@ -19,6 +18,10 @@ export async function getErc721Metadata(
   chainId: number,
   address: `0x${string}`,
 ) {
+  if (!isValidChain(chainId)) {
+    throw new Error('Chain not supported');
+  }
+
   const options = {
     method: 'GET',
     headers: {

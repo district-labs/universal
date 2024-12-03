@@ -2,7 +2,7 @@ import { RowBasic } from '@/components/row-basic';
 import type { Delegation } from '@/lib/delegation-framework/types';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';
-import { findToken } from 'universal-data';
+import { findToken, getDefaultTokenList } from 'universal-data';
 import { decodeEnforcerERC20TransferAmount } from 'universal-delegations-sdk';
 import { DebitCard } from 'universal-wallet-ui';
 import { type Address, formatUnits } from 'viem';
@@ -22,7 +22,9 @@ export const CardPaymentBasic = ({
       typedData.caveats[0].terms,
     );
 
-    const token = findToken(formattedTerms[0] as Address);
+    const address = formattedTerms[0] as Address;
+    const tokenList = getDefaultTokenList({ chainId });
+    const token = findToken({ tokenList, address });
     if (!token) {
       // TODO: handle unknown token by fetching token data
       return {
@@ -42,7 +44,7 @@ export const CardPaymentBasic = ({
       symbol: token.symbol,
       decimals: token.decimals,
     };
-  }, [typedData]);
+  }, [typedData, chainId]);
 
   return (
     <div className={cn(className)}>

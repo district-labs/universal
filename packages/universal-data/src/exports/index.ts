@@ -9,10 +9,18 @@ export { leaderboardTokenList } from '../token-list/leaderboard-token-list.js';
 export { stablecoinTokenList } from '../token-list/stablecoin-token-list.js';
 export { tokenDeployments } from '../tokens.js';
 export {
+  type ValidChain,
   type ProductionChain,
   type TestnetChain,
+  type L2Chain,
   isProductionChain,
   isTestnetChain,
+  isValidChain,
+  isL2Chain,
+  validChainIds,
+  validChains,
+  l2Chains,
+  l2ChainIds,
   productionChains,
   productionChainIds,
   testnetChains,

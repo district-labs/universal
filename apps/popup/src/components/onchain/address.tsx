@@ -1,7 +1,6 @@
 import type { HTMLAttributes } from 'react';
-import type { Address as AddressType } from 'viem';
-
-import { baseSepolia } from 'viem/chains';
+import type { Address as AddressType, Chain } from 'viem';
+import { productionChains } from 'universal-data';
 import { LinkComponent } from '../ui/link-component';
 
 interface AddressProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
@@ -9,7 +8,10 @@ interface AddressProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
   truncate?: boolean;
   truncateLength?: number;
   isLink?: boolean;
+  chain?: Chain;
 }
+
+const defaultChain = productionChains[0];
 
 export const Address = ({
   address,
@@ -17,10 +19,10 @@ export const Address = ({
   truncate,
   truncateLength = 8,
   isLink,
+  chain = defaultChain,
   ...props
 }: AddressProps) => {
-  // TODO: Accept chain param here
-  const blockExplorerUrl = baseSepolia?.blockExplorers?.default.url;
+  const blockExplorerUrl = chain.blockExplorers?.default.url;
   const formattedAddress = truncate
     ? `${address?.slice(0, truncateLength)}...${address?.slice(-(truncateLength - 2))}`
     : address;

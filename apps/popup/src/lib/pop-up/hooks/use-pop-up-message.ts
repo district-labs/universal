@@ -1,9 +1,8 @@
-import { chains } from '@/constants';
+import { type ValidChain, productionChains } from 'universal-data';
 import { closePopup } from '@/lib/pop-up/actions/close-pop-up';
 import { useAccountState } from '@/lib/state/use-account-state';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useSessionState } from '@/lib/state/use-session-state';
-import type { Chain } from '@/types';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -103,7 +102,7 @@ export function usePopUpMessage() {
         setMessage({
           method,
           params,
-          chainId: chainId as Chain['id'],
+          chainId: chainId as ValidChain['id'],
           origin: message.origin,
           requestId: message?.data?.id,
           sender: message?.data?.sender,
@@ -122,8 +121,8 @@ export function usePopUpMessage() {
         method,
         params,
         origin: message.origin,
-        // No chainId for handshake, so using the first chainId of chains
-        chainId: chains[0].id,
+        // No chainId for handshake, so using the first chainId of production chains
+        chainId: productionChains[0].id,
         requestId: id,
         sender,
       });
