@@ -1,6 +1,6 @@
 import { isAddress, isHex } from 'viem';
 import { z } from 'zod';
-import { chains } from '../config/chains.js';
+import { validChains } from 'universal-data';
 
 export const addressSchema = z.string().refine(isAddress, {
   message: 'Invalid address',
@@ -12,6 +12,6 @@ export const hexSchema = z.string().refine(isHex, {
 
 export const chainIdSchema = z
   .number()
-  .refine((value) => chains.some(({ id }) => id === value), {
+  .refine((value) => validChains.some(({ id }) => id === value), {
     message: 'Invalid chain ID',
   });

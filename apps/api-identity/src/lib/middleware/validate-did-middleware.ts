@@ -1,5 +1,5 @@
 import { validator } from 'hono/validator';
-import { universalDeployments } from 'universal-data';
+import { isValidChain, universalDeployments } from 'universal-data';
 import {
   type PostDid,
   didDocumentSchema,
@@ -8,6 +8,10 @@ import {
 import { getPublicClient } from '../viem/index.js';
 
 function validateSignature(did: PostDid) {
+  if (!isValidChain(did.chainId)) {
+    return false;
+  }
+
   const publicClient = getPublicClient(did.chainId);
 
   return publicClient.verifyTypedData({
