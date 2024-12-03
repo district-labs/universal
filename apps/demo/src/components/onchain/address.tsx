@@ -1,7 +1,7 @@
 import { type HTMLAttributes, useMemo } from 'react';
 import type { Address as AddressType, Chain } from 'viem';
+import { testnetChains } from 'universal-data';
 
-import { baseSepolia } from 'viem/chains';
 import { LinkComponent } from '../ui/link-component';
 
 interface AddressProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
@@ -12,13 +12,15 @@ interface AddressProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
   chain?: Chain;
 }
 
+const defaultChain = testnetChains[0];
+
 export const Address = ({
   address,
   className,
   truncate,
   truncateLength = 8,
   isLink,
-  chain = baseSepolia,
+  chain = defaultChain,
   ...props
 }: AddressProps) => {
   const blockExplorerUrl = chain.blockExplorers?.default.url;
