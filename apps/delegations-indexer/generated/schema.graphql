@@ -126,6 +126,7 @@ type enforcerEventsPage {
 
 type enforcerEvents {
   id: String!
+  chainId: Int!
   timestamp: BigInt!
   blockNumber: BigInt!
   transactionHash: String!
@@ -151,6 +152,14 @@ input enforcerEventsFilter {
   id_ends_with: String
   id_not_starts_with: String
   id_not_ends_with: String
+  chainId: Int
+  chainId_not: Int
+  chainId_in: [Int]
+  chainId_not_in: [Int]
+  chainId_gt: Int
+  chainId_lt: Int
+  chainId_gte: Int
+  chainId_lte: Int
   timestamp: BigInt
   timestamp_not: BigInt
   timestamp_in: [BigInt]

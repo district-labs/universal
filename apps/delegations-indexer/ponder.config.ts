@@ -6,12 +6,17 @@ import {
   erc20TransferAmountAbi,
   universalDeployments,
 } from 'universal-data';
-import { baseSepolia } from 'viem/chains';
+import { base, baseSepolia } from 'viem/chains';
 
 const BASE_SEPOLIA_START_BLOCK = 17695840;
+const BASE_START_BLOCK = 23197800;
 
 export default createConfig({
   networks: {
+    base: {
+      chainId: base.id,
+      transport: http(process.env.PONDER_RPC_URL_BASE),
+    },
     baseSepolia: {
       chainId: baseSepolia.id,
       transport: http(process.env.PONDER_RPC_URL_BASE_SEPOLIA),
@@ -19,16 +24,30 @@ export default createConfig({
   },
   contracts: {
     DelegationManager: {
-      network: 'baseSepolia',
       abi: delegationManagerAbi,
-      address: universalDeployments.DelegationManager,
-      startBlock: BASE_SEPOLIA_START_BLOCK,
+      network: {
+        base: {
+          address: universalDeployments.DelegationManager,
+          startBlock: BASE_START_BLOCK,
+        },
+        baseSepolia: {
+          address: universalDeployments.DelegationManager,
+          startBlock: BASE_SEPOLIA_START_BLOCK,
+        },
+      },
     },
     ERC20TransferAmountEnforcer: {
-      network: 'baseSepolia',
       abi: erc20TransferAmountAbi,
-      address: universalDeployments.ERC20TransferAmountEnforcer,
-      startBlock: BASE_SEPOLIA_START_BLOCK,
+      network: {
+        base: {
+          address: universalDeployments.ERC20TransferAmountEnforcer,
+          startBlock: BASE_START_BLOCK,
+        },
+        baseSepolia: {
+          address: universalDeployments.ERC20TransferAmountEnforcer,
+          startBlock: BASE_SEPOLIA_START_BLOCK,
+        },
+      },
     },
   },
 });
