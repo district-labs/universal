@@ -18,7 +18,7 @@ type DelegationDb = {
     terms: Hex;
     args: Hex;
     delegationHash: Hex;
-  };
+  }[];
 };
 
 export type Token = {

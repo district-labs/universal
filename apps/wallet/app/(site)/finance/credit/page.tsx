@@ -5,6 +5,7 @@ import { CreditCard, TableProperties } from 'lucide-react';
 import { useAccount } from 'wagmi';
 import { ViewCreditCards } from './view-cards';
 import { ViewCreditTable } from './view-table';
+import { defaultChain } from '@/lib/chains';
 
 export default function FinanceCreditPage() {
   const { address } = useAccount();
@@ -38,7 +39,12 @@ export default function FinanceCreditPage() {
                     </ConnectUniversalWalletButton>
                   </div>
                 )}
-                {address && <ViewCreditTable delegate={address} />}
+                {address && (
+                  <ViewCreditTable
+                    chainId={defaultChain.id}
+                    delegate={address}
+                  />
+                )}
               </div>
             </section>
           </TabsContent>
