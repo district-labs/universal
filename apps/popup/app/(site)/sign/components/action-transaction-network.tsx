@@ -1,7 +1,7 @@
-import { validChains } from 'universal-data';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';
+import { validChains } from 'universal-data';
 
 type ActionTransactionNetwork = React.HTMLAttributes<HTMLElement>;
 

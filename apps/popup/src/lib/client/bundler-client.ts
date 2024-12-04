@@ -1,3 +1,4 @@
+import type { ValidChain } from 'universal-data';
 import { http } from 'viem';
 import {
   createBundlerClient,
@@ -5,7 +6,6 @@ import {
 } from 'viem/account-abstraction';
 import { base, baseSepolia } from 'viem/chains';
 import { basePublicClient, baseSepoliaPublicClient } from './public-client';
-import type { ValidChain } from 'universal-data';
 
 function getBundlerUrl(chain: ValidChain) {
   return `/api/bundler/${chain.id}`;

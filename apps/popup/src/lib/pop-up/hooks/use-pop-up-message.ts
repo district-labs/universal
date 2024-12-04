@@ -1,10 +1,10 @@
-import { type ValidChain, productionChains } from 'universal-data';
 import { closePopup } from '@/lib/pop-up/actions/close-pop-up';
 import { useAccountState } from '@/lib/state/use-account-state';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useSessionState } from '@/lib/state/use-session-state';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { type ValidChain, productionChains } from 'universal-data';
 import {
   decryptContent,
   deriveSharedSecret,

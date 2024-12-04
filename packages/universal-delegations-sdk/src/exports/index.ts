@@ -1,19 +1,7 @@
 export {
-  getDelegationByDelegator,
-  useGetDelegationByDelegator,
-} from '../api/actions/get-delegation-by-delegator.js';
-export {
-  getDelegationByDelegatorAndType,
-  useGetDelegationByDelegatorAndType,
-} from '../api/actions/get-delegation-by-delegator-and-type.js';
-export {
-  getDelegationByDelegate,
-  useGetDelegationByDelegate,
-} from '../api/actions/get-delegation-by-delegate.js';
-export {
-  getDelegationByDelegateAndType,
-  useGetDelegationByDelegateAndType,
-} from '../api/actions/get-delegation-by-delegate-and-type.js';
+  getDelegations,
+  useGetDelegations,
+} from '../api/actions/get-delegations.js';
 export {
   getDelegation,
   useGetDelegation,

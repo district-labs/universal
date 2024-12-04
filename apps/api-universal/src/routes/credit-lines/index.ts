@@ -45,12 +45,13 @@ const creditLineRouter = new Hono().post(
   '/',
   zValidator('json', getCreditLineSchema),
   async (c) => {
-    const { delegate, delegator, type, chainId } = c.req.valid('json');
+    const params = c.req.valid('json');
+    const { chainId } = params;
     try {
       const [redeemCreditLinesResponse, issuedDelegationsResponse] =
         await Promise.all([
-          getRedeemedCreditLines({ chainId, delegate, delegator }),
-          getIssuedDelegations({ chainId, delegate, delegator, type }),
+          getRedeemedCreditLines({ ...params }),
+          getIssuedDelegations(params),
         ]);
 
       if (!redeemCreditLinesResponse.ok) {

@@ -1,11 +1,11 @@
 'use client';
 import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { defaultChain } from '@/lib/chains';
 import { CreditCard, TableProperties } from 'lucide-react';
 import { useAccount } from 'wagmi';
 import { ViewCreditCards } from './view-cards';
 import { ViewCreditTable } from './view-table';
-import { defaultChain } from '@/lib/chains';
 
 export default function FinanceCreditPage() {
   const { address } = useAccount();
