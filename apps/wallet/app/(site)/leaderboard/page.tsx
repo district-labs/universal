@@ -1,11 +1,10 @@
 'use client';
 import { LeaderboardApplyDialog } from '@/components/core/leaderboard-apply-dialog';
-import { LeaderboardMetricsTable } from '@/components/tables/leaderboard-metrics-table';
 import { LeaderboardTable } from '@/components/tables/leaderboard-table';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Coins, Info, Medal, Orbit, Trophy } from 'lucide-react';
+import { Coins, EarthLock, Info, Medal, Orbit, Trophy } from 'lucide-react';
 
 export default function LeaderboardPage() {
   return (
@@ -49,53 +48,58 @@ export default function LeaderboardPage() {
           </TabsContent>
           <TabsContent value="information" className="m-0 h-full p-0">
             <section className="h-full">
-              <div className="container grid grid-cols-1 gap-x-8 lg:grid-cols-12">
-                <div className="space-y-6 lg:col-span-8">
-                  <Card className=" p-6 ">
-                    <LeaderboardMetricsTable />
-                  </Card>
-                </div>
-                <div className="space-y-5 lg:col-span-4">
-                  <Card>
-                    <CardHeader>
-                      <Coins className="size-8" />
-                      <CardTitle className="font-bold text-2xl">
-                        Get Rewarded for Trust
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="content">
-                      <p className="font-bold text-sm leading-6 ">
-                        We're rewarding users for building a web of trust.
-                      </p>
-                      <p className="text-sm leading-6">
-                        Users with the highest verifiable trust score will be
-                        sent a USDC reward every month.
-                      </p>
-                      <p className="text-sm leading-6">
-                        The reward will be distributed to the top 10 users with
-                        the highest trust score.
-                      </p>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader>
-                      <Trophy className="size-8" />
-                      <CardTitle className="font-bold text-2xl">
-                        Trust Score Multiplier
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="content">
-                      <p className="text-sm leading-6">
-                        Each asset has a unique trust score multiplier.
-                      </p>
-                      <p className="text-sm leading-6">
-                        Users with the highest peer-to-peer credit scores wil
-                        have a higher universal trust score.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </div>
+              <div className="container grid grid-cols-1 gap-x-8 lg:grid-cols-3">
+                <Card>
+                  <CardHeader>
+                    <Coins className="size-8" />
+                    <CardTitle className="font-bold text-2xl">
+                      Rewarding Relationships
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="content">
+                    <p className="font-bold text-sm leading-6 ">
+                      We're rewarding users for building a web of trust.
+                    </p>
+                    <p className="text-sm leading-6">
+                      Users with the highest verifiable trust score will be sent
+                      a USDC reward every month.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <Trophy className="size-8" />
+                    <CardTitle className="font-bold text-2xl">
+                      Universal Network
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="content">
+                    <p className="font-bold text-sm leading-6">
+                      Users in the UNV Network play to build trust with each.
+                    </p>
+                    <p className="text-sm leading-6">
+                      Creating peer-to-peer credit lines that are backed by
+                      people and connections.
+                    </p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <EarthLock className="size-8" />
+                    <CardTitle className="font-bold text-2xl">
+                      Web of Trust
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="content">
+                    <p className="font-bold text-sm leading-6">
+                      The goal is to build a web of trust that is verifiable.
+                    </p>
+                    <p className="text-sm leading-6">
+                      Backed by money, relationships and reputation. Trust is
+                      and will always be the most valuable asset.
+                    </p>
+                  </CardContent>
+                </Card>
               </div>
             </section>
           </TabsContent>
