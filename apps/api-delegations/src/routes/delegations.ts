@@ -4,20 +4,25 @@ import { getDelegationDb } from '../db/actions/delegations/get-delegation-db.js'
 import { getDelegationsDb } from '../db/actions/delegations/get-delegations-db.js';
 import { insertDelegationDb } from '../db/actions/delegations/insert-delegation-db.js';
 import { invalidateDelegationDb } from '../db/actions/delegations/invalidate-delegation-db.js';
-import type { DelegationDb, SelectDelegationDb } from '../db/schema.js';
+import type { SelectDelegationDb } from '../db/schema.js';
 import {
   getDelegationSchema,
   getDelegationsSchema,
   postDelegationSchema,
 } from '../validation.js';
+import type {
+  DelegationWithChainIdMetadata,
+  DelegationWithChainIdMetadataHash,
+} from 'universal-types';
 
 const delegationsRouter = new Hono()
   // Get a delegation by its hash
   .get('/:hash', zValidator('param', getDelegationSchema), async (c) => {
     const { hash } = c.req.valid('param');
-    const delegation: DelegationDb | undefined = await getDelegationDb({
-      hash,
-    });
+    const delegation: DelegationWithChainIdMetadataHash | undefined =
+      await getDelegationDb({
+        hash,
+      });
 
     if (delegation) {
       return c.json({ delegation }, 200);
@@ -29,7 +34,7 @@ const delegationsRouter = new Hono()
   // Get a delegations by multiple parameters
   .post('/get', zValidator('json', getDelegationsSchema), async (c) => {
     const params = c.req.valid('json');
-    const delegations: DelegationDb[] | undefined =
+    const delegations: DelegationWithChainIdMetadata[] | undefined =
       await getDelegationsDb(params);
 
     if (delegations) {

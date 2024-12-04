@@ -29,6 +29,20 @@
       "when": 1733186099609,
       "tag": "0003_young_tiger_shark",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1733323209166,
+      "tag": "0004_warm_gambit",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1733323390653,
+      "tag": "0005_lean_rhino",
+      "breakpoints": true
     }
   ]
 }

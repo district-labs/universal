@@ -1,0 +1,1 @@
+ALTER TABLE "caveats" RENAME COLUMN "enforcerType" TO "type";

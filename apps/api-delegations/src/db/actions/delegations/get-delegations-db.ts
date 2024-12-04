@@ -1,10 +1,13 @@
 import { type SQL, eq } from 'drizzle-orm';
 import type { GetDelegationsParams } from '../../../validation.js';
 import { db } from '../../index.js';
-import { type DelegationDb, delegations } from '../../schema.js';
+import { delegations } from '../../schema.js';
 import { sqlLower } from '../../utils.js';
+import type { DelegationWithChainIdMetadata } from 'universal-types';
 
-export type GetDelegationsDbReturnType = DelegationDb[] | undefined;
+export type GetDelegationsDbReturnType =
+  | DelegationWithChainIdMetadata[]
+  | undefined;
 
 export function getDelegationsDb({
   chainId,

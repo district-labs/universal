@@ -1,8 +1,9 @@
 import { type Context, ponder } from '@/generated';
 import { universalDeployments } from 'universal-data';
-import type { Address, Hex } from 'viem';
+import type { Address } from 'viem';
 import { type InsertCaveat, caveats, delegations } from '../../ponder.schema';
 import { getDelegationHash } from '../utils/delegation/get-delegation-hash';
+import type { Delegation, DelegationCaveatWithMetadata } from 'universal-types';
 
 function getEnforcerType(enforcer: Address): string {
   if (
@@ -14,7 +15,7 @@ function getEnforcerType(enforcer: Address): string {
   return 'unknown';
 }
 
-function getDelegationType(caveats: InsertCaveat[]): string {
+function getDelegationType(caveats: DelegationCaveatWithMetadata[]): string {
   if (
     caveats.some(
       (caveat) => caveat.enforcerType === 'ERC20TransferAmountEnforcer',
@@ -32,22 +33,11 @@ async function updateDelegation({
 }: {
   context: Context;
   enabled: boolean;
-  delegation: {
-    delegate: Address;
-    delegator: Address;
-    authority: Hex;
-    caveats: readonly {
-      enforcer: Address;
-      terms: Hex;
-      args: Hex;
-    }[];
-    salt: bigint;
-    signature: Hex;
-  };
+  delegation: Omit<Delegation, 'chainId'>;
 }) {
   const delegationHash = getDelegationHash({
-    chainId: context.network.chainId,
     ...delegation,
+    chainId: context.network.chainId,
     caveats: delegation.caveats.slice(),
   });
 
@@ -90,7 +80,14 @@ ponder.on(
   'DelegationManager:RedeemedDelegation',
   async ({ event, context }) => {
     const { delegation } = event.args;
-    await updateDelegation({ context, enabled: true, delegation });
+    await updateDelegation({
+      context,
+      enabled: true,
+      delegation: {
+        ...delegation,
+        caveats: delegation.caveats.slice(),
+      },
+    });
   },
 );
 
@@ -98,11 +95,25 @@ ponder.on(
   'DelegationManager:DisabledDelegation',
   async ({ event, context }) => {
     const { delegation } = event.args;
-    await updateDelegation({ context, enabled: false, delegation });
+    await updateDelegation({
+      context,
+      enabled: false,
+      delegation: {
+        ...delegation,
+        caveats: delegation.caveats.slice(),
+      },
+    });
   },
 );
 
 ponder.on('DelegationManager:EnabledDelegation', async ({ event, context }) => {
   const { delegation } = event.args;
-  await updateDelegation({ context, enabled: true, delegation });
+  await updateDelegation({
+    context,
+    enabled: true,
+    delegation: {
+      ...delegation,
+      caveats: delegation.caveats.slice(),
+    },
+  });
 });
