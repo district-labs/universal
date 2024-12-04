@@ -14,7 +14,7 @@ import {
   useDelegationExecute,
   useDelegationStatus,
   useErc20TransferAmountEnforcer,
-  useGetDelegationByDelegateAndType,
+  useGetDelegations,
 } from 'universal-delegations-sdk';
 import { DebitCard } from 'universal-wallet-ui';
 import { type Address, encodeFunctionData, erc20Abi } from 'viem';
@@ -30,8 +30,8 @@ const ViewCreditTable = ({
   chainId,
   delegate,
 }: ViewCreditTableProps) => {
-  const { data } = useGetDelegationByDelegateAndType({
-    address: delegate,
+  const { data } = useGetDelegations({
+    delegate,
     chainId,
     type: 'DebitAuthorization',
   });
