@@ -36,7 +36,6 @@ export const DIDDefaultParsedView = ({
   return (
     <div className={cn('flex justify-center', className)}>
       <DIDCard
-        color="yellow"
         chainId={chainId}
         account={document.deconstructed.address}
         resolver={document.deconstructed.resolver}

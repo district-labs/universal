@@ -41,7 +41,7 @@ export const LeaderboardApplyDialog = ({
     }
     try {
       const _signature = await signTypedDataAsync({
-        content: "I want to discover what's possible in the Universal Network.",
+        content: 'Applying to the join the UNV beta.',
       });
 
       await mutateAsync({

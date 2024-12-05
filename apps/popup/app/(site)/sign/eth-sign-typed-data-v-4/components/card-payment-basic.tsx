@@ -50,7 +50,7 @@ export const CardPaymentBasic = ({
     <div className={cn(className)}>
       <div className="flex justify-center pb-6">
         <DebitCard
-          amount={formatUnits(BigInt(data.amount), 18).toString()}
+          amount={formatUnits(BigInt(data.amount), data.decimals).toString()}
           tokenAddress={data.token}
           chainId={chainId}
           to={data.to}
@@ -65,7 +65,6 @@ export const CardPaymentBasic = ({
           label="Amount"
           value={formatUnits(BigInt(data.amount), data.decimals)}
         />
-        <RowBasic label="Expiration" value={'Never'} />
       </div>
     </div>
   );
