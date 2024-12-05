@@ -49,6 +49,7 @@ verifyDiscordApp.get(
           handle: user.username,
           verifiedAt: new Date().toISOString(),
           platformProfileUrl: `https://discordapp.com/users/${user.id}`,
+          platformProfileImageUrl: `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`,
         },
       });
       const issuer =
