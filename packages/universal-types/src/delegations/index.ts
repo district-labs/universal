@@ -15,7 +15,6 @@ export type DelegationCaveat = {
 };
 
 export type Delegation = {
-  chainId: number;
   delegate: Address;
   delegator: Address;
   authority: Hex;
@@ -29,26 +28,15 @@ export type DelegationBatch = Delegation[];
 // Variations with extra metadata //
 
 export type DelegationCaveatWithMetadata = DelegationCaveat & {
-  type: string;
+  type: string | null;
 };
 
 export type DelegationWithMetadata = Omit<Delegation, 'caveats'> & {
-  type: string;
+  hash: Hex;
+  chainId: number;
+  type: string | null;
+  verifyingContract: Address;
   caveats: DelegationCaveatWithMetadata[];
 };
 
-export type DelegationWithChainId = Delegation & {
-  chainId: number;
-};
-export type DelegationWithChainIdMetadata = DelegationWithMetadata & {
-  chainId: number;
-};
-
-export type DelegationWithChainIdMetadataHash =
-  DelegationWithChainIdMetadata & {
-    hash: Hex;
-  };
 export type DelegationBatchWithMetadata = DelegationWithMetadata[];
-export type DelegationBatchWithChainId = DelegationWithChainId[];
-export type DelegationBatchWithChainIdMetadata =
-  DelegationWithChainIdMetadata[];

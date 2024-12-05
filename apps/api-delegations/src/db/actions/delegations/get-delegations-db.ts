@@ -3,11 +3,9 @@ import type { GetDelegationsParams } from '../../../validation.js';
 import { db } from '../../index.js';
 import { delegations } from '../../schema.js';
 import { sqlLower } from '../../utils.js';
-import type { DelegationWithChainIdMetadata } from 'universal-types';
+import type { DelegationWithMetadata } from 'universal-types';
 
-export type GetDelegationsDbReturnType =
-  | DelegationWithChainIdMetadata[]
-  | undefined;
+export type GetDelegationsDbReturnType = DelegationWithMetadata[] | undefined;
 
 export function getDelegationsDb({
   chainId,

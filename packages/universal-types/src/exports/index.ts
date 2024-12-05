@@ -6,9 +6,4 @@ export type {
   DelegationCaveatWithMetadata,
   DelegationExecution,
   DelegationWithMetadata,
-  DelegationWithChainId,
-  DelegationBatchWithChainId,
-  DelegationBatchWithChainIdMetadata,
-  DelegationWithChainIdMetadata,
-  DelegationWithChainIdMetadataHash,
 } from '../delegations/index.js';

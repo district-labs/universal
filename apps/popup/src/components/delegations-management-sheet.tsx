@@ -12,18 +12,18 @@ import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import type {
   DelegationExecutions,
-  DelegationWithMetadata,
+  CreditLineWithMetadata,
   SocialCredential,
 } from 'universal-data';
-import type { DelegationDb } from 'universal-delegations-sdk';
 import { useGetCreditLines } from 'universal-sdk';
-import { type Address, parseUnits } from 'viem';
+import { type Address, type Hex, parseUnits } from 'viem';
 import { DelegationDetailsSheet } from './delegation-details-sheet';
 import { AccountSocialCredentialWeightedBadge } from './identity/account-social-credential-weighted-badge';
 import { Toggle } from './toggle';
 import { Button } from './ui/button';
 import { Card, CardFooter, CardHeader } from './ui/card';
 import { Input } from './ui/input';
+import type { DelegationWithMetadata } from 'universal-types';
 
 export type DelegationsManagementSheet = Omit<
   React.HTMLAttributes<HTMLElement>,
@@ -67,9 +67,7 @@ export const DelegationsManagementSheet = ({
     }
   }, [isOpen]);
 
-  const handleDisableDelegation = (
-    hash: DelegationWithMetadata['data']['hash'],
-  ) => {
+  const handleDisableDelegation = (hash: Hex) => {
     setDelegationExecutions(
       delegationExecutions.filter(
         (delegationExecution) => delegationExecution.delegation.hash !== hash,
@@ -77,10 +75,7 @@ export const DelegationsManagementSheet = ({
     );
   };
 
-  const handleDelegationAmountUpdate = (
-    hash: DelegationWithMetadata['data']['hash'],
-    amountFormatted: string,
-  ) => {
+  const handleDelegationAmountUpdate = (hash: Hex, amountFormatted: string) => {
     setDelegationExecutions(
       delegationExecutions.map((delegationExecution) => {
         if (delegationExecution.delegation.hash === hash) {
@@ -102,7 +97,7 @@ export const DelegationsManagementSheet = ({
   };
 
   const handleEnableDelegation = (
-    delegationExecution: DelegationWithMetadata,
+    delegationExecution: CreditLineWithMetadata,
   ) => {
     setDelegationExecutions([
       ...delegationExecutions,
@@ -199,14 +194,11 @@ type CreditDelegationCard = Omit<
   'handleEnableDelegation'
 > & {
   delegatorAccountSocialCredentials: SocialCredential[];
-  delegation: DelegationDb;
-  delegationWithMetadata: DelegationWithMetadata;
-  handleEnableDelegation: (delegation: DelegationWithMetadata) => void;
-  handleDisableDelegation: (hash: DelegationDb['hash']) => void;
-  handleDelegationAmountUpdate: (
-    hash: DelegationDb['hash'],
-    amountFormatted: string,
-  ) => void;
+  delegation: DelegationWithMetadata;
+  delegationWithMetadata: CreditLineWithMetadata;
+  handleEnableDelegation: (delegation: CreditLineWithMetadata) => void;
+  handleDisableDelegation: (hash: Hex) => void;
+  handleDelegationAmountUpdate: (hash: Hex, amountFormatted: string) => void;
   toggleIsOpen: (isOpen: boolean) => void;
 };
 

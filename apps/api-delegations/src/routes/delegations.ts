@@ -4,22 +4,18 @@ import { getDelegationDb } from '../db/actions/delegations/get-delegation-db.js'
 import { getDelegationsDb } from '../db/actions/delegations/get-delegations-db.js';
 import { insertDelegationDb } from '../db/actions/delegations/insert-delegation-db.js';
 import { invalidateDelegationDb } from '../db/actions/delegations/invalidate-delegation-db.js';
-import type { SelectDelegationDb } from '../db/schema.js';
 import {
   getDelegationSchema,
   getDelegationsSchema,
   postDelegationSchema,
 } from '../validation.js';
-import type {
-  DelegationWithChainIdMetadata,
-  DelegationWithChainIdMetadataHash,
-} from 'universal-types';
+import type { DelegationWithMetadata } from 'universal-types';
 
 const delegationsRouter = new Hono()
   // Get a delegation by its hash
   .get('/:hash', zValidator('param', getDelegationSchema), async (c) => {
     const { hash } = c.req.valid('param');
-    const delegation: DelegationWithChainIdMetadataHash | undefined =
+    const delegation: DelegationWithMetadata | undefined =
       await getDelegationDb({
         hash,
       });
@@ -34,7 +30,7 @@ const delegationsRouter = new Hono()
   // Get a delegations by multiple parameters
   .post('/get', zValidator('json', getDelegationsSchema), async (c) => {
     const params = c.req.valid('json');
-    const delegations: DelegationWithChainIdMetadata[] | undefined =
+    const delegations: DelegationWithMetadata[] | undefined =
       await getDelegationsDb(params);
 
     if (delegations) {
@@ -73,7 +69,7 @@ const delegationsRouter = new Hono()
     // TODO: Expect a signature from the delegator to invalidate the delegation
     async (c) => {
       const { hash } = c.req.valid('param');
-      const delegation: SelectDelegationDb[] | undefined =
+      const delegation: Omit<DelegationWithMetadata, 'caveats'>[] | undefined =
         await invalidateDelegationDb({
           hash,
         });

@@ -43,6 +43,13 @@
       "when": 1733323390653,
       "tag": "0005_lean_rhino",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1733419629547,
+      "tag": "0006_flimsy_harpoon",
+      "breakpoints": true
     }
   ]
 }

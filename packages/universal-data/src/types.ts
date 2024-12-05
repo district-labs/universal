@@ -1,25 +1,4 @@
-import type { Address, Hex } from 'viem';
-
-type DelegationDb = {
-  hash: Hex;
-  verifyingContract: Address;
-  type: string;
-  delegator: Address;
-  chainId: number;
-  delegate: Address;
-  authority: Hex;
-  salt: bigint;
-  signature: Hex;
-  isValid: boolean;
-  caveats: {
-    id: number;
-    enforcerType: string;
-    enforcer: Address;
-    terms: Hex;
-    args: Hex;
-    delegationHash: Hex;
-  }[];
-};
+import type { DelegationWithMetadata } from 'universal-types';
 
 export type Token = {
   address: string;
@@ -91,7 +70,7 @@ export type SocialCredential = {
 };
 
 export type DelegationExecutions = {
-  delegation: DelegationDb;
+  delegation: DelegationWithMetadata;
   execution: {
     hash: string;
     amount: bigint;
@@ -108,8 +87,8 @@ export type DelegationExecutions = {
   };
 };
 
-export type DelegationWithMetadata = {
-  data: DelegationDb;
+export type CreditLineWithMetadata = {
+  data: DelegationWithMetadata;
   metadata: {
     available: {
       amount: string;

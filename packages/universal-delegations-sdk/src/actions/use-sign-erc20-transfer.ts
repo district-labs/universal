@@ -1,14 +1,13 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { universalDeployments } from 'universal-data';
-import type { Address, Hex } from 'viem';
+import { universalDeployments, ROOT_AUTHORITY, SALT } from 'universal-data';
+import type { Address } from 'viem';
 import { useChainId, useSignTypedData } from 'wagmi';
 import { useInsertDelegation } from '../api/actions/insert-delegation.js';
-import { ROOT_AUTHORITY, SALT } from '../constants.js';
 import { eip712DelegationTypes } from '../delegation/eip712-delegation-type.js';
 import { getDelegationHash } from '../delegation/get-delegation-hash.js';
 import { encodeEnforcerERC20TransferAmount } from '../enforcers/enforcer-erc20-transfer-amount.js';
-import type { Delegation } from '../types.js';
+import type { Delegation, DelegationWithMetadata } from 'universal-types';
 
 type SignDelegationParams = {
   chainId: number;
@@ -25,7 +24,7 @@ export function useSignErc20TransferDelegation() {
     useSignTypedData();
   const chainId = useChainId();
   const { mutate, ...insertRest } = useInsertDelegation();
-  const [delegation, setDelegation] = useState<Delegation | null>();
+  const [delegation, setDelegation] = useState<DelegationWithMetadata | null>();
 
   function signAndSaveDelegation({
     chainId,
@@ -36,16 +35,14 @@ export function useSignErc20TransferDelegation() {
     decimals = 18,
     amount = '0',
   }: SignDelegationParams) {
-    setDelegation({
-      chainId: chainId,
+    const coreDelegation: Delegation = {
+      authority: ROOT_AUTHORITY,
       delegate: delegate,
       delegator: delegator,
-      authority: ROOT_AUTHORITY,
-      salt: salt,
+      salt,
       signature: '0x',
       caveats: [
         {
-          enforcerType: 'ERC20TransferAmount',
           enforcer: universalDeployments.ERC20TransferAmountEnforcer,
           terms: encodeEnforcerERC20TransferAmount({
             token: erc20,
@@ -55,6 +52,17 @@ export function useSignErc20TransferDelegation() {
           args: '0x',
         },
       ],
+    };
+    setDelegation({
+      hash: getDelegationHash(coreDelegation),
+      chainId: chainId,
+      type: 'DebitAuthorization',
+      verifyingContract: universalDeployments.DelegationManager,
+      ...coreDelegation,
+      caveats: coreDelegation.caveats.map((caveat) => ({
+        ...caveat,
+        type: 'ERC20TransferAmount',
+      })),
     });
 
     signTypedData({
@@ -139,38 +147,42 @@ export function useSignErc20TransferDelegation() {
         ],
       },
     });
-    const _delegation = {
-      signature,
-      chainId,
-      delegate,
-      delegator,
+
+    const _coreDelegation: Delegation = {
       authority: ROOT_AUTHORITY,
-      salt: salt,
+      delegate: delegate,
+      delegator: delegator,
+      salt,
+      signature,
       caveats: [
         {
-          enforcerType: 'ERC20TransferAmount',
           enforcer: universalDeployments.ERC20TransferAmountEnforcer,
           terms: encodeEnforcerERC20TransferAmount({
             token: erc20,
             amount: amount,
             decimals: decimals,
           }),
-          args: '0x' as Hex,
+          args: '0x',
         },
       ],
     };
 
+    const _delegation = {
+      hash: getDelegationHash(_coreDelegation),
+      chainId: chainId,
+      type: 'DebitAuthorization',
+      verifyingContract: universalDeployments.DelegationManager,
+      ..._coreDelegation,
+      caveats: _coreDelegation.caveats.map((caveat) => ({
+        ...caveat,
+        type: 'ERC20TransferAmount',
+      })),
+    } satisfies DelegationWithMetadata;
+
     setDelegation(_delegation);
     mutate({
       ..._delegation,
-      verifyingContract: universalDeployments.DelegationManager,
-      type: 'DebitAuthorization',
-      signature: signature,
       salt: salt.toString(),
-      hash: getDelegationHash({
-        ..._delegation,
-        salt,
-      }),
     });
   }
 

@@ -35,8 +35,8 @@ import {
   type WebAuthnData,
   parseSignature as parseP256Signature,
 } from 'webauthn-p256';
-import { BATCH_EXECUTION_MODE } from '../../delegation-framework/constants';
-import { encodeBatchExecution } from '../../delegation-framework/execution-lib/encode-batch-execution';
+import { BATCH_EXECUTION_MODE } from 'universal-data';
+import { encodeBatchExecution } from 'universal-delegations-sdk';
 import {
   getPackedUserOperationTypedDataHash,
   getUserOperationHash,
@@ -165,7 +165,7 @@ export async function toUniversalAccount(
         return encodeFunctionData({
           abi: universalWalletAbi,
           functionName: 'execute',
-          args: [BATCH_EXECUTION_MODE, batchExecutionCalldata],
+          args: [BATCH_EXECUTION_MODE[0], batchExecutionCalldata],
         });
       }
 

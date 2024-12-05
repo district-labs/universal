@@ -248,6 +248,9 @@ importers:
       universal-identity-sdk:
         specifier: workspace:*
         version: link:../../packages/universal-identity-sdk
+      universal-types:
+        specifier: workspace:*
+        version: link:../../packages/universal-types
       viem:
         specifier: ^2.21.41
         version: 2.21.45(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@6.0.5)(zod@3.23.8)
@@ -285,6 +288,9 @@ importers:
       universal-data:
         specifier: workspace:*
         version: link:../../packages/universal-data
+      universal-delegations-sdk:
+        specifier: workspace:*
+        version: link:../../packages/universal-delegations-sdk
       universal-types:
         specifier: workspace:*
         version: link:../../packages/universal-types
@@ -521,6 +527,9 @@ importers:
       universal-sdk:
         specifier: workspace:*
         version: link:../../packages/universal-sdk
+      universal-types:
+        specifier: workspace:*
+        version: link:../../packages/universal-types
       universal-wallet-connector:
         specifier: workspace:*
         version: link:../../packages/universal-wallet-connector
@@ -821,6 +830,9 @@ importers:
       typescript:
         specifier: '>=5.0.4'
         version: 5.6.3
+      universal-types:
+        specifier: workspace:*
+        version: link:../universal-types
       universal-wallet-sdk:
         specifier: workspace:*
         version: link:../universal-wallet-sdk
@@ -845,6 +857,9 @@ importers:
       universal-data:
         specifier: workspace:*
         version: link:../universal-data
+      universal-types:
+        specifier: workspace:*
+        version: link:../universal-types
       viem:
         specifier: ^2.21.6
         version: 2.21.45(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@5.0.10)(zod@3.23.8)

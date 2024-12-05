@@ -2,7 +2,7 @@ import { type Context, ponder } from '@/generated';
 import { universalDeployments } from 'universal-data';
 import type { Address } from 'viem';
 import { type InsertCaveat, caveats, delegations } from '../../ponder.schema';
-import { getDelegationHash } from '../utils/delegation/get-delegation-hash';
+import { getDelegationHash } from 'universal-delegations-sdk';
 import type { Delegation, DelegationCaveatWithMetadata } from 'universal-types';
 
 function getEnforcerType(enforcer: Address): string {
@@ -15,15 +15,15 @@ function getEnforcerType(enforcer: Address): string {
   return 'unknown';
 }
 
-function getDelegationType(caveats: DelegationCaveatWithMetadata[]): string {
+function getDelegationType(
+  caveats: DelegationCaveatWithMetadata[],
+): string | null {
   if (
-    caveats.some(
-      (caveat) => caveat.enforcerType === 'ERC20TransferAmountEnforcer',
-    )
+    caveats.some((caveat) => caveat?.type === 'ERC20TransferAmountEnforcer')
   ) {
     return 'CreditLine';
   }
-  return 'unknown';
+  return null;
 }
 
 async function updateDelegation({
@@ -37,18 +37,15 @@ async function updateDelegation({
 }) {
   const delegationHash = getDelegationHash({
     ...delegation,
-    chainId: context.network.chainId,
     caveats: delegation.caveats.slice(),
   });
 
-  const formattedCaveats: InsertCaveat[] = delegation.caveats.map(
-    (caveat, index) => ({
-      ...caveat,
-      index,
-      enforcerType: getEnforcerType(caveat.enforcer),
-      delegationHash,
-    }),
-  );
+  const formattedCaveats = delegation.caveats.map((caveat, index) => ({
+    ...caveat,
+    index,
+    type: getEnforcerType(caveat.enforcer),
+    delegationHash,
+  })) satisfies InsertCaveat[];
 
   // Insert delegation if not already present
   await context.db
@@ -56,14 +53,15 @@ async function updateDelegation({
     .values({
       hash: delegationHash,
       enabled,
+      verifyingContract: universalDeployments.DelegationManager,
       chainId: context.network.chainId,
-      delegationType: getDelegationType(formattedCaveats),
+      type: getDelegationType(formattedCaveats),
       ...delegation,
     })
     .onConflictDoUpdate({
       enabled,
       chainId: context.network.chainId,
-      delegationType: getDelegationType(formattedCaveats),
+      type: getDelegationType(formattedCaveats),
       ...delegation,
     });
 

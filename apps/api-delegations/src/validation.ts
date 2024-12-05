@@ -63,7 +63,7 @@ export const postDelegationSchema = z.object({
   signature: hexSchema,
   caveats: z.array(
     z.object({
-      enforcerType: typeSchema,
+      type: typeSchema,
       enforcer: addressSchema,
       terms: hexSchema,
       args: hexSchema,

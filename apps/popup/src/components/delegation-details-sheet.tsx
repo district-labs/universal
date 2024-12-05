@@ -10,7 +10,7 @@ import {
 import { formatNumber } from '@/lib/utils';
 import type * as React from 'react';
 import { useState } from 'react';
-import type { DelegationWithMetadata, SocialCredential } from 'universal-data';
+import type { CreditLineWithMetadata, SocialCredential } from 'universal-data';
 import { DebitCard } from 'universal-wallet-ui';
 import { AccountSocialCredentialBadge } from './identity/account-social-credential-badge';
 import { Address } from './onchain/address';
@@ -20,7 +20,7 @@ import { Card } from './ui/card';
 
 type DelegationDetailsSheet = React.HTMLAttributes<HTMLElement> & {
   credentials: SocialCredential[];
-  delegation: DelegationWithMetadata;
+  delegation: CreditLineWithMetadata;
 };
 
 export const DelegationDetailsSheet = ({
@@ -98,11 +98,11 @@ export const DelegationDetailsSheet = ({
           </Card>
           <Card className="space-y-1 p-4">
             <h3 className="font-bold text-lg">Technical Details</h3>
-            {delegation.data.caveats.map((caveat) => {
+            {delegation.data.caveats.map((caveat, index) => {
               return (
                 <RowBasic
-                  key={caveat.id}
-                  label={caveat.enforcerType}
+                  key={index}
+                  label={caveat.type || 'Unknown'}
                   value={caveat.enforcer}
                 />
               );

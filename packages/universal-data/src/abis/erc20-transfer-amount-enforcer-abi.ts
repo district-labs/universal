@@ -1,4 +1,4 @@
-export const erc20TransferAmountAbi = [
+export const erc20TransferAmountEnforcerAbi = [
   {
     type: 'function',
     name: 'afterAllHook',

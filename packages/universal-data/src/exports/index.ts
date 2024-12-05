@@ -1,5 +1,5 @@
 export { delegationManagerAbi } from '../abis/delegation-manager-abi.js';
-export { erc20TransferAmountAbi } from '../abis/erc20-transfer-amount-abi.js';
+export { erc20TransferAmountEnforcerAbi } from '../abis/erc20-transfer-amount-enforcer-abi.js';
 export { universalDocumentAbi } from '../abis/universal-document-abi.js';
 export { universalResolverAbi } from '../abis/universal-resolver-abi.js';
 export { universalDeployments } from '../deployments.js';
@@ -28,7 +28,7 @@ export {
 } from '../chains.js';
 export type {
   DelegationExecutions,
-  DelegationWithMetadata,
+  CreditLineWithMetadata,
   SocialCredential,
   Token,
   TokenItem,

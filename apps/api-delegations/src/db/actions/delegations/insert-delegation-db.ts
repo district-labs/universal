@@ -1,11 +1,14 @@
-import type { DelegationWithChainIdMetadataHash } from 'universal-types';
 import { db } from '../../index.js';
 import {
   caveats as caveatsDb,
   delegations as delegationsDb,
+  type InsertDelegationDb,
+  type InsertCaveatDb,
 } from '../../schema.js';
 
-type InsertDelegationDbParams = DelegationWithChainIdMetadataHash;
+type InsertDelegationDbParams = InsertDelegationDb & {
+  caveats: InsertCaveatDb[];
+};
 
 export function insertDelegationDb({
   caveats,

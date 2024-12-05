@@ -2,7 +2,7 @@
 import { RowBasic } from '@/components/row-basic';
 import { Toggle } from '@/components/toggle';
 import { Button } from '@/components/ui/button';
-import type { Delegation } from '@/lib/delegation-framework/types';
+import type { Delegation } from 'universal-types';
 import { useGetMessageChainId } from '@/lib/pop-up/hooks/use-get-message-chain-id';
 import { useMemo, useState } from 'react';
 import type { UniversalDID, VerificationRequest } from 'universal-identity-sdk';
