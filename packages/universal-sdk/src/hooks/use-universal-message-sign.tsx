@@ -39,7 +39,6 @@ export function useUniversalMessageSign() {
       },
       message: {
         content: content,
-        // content: "I want to discover what's possible in the Universal Network.",
       },
     });
   }

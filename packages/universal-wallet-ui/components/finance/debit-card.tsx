@@ -85,7 +85,7 @@ export function DebitCard({
         case 'xLarge':
           return 'text-3xl leading-tight';
         case 'xxLarge':
-          return 'text-5xl leading-tight';
+          return 'text-4xl leading-tight';
         default:
           return '';
       }
@@ -123,7 +123,7 @@ export function DebitCard({
         'relative aspect-[36/22] w-full min-w-[320px] max-w-[560px] overflow-hidden rounded-2xl border-0 border-2 border-neutral-100 bg-gradient-to-br text-white shadow-md',
       )}
     >
-      <div className="-translate-y-1/3 absolute top-0 right-0 h-4/6 w-3/5 translate-x-1/3 rounded-full bg-white/20" />
+      {/* <div className="-translate-y-1/3 absolute top-0 right-0 h-4/6 w-3/5 translate-x-1/3 rounded-full bg-white/20" /> */}
       <div className="relative flex h-full flex-col justify-between px-6 pt-2 pb-4">
         <div className="flex items-start justify-between ">
           <div className="space-y-1 pt-4">
