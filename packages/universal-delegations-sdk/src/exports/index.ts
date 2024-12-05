@@ -47,13 +47,4 @@ export {
   SALT,
   SINGLE_EXECUTION_MODE,
 } from '../constants.js';
-export type { Delegation, Caveat, Execution } from '../types.js';
-export { delegationManagerAbi } from '../abis/delegation-manager-abi.js';
-export type {
-  DelegationsApi,
-  InsertDelegationDb,
-  SelectDelegationDb,
-  InsertCaveatDb,
-  SelectCaveatDb,
-  DelegationDb,
-} from 'api-delegations';
+export type { DelegationsApi } from 'api-delegations';
