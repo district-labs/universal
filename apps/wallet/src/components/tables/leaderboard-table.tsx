@@ -132,6 +132,12 @@ const columns = [
               tokenList: defaultTokenList,
             })?.address
           }
+          decimals={
+            findToken({
+              address: DEFAULT_LEADERBOARD_ASSET,
+              tokenList: defaultTokenList,
+            })?.decimals
+          }
         />
       </div>
     ),

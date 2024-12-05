@@ -2,7 +2,7 @@ export const universalDeployments = {
   // Test
   Erc20Mintable: '0x4C8Be898BdE148aE6f9B0AF86e7D2b5a0558A7d0',
   // Universal Identity
-  Resolver: '0xd32121B30762fC193141AabBE09E53Af28553be4',
+  Resolver: '0xc675eE8dA6B4183f977a7e9F1C4589B20982b8C3',
   // Delegation Framework Core
   EntryPoint: '0x0000000071727De22E5E9d8BAf0edAc6f37da032',
   DelegationManager: '0x26e1920510E4d8693524e161380Bbf01318E33c9',

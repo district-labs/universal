@@ -39,7 +39,7 @@ const accountsRouter = new Hono()
     const isValid = verifyUniversalMessage({
       chainId: data.chainId,
       address: data.address,
-      content: "I want to discover what's possible in the Universal Network.",
+      content: 'Applying to the join the UNV beta.',
       signature: data.signature,
     });
 

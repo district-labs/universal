@@ -40,16 +40,16 @@ verifyGithubApp.get(
     }
 
     let credential: VerifiableCredential;
-
     try {
       credential = await createCredential({
         credentialSubject: {
           id: did,
           platform: 'github',
-          platformUserId: user.id,
+          platformUserId: user.id.toString(),
           handle: `@${user.login}`,
           verifiedAt: new Date().toISOString(),
           platformProfileUrl: `https://github.com/${user.login}`,
+          platformProfileImageUrl: user.avatar_url,
         },
       });
       const issuer =
