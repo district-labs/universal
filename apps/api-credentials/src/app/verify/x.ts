@@ -50,6 +50,7 @@ verifyXApp.get(
           handle: `@${user.username}`,
           verifiedAt: new Date().toISOString(),
           platformProfileUrl: `https://x.com/${user.username}`,
+          platformProfileImageUrl: user.profile_image_url,
         },
       });
 

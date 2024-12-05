@@ -1,9 +1,17 @@
 import { alias, veramoAgent } from '../agent.js';
 
+type Platform = 'x' | 'github' | 'discord';
+
 type CreateCredentialParams = {
-  // TODO: Process credential correctly
-  // biome-ignore lint/suspicious/noExplicitAny: any
-  credentialSubject: any;
+  credentialSubject: {
+    id: string;
+    platform: Platform;
+    platformUserId: string;
+    handle: string;
+    verifiedAt: string;
+    platformProfileUrl: string;
+    platformProfileImageUrl: string | undefined;
+  };
 };
 export async function createCredential({
   credentialSubject,
