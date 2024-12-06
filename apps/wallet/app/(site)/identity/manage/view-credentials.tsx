@@ -1,6 +1,5 @@
 'use client';
 import { CredentialOAuth } from '@/components/identity/credential-oauth';
-import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
 import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
 import { IsWalletDisconnected } from '@/components/onchain/is-wallet-disconnected';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -35,13 +34,8 @@ export function ViewCredentials() {
   return (
     <div className="flex h-full flex-col">
       <IsWalletDisconnected>
-        <div className="flex flex-col items-center justify-center pt-6">
-          <ConnectUniversalWalletButton
-            size="lg"
-            className="rounded-full py-3 text-lg"
-          >
-            Connect Universal Wallet
-          </ConnectUniversalWalletButton>
+        <div className="flex flex-col items-center justify-center gap-y-3 pt-6">
+          Connect your wallet to view your credentials.
         </div>
       </IsWalletDisconnected>
       <IsWalletConnected>

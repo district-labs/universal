@@ -1,6 +1,7 @@
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
-import { isAddress, type Address, type Hex, isHex } from 'viem';
+import { isValidChain } from 'universal-data';
+import { type Address, type Hex, isAddress, isHex } from 'viem';
 import { z } from 'zod';
 import { getDelegationsByDelegateAndTypeDb } from '../db/actions/delegations/get-delegations-by-delegate-and-type-db.js';
 import { getDelegationsByDelegateDb } from '../db/actions/delegations/get-delegations-by-delegate-db.js';
@@ -10,7 +11,6 @@ import { getDelegationsDb } from '../db/actions/delegations/get-delegations-db.j
 import { insertDelegationDb } from '../db/actions/delegations/insert-delegation-db.js';
 import { invalidateDelegationDb } from '../db/actions/delegations/invalidate-delegation-db.js';
 import type { DelegationDb, SelectDelegationDb } from '../db/schema.js';
-import { isValidChain } from 'universal-data';
 
 const hexSchema = z
   .custom<Hex>()
@@ -145,7 +145,6 @@ const delegationsRouter = new Hono()
     zValidator('param', getDelegationByDelegatorOrDelegateWithTypeSchema),
     async (c) => {
       const { address, type, chainId } = c.req.valid('param');
-      console.log({ address, type, chainId });
       const delegations: DelegationDb[] | undefined =
         await getDelegationsByDelegateAndTypeDb({
           chainId,

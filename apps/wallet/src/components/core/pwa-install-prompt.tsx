@@ -94,10 +94,8 @@ export const PWAInstallPrompt = ({ className, children }: PWAInstallPrompt) => {
             </p>
             <p className="text-sm">
               Visit{' '}
-              <span className="font-semibold text-blue-600">
-                wallet.districtlabs.com
-              </span>{' '}
-              on your smartphone to start.
+              <span className="font-semibold text-blue-600">univrsal.co</span>{' '}
+              on your smartphone.
             </p>
 
             <h3 className="font-bold text-lg">iOS</h3>

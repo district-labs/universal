@@ -1,7 +1,7 @@
 'use client';
-import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
 import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
 import { IsWalletDisconnected } from '@/components/onchain/is-wallet-disconnected';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
@@ -25,7 +25,7 @@ export default function ViewDocument() {
 
   return (
     <>
-      <section className="h-full max-w-[100vw] bg-neutral-100 px-6 py-6">
+      <section className="h-full max-w-[100vw] bg-neutral-100 ">
         <div className={cn('mx-auto')}>
           <div
             className={cn(
@@ -33,37 +33,25 @@ export default function ViewDocument() {
             )}
           >
             <IsWalletDisconnected>
-              <div className="flex items-center justify-center">
-                <ConnectUniversalWalletButton
-                  size="lg"
-                  className="rounded-full py-3 text-lg"
-                >
-                  Connect Universal Wallet
-                </ConnectUniversalWalletButton>
+              <div className="flex flex-col items-center justify-center gap-y-3 pt-6">
+                Connect your wallet to view your credentials.
               </div>
             </IsWalletDisconnected>
             <IsWalletConnected>
               <>
                 {query.data && query.isSuccess && (
-                  <div className="flex h-full w-full max-w-full flex-1 flex-col items-center justify-center overflow-auto text-sm">
+                  <div className="flex h-full w-full max-w-full flex-1 flex-col items-center justify-center overflow-auto pt-6 text-sm">
                     <div className="container max-w-screen-lg">
                       <div className="mb-4 flex w-full flex-col items-center justify-between gap-2 md:flex-row">
-                        <h3 className="font-bold text-xl">
-                          <Image
-                            className="size-10"
-                            src="/images/qr-id-dark.png"
-                            alt="qr-id-dark"
-                            width={28}
-                            height={28}
-                          />
-                        </h3>
+                        <Image
+                          className="size-8"
+                          src="/images/qr-id-dark.png"
+                          alt="qr-id-dark"
+                          width={28}
+                          height={28}
+                        />
                         <div className="flex items-center gap-y-3">
-                          {query.data.status === 1 && (
-                            <h3 className="font-normal text-sm">
-                              Status:{' '}
-                              <span className="font-bold">Verified</span>
-                            </h3>
-                          )}
+                          {query.data.status === 1 && <Badge>Verified</Badge>}
 
                           {query.data.status !== 1 && (
                             <Button

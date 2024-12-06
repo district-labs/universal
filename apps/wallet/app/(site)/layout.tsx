@@ -2,10 +2,9 @@
 import WalletConnect from '@/assets/brands/walletconnect.svg';
 import { CameraQrScanner } from '@/components/camera/camera-qr-scanner';
 import { QRCodeGeneratedDialog } from '@/components/core/qr-code-generated-dialog';
-import { AccountPopover } from '@/components/layout/account-popover';
+import { AccountMenu } from '@/components/layout/account-menu';
 import { AppSidebar } from '@/components/layout/app-sidebar';
 import { MobileMenu } from '@/components/layout/mobile-menu';
-import { ConnectButton } from '@/components/onchain/connect-button';
 import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
 import { IsWalletConnected } from '@/components/onchain/is-wallet-connected';
 import { IsWalletDisconnected } from '@/components/onchain/is-wallet-disconnected';
@@ -21,7 +20,7 @@ import { useIsUniversalConnected } from '@/lib/hooks/use-is-universal-connected'
 import { cn } from '@/lib/utils';
 import { useWcAccountsSync } from '@/lib/walletconnect/hooks/use-wc-accounts-sync';
 import { useWcEventsManager } from '@/lib/walletconnect/hooks/use-wc-events-manager';
-import { Circle, Wallet } from 'lucide-react';
+import { Circle } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { SvgIcon } from 'universal-wallet-ui';
 
@@ -94,19 +93,18 @@ export default function RootLayout({ children }: RootLayoutProps) {
                       />
                       <QRCodeGeneratedDialog />
                     </div>
-                    <AccountPopover className="order-1 flex-1 md:order-2 md:flex-none" />
+                    <AccountMenu className="order-1 flex-1 md:order-2 md:flex-none" />
                   </div>
                 </IsWalletConnected>
                 <IsWalletDisconnected>
                   <div className="flex w-full items-center justify-between md:justify-end">
                     <Circle className="ml-0 size-6 text-emerald-600 md:hidden" />
                     <div className="flex items-center gap-x-2">
-                      <ConnectButton variant={'outline'} rounded={'full'}>
-                        <Wallet className="size-4" />
-                      </ConnectButton>
-                      <ConnectUniversalWalletButton variant={'emerald'}>
+                      <ConnectUniversalWalletButton
+                        variant={'emerald'}
+                        className="font-bold"
+                      >
                         Connect
-                        <Circle className="ml-0 hidden size-2 md:inline-block" />
                       </ConnectUniversalWalletButton>
                     </div>
                   </div>

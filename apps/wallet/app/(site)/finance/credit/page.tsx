@@ -1,11 +1,10 @@
 'use client';
-import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { defaultChain } from '@/lib/chains';
 import { CreditCard, TableProperties } from 'lucide-react';
 import { useAccount } from 'wagmi';
 import { ViewCreditCards } from './view-cards';
 import { ViewCreditTable } from './view-table';
-import { defaultChain } from '@/lib/chains';
 
 export default function FinanceCreditPage() {
   const { address } = useAccount();
@@ -31,12 +30,7 @@ export default function FinanceCreditPage() {
               <div className="container">
                 {!address && (
                   <div className="flex flex-col items-center justify-center">
-                    <ConnectUniversalWalletButton
-                      size="lg"
-                      className="rounded-full py-3 text-lg"
-                    >
-                      Connect Universal Wallet
-                    </ConnectUniversalWalletButton>
+                    Connect a wallet to view credit lines.
                   </div>
                 )}
                 {address && (
@@ -53,12 +47,7 @@ export default function FinanceCreditPage() {
               <div className="container">
                 {!address && (
                   <div className="flex flex-col items-center justify-center">
-                    <ConnectUniversalWalletButton
-                      size="lg"
-                      className="rounded-full py-3 text-lg"
-                    >
-                      Connect Universal Wallet
-                    </ConnectUniversalWalletButton>
+                    Connect a wallet to view credit lines.
                   </div>
                 )}
                 {address && <ViewCreditCards delegate={address} />}
