@@ -35,8 +35,13 @@ export const delegations = pgTable('delegations', {
 });
 
 // Relations
-export const delegationsRelations = relations(delegations, ({ many }) => ({
+export const delegationsRelations = relations(delegations, ({ one, many }) => ({
   caveats: many(caveats),
+  // Uses auth instead of authorityDelegation due to Drizzle's query column length limit
+  auth: one(delegations, {
+    fields: [delegations.authority],
+    references: [delegations.hash],
+  }),
 }));
 
 // ----------------------------------------------

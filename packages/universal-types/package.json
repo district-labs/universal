@@ -3,11 +3,7 @@
   "description": "Shared types for the Universal stack.",
   "version": "0.0.0",
   "license": "MIT",
-  "files": [
-    "src/**/*.ts",
-    "!src/**/*.test.ts",
-    "!src/**/*.test-d.ts"
-  ],
+  "files": ["src/**/*.ts", "!src/**/*.test.ts", "!src/**/*.test-d.ts"],
   "sideEffects": false,
   "type": "module",
   "exports": {

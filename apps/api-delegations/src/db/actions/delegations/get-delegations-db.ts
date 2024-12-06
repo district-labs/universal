@@ -4,6 +4,11 @@ import { db } from '../../index.js';
 import { delegations } from '../../schema.js';
 import { sqlLower } from '../../utils.js';
 import type { DelegationWithMetadata } from 'universal-types';
+import {
+  MAX_DELEGATION_DEPTH,
+  buildAuthConfig,
+  replaceAuthKeys,
+} from './utils.js';
 
 export type GetDelegationsDbReturnType = DelegationWithMetadata[] | undefined;
 
@@ -32,12 +37,9 @@ export async function getDelegationsDb({
     where: (_, { and }) => and(...conditions),
     with: {
       caveats: true,
+      auth: buildAuthConfig(MAX_DELEGATION_DEPTH),
     },
   });
 
-  // TODO: add authorityDelegation to each delegation once the auxiliary chaining table is live
-  return delegationsDb.map((delegationDb) => ({
-    ...delegationDb,
-    authorityDelegation: null,
-  }));
+  return delegationsDb.map(replaceAuthKeys);
 }
