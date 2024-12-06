@@ -37,7 +37,7 @@ export type DelegationWithMetadata = Omit<Delegation, 'caveats'> & {
   type: string | null;
   verifyingContract: Address;
   caveats: DelegationCaveatWithMetadata[];
-  // authorityDelegation: DelegationWithMetadata | null;
+  authorityDelegation: DelegationWithMetadata | null;
 };
 
 export type DelegationBatchWithMetadata = DelegationWithMetadata[];

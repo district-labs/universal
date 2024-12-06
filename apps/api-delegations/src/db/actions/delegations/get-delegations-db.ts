@@ -7,7 +7,7 @@ import type { DelegationWithMetadata } from 'universal-types';
 
 export type GetDelegationsDbReturnType = DelegationWithMetadata[] | undefined;
 
-export function getDelegationsDb({
+export async function getDelegationsDb({
   chainId,
   delegate,
   delegator,
@@ -28,10 +28,16 @@ export function getDelegationsDb({
   if (type) {
     conditions.push(eq(delegations.type, type));
   }
-  return db.query.delegations.findMany({
+  const delegationsDb = await db.query.delegations.findMany({
     where: (_, { and }) => and(...conditions),
     with: {
       caveats: true,
     },
   });
+
+  // TODO: Support recursive delegation chaining with CTE
+  return delegationsDb.map((delegationDb) => ({
+    ...delegationDb,
+    authorityDelegation: null,
+  }));
 }

@@ -58,6 +58,7 @@ export function useSignErc20TransferDelegation() {
       chainId: chainId,
       type: 'DebitAuthorization',
       verifyingContract: universalDeployments.DelegationManager,
+      authorityDelegation: null,
       ...coreDelegation,
       caveats: coreDelegation.caveats.map((caveat) => ({
         ...caveat,
@@ -172,6 +173,7 @@ export function useSignErc20TransferDelegation() {
       chainId: chainId,
       type: 'DebitAuthorization',
       verifyingContract: universalDeployments.DelegationManager,
+      authorityDelegation: null,
       ..._coreDelegation,
       caveats: _coreDelegation.caveats.map((caveat) => ({
         ...caveat,

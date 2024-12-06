@@ -6,7 +6,6 @@ import { sqlLower } from '../../utils.js';
 
 export function invalidateDelegationDb({ hash }: { hash: Hash }) {
   return db
-
     .update(delegationsDb)
     .set({ isValid: false })
     .where(eq(sqlLower(delegationsDb.hash), hash.toLowerCase()))

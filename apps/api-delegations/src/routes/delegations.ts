@@ -14,17 +14,24 @@ import type { DelegationWithMetadata } from 'universal-types';
 const delegationsRouter = new Hono()
   // Get a delegation by its hash
   .get('/:hash', zValidator('param', getDelegationSchema), async (c) => {
-    const { hash } = c.req.valid('param');
-    const delegation: DelegationWithMetadata | undefined =
-      await getDelegationDb({
-        hash,
-      });
+    try {
+      const { hash } = c.req.valid('param');
+      const delegation: DelegationWithMetadata | undefined =
+        await getDelegationDb({
+          hash,
+        });
 
-    if (delegation) {
-      return c.json({ delegation }, 200);
+      if (delegation) {
+        return c.json({ delegation }, 200);
+      }
+
+      return c.json({ error: 'delegation not found' }, 404);
+    } catch (error) {
+      console.error(error);
+      const errorMessage =
+        error instanceof Error ? error.message : 'error fetching delegation';
+      return c.json({ error: errorMessage }, 500);
     }
-
-    return c.json({ error: 'delegation not found' }, 404);
   })
 
   // Get a delegations by multiple parameters
@@ -69,10 +76,11 @@ const delegationsRouter = new Hono()
     // TODO: Expect a signature from the delegator to invalidate the delegation
     async (c) => {
       const { hash } = c.req.valid('param');
-      const delegation: Omit<DelegationWithMetadata, 'caveats'>[] | undefined =
-        await invalidateDelegationDb({
-          hash,
-        });
+      const delegation:
+        | Omit<DelegationWithMetadata, 'caveats' | 'authorityDelegation'>[]
+        | undefined = await invalidateDelegationDb({
+        hash,
+      });
 
       if (delegation && delegation.length > 0) {
         return c.json({ ok: true }, 200);
