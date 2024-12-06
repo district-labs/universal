@@ -35,7 +35,7 @@ export async function getDelegationsDb({
     },
   });
 
-  // TODO: Support recursive delegation chaining with CTE
+  // TODO: add authorityDelegation to each delegation once the auxiliary chaining table is live
   return delegationsDb.map((delegationDb) => ({
     ...delegationDb,
     authorityDelegation: null,
