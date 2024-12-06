@@ -1,42 +1,51 @@
-// src/hooks/useBreakpoint.ts
-import { useEffect, useState } from 'react';
+/**
+ * @desc The 'useBreakpoint()' hook is used to get the current
+ *       screen breakpoint based on the TailwindCSS config.
+ *
+ * @usage
+ *    import { useBreakpoint } from "@/hooks/useBreakpoint";
+ *
+ *    const { isAboveSm, isBelowSm, sm } = useBreakpoint("sm");
+ *    console.log({ isAboveSm, isBelowSm, sm });
+ *
+ *    const { isAboveMd } = useBreakpoint("md");
+ *    const { isAboveLg } = useBreakpoint("lg");
+ *    const { isAbove2Xl } = useBreakpoint("2xl");
+ *    console.log({ isAboveMd, isAboveLg, isAbove2Xl });
+ *
+ * @see https://stackoverflow.com/a/76630444/6543935
+ */
+import { useMediaQuery } from 'react-responsive';
+import resolveConfig from 'tailwindcss/resolveConfig';
+import type { Config } from 'tailwindcss/types/config';
 
-export const breakpoints: { [key: string]: string } = {
+import tailwindConfig from '../../../tailwind.config'; // Your tailwind config
+
+const fullConfig = resolveConfig(tailwindConfig as unknown as Config);
+
+const breakpoints = fullConfig?.theme?.screens || {
+  xs: '480px',
   sm: '640px',
   md: '768px',
   lg: '1024px',
   xl: '1280px',
-  '2xl': '1536px',
 };
 
-/**
- * Custom hook to determine if the current screen width is less than or equal to the specified breakpoint.
- * @param breakpoint Tailwind CSS breakpoint key (e.g., 'sm', 'md', 'lg', 'xl', '2xl').
- * @returns Boolean indicating if the breakpoint matches.
- */
-export function useBreakpoint(breakpoint: keyof typeof breakpoints): boolean {
-  const [matches, setMatches] = useState(false);
+export function useBreakpoint<K extends string>(breakpointKey: K) {
+  const breakpointValue =
+    breakpoints[breakpointKey as keyof typeof breakpoints];
+  const bool = useMediaQuery({
+    query: `(max-width: ${breakpointValue})`,
+  });
+  const capitalizedKey =
+    breakpointKey[0].toUpperCase() + breakpointKey.substring(1);
 
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return;
-    }
-    const mediaQuery = window.matchMedia(
-      `(max-width: ${breakpoints[breakpoint]})`,
-    );
-    const handleChange = (e: MediaQueryListEvent) => {
-      setMatches(e.matches);
-    };
+  type KeyAbove = `isAbove${Capitalize<K>}`;
+  type KeyBelow = `isBelow${Capitalize<K>}`;
 
-    // Set the initial value
-    setMatches(mediaQuery.matches);
-
-    // Add the listener
-    mediaQuery.addEventListener('change', handleChange);
-
-    // Cleanup listener on unmount
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [breakpoint]);
-
-  return matches;
+  return {
+    [breakpointKey]: Number(String(breakpointValue).replace(/[^0-9]/g, '')),
+    [`isAbove${capitalizedKey}`]: !bool,
+    [`isBelow${capitalizedKey}`]: bool,
+  } as Record<K, number> & Record<KeyAbove | KeyBelow, boolean>;
 }

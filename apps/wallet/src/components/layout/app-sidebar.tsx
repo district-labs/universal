@@ -14,12 +14,13 @@ import {
 } from '@/components/ui/sidebar';
 import { CircleIcon, Earth, Fingerprint, SmartphoneNfc } from 'lucide-react';
 
-import { type breakpoints, useBreakpoint } from '@/lib/hooks/use-breakpoint';
+import { useBreakpoint } from '@/lib/hooks/use-breakpoint';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { PWAInstallPrompt } from '../core/pwa-install-prompt';
 import { ChainManagementModal } from '../onchain/chain-management-modal';
+import { IsWalletConnected } from '../onchain/is-wallet-connected';
 import { LinkComponent } from '../ui/link-component';
 import {
   itemsCore,
@@ -29,8 +30,7 @@ import {
 
 export function AppSidebar() {
   const { toggleSidebar } = useSidebar();
-  const toggleBreakpoint: keyof typeof breakpoints = 'md';
-  const isToggleSidebarBreakpoint = useBreakpoint(toggleBreakpoint);
+  const { isBelowMd } = useBreakpoint('md');
   const pathname = usePathname();
 
   return (
@@ -40,7 +40,9 @@ export function AppSidebar() {
           <Link href="/" className="flex items-center">
             <CircleIcon className="size-6 text-emerald-500 dark:text-emerald-100" />
           </Link>
-          <ChainManagementModal />
+          <IsWalletConnected>
+            <ChainManagementModal />
+          </IsWalletConnected>
         </div>
       </SidebarHeader>
       <SidebarContent className="px-2">
@@ -60,9 +62,7 @@ export function AppSidebar() {
                   >
                     <LinkComponent
                       href={item.url}
-                      onClick={
-                        isToggleSidebarBreakpoint ? toggleSidebar : undefined
-                      }
+                      onClick={isBelowMd ? toggleSidebar : undefined}
                     >
                       <item.icon />
                       <span>{item.title}</span>
@@ -90,9 +90,7 @@ export function AppSidebar() {
                   >
                     <LinkComponent
                       href={item.url}
-                      onClick={
-                        isToggleSidebarBreakpoint ? toggleSidebar : undefined
-                      }
+                      onClick={isBelowMd ? toggleSidebar : undefined}
                     >
                       <item.icon />
                       <span>{item.title}</span>
@@ -120,9 +118,7 @@ export function AppSidebar() {
                   >
                     <LinkComponent
                       href={item.url}
-                      onClick={
-                        isToggleSidebarBreakpoint ? toggleSidebar : undefined
-                      }
+                      onClick={isBelowMd ? toggleSidebar : undefined}
                     >
                       <item.icon />
                       <span>{item.title}</span>
@@ -140,7 +136,7 @@ export function AppSidebar() {
           <div className="bg-neutral-200/60 px-4 py-2">
             <div className="flex w-full items-center justify-between">
               <span className="font-semibold text-neutral-600 text-xs">
-                Install App Now
+                Install Universal Now
               </span>
               <Image
                 className="rounded-md shadow-md"
