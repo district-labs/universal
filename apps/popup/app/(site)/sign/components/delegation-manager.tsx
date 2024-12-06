@@ -2,22 +2,22 @@ import { DelegationsManagementSheet } from '@/components/delegations-management-
 import { Address } from '@/components/onchain/address';
 import { CreditCard } from 'lucide-react';
 import type * as React from 'react';
-import type { DelegationExecutions } from 'universal-data';
+import type { CreditLineExecutions } from 'universal-types';
 import type { Address as AddressType } from 'viem';
 
 type DelegationManager = React.HTMLAttributes<HTMLElement> & {
   address?: AddressType;
   chainId?: number;
-  setDelegationExecutions: (delegation: DelegationExecutions[]) => void;
-  delegationExecutions: DelegationExecutions[];
+  setCreditLineExecutions: (delegation: CreditLineExecutions[]) => void;
+  CreditLineExecutions: CreditLineExecutions[];
 };
 
 const DelegationManager = ({
   className,
   address,
   chainId,
-  setDelegationExecutions,
-  delegationExecutions,
+  setCreditLineExecutions,
+  CreditLineExecutions,
 }: DelegationManager) => {
   return (
     <div className={className}>
@@ -27,13 +27,13 @@ const DelegationManager = ({
           <DelegationsManagementSheet
             address={address}
             chainId={chainId}
-            onSelect={setDelegationExecutions}
+            onSelect={setCreditLineExecutions}
           >
             <span className="cursor-pointer font-bold text-sm">Manage</span>
           </DelegationsManagementSheet>
         )}
       </div>
-      {delegationExecutions?.map((delegation) => (
+      {CreditLineExecutions?.map((delegation) => (
         <div key={delegation.execution.hash} className="flex justify-between">
           <div className="">
             <Address

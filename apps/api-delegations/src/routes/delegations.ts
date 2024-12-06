@@ -1,165 +1,51 @@
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
-import { isValidChain } from 'universal-data';
-import { type Address, type Hex, isAddress, isHex } from 'viem';
-import { z } from 'zod';
-import { getDelegationsByDelegateAndTypeDb } from '../db/actions/delegations/get-delegations-by-delegate-and-type-db.js';
-import { getDelegationsByDelegateDb } from '../db/actions/delegations/get-delegations-by-delegate-db.js';
-import { getDelegationsByDelegatorAndTypeDb } from '../db/actions/delegations/get-delegations-by-delegator-and-type-db.js';
-import { getDelegationsByDelegatorDb } from '../db/actions/delegations/get-delegations-by-delegator-db.js';
+import { getDelegationDb } from '../db/actions/delegations/get-delegation-db.js';
 import { getDelegationsDb } from '../db/actions/delegations/get-delegations-db.js';
 import { insertDelegationDb } from '../db/actions/delegations/insert-delegation-db.js';
 import { invalidateDelegationDb } from '../db/actions/delegations/invalidate-delegation-db.js';
-import type { DelegationDb, SelectDelegationDb } from '../db/schema.js';
-
-const hexSchema = z
-  .custom<Hex>()
-  .refine((val) => val.length === 66 && isHex(val), {
-    message: 'invalid hash',
-  });
-
-const addressSchema = z.string().refine(isAddress, {
-  message: 'invalid address',
-});
-
-const chainIdSchema = z.coerce.number().refine((val) => isValidChain(val), {
-  message: 'invalid chainId',
-});
-
-const getDelegationSchema = z.object({
-  hash: hexSchema,
-});
-
-const getDelegationByDelegatorOrDelegateSchema = z.object({
-  address: addressSchema,
-  chainId: chainIdSchema,
-});
-
-const getDelegationByDelegatorOrDelegateWithTypeSchema = z.object({
-  address: addressSchema,
-  chainId: chainIdSchema,
-  type: z.string().refine((val) => val.length > 0, {
-    message: 'invalid type',
-  }),
-});
-
-const postDelegationSchema = z.object({
-  hash: z.custom<Address>(),
-  type: z.string(),
-  verifyingContract: z.custom<Address>(),
-  chainId: z.number(),
-  delegator: z.custom<Address>(),
-  delegate: z.custom<Address>(),
-  authority: z.custom<Hex>(),
-  salt: z.string().transform((val) => BigInt(val)),
-  signature: z.custom<Hex>(),
-  caveats: z.array(
-    z.object({
-      enforcerType: z.string(),
-      enforcer: z.custom<Address>(),
-      terms: z.custom<Hex>(),
-      args: z.custom<Hex>(),
-    }),
-  ),
-});
+import {
+  getDelegationSchema,
+  getDelegationsSchema,
+  postDelegationSchema,
+} from '../validation.js';
+import type { DelegationWithMetadata } from 'universal-types';
 
 const delegationsRouter = new Hono()
   // Get a delegation by its hash
   .get('/:hash', zValidator('param', getDelegationSchema), async (c) => {
-    const { hash } = c.req.valid('param');
-    const delegation: DelegationDb | undefined = await getDelegationsDb({
-      hash,
-    });
+    try {
+      const { hash } = c.req.valid('param');
+      const delegation: DelegationWithMetadata | undefined =
+        await getDelegationDb({
+          hash,
+        });
 
-    if (delegation) {
-      return c.json({ delegation }, 200);
+      if (delegation) {
+        return c.json({ delegation }, 200);
+      }
+
+      return c.json({ error: 'delegation not found' }, 404);
+    } catch (error) {
+      console.error(error);
+      const errorMessage =
+        error instanceof Error ? error.message : 'error fetching delegation';
+      return c.json({ error: errorMessage }, 500);
     }
-
-    return c.json({ error: 'delegation not found' }, 404);
   })
 
-  // Get a delegations by its delegator
-  .get(
-    '/delegator/:chainId/:address',
-    zValidator('param', getDelegationByDelegatorOrDelegateSchema),
-    async (c) => {
-      const { address, chainId } = c.req.valid('param');
-      const delegations: SelectDelegationDb[] | undefined =
-        await getDelegationsByDelegatorDb({
-          chainId,
-          delegator: address,
-        });
+  // Get a delegations by multiple parameters
+  .post('/get', zValidator('json', getDelegationsSchema), async (c) => {
+    const params = c.req.valid('json');
+    const delegations: DelegationWithMetadata[] | undefined =
+      await getDelegationsDb(params);
 
-      if (delegations) {
-        return c.json({ delegations }, 200);
-      }
+    if (delegations) {
+      return c.json({ delegations }, 200);
+    }
 
-      return c.json({ error: 'delegations not found' }, 404);
-    },
-  )
-
-  // Get a delegations by its delegator
-  .get(
-    '/delegator/:chainId/:address/:type',
-    zValidator('param', getDelegationByDelegatorOrDelegateWithTypeSchema),
-    async (c) => {
-      const { address, chainId, type } = c.req.valid('param');
-      const delegations: DelegationDb[] | undefined =
-        await getDelegationsByDelegatorAndTypeDb({
-          chainId,
-          delegator: address,
-          type,
-        });
-
-      if (delegations) {
-        return c.json({ delegations }, 200);
-      }
-
-      return c.json({ error: 'delegations not found' }, 404);
-    },
-  )
-
-  // Get a delegations by its delegator
-  .get(
-    '/delegate/:chainId/:address',
-    zValidator('param', getDelegationByDelegatorOrDelegateSchema),
-    async (c) => {
-      const { address, chainId } = c.req.valid('param');
-      const delegations: DelegationDb[] | undefined =
-        await getDelegationsByDelegateDb({
-          chainId,
-          delegate: address,
-        });
-
-      if (delegations) {
-        return c.json({ delegations }, 200);
-      }
-
-      return c.json({ error: 'delegations not found' }, 404);
-    },
-  )
-
-  // Get a delegations by its delegator
-  .get(
-    '/delegate/:chainId/:address/:type',
-    zValidator('param', getDelegationByDelegatorOrDelegateWithTypeSchema),
-    async (c) => {
-      const { address, type, chainId } = c.req.valid('param');
-      const delegations: DelegationDb[] | undefined =
-        await getDelegationsByDelegateAndTypeDb({
-          chainId,
-          delegate: address,
-          type,
-        });
-
-      if (delegations) {
-        return c.json({ delegations }, 200);
-      }
-
-      return c.json({ error: 'delegations not found' }, 404);
-    },
-  )
-
+    return c.json({ error: 'delegations not found' }, 404);
+  })
   .post(
     '/',
     zValidator('json', postDelegationSchema),
@@ -190,10 +76,11 @@ const delegationsRouter = new Hono()
     // TODO: Expect a signature from the delegator to invalidate the delegation
     async (c) => {
       const { hash } = c.req.valid('param');
-      const delegation: SelectDelegationDb[] | undefined =
-        await invalidateDelegationDb({
-          hash,
-        });
+      const delegation:
+        | Omit<DelegationWithMetadata, 'caveats' | 'authorityDelegation'>[]
+        | undefined = await invalidateDelegationDb({
+        hash,
+      });
 
       if (delegation && delegation.length > 0) {
         return c.json({ ok: true }, 200);

@@ -37,8 +37,9 @@
     "viem": "^2.21.6"
   },
   "dependencies": {
-    "api-delegations": "workspace:*",
     "hono": "^4.6.8",
-    "universal-data": "workspace:*"
+    "api-delegations": "workspace:*",
+    "universal-data": "workspace:*",
+    "universal-types": "workspace:*"
   }
 }

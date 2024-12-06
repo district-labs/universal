@@ -1,4 +1,4 @@
-import type { Delegation } from '@/lib/delegation-framework/types';
+import type { Delegation } from 'universal-types';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';
 import { universalDeployments } from 'universal-data';

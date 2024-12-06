@@ -1,10 +1,10 @@
+import { verifyTypedData } from '@wagmi/core';
 import type { Context } from 'hono';
 import { deleteCookie, getCookie, setCookie } from 'hono/cookie';
 import { createMiddleware } from 'hono/factory';
+import { isValidChain } from 'universal-data';
 import { type Hex, isAddress, isHex } from 'viem';
 import { wagmiConfig } from '../../../lib/wagmi.js';
-import { isValidChain } from 'universal-data';
-import { verifyTypedData } from '@wagmi/core';
 
 const eip712VerificationRequestType = {
   VerificationRequest: [

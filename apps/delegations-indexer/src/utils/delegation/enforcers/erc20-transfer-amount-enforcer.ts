@@ -1,4 +1,4 @@
-import { erc20TransferAmountAbi } from 'universal-data';
+import { erc20TransferAmountEnforcerAbi } from 'universal-data';
 import {
   type Address,
   type Hex,
@@ -31,7 +31,7 @@ export function encodeErc20TransferAmountEvent({
 }: EncodeErc20TransferAmountEventParams): EncodeErc20TransferAmountEventReturnType {
   return encodeAbiParameters(
     getAbiItem({
-      abi: erc20TransferAmountAbi,
+      abi: erc20TransferAmountEnforcerAbi,
       name: 'IncreasedSpentMap',
     }).inputs,
     [sender, redeemer, delegationHash, limit, spent],
@@ -47,7 +47,7 @@ export function decodeErc20TransferAmountEvent(
 ): DecodeErc20TransferAmountEventReturnType {
   const [sender, redeemer, delegationHash, limit, spent] = decodeAbiParameters(
     getAbiItem({
-      abi: erc20TransferAmountAbi,
+      abi: erc20TransferAmountEnforcerAbi,
       name: 'IncreasedSpentMap',
     }).inputs,
     encoded,

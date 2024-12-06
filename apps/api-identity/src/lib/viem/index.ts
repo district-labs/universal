@@ -1,6 +1,6 @@
+import type { ValidChain } from 'universal-data';
 import { base, baseSepolia } from 'viem/chains';
 import { basePublicClient, baseSepoliaPublicClient } from './clients.js';
-import type { ValidChain } from 'universal-data';
 
 export function getPublicClient(chainId: ValidChain['id']) {
   switch (chainId) {

@@ -1,30 +1,23 @@
-import type { Address } from 'viem';
 import { useSignTypedData } from 'wagmi';
-import type { Delegation } from '../../types.js';
 import { eip712DelegationTypes } from '../eip712-delegation-type.js';
+import type { DelegationWithMetadata } from 'universal-types';
 
-export function useSignDelegation({
-  chainId,
-  address,
-}: {
-  chainId: number;
-  address: Address;
-}) {
+export function useSignDelegation() {
   const {
     data: delegationSignature,
     signTypedData,
     ...signTypedDataParams
   } = useSignTypedData();
 
-  function signDelegation(delegation: Delegation) {
+  function signDelegation(delegation: DelegationWithMetadata) {
     signTypedData({
       types: eip712DelegationTypes,
       primaryType: 'Delegation',
       domain: {
         name: 'DelegationManager',
         version: '1',
-        chainId: chainId,
-        verifyingContract: address,
+        chainId: delegation.chainId,
+        verifyingContract: delegation.verifyingContract,
       },
       message: delegation,
     });

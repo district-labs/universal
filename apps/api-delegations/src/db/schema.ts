@@ -23,10 +23,10 @@ const bigIntColumn = () => bigint({ mode: 'number' }).$type<bigint>();
 // Table
 export const delegations = pgTable('delegations', {
   hash: bytes32Column().primaryKey(),
-  verifyingContract: addressColumn().notNull(),
-  type: varchar({ length: 256 }).notNull(),
-  delegator: addressColumn().notNull(),
   chainId: integer().notNull(),
+  verifyingContract: addressColumn().notNull(),
+  type: varchar({ length: 256 }),
+  delegator: addressColumn().notNull(),
   delegate: addressColumn().notNull(),
   authority: bytes32Column().notNull(),
   salt: bigIntColumn().notNull(),
@@ -35,8 +35,13 @@ export const delegations = pgTable('delegations', {
 });
 
 // Relations
-export const delegationsRelations = relations(delegations, ({ many }) => ({
+export const delegationsRelations = relations(delegations, ({ one, many }) => ({
   caveats: many(caveats),
+  // Uses auth instead of authorityDelegation due to Drizzle's query column length limit
+  auth: one(delegations, {
+    fields: [delegations.authority],
+    references: [delegations.hash],
+  }),
 }));
 
 // ----------------------------------------------
@@ -46,7 +51,7 @@ export const delegationsRelations = relations(delegations, ({ many }) => ({
 // Table
 export const caveats = pgTable('caveats', {
   id: serial('id').primaryKey(),
-  enforcerType: varchar({ length: 256 }).notNull(),
+  type: varchar({ length: 256 }),
   enforcer: addressColumn().notNull(),
   terms: bytesColumn().notNull(),
   args: bytesColumn().notNull(),
@@ -68,6 +73,3 @@ export type InsertDelegationDb = typeof delegations.$inferInsert;
 export type SelectDelegationDb = typeof delegations.$inferSelect;
 export type InsertCaveatDb = typeof caveats.$inferInsert;
 export type SelectCaveatDb = typeof caveats.$inferSelect;
-export type DelegationDb = SelectDelegationDb & {
-  caveats: SelectCaveatDb[];
-};

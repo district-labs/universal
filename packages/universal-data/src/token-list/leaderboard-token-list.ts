@@ -1,4 +1,4 @@
-import type { TokenList } from '../types.js';
+import type { TokenList } from 'universal-types';
 
 export const leaderboardTokenList: TokenList = {
   name: 'Universal Leaderboard Token List',

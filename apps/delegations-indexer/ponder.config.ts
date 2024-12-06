@@ -3,7 +3,7 @@ import { http } from 'viem';
 
 import {
   delegationManagerAbi,
-  erc20TransferAmountAbi,
+  erc20TransferAmountEnforcerAbi,
   universalDeployments,
 } from 'universal-data';
 import { base, baseSepolia } from 'viem/chains';
@@ -37,7 +37,7 @@ export default createConfig({
       },
     },
     ERC20TransferAmountEnforcer: {
-      abi: erc20TransferAmountAbi,
+      abi: erc20TransferAmountEnforcerAbi,
       network: {
         base: {
           address: universalDeployments.ERC20TransferAmountEnforcer,

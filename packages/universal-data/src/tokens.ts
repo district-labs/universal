@@ -1,5 +1,5 @@
 import { baseSepolia } from 'viem/chains';
-import type { Token } from './types.js';
+import type { Token } from 'universal-types';
 
 export const tokenDeployments: {
   [chainId: number]: Token[];
@@ -13,4 +13,4 @@ export const tokenDeployments: {
       img: '/images/erc20/gem.png',
     },
   ],
-} as const;
+};

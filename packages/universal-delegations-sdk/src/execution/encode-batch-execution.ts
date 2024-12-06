@@ -1,9 +1,9 @@
 import { type Hex, encodeAbiParameters } from 'viem';
 
-import type { Execution } from '../types.js';
+import type { DelegationExecution } from 'universal-types';
 
 // Typescript implementation of: https://github.com/erc7579/erc7579-implementation/blob/main/src/lib/ExecutionLib.sol#L33-L39
-export function encodeBatchExecution(executions: Execution[]): Hex {
+export function encodeBatchExecution(executions: DelegationExecution[]): Hex {
   return encodeAbiParameters(
     [
       {

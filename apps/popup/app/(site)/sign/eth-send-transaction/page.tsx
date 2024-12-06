@@ -5,7 +5,7 @@ import { Toggle } from '@/components/toggle';
 import { Button } from '@/components/ui/button';
 import { useEstimateUserOpAssetChanges } from '@/lib/alchemy/hooks/use-simulate-user-op-asset-changes';
 import { type ReactElement, useMemo, useState } from 'react';
-import type { DelegationExecutions } from 'universal-data';
+import type { CreditLineExecutions } from 'universal-types';
 import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
 import { ActionRequestMain } from '../components/action-request-main';
@@ -21,16 +21,16 @@ export default function SignEthSendTransactionPage() {
   const [viewModeAdvanced, setViewModeAdvanced] = useState<boolean>(false);
   const { isLoading: isLoadingEstimate, isError: isErrorEstimate } =
     useEstimateUserOpAssetChanges({});
-  const [delegationExecutions, setDelegationExecutions] = useState<
-    DelegationExecutions[]
+  const [CreditLineExecutions, setCreditLineExecutions] = useState<
+    CreditLineExecutions[]
   >([]);
   const redemptions = useMemo(
     () =>
-      delegationExecutions?.map(({ execution, delegation }) => ({
+      CreditLineExecutions?.map(({ execution, delegation }) => ({
         amount: execution.amount,
         delegation,
       })),
-    [delegationExecutions],
+    [CreditLineExecutions],
   );
   const {
     calls,
@@ -80,8 +80,8 @@ export default function SignEthSendTransactionPage() {
               className="space-y-2 border-t-2 bg-neutral-100/60 px-6 py-3 shadow-top"
               address={sender}
               chainId={chainId}
-              setDelegationExecutions={setDelegationExecutions}
-              delegationExecutions={delegationExecutions}
+              setCreditLineExecutions={setCreditLineExecutions}
+              CreditLineExecutions={CreditLineExecutions}
             />
             <ActionTransactionPreview
               calls={calls}

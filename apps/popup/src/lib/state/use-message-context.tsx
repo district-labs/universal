@@ -1,5 +1,5 @@
-import type { ValidChain } from 'universal-data';
 import { type ReactNode, createContext, useContext, useState } from 'react';
+import type { ValidChain } from 'universal-data';
 
 export type MessageContextType = {
   method: string;

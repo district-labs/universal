@@ -1,8 +1,8 @@
 import { Hono } from 'hono';
 import { validator } from 'hono/validator';
+import { isValidChain } from 'universal-data';
 import { type Address, isAddress } from 'viem';
 import { z } from 'zod';
-import { isValidChain } from 'universal-data';
 import { getDelegationsCollectionDb } from '../db/actions/delegations/get-delegations-collection-db.js';
 
 const getCollectionQuery = z.object({

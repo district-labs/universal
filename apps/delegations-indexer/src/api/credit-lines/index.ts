@@ -45,10 +45,10 @@ ponder.get(
       });
 
       const creditLines = redeemerDelegations
-        .filter((delegation) => delegation.delegationType === 'CreditLine')
+        .filter((delegation) => delegation?.type === 'CreditLine')
         .map((delegation) => {
           const erc20TransferFromCaveat = delegation.caveats.find(
-            (caveat) => caveat.enforcerType === 'ERC20TransferAmountEnforcer',
+            (caveat) => caveat.type === 'ERC20TransferAmountEnforcer',
           );
           if (!erc20TransferFromCaveat) {
             throw new Error('ERC20TransferAmountEnforcer not found');

@@ -22,6 +22,8 @@
     "@ponder/core": "^0.7.11",
     "hono": "^4.5.0",
     "universal-data": "workspace:*",
+    "universal-delegations-sdk": "workspace:*",
+    "universal-types": "workspace:*",
     "viem": "^2.21.3",
     "zod": "^3.23.8"
   },

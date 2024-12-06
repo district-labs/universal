@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from 'react';
-import type { Address as AddressType, Chain } from 'viem';
 import { productionChains } from 'universal-data';
+import type { Address as AddressType, Chain } from 'viem';
 import { LinkComponent } from '../ui/link-component';
 
 interface AddressProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {

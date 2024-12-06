@@ -1,6 +1,6 @@
-import { validChains } from 'universal-data';
 import { useMessageContext } from '@/lib/state/use-message-context';
 import { useMemo } from 'react';
+import { validChains } from 'universal-data';
 
 export function useGetMessageChainId() {
   const { message } = useMessageContext();

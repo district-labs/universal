@@ -1,11 +1,10 @@
 import { concatHex, encodeAbiParameters, keccak256 } from 'viem';
 
-import type { DelegationDb } from 'api-delegations';
-import { CAVEAT_TYPEHASH, DELEGATION_TYPEHASH } from '../constants.js';
-import type { Caveat, Delegation } from '../types.js';
+import { CAVEAT_TYPEHASH, DELEGATION_TYPEHASH } from 'universal-data';
+import type { DelegationCaveat, Delegation } from 'universal-types';
 
 // Implementation of: https://github.com/MetaMask/delegation-framework/blob/main/src/libraries/EncoderLib.sol#L18
-export function getDelegationHash(delegation: Delegation | DelegationDb) {
+export function getDelegationHash(delegation: Delegation) {
   const encodedCaveatArrayPacketHash = getCaveatArrayPacketHash(
     delegation.caveats,
   );
@@ -31,7 +30,7 @@ export function getDelegationHash(delegation: Delegation | DelegationDb) {
   return keccak256(encoded);
 }
 
-export function getCaveatArrayPacketHash(caveats: Caveat[]) {
+export function getCaveatArrayPacketHash(caveats: DelegationCaveat[]) {
   const caveatPacketHashes = caveats.map((caveat) =>
     getCaveatPacketHash(caveat),
   );
@@ -40,7 +39,7 @@ export function getCaveatArrayPacketHash(caveats: Caveat[]) {
   return keccak256(concatenatedHashes);
 }
 
-export function getCaveatPacketHash(caveat: Caveat) {
+export function getCaveatPacketHash(caveat: DelegationCaveat) {
   const encoded = encodeAbiParameters(
     [
       { name: 'caveatTypeHash', type: 'bytes32' },

@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
 import { useCallback, useMemo, useState } from 'react';
-import type { TokenItem, TokenList } from 'universal-data';
+import type { TokenItem, TokenList } from 'universal-types';
 import { Button } from '../ui/button';
 import { DialogDescription, DialogTitle } from '../ui/dialog';
 

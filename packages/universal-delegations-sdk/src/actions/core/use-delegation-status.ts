@@ -1,26 +1,24 @@
 'use client';
-import type { DelegationDb } from 'api-delegations';
-import type { Address } from 'viem';
+
 import { useReadContract } from 'wagmi';
-import { delegationManagerAbi } from '../../abis/delegation-manager-abi.js';
+import { delegationManagerAbi } from 'universal-data';
 import { getDelegationHash } from '../../delegation/get-delegation-hash.js';
-import type { Delegation } from '../../types.js';
+
+import type { DelegationWithMetadata } from 'universal-types';
 
 export function useDelegationStatus({
-  delegationManager,
   delegation,
 }: {
-  delegationManager: Address;
-  delegation: Delegation | DelegationDb;
+  delegation: DelegationWithMetadata;
 }) {
   const hash = getDelegationHash(delegation);
   return useReadContract({
     abi: delegationManagerAbi,
-    address: delegationManager,
+    address: delegation.verifyingContract,
     functionName: 'disabledDelegations',
     args: [hash],
     query: {
-      enabled: !!delegationManager && !!hash,
+      enabled: !!delegation && !!hash,
       refetchInterval: 3000,
     },
   });

@@ -1,22 +1,21 @@
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
-import { type TokenItem, findToken, getDefaultTokenList } from 'universal-data';
-import {
-  type DelegationDb,
-  decodeEnforcerERC20TransferAmount,
-} from 'universal-delegations-sdk';
+import type { TokenItem } from 'universal-types';
+import { findToken, getDefaultTokenList } from 'universal-data';
+import { decodeEnforcerERC20TransferAmount } from 'universal-delegations-sdk';
 import { type Address, formatUnits } from 'viem';
 import { getCredentialsByAddresses } from './utils/get-credentials-by-addresses.js';
 import { getIssuedDelegations } from './utils/get-issued-delegations.js';
 import { getRedeemedCreditLines } from './utils/get-redeemed-credit-Lines.js';
 import { getCreditLineSchema } from './utils/validation.js';
+import type { DelegationWithMetadata } from 'universal-types';
 
-type DelegationDbWithOnchainData = DelegationDb & {
+type DelegationWithOnchainData = DelegationWithMetadata & {
   isRevoked: boolean;
 };
 
 type DelegationMetadata = {
-  data: DelegationDbWithOnchainData;
+  data: DelegationWithOnchainData;
   metadata: {
     available: {
       amount: string;
@@ -45,12 +44,13 @@ const creditLineRouter = new Hono().post(
   '/',
   zValidator('json', getCreditLineSchema),
   async (c) => {
-    const { delegate, delegator, type, chainId } = c.req.valid('json');
+    const params = c.req.valid('json');
+    const { chainId } = params;
     try {
       const [redeemCreditLinesResponse, issuedDelegationsResponse] =
         await Promise.all([
-          getRedeemedCreditLines({ chainId, delegate, delegator }),
-          getIssuedDelegations({ chainId, delegate, delegator, type }),
+          getRedeemedCreditLines({ ...params }),
+          getIssuedDelegations(params),
         ]);
 
       if (!redeemCreditLinesResponse.ok) {

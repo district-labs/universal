@@ -1,4 +1,4 @@
-import type { TokenItem, TokenList } from '../types.js';
+import type { TokenItem, TokenList } from 'universal-types';
 
 export function findTokenBySymbol({
   symbol,

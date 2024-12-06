@@ -1,26 +1,40 @@
 'use client';
-import type { DelegationDb } from 'api-delegations';
-import type { Address } from 'viem';
+
 import { useWriteContract } from 'wagmi';
-import { delegationManagerAbi } from '../../abis/delegation-manager-abi.js';
-import type { Delegation } from '../../types.js';
+import { delegationManagerAbi } from 'universal-data';
+
+import type { DelegationWithMetadata } from 'universal-types';
 
 export function useEnableDelegation({
-  delegationManager,
   delegation,
 }: {
-  delegationManager: Address;
-  delegation: Delegation | DelegationDb;
+  delegation: DelegationWithMetadata;
 }) {
   const { writeContract, ...rest } = useWriteContract();
 
+  const { authority, caveats, delegate, delegator, salt, signature } =
+    delegation;
+
   const enable = () => {
-    if (!delegationManager || !delegation) return;
+    if (!delegation) return;
     writeContract({
       abi: delegationManagerAbi,
-      address: delegationManager,
+      address: delegation.verifyingContract,
       functionName: 'enableDelegation',
-      args: [delegation as Delegation],
+      args: [
+        {
+          authority,
+          delegate,
+          delegator,
+          salt,
+          signature,
+          caveats: caveats.map(({ enforcer, terms, args }) => ({
+            enforcer,
+            terms,
+            args,
+          })),
+        },
+      ],
     });
   };
 

@@ -1,6 +1,6 @@
+import { isValidChain } from 'universal-data';
 import type { Address, Hex } from 'viem';
 import { getPublicClient } from '../clients.js';
-import { isValidChain } from 'universal-data';
 
 export async function verifyUniversalMessage({
   chainId,

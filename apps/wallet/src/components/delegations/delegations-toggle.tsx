@@ -1,15 +1,15 @@
 import { Ban, KeySquare } from 'lucide-react';
 import type * as React from 'react';
 import {
-  type DelegationDb,
   useDelegationStatus,
   useDisableDelegation,
   useEnableDelegation,
 } from 'universal-delegations-sdk';
+import type { DelegationWithMetadata } from 'universal-types';
 import { Button } from '../ui/button';
 
 type DelegationToggle = React.HTMLAttributes<HTMLElement> & {
-  delegation: DelegationDb;
+  delegation: DelegationWithMetadata;
 };
 
 export const DelegationToggle = ({
@@ -17,16 +17,13 @@ export const DelegationToggle = ({
   delegation,
 }: DelegationToggle) => {
   const { data: status } = useDelegationStatus({
-    delegationManager: delegation.verifyingContract,
     delegation: delegation,
   });
 
   const { disable } = useDisableDelegation({
-    delegationManager: delegation.verifyingContract,
     delegation: delegation,
   });
   const { enable } = useEnableDelegation({
-    delegationManager: delegation.verifyingContract,
     delegation: delegation,
   });
 

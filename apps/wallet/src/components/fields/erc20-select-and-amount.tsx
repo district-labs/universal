@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import type { TokenList } from 'universal-data';
+import type { TokenList } from 'universal-types';
 import {
   FormControl,
   FormDescription,
