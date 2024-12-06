@@ -43,9 +43,7 @@
   },
   "dependencies": {
     "api-universal": "workspace:*",
-    "universal-credential-sdk": "workspace:*",
     "universal-delegations-sdk": "workspace:*",
-    "universal-identity-sdk": "workspace:*",
-    "universal-data": "workspace:*"
+    "universal-identity-sdk": "workspace:*"
   }
 }

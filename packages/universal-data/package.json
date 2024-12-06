@@ -42,7 +42,6 @@
     }
   },
   "dependencies": {
-    "universal-wallet-sdk": "workspace:*",
     "universal-types": "workspace:*"
   }
 }
