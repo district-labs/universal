@@ -33,7 +33,7 @@ export const baseBundlerClient = createBundlerClient({
   }),
   userOperation: {
     estimateFeesPerGas: async () => {
-      return (await pimlicoBaseClient.getUserOperationGasPrice()).fast;
+      return (await pimlicoBaseClient.getUserOperationGasPrice()).standard;
     },
   },
 });
