@@ -482,6 +482,9 @@ importers:
       next-themes:
         specifier: ^0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      permissionless:
+        specifier: 0.2.21
+        version: 0.2.21(viem@2.21.45(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@6.0.5)(zod@3.23.8))
       postgres:
         specifier: ^3.4.4
         version: 3.4.5
@@ -8882,6 +8885,11 @@ packages:
 
   pathe@1.1.2:
     resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
+
+  permissionless@0.2.21:
+    resolution: {integrity: sha512-hNrRR/I5InbqkKgRBLhXQY5R0j9biqp688ECBxsW5AO99jOv9HPjz82EdRT87OG4XkCjO4AY20hi4ZPoc+XjRg==}
+    peerDependencies:
+      viem: ^2.21.22
 
   pg-cloudflare@1.1.1:
     resolution: {integrity: sha512-xWPagP/4B6BgFO+EKz3JONXv3YDgvkbVrGw2mTo3D6tVDQRh1e7cqVGvyR3BE+eQgAvx1XhW/iEASj4/jCWl3Q==}
@@ -21789,6 +21797,10 @@ snapshots:
   path-type@5.0.0: {}
 
   pathe@1.1.2: {}
+
+  permissionless@0.2.21(viem@2.21.45(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@6.0.5)(zod@3.23.8)):
+    dependencies:
+      viem: 2.21.45(bufferutil@4.0.8)(typescript@5.6.3)(utf-8-validate@6.0.5)(zod@3.23.8)
 
   pg-cloudflare@1.1.1:
     optional: true
