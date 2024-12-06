@@ -26,14 +26,6 @@ export {
   testnetChains,
   testnetChainIds,
 } from '../chains.js';
-export type {
-  DelegationExecutions,
-  CreditLineWithMetadata,
-  SocialCredential,
-  Token,
-  TokenItem,
-  TokenList,
-} from '../types.js';
 export { findTokenBySymbol } from '../utils/find-token-by-symbol.js';
 export { findToken } from '../utils/find-token.js';
 export {

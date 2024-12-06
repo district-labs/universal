@@ -19,7 +19,8 @@ import { Card } from '@/components/ui/card';
 import { defaultTokenList, useIsValidChain } from '@/lib/chains';
 import { useToast } from '@/lib/hooks/use-toast';
 import { useEffect } from 'react';
-import { type TokenItem, findToken, getDefaultTokenList } from 'universal-data';
+import { findToken, getDefaultTokenList } from 'universal-data';
+import type { TokenItem } from 'universal-types';
 import { useSignErc20TransferDelegation } from 'universal-delegations-sdk';
 
 const formSchema = z.object({

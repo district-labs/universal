@@ -11,10 +11,10 @@ import { BadgeInfo } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import type {
-  DelegationExecutions,
+  CreditLineExecutions,
   CreditLineWithMetadata,
   SocialCredential,
-} from 'universal-data';
+} from 'universal-types';
 import { useGetCreditLines } from 'universal-sdk';
 import { type Address, type Hex, parseUnits } from 'viem';
 import { DelegationDetailsSheet } from './delegation-details-sheet';
@@ -31,7 +31,7 @@ export type DelegationsManagementSheet = Omit<
 > & {
   address: Address;
   chainId: number;
-  onSelect: (delegation: DelegationExecutions[]) => void;
+  onSelect: (delegation: CreditLineExecutions[]) => void;
 };
 
 export const DelegationsManagementSheet = ({
@@ -57,27 +57,27 @@ export const DelegationsManagementSheet = ({
   }, [data?.creditLines]);
 
   const [isOpen, toggleIsOpen] = useState(false);
-  const [delegationExecutions, setDelegationExecutions] = useState<
-    DelegationExecutions[]
+  const [CreditLineExecutions, setCreditLineExecutions] = useState<
+    CreditLineExecutions[]
   >([]);
 
   useEffect(() => {
     if (!isOpen) {
-      setDelegationExecutions([]);
+      setCreditLineExecutions([]);
     }
   }, [isOpen]);
 
   const handleDisableDelegation = (hash: Hex) => {
-    setDelegationExecutions(
-      delegationExecutions.filter(
+    setCreditLineExecutions(
+      CreditLineExecutions.filter(
         (delegationExecution) => delegationExecution.delegation.hash !== hash,
       ),
     );
   };
 
   const handleDelegationAmountUpdate = (hash: Hex, amountFormatted: string) => {
-    setDelegationExecutions(
-      delegationExecutions.map((delegationExecution) => {
+    setCreditLineExecutions(
+      CreditLineExecutions.map((delegationExecution) => {
         if (delegationExecution.delegation.hash === hash) {
           return {
             ...delegationExecution,
@@ -99,8 +99,8 @@ export const DelegationsManagementSheet = ({
   const handleEnableDelegation = (
     delegationExecution: CreditLineWithMetadata,
   ) => {
-    setDelegationExecutions([
-      ...delegationExecutions,
+    setCreditLineExecutions([
+      ...CreditLineExecutions,
       {
         delegation: delegationExecution.data,
         execution: {
@@ -121,7 +121,7 @@ export const DelegationsManagementSheet = ({
   };
 
   const handleOnSelect = () => {
-    onSelect(delegationExecutions);
+    onSelect(CreditLineExecutions);
     toggleIsOpen(false);
   };
 

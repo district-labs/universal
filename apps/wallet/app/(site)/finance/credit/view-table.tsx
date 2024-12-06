@@ -10,12 +10,12 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import type * as React from 'react';
 import {
-  type DelegationDb,
   useDelegationExecute,
   useDelegationStatus,
   useErc20TransferAmountEnforcer,
   useGetDelegations,
 } from 'universal-delegations-sdk';
+import type { DelegationWithMetadata } from 'universal-types';
 import { DebitCard } from 'universal-wallet-ui';
 import { type Address, encodeFunctionData, erc20Abi } from 'viem';
 import { useAccount } from 'wagmi';
@@ -69,19 +69,17 @@ const ViewCreditTable = ({
 };
 
 type CardAuthorization = React.HTMLAttributes<HTMLElement> & {
-  delegation: DelegationDb;
+  delegation: DelegationWithMetadata;
 };
 
 const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
   const { address } = useAccount();
   const execute = useDelegationExecute();
   const { data: status } = useDelegationStatus({
-    delegationManager: delegation.verifyingContract,
     delegation: delegation,
   });
 
   const { data: enforcerData } = useErc20TransferAmountEnforcer({
-    delegationManager: delegation.verifyingContract,
     address: delegation.caveats[0].enforcer,
     delegation: delegation,
   });
@@ -127,7 +125,6 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
             !status &&
               !enforcerData.spendLimitReached &&
               execute({
-                delegationManager: delegation.verifyingContract,
                 delegation: delegation,
                 executions: {
                   target: enforcerData.token,

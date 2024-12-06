@@ -55,6 +55,7 @@
     "react-qr-reader-es6": "2.2.1-2",
     "universal-credential-sdk": "workspace:*",
     "universal-data": "workspace:*",
+    "universal-types": "workspace:*",
     "universal-delegations-sdk": "workspace:*",
     "universal-identity-sdk": "workspace:*",
     "universal-sdk": "workspace:*",

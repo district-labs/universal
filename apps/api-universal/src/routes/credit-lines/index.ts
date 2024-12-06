@@ -1,6 +1,7 @@
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
-import { type TokenItem, findToken, getDefaultTokenList } from 'universal-data';
+import type { TokenItem } from 'universal-types';
+import { findToken, getDefaultTokenList } from 'universal-data';
 import { decodeEnforcerERC20TransferAmount } from 'universal-delegations-sdk';
 import { type Address, formatUnits } from 'viem';
 import { getCredentialsByAddresses } from './utils/get-credentials-by-addresses.js';

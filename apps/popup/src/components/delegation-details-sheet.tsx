@@ -10,7 +10,7 @@ import {
 import { formatNumber } from '@/lib/utils';
 import type * as React from 'react';
 import { useState } from 'react';
-import type { CreditLineWithMetadata, SocialCredential } from 'universal-data';
+import type { CreditLineWithMetadata, SocialCredential } from 'universal-types';
 import { DebitCard } from 'universal-wallet-ui';
 import { AccountSocialCredentialBadge } from './identity/account-social-credential-badge';
 import { Address } from './onchain/address';

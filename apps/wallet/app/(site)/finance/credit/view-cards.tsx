@@ -8,7 +8,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { Ban, KeySquare } from 'lucide-react';
-import type { SocialCredential } from 'universal-data';
+import type { SocialCredential } from 'universal-types';
 import { useDelegationExecute } from 'universal-delegations-sdk';
 
 import { useGetCreditLines } from 'universal-sdk';
@@ -132,7 +132,6 @@ export const ViewCreditCards = ({
                       variant={'emerald'}
                       onClick={() => {
                         execute({
-                          delegationManager: delegation.verifyingContract,
                           delegation: delegation,
                           executions: {
                             target: metadata.token.address as Address,
