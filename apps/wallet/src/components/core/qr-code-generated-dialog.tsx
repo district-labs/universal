@@ -9,9 +9,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { Fingerprint, QrCode, WalletMinimal } from 'lucide-react';
+import Image from 'next/image';
 import { universalDeployments } from 'universal-data';
 import { constructDidIdentifier } from 'universal-identity-sdk';
 import { useAccount } from 'wagmi';
+import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { QRCodeGenerate } from './qr-code-generate';
 
@@ -42,6 +44,23 @@ const QRCodeGeneratedDialog = () => {
                 </DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
+                <div className="">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-sm">Network</span>
+                    <div className="flex items-center gap-2">
+                      <Badge variant={'outline'} className="p-2 text-sm">
+                        <span className="mr-1 font-medium text-xs">Base</span>
+                        <Image
+                          src={'/images/networks/base.png'}
+                          className="size-4"
+                          width={20}
+                          height={20}
+                          alt="Base"
+                        />
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
                 <div className="overflow-hidden rounded-3xl border-4 border-neutral-300 shadow-lg">
                   <QRCodeGenerate data={address} className="h-auto w-full" />
                 </div>

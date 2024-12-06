@@ -22,14 +22,14 @@ export const itemsCore = [
     icon: Banknote,
   },
   {
-    title: 'Leaderboard',
-    url: '/leaderboard',
-    icon: Orbit,
-  },
-  {
     title: 'Applications',
     url: '/applications',
     icon: Cable,
+  },
+  {
+    title: 'Leaderboard',
+    url: '/leaderboard',
+    icon: Orbit,
   },
 ];
 

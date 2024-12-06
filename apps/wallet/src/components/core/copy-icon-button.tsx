@@ -25,13 +25,13 @@ const CopyIconButton = ({ className, value }: CopyIconButton) => {
       });
   };
   return (
-    <div
-      className={cn('inline-block cursor-pointer p-1', className)}
+    <span
+      className={cn('cursor-pointer p-0', className)}
       onClick={() => handleCopy(value)}
     >
-      <Copy className="size-3 cursor-pointer" height={8} width={8} />
+      <Copy className="size-4 cursor-pointer" height={8} width={8} />
       <span className="sr-only">Copy</span>
-    </div>
+    </span>
   );
 };
 export { CopyIconButton };
