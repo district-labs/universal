@@ -6,7 +6,7 @@ import type {
   DelegationExecution,
 } from 'universal-types';
 
-import { encodeDelegations } from '../../delegation/encode-delegations.js';
+import { encodeDelegation } from '../../delegation/encode-delegation.js';
 import { encodeSingleExecution } from '../../execution/encode-single-execution.js';
 
 export function useDelegationExecute() {
@@ -19,7 +19,7 @@ export function useDelegationExecute() {
     delegation: DelegationWithMetadata;
     executions: DelegationExecution;
   }) => {
-    const permissionContext = [encodeDelegations([delegation])];
+    const permissionContext = [encodeDelegation(delegation)];
     const executionCallData = [encodeSingleExecution(executions)];
     writeContract({
       abi: delegationManagerAbi,

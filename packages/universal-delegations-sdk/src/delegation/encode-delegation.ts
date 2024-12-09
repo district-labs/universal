@@ -1,8 +1,10 @@
 import { type Hex, encodeAbiParameters } from 'viem';
 
-import type { Delegation } from 'universal-types';
+import type { DelegationWithMetadata } from 'universal-types';
+import { getDelegationBatch } from './get-delegation-batch.js';
 
-export function encodeDelegations(delegations: Delegation[]): Hex {
+export function encodeDelegation(delegation: DelegationWithMetadata): Hex {
+  const delegationBatch = getDelegationBatch(delegation);
   return encodeAbiParameters(
     [
       {
@@ -44,6 +46,6 @@ export function encodeDelegations(delegations: Delegation[]): Hex {
         ],
       },
     ],
-    [delegations],
+    [delegationBatch],
   );
 }

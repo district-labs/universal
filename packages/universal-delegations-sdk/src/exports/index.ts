@@ -27,7 +27,7 @@ export { useEnableDelegation } from '../actions/core/use-enable-delegation.js';
 export { useErc20TransferAmountEnforcer } from '../actions/enforcers/use-erc20-transfer-amount-enforcer.js';
 export { useSignErc20TransferDelegation } from '../actions/use-sign-erc20-transfer.js';
 export { eip712DelegationTypes } from '../delegation/eip712-delegation-type.js';
-export { encodeDelegations } from '../delegation/encode-delegations.js';
+export { encodeDelegation } from '../delegation/encode-delegation.js';
 export {
   getCaveatArrayPacketHash,
   getCaveatPacketHash,

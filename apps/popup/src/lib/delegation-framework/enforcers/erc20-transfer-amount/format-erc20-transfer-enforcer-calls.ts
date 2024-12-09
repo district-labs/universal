@@ -5,18 +5,17 @@ import {
 } from 'universal-data';
 import {
   decodeEnforcerERC20TransferAmount,
-  encodeDelegations,
+  encodeDelegation,
   encodeSingleExecution,
 } from 'universal-delegations-sdk';
 import type {
   DelegationWithMetadata,
-  Delegation,
   DelegationExecution,
 } from 'universal-types';
 
 import { type CallParameters, encodeFunctionData, erc20Abi } from 'viem';
 
-export type DelegationWithAmount = Delegation & { amount: bigint };
+export type DelegationWithAmount = DelegationWithMetadata & { amount: bigint };
 export type Erc20TransferEnforcerRedemption = {
   delegation: DelegationWithMetadata;
   amount: bigint;
@@ -30,7 +29,7 @@ function encodeErc20TransferEnforcerCalldata(delegation: DelegationWithAmount) {
   }
 
   const [token] = decodeEnforcerERC20TransferAmount(caveat.terms);
-  const permissionContexts = [encodeDelegations([delegation])];
+  const permissionContexts = [encodeDelegation(delegation)];
   const execution: DelegationExecution = {
     value: 0n,
     target: token,

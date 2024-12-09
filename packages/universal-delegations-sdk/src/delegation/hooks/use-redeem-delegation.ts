@@ -2,10 +2,13 @@ import type { Address, Hex } from 'viem';
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 
 import { delegationManagerAbi } from 'universal-data';
-import type { Delegation, DelegationExecution } from 'universal-types';
+import type {
+  DelegationExecution,
+  DelegationWithMetadata,
+} from 'universal-types';
 
 import { encodeBatchExecution } from '../../execution/encode-batch-execution.js';
-import { encodeDelegations } from '../encode-delegations.js';
+import { encodeDelegation } from '../encode-delegation.js';
 
 export function useRedeemDelegation(address: Address) {
   const { writeContract, ...writeContractParams } = useWriteContract();
@@ -14,15 +17,15 @@ export function useRedeemDelegation(address: Address) {
   });
 
   function redeemDelegation({
-    delegations,
+    delegation,
     executions,
     executionModes,
   }: {
-    delegations: Delegation[];
+    delegation: DelegationWithMetadata;
     executions: DelegationExecution[];
     executionModes: Hex[];
   }) {
-    const permissionContexts = [encodeDelegations(delegations)];
+    const permissionContexts = [encodeDelegation(delegation)];
     const executionCallData = [encodeBatchExecution(executions)];
 
     // TODO: Add prepareWriteContract for better UX
