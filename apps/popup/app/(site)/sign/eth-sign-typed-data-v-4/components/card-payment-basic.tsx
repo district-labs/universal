@@ -3,7 +3,10 @@ import type { Delegation } from 'universal-types';
 import { cn } from '@/lib/utils';
 import { useMemo } from 'react';
 import { findToken, getDefaultTokenList } from 'universal-data';
-import { decodeEnforcerERC20TransferAmount } from 'universal-delegations-sdk';
+import {
+  decodeEnforcerERC20TransferAmount,
+  getErc20TransferAmountEnforcerFromDelegation,
+} from 'universal-delegations-sdk';
 import { DebitCard } from 'universal-wallet-ui';
 import { type Address, formatUnits } from 'viem';
 
@@ -18,9 +21,8 @@ export const CardPaymentBasic = ({
   chainId,
 }: CardPaymentBasic) => {
   const data = useMemo(() => {
-    const formattedTerms = decodeEnforcerERC20TransferAmount(
-      typedData.caveats[0].terms,
-    );
+    const { terms } = getErc20TransferAmountEnforcerFromDelegation(typedData);
+    const formattedTerms = decodeEnforcerERC20TransferAmount(terms);
 
     const address = formattedTerms[0] as Address;
     const tokenList = getDefaultTokenList({ chainId });

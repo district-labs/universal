@@ -9,6 +9,7 @@ import { getIssuedDelegations } from './utils/get-issued-delegations.js';
 import { getRedeemedCreditLines } from './utils/get-redeemed-credit-Lines.js';
 import { getCreditLineSchema } from './utils/validation.js';
 import type { DelegationWithMetadata } from 'universal-types';
+import { getErc20TransferAmountEnforcerFromDelegation } from 'universal-delegations-sdk';
 
 type DelegationWithOnchainData = DelegationWithMetadata & {
   isRevoked: boolean;
@@ -88,11 +89,8 @@ const creditLineRouter = new Hono().post(
             },
           );
 
-          const terms = delegation.caveats[0]?.terms;
-
-          if (!terms) {
-            throw new Error('No terms found for delegation');
-          }
+          const { terms } =
+            getErc20TransferAmountEnforcerFromDelegation(delegation);
 
           const [token, limit] = decodeEnforcerERC20TransferAmount(terms);
           const tokenList = getDefaultTokenList({ chainId });
