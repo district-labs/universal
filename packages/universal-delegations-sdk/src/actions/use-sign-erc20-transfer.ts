@@ -100,16 +100,7 @@ export function useSignErc20TransferDelegation() {
         delegator: delegator,
         authority: ROOT_AUTHORITY,
         salt: salt,
-        caveats: [
-          {
-            enforcer: universalDeployments.ERC20TransferAmountEnforcer,
-            terms: encodeEnforcerERC20TransferAmount({
-              token: erc20,
-              amount: amount,
-              decimals: decimals,
-            }),
-          },
-        ],
+        caveats,
       },
     });
   }
@@ -141,7 +132,29 @@ export function useSignErc20TransferDelegation() {
     erc20,
     decimals = 18,
     amount = '0',
+    timestampAfter,
   }: SignDelegationParams) {
+    const caveats: Omit<DelegationCaveat, 'args'>[] = [
+      {
+        enforcer: universalDeployments.ERC20TransferAmountEnforcer,
+        terms: encodeEnforcerERC20TransferAmount({
+          token: erc20,
+          amount: amount,
+          decimals: decimals,
+        }),
+      },
+    ];
+
+    if (timestampAfter) {
+      // If timestampAfter is provided, add a timestamp enforcer
+      caveats.push({
+        enforcer: universalDeployments.TimestampEnforcer,
+        terms: encodeEnforcerTimestamp({
+          timestampAfter,
+        }),
+      });
+    }
+
     const signature = await signTypedDataAsync({
       types: eip712DelegationTypes,
       primaryType: 'Delegation',
@@ -152,40 +165,24 @@ export function useSignErc20TransferDelegation() {
         verifyingContract: universalDeployments.DelegationManager,
       },
       message: {
-        delegate: delegate,
-        delegator: delegator,
+        delegate,
+        delegator,
         authority: ROOT_AUTHORITY,
-        salt: salt,
-        caveats: [
-          {
-            enforcer: universalDeployments.ERC20TransferAmountEnforcer,
-            terms: encodeEnforcerERC20TransferAmount({
-              token: erc20,
-              amount: amount,
-              decimals: decimals,
-            }),
-          },
-        ],
+        salt,
+        caveats,
       },
     });
 
     const _coreDelegation: Delegation = {
       authority: ROOT_AUTHORITY,
-      delegate: delegate,
-      delegator: delegator,
+      delegate,
+      delegator,
       salt,
       signature,
-      caveats: [
-        {
-          enforcer: universalDeployments.ERC20TransferAmountEnforcer,
-          terms: encodeEnforcerERC20TransferAmount({
-            token: erc20,
-            amount: amount,
-            decimals: decimals,
-          }),
-          args: '0x',
-        },
-      ],
+      caveats: caveats.map((caveat) => ({
+        ...caveat,
+        args: '0x',
+      })),
     };
 
     const _delegation = {
