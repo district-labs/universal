@@ -1,13 +1,45 @@
-import type { Hex } from 'viem';
+import { type SQL, eq } from 'drizzle-orm';
+import type { GetDelegationsParams } from '../../../validation.js';
 import { db } from '../../index.js';
+import { delegations } from '../../schema.js';
 import { sqlLower } from '../../utils.js';
+import type { DelegationWithMetadata } from 'universal-types';
+import {
+  MAX_DELEGATION_DEPTH,
+  buildAuthConfig,
+  replaceAuthKeys,
+} from './utils.js';
 
-export function getDelegationsDb({ hash }: { hash: Hex }) {
-  return db.query.delegations.findFirst({
-    where: (delegations, { eq }) =>
-      eq(sqlLower(delegations.hash), hash.toLowerCase()),
+export type GetDelegationsDbReturnType = DelegationWithMetadata[] | undefined;
+
+export async function getDelegationsDb({
+  chainId,
+  delegate,
+  delegator,
+  type,
+}: GetDelegationsParams): Promise<GetDelegationsDbReturnType> {
+  const conditions: SQL[] = [];
+
+  // Adds the valid conditions to the conditions array
+  conditions.push(eq(delegations.chainId, chainId));
+  if (delegate) {
+    conditions.push(eq(sqlLower(delegations.delegate), delegate.toLowerCase()));
+  }
+  if (delegator) {
+    conditions.push(
+      eq(sqlLower(delegations.delegator), delegator.toLowerCase()),
+    );
+  }
+  if (type) {
+    conditions.push(eq(delegations.type, type));
+  }
+  const delegationsDb = await db.query.delegations.findMany({
+    where: (_, { and }) => and(...conditions),
     with: {
       caveats: true,
+      auth: buildAuthConfig(MAX_DELEGATION_DEPTH),
     },
   });
+
+  return delegationsDb.map(replaceAuthKeys);
 }

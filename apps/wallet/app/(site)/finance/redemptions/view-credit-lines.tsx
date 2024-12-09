@@ -5,7 +5,7 @@ import { WalletPFP } from '@/components/onchain/wallet-pfp';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import type { SocialCredential } from 'universal-data';
+import type { SocialCredential } from 'universal-types';
 
 import { useGetCreditLines } from 'universal-sdk';
 import { TimeFromEpoch } from 'universal-wallet-ui';

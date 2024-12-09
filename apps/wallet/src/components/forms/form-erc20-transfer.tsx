@@ -13,7 +13,8 @@ import { Erc20SelectAndAmount } from '@/components/fields/erc20-select-and-amoun
 import { ConnectUniversalWalletButton } from '@/components/onchain/connect-universal-wallet';
 import { Card } from '@/components/ui/card';
 import { defaultTokenList, useIsValidChain } from '@/lib/chains';
-import { type TokenItem, findToken, getDefaultTokenList } from 'universal-data';
+import type { TokenItem } from 'universal-types';
+import { findToken, getDefaultTokenList } from 'universal-data';
 import { useWriteContracts } from 'wagmi/experimental';
 
 const formSchema = z.object({

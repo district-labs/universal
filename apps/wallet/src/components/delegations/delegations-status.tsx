@@ -1,13 +1,10 @@
 import { cn } from '@/lib/utils';
-import type * as React from 'react';
-import {
-  type DelegationDb,
-  useDelegationStatus,
-} from 'universal-delegations-sdk';
+import { useDelegationStatus } from 'universal-delegations-sdk';
+import type { DelegationWithMetadata } from 'universal-types';
 import { Badge } from '../ui/badge';
 
 type DelegationStatus = React.HTMLAttributes<HTMLElement> & {
-  delegation: DelegationDb;
+  delegation: DelegationWithMetadata;
 };
 
 export const DelegationStatus = ({
@@ -15,7 +12,6 @@ export const DelegationStatus = ({
   delegation,
 }: DelegationStatus) => {
   const { data: status } = useDelegationStatus({
-    delegationManager: delegation.verifyingContract,
     delegation: delegation,
   });
 

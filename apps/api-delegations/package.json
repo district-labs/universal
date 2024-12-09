@@ -29,7 +29,8 @@
     "postgres": "^3.4.5",
     "viem": "^2.21.41",
     "zod": "^3.23.8",
-    "universal-data": "workspace:*"
+    "universal-data": "workspace:*",
+    "universal-types": "workspace:*"
   },
   "devDependencies": {
     "@types/pg": "^8.11.10",

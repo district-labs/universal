@@ -7,9 +7,9 @@ import { useMessageContext } from '@/lib/state/use-message-context';
 import { cn } from '@/lib/utils';
 import { LucideCheckCircle2, LucideXCircle } from 'lucide-react';
 import Link from 'next/link';
+import { productionChains } from 'universal-data';
 import type { Chain, Hex } from 'viem';
 import { useWaitForUserOpReceipt } from './hooks/use-wait-for-user-op-receipt';
-import { productionChains } from 'universal-data';
 
 type ViewTransactionLinkProps = {
   transactionHash: Hex | undefined;

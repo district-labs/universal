@@ -1,6 +1,5 @@
 import { onchainTable, primaryKey, relations } from '@ponder/core';
 import { generateUUID } from './src/utils/uuid';
-
 // ----------------------------------------------
 // Delegations
 // ----------------------------------------------
@@ -9,7 +8,8 @@ import { generateUUID } from './src/utils/uuid';
 export const delegations = onchainTable('delegations', (t) => ({
   hash: t.hex().notNull().primaryKey(),
   chainId: t.integer().notNull(),
-  delegationType: t.text().notNull(),
+  type: t.text(),
+  verifyingContract: t.hex().notNull(),
   delegate: t.hex().notNull(),
   delegator: t.hex().notNull(),
   authority: t.hex().notNull(),
@@ -37,7 +37,7 @@ export const caveats = onchainTable(
   (t) => ({
     // index of the caveat in the caveats array of the delegation
     index: t.integer().notNull(),
-    enforcerType: t.text().notNull(),
+    type: t.text(),
     enforcer: t.hex().notNull(),
     terms: t.hex().notNull(),
     args: t.hex().notNull(),

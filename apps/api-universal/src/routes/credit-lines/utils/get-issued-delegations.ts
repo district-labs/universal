@@ -1,26 +1,21 @@
-import type { Address } from 'viem';
-import { apiDelegationsClient } from '../../../clients.js';
 import { isValidChain } from 'universal-data';
+import type { DelegationsApiClient } from 'universal-delegations-sdk';
+import { apiDelegationsClient } from '../../../clients.js';
 
 export type IssuedDelegations = Exclude<
   Awaited<
     ReturnType<
       Awaited<
-        ReturnType<
-          (typeof apiDelegationsClient.delegations.delegate)[':chainId'][':address'][':type']['$get']
-        >
+        ReturnType<(typeof apiDelegationsClient.delegations)['get']['$post']>
       >['json']
     >
   >,
   { error: string }
 >;
 
-export type GetIssuedDelegationsParams = {
-  chainId: number;
-  delegator?: Address;
-  delegate?: Address;
-  type: string;
-};
+export type GetIssuedDelegationsParams = Parameters<
+  DelegationsApiClient['delegations']['get']['$post']
+>[0]['json'];
 
 export type GetIssuedDelegationsReturnType =
   | {
@@ -33,62 +28,28 @@ export type GetIssuedDelegationsReturnType =
       delegations?: never;
     };
 
-export async function getIssuedDelegations({
-  chainId,
-  delegate,
-  delegator,
-  type,
-}: GetIssuedDelegationsParams): Promise<GetIssuedDelegationsReturnType> {
-  if (!delegate && !delegator) {
+export async function getIssuedDelegations(
+  params: GetIssuedDelegationsParams,
+): Promise<GetIssuedDelegationsReturnType> {
+  if (!params.delegate && !params.delegator) {
     return { ok: false, error: 'No delegate provided' };
   }
 
-  if (!isValidChain(chainId)) {
+  if (!isValidChain(params.chainId)) {
     return { ok: false, error: 'Invalid chainId' };
   }
 
-  if (delegate) {
-    const issuedDelegationsResponse =
-      await apiDelegationsClient.delegations.delegate[':chainId'][':address'][
-        ':type'
-      ].$get({
-        param: {
-          type,
-          chainId: chainId.toString(),
-          // TODO: support delegator filtering
-          address: delegate,
-        },
-      });
+  const issuedDelegationsResponse =
+    await apiDelegationsClient.delegations.get.$post({
+      json: params,
+    });
 
-    if (!issuedDelegationsResponse.ok) {
-      const error = await issuedDelegationsResponse.text();
-      return { ok: false, error };
-    }
-
-    const issuedDelegations = await issuedDelegationsResponse.json();
-
-    return { ok: true, delegations: issuedDelegations };
-  }
-  if (delegator) {
-    const issuedDelegationsResponse =
-      await apiDelegationsClient.delegations.delegator[':chainId'][':address'][
-        ':type'
-      ].$get({
-        param: {
-          type,
-          address: delegator,
-          chainId: chainId.toString(),
-        },
-      });
-
-    if (!issuedDelegationsResponse.ok) {
-      return { ok: false, error: 'Error fetching issued delegations' };
-    }
-
-    const issuedDelegations = await issuedDelegationsResponse.json();
-
-    return { ok: true, delegations: issuedDelegations };
+  if (!issuedDelegationsResponse.ok) {
+    const error = await issuedDelegationsResponse.text();
+    return { ok: false, error };
   }
 
-  return { ok: false, error: 'No delegate provided' };
+  const issuedDelegations = await issuedDelegationsResponse.json();
+
+  return { ok: true, delegations: issuedDelegations };
 }

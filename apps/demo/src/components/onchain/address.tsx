@@ -1,6 +1,6 @@
 import { type HTMLAttributes, useMemo } from 'react';
-import type { Address as AddressType, Chain } from 'viem';
 import { testnetChains } from 'universal-data';
+import type { Address as AddressType, Chain } from 'viem';
 
 import { LinkComponent } from '../ui/link-component';
 

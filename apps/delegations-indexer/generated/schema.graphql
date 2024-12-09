@@ -29,7 +29,8 @@ type Query {
 type delegations {
   hash: String!
   chainId: Int!
-  delegationType: String!
+  type: String
+  verifyingContract: String!
   delegate: String!
   delegator: String!
   authority: String!
@@ -47,7 +48,7 @@ type caveatsPage {
 
 type caveats {
   index: Int!
-  enforcerType: String!
+  type: String
   enforcer: String!
   terms: String!
   args: String!
@@ -66,16 +67,16 @@ input caveatsFilter {
   index_lt: Int
   index_gte: Int
   index_lte: Int
-  enforcerType: String
-  enforcerType_not: String
-  enforcerType_in: [String]
-  enforcerType_not_in: [String]
-  enforcerType_contains: String
-  enforcerType_not_contains: String
-  enforcerType_starts_with: String
-  enforcerType_ends_with: String
-  enforcerType_not_starts_with: String
-  enforcerType_not_ends_with: String
+  type: String
+  type_not: String
+  type_in: [String]
+  type_not_in: [String]
+  type_contains: String
+  type_not_contains: String
+  type_starts_with: String
+  type_ends_with: String
+  type_not_starts_with: String
+  type_not_ends_with: String
   enforcer: String
   enforcer_not: String
   enforcer_in: [String]
@@ -275,16 +276,26 @@ input delegationsFilter {
   chainId_lt: Int
   chainId_gte: Int
   chainId_lte: Int
-  delegationType: String
-  delegationType_not: String
-  delegationType_in: [String]
-  delegationType_not_in: [String]
-  delegationType_contains: String
-  delegationType_not_contains: String
-  delegationType_starts_with: String
-  delegationType_ends_with: String
-  delegationType_not_starts_with: String
-  delegationType_not_ends_with: String
+  type: String
+  type_not: String
+  type_in: [String]
+  type_not_in: [String]
+  type_contains: String
+  type_not_contains: String
+  type_starts_with: String
+  type_ends_with: String
+  type_not_starts_with: String
+  type_not_ends_with: String
+  verifyingContract: String
+  verifyingContract_not: String
+  verifyingContract_in: [String]
+  verifyingContract_not_in: [String]
+  verifyingContract_contains: String
+  verifyingContract_not_contains: String
+  verifyingContract_starts_with: String
+  verifyingContract_ends_with: String
+  verifyingContract_not_starts_with: String
+  verifyingContract_not_ends_with: String
   delegate: String
   delegate_not: String
   delegate_in: [String]

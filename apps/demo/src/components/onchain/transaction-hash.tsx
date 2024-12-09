@@ -1,6 +1,6 @@
 import { type HTMLAttributes, useMemo } from 'react';
-import type { Chain, Hex } from 'viem';
 import { testnetChains } from 'universal-data';
+import type { Chain, Hex } from 'viem';
 import { LinkComponent } from '../ui/link-component';
 
 interface TransactionHashProps

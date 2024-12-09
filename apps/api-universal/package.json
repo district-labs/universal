@@ -30,6 +30,7 @@
     "delegations-indexer": "workspace:*",
     "universal-credential-sdk": "workspace:*",
     "universal-data": "workspace:*",
+    "universal-types": "workspace:*",
     "universal-delegations-sdk": "workspace:*",
     "universal-identity-sdk": "workspace:*",
     "viem": "^2.21.41",

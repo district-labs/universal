@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import type * as React from 'react';
-import type { SocialCredential } from 'universal-data';
+import type { SocialCredential } from 'universal-types';
 import type { Address } from 'viem';
 import { Address as AddressRender } from '../onchain/address';
 import { LinkComponent } from '../ui/link-component';

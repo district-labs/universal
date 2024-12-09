@@ -1,8 +1,9 @@
 import { type Context, ponder } from '@/generated';
 import { universalDeployments } from 'universal-data';
-import type { Address, Hex } from 'viem';
+import type { Address } from 'viem';
 import { type InsertCaveat, caveats, delegations } from '../../ponder.schema';
-import { getDelegationHash } from '../utils/delegation/get-delegation-hash';
+import { getDelegationHash } from 'universal-delegations-sdk';
+import type { Delegation, DelegationCaveatWithMetadata } from 'universal-types';
 
 function getEnforcerType(enforcer: Address): string {
   if (
@@ -14,15 +15,15 @@ function getEnforcerType(enforcer: Address): string {
   return 'unknown';
 }
 
-function getDelegationType(caveats: InsertCaveat[]): string {
+function getDelegationType(
+  caveats: DelegationCaveatWithMetadata[],
+): string | null {
   if (
-    caveats.some(
-      (caveat) => caveat.enforcerType === 'ERC20TransferAmountEnforcer',
-    )
+    caveats.some((caveat) => caveat?.type === 'ERC20TransferAmountEnforcer')
   ) {
     return 'CreditLine';
   }
-  return 'unknown';
+  return null;
 }
 
 async function updateDelegation({
@@ -32,33 +33,19 @@ async function updateDelegation({
 }: {
   context: Context;
   enabled: boolean;
-  delegation: {
-    delegate: Address;
-    delegator: Address;
-    authority: Hex;
-    caveats: readonly {
-      enforcer: Address;
-      terms: Hex;
-      args: Hex;
-    }[];
-    salt: bigint;
-    signature: Hex;
-  };
+  delegation: Omit<Delegation, 'chainId'>;
 }) {
   const delegationHash = getDelegationHash({
-    chainId: context.network.chainId,
     ...delegation,
     caveats: delegation.caveats.slice(),
   });
 
-  const formattedCaveats: InsertCaveat[] = delegation.caveats.map(
-    (caveat, index) => ({
-      ...caveat,
-      index,
-      enforcerType: getEnforcerType(caveat.enforcer),
-      delegationHash,
-    }),
-  );
+  const formattedCaveats = delegation.caveats.map((caveat, index) => ({
+    ...caveat,
+    index,
+    type: getEnforcerType(caveat.enforcer),
+    delegationHash,
+  })) satisfies InsertCaveat[];
 
   // Insert delegation if not already present
   await context.db
@@ -66,14 +53,15 @@ async function updateDelegation({
     .values({
       hash: delegationHash,
       enabled,
+      verifyingContract: universalDeployments.DelegationManager,
       chainId: context.network.chainId,
-      delegationType: getDelegationType(formattedCaveats),
+      type: getDelegationType(formattedCaveats),
       ...delegation,
     })
     .onConflictDoUpdate({
       enabled,
       chainId: context.network.chainId,
-      delegationType: getDelegationType(formattedCaveats),
+      type: getDelegationType(formattedCaveats),
       ...delegation,
     });
 
@@ -90,7 +78,14 @@ ponder.on(
   'DelegationManager:RedeemedDelegation',
   async ({ event, context }) => {
     const { delegation } = event.args;
-    await updateDelegation({ context, enabled: true, delegation });
+    await updateDelegation({
+      context,
+      enabled: true,
+      delegation: {
+        ...delegation,
+        caveats: delegation.caveats.slice(),
+      },
+    });
   },
 );
 
@@ -98,11 +93,25 @@ ponder.on(
   'DelegationManager:DisabledDelegation',
   async ({ event, context }) => {
     const { delegation } = event.args;
-    await updateDelegation({ context, enabled: false, delegation });
+    await updateDelegation({
+      context,
+      enabled: false,
+      delegation: {
+        ...delegation,
+        caveats: delegation.caveats.slice(),
+      },
+    });
   },
 );
 
 ponder.on('DelegationManager:EnabledDelegation', async ({ event, context }) => {
   const { delegation } = event.args;
-  await updateDelegation({ context, enabled: true, delegation });
+  await updateDelegation({
+    context,
+    enabled: true,
+    delegation: {
+      ...delegation,
+      caveats: delegation.caveats.slice(),
+    },
+  });
 });

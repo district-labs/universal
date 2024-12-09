@@ -11,19 +11,19 @@ import { BadgeInfo } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 import type {
-  DelegationExecutions,
-  DelegationWithMetadata,
+  CreditLineExecutions,
+  CreditLineWithMetadata,
   SocialCredential,
-} from 'universal-data';
-import type { DelegationDb } from 'universal-delegations-sdk';
+} from 'universal-types';
 import { useGetCreditLines } from 'universal-sdk';
-import { type Address, parseUnits } from 'viem';
+import { type Address, type Hex, parseUnits } from 'viem';
 import { DelegationDetailsSheet } from './delegation-details-sheet';
 import { AccountSocialCredentialWeightedBadge } from './identity/account-social-credential-weighted-badge';
 import { Toggle } from './toggle';
 import { Button } from './ui/button';
 import { Card, CardFooter, CardHeader } from './ui/card';
 import { Input } from './ui/input';
+import type { DelegationWithMetadata } from 'universal-types';
 
 export type DelegationsManagementSheet = Omit<
   React.HTMLAttributes<HTMLElement>,
@@ -31,7 +31,7 @@ export type DelegationsManagementSheet = Omit<
 > & {
   address: Address;
   chainId: number;
-  onSelect: (delegation: DelegationExecutions[]) => void;
+  onSelect: (delegation: CreditLineExecutions[]) => void;
 };
 
 export const DelegationsManagementSheet = ({
@@ -57,32 +57,27 @@ export const DelegationsManagementSheet = ({
   }, [data?.creditLines]);
 
   const [isOpen, toggleIsOpen] = useState(false);
-  const [delegationExecutions, setDelegationExecutions] = useState<
-    DelegationExecutions[]
+  const [CreditLineExecutions, setCreditLineExecutions] = useState<
+    CreditLineExecutions[]
   >([]);
 
   useEffect(() => {
     if (!isOpen) {
-      setDelegationExecutions([]);
+      setCreditLineExecutions([]);
     }
   }, [isOpen]);
 
-  const handleDisableDelegation = (
-    hash: DelegationWithMetadata['data']['hash'],
-  ) => {
-    setDelegationExecutions(
-      delegationExecutions.filter(
+  const handleDisableDelegation = (hash: Hex) => {
+    setCreditLineExecutions(
+      CreditLineExecutions.filter(
         (delegationExecution) => delegationExecution.delegation.hash !== hash,
       ),
     );
   };
 
-  const handleDelegationAmountUpdate = (
-    hash: DelegationWithMetadata['data']['hash'],
-    amountFormatted: string,
-  ) => {
-    setDelegationExecutions(
-      delegationExecutions.map((delegationExecution) => {
+  const handleDelegationAmountUpdate = (hash: Hex, amountFormatted: string) => {
+    setCreditLineExecutions(
+      CreditLineExecutions.map((delegationExecution) => {
         if (delegationExecution.delegation.hash === hash) {
           return {
             ...delegationExecution,
@@ -102,10 +97,10 @@ export const DelegationsManagementSheet = ({
   };
 
   const handleEnableDelegation = (
-    delegationExecution: DelegationWithMetadata,
+    delegationExecution: CreditLineWithMetadata,
   ) => {
-    setDelegationExecutions([
-      ...delegationExecutions,
+    setCreditLineExecutions([
+      ...CreditLineExecutions,
       {
         delegation: delegationExecution.data,
         execution: {
@@ -126,7 +121,7 @@ export const DelegationsManagementSheet = ({
   };
 
   const handleOnSelect = () => {
-    onSelect(delegationExecutions);
+    onSelect(CreditLineExecutions);
     toggleIsOpen(false);
   };
 
@@ -199,14 +194,11 @@ type CreditDelegationCard = Omit<
   'handleEnableDelegation'
 > & {
   delegatorAccountSocialCredentials: SocialCredential[];
-  delegation: DelegationDb;
-  delegationWithMetadata: DelegationWithMetadata;
-  handleEnableDelegation: (delegation: DelegationWithMetadata) => void;
-  handleDisableDelegation: (hash: DelegationDb['hash']) => void;
-  handleDelegationAmountUpdate: (
-    hash: DelegationDb['hash'],
-    amountFormatted: string,
-  ) => void;
+  delegation: DelegationWithMetadata;
+  delegationWithMetadata: CreditLineWithMetadata;
+  handleEnableDelegation: (delegation: CreditLineWithMetadata) => void;
+  handleDisableDelegation: (hash: Hex) => void;
+  handleDelegationAmountUpdate: (hash: Hex, amountFormatted: string) => void;
   toggleIsOpen: (isOpen: boolean) => void;
 };
 

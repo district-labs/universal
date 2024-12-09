@@ -1,4 +1,4 @@
-import type { TokenList } from '../types.js';
+import type { TokenList } from 'universal-types';
 
 export const stablecoinTokenList: TokenList = {
   name: 'Universal Stablecoin Token List',

@@ -1,8 +1,8 @@
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import { walletConnectWallet } from '@rainbow-me/rainbowkit/wallets';
+import { testnetChains } from 'universal-data';
 import { universalWalletRainbowkit } from 'universal-wallet-connector';
 import { http, createConfig } from 'wagmi';
-import { testnetChains } from 'universal-data';
 import { baseSepolia } from 'wagmi/chains';
 
 const connectors = connectorsForWallets(

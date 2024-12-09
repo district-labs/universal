@@ -1,13 +1,13 @@
 import { db } from '../../index.js';
 import {
-  type InsertCaveatDb,
-  type InsertDelegationDb,
   caveats as caveatsDb,
   delegations as delegationsDb,
+  type InsertDelegationDb,
+  type InsertCaveatDb,
 } from '../../schema.js';
 
 type InsertDelegationDbParams = InsertDelegationDb & {
-  caveats: Omit<InsertCaveatDb, 'id' | 'delegationHash'>[];
+  caveats: InsertCaveatDb[];
 };
 
 export function insertDelegationDb({
