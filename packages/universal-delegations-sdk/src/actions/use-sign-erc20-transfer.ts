@@ -7,7 +7,12 @@ import { useInsertDelegation } from '../api/actions/insert-delegation.js';
 import { eip712DelegationTypes } from '../delegation/eip712-delegation-type.js';
 import { getDelegationHash } from '../delegation/get-delegation-hash.js';
 import { encodeEnforcerERC20TransferAmount } from '../enforcers/enforcer-erc20-transfer-amount.js';
-import type { Delegation, DelegationWithMetadata } from 'universal-types';
+import type {
+  Delegation,
+  DelegationCaveat,
+  DelegationWithMetadata,
+} from 'universal-types';
+import { encodeEnforcerTimestamp } from '../enforcers/enforcer-timestamp.js';
 
 type SignDelegationParams = {
   chainId: number;
@@ -17,6 +22,7 @@ type SignDelegationParams = {
   erc20: Address;
   decimals: number;
   amount: string;
+  timestampAfter?: bigint;
 };
 
 export function useSignErc20TransferDelegation() {
@@ -34,24 +40,38 @@ export function useSignErc20TransferDelegation() {
     erc20,
     decimals = 18,
     amount = '0',
+    timestampAfter,
   }: SignDelegationParams) {
+    const caveats: DelegationCaveat[] = [
+      {
+        enforcer: universalDeployments.ERC20TransferAmountEnforcer,
+        terms: encodeEnforcerERC20TransferAmount({
+          token: erc20,
+          amount: amount,
+          decimals: decimals,
+        }),
+        args: '0x',
+      },
+    ];
+
+    if (timestampAfter) {
+      // If timestampAfter is provided, add a timestamp enforcer
+      caveats.push({
+        enforcer: universalDeployments.TimestampEnforcer,
+        terms: encodeEnforcerTimestamp({
+          timestampAfter,
+        }),
+        args: '0x',
+      });
+    }
+
     const coreDelegation: Delegation = {
       authority: ROOT_AUTHORITY,
       delegate: delegate,
       delegator: delegator,
       salt,
       signature: '0x',
-      caveats: [
-        {
-          enforcer: universalDeployments.ERC20TransferAmountEnforcer,
-          terms: encodeEnforcerERC20TransferAmount({
-            token: erc20,
-            amount: amount,
-            decimals: decimals,
-          }),
-          args: '0x',
-        },
-      ],
+      caveats,
     };
     setDelegation({
       hash: getDelegationHash(coreDelegation),
