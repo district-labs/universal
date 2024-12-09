@@ -19,6 +19,7 @@ export {
 export {
   decodeEnforcerERC20TransferAmount,
   encodeEnforcerERC20TransferAmount,
+  getErc20TransferAmountEnforcerFromDelegation,
 } from '../enforcers/enforcer-erc20-transfer-amount.js';
 export { useDelegationExecute } from '../actions/core/use-delegation-execute.js';
 export { useDelegationStatus } from '../actions/core/use-delegation-status.js';

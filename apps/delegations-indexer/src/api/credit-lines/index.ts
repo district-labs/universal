@@ -1,11 +1,9 @@
 import { ponder } from '@/generated';
 import { zValidator } from '@hono/zod-validator';
 import { and, eq } from '@ponder/core';
+import { decodeEnforcerERC20TransferAmount } from 'universal-delegations-sdk';
 import { delegations } from '../../../ponder.schema.js';
-import {
-  decodeEnforcerERC20TransferAmount,
-  decodeErc20TransferAmountEvent,
-} from '../../utils/delegation/enforcers/erc20-transfer-amount-enforcer.js';
+import { decodeErc20TransferAmountEvent } from '../../utils/delegation/enforcers/erc20-transfer-amount-enforcer.js';
 
 import type { RedeemedCreditLinesResponse } from './types.js';
 

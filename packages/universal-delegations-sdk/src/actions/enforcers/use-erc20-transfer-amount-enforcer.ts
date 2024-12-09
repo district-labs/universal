@@ -5,25 +5,42 @@ import {
   findToken,
   getDefaultTokenList,
   erc20TransferAmountEnforcerAbi,
+  universalDeployments,
 } from 'universal-data';
-import { type Address, erc20Abi, formatUnits } from 'viem';
+import { erc20Abi, formatUnits } from 'viem';
 import { usePublicClient, useReadContract } from 'wagmi';
 import { getDelegationHash } from '../../delegation/get-delegation-hash.js';
 import { decodeEnforcerERC20TransferAmount } from '../../enforcers/enforcer-erc20-transfer-amount.js';
-import type { DelegationWithMetadata } from 'universal-types';
+import type { DelegationCaveat, DelegationWithMetadata } from 'universal-types';
+
+function getErc20TransferAmountEnforcerFromDelegation(
+  delegation: DelegationWithMetadata,
+): DelegationCaveat {
+  const erc20TransferAmountEnforcer = delegation.caveats.find(
+    ({ enforcer }) =>
+      enforcer.toLowerCase() ===
+      universalDeployments.ERC20TransferAmountEnforcer.toLowerCase(),
+  );
+  if (!erc20TransferAmountEnforcer) {
+    throw new Error('No ERC20TransferAmountEnforcer found');
+  }
+
+  return erc20TransferAmountEnforcer;
+}
 
 export function useErc20TransferAmountEnforcer({
-  address,
   delegation,
 }: {
-  address: Address;
   delegation: DelegationWithMetadata;
 }) {
+  const { enforcer, terms } =
+    getErc20TransferAmountEnforcerFromDelegation(delegation);
+
   const client = usePublicClient();
   const hash = getDelegationHash(delegation);
   const spentMap = useReadContract({
     abi: erc20TransferAmountEnforcerAbi,
-    address: address,
+    address: enforcer,
     functionName: 'spentMap',
     args: [delegation.verifyingContract, hash],
     query: {
@@ -32,41 +49,31 @@ export function useErc20TransferAmountEnforcer({
   });
 
   const data = useMemo(() => {
-    if (
-      client &&
-      delegation &&
-      delegation?.caveats?.[0]?.terms &&
-      typeof spentMap.data === 'bigint'
-    ) {
-      const decodedTerms = decodeEnforcerERC20TransferAmount(
-        delegation.caveats[0].terms,
-      );
+    if (client && typeof spentMap.data === 'bigint') {
+      const [tokenAddress, amount] = decodeEnforcerERC20TransferAmount(terms);
       const tokenList = getDefaultTokenList({
         chainId: delegation.chainId,
       });
-      const address = decodedTerms[0] as Address;
+
       const token = findToken({
-        address,
+        address: tokenAddress,
         tokenList,
       });
       if (token) {
         return {
           to: delegation.delegate,
-          token: decodedTerms[0] as Address,
+          token: tokenAddress,
           name: token.name,
           symbol: token.symbol,
           decimals: token.decimals,
-          amount: decodedTerms[1],
-          amountFormatted: formatUnits(
-            (decodedTerms[1] as bigint) || BigInt(0),
-            token.decimals,
-          ),
+          amount,
+          amountFormatted: formatUnits(amount || BigInt(0), token.decimals),
           spent: spentMap.data,
           spentFormatted: formatUnits(
             (spentMap.data as bigint) || BigInt(0),
             token.decimals,
           ),
-          spendLimitReached: spentMap.data >= BigInt(decodedTerms[1] as bigint),
+          spendLimitReached: spentMap.data >= amount,
         };
       }
       if (!token) {
@@ -75,17 +82,17 @@ export function useErc20TransferAmountEnforcer({
             contracts: [
               {
                 abi: erc20Abi,
-                address: decodedTerms[0] as Address,
+                address: tokenAddress,
                 functionName: 'name',
               },
               {
                 abi: erc20Abi,
-                address: decodedTerms[0] as Address,
+                address: tokenAddress,
                 functionName: 'symbol',
               },
               {
                 abi: erc20Abi,
-                address: decodedTerms[0] as Address,
+                address: tokenAddress,
                 functionName: 'decimals',
               },
             ],
@@ -93,22 +100,18 @@ export function useErc20TransferAmountEnforcer({
           .then((result) => {
             return {
               to: delegation.delegate,
-              token: decodedTerms[0] as Address,
+              token: tokenAddress,
               name: result[0].result,
               symbol: result[1].result,
               decimals: result[2].result,
-              amount: decodedTerms[1],
-              amountFormatted: formatUnits(
-                decodedTerms[1] as bigint,
-                result[2].result as number,
-              ),
+              amount,
+              amountFormatted: formatUnits(amount, result[2].result as number),
               spent: spentMap.data,
               spentFormatted: formatUnits(
                 (spentMap.data as bigint) || BigInt(0),
                 result[2].result as number,
               ),
-              spendLimitReached:
-                (spentMap.data as bigint) >= BigInt(decodedTerms[1] as bigint),
+              spendLimitReached: (spentMap.data as bigint) >= amount,
             };
           })
           .catch(() => {
@@ -117,7 +120,7 @@ export function useErc20TransferAmountEnforcer({
       }
     }
     return null;
-  }, [client, delegation, spentMap.data]);
+  }, [client, delegation, spentMap.data, terms]);
 
   const formatted = useMemo(() => {
     if (!spentMap) return null;
