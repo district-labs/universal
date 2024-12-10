@@ -6,11 +6,9 @@ export const neverSchema = z.never().optional();
 export const typeSchema = z.string().refine((val) => val.length > 0, {
   message: 'invalid type',
 });
-export const hexSchema = z
-  .custom<Hex>()
-  .refine((val) => val.length === 66 && isHex(val), {
-    message: 'invalid hash',
-  });
+export const hexSchema = z.custom<Hex>().refine((val) => isHex(val), {
+  message: 'invalid hash',
+});
 export const addressSchema = z.string().refine(isAddress, {
   message: 'invalid address',
 });
