@@ -7,6 +7,7 @@ import {
   decodeEnforcerERC20TransferAmount,
   encodeDelegation,
   encodeSingleExecution,
+  getErc20TransferAmountEnforcerFromDelegation,
 } from 'universal-delegations-sdk';
 import type {
   DelegationWithMetadata,
@@ -22,13 +23,9 @@ export type Erc20TransferEnforcerRedemption = {
 };
 
 function encodeErc20TransferEnforcerCalldata(delegation: DelegationWithAmount) {
-  const caveat = delegation.caveats[0];
+  const { terms } = getErc20TransferAmountEnforcerFromDelegation(delegation);
 
-  if (!caveat) {
-    throw new Error('No caveat found');
-  }
-
-  const [token] = decodeEnforcerERC20TransferAmount(caveat.terms);
+  const [token] = decodeEnforcerERC20TransferAmount(terms);
   const permissionContexts = [encodeDelegation(delegation)];
   const execution: DelegationExecution = {
     value: 0n,

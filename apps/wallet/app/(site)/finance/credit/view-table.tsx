@@ -80,7 +80,6 @@ const CardAuthorization = ({ className, delegation }: CardAuthorization) => {
   });
 
   const { data: enforcerData } = useErc20TransferAmountEnforcer({
-    address: delegation.caveats[0].enforcer,
     delegation: delegation,
   });
 

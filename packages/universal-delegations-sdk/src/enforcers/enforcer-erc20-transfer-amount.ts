@@ -1,3 +1,5 @@
+import { universalDeployments } from 'universal-data';
+import type { Delegation, DelegationCaveat } from 'universal-types';
 import {
   type Address,
   type Hex,
@@ -31,4 +33,19 @@ export function decodeEnforcerERC20TransferAmount(data: Hex) {
   const amount = hexToBigInt(amountHex);
 
   return [token, BigInt(amount)] as const;
+}
+
+export function getErc20TransferAmountEnforcerFromDelegation(
+  delegation: Delegation,
+): DelegationCaveat {
+  const erc20TransferAmountEnforcer = delegation.caveats.find(
+    ({ enforcer }) =>
+      enforcer.toLowerCase() ===
+      universalDeployments.ERC20TransferAmountEnforcer.toLowerCase(),
+  );
+  if (!erc20TransferAmountEnforcer) {
+    throw new Error('No ERC20TransferAmountEnforcer found');
+  }
+
+  return erc20TransferAmountEnforcer;
 }
