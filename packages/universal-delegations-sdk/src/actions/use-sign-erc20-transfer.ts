@@ -22,7 +22,7 @@ type SignDelegationParams = {
   erc20: Address;
   decimals: number;
   amount: string;
-  timestampAfter?: bigint;
+  timestampBefore?: bigint;
 };
 
 export function useSignErc20TransferDelegation() {
@@ -40,7 +40,7 @@ export function useSignErc20TransferDelegation() {
     erc20,
     decimals = 18,
     amount = '0',
-    timestampAfter,
+    timestampBefore,
   }: SignDelegationParams) {
     const caveats: DelegationCaveat[] = [
       {
@@ -54,12 +54,12 @@ export function useSignErc20TransferDelegation() {
       },
     ];
 
-    if (timestampAfter) {
-      // If timestampAfter is provided, add a timestamp enforcer
+    if (timestampBefore) {
+      // If timestampBefore is provided, add a timestamp enforcer
       caveats.push({
         enforcer: universalDeployments.TimestampEnforcer,
         terms: encodeEnforcerTimestamp({
-          timestampAfter,
+          timestampBefore,
         }),
         args: '0x',
       });
@@ -132,7 +132,7 @@ export function useSignErc20TransferDelegation() {
     erc20,
     decimals = 18,
     amount = '0',
-    timestampAfter,
+    timestampBefore,
   }: SignDelegationParams) {
     const caveats: Omit<DelegationCaveat, 'args'>[] = [
       {
@@ -145,12 +145,12 @@ export function useSignErc20TransferDelegation() {
       },
     ];
 
-    if (timestampAfter) {
-      // If timestampAfter is provided, add a timestamp enforcer
+    if (timestampBefore) {
+      // If timestampBefore is provided, add a timestamp enforcer
       caveats.push({
         enforcer: universalDeployments.TimestampEnforcer,
         terms: encodeEnforcerTimestamp({
-          timestampAfter,
+          timestampBefore,
         }),
       });
     }
