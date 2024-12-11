@@ -1,3 +1,5 @@
+export { aaveV3PoolAbi } from '../abis/aave-v3-pool-abi.js';
+export { multicallAbi } from '../abis/multicall-abi.js';
 export { delegationManagerAbi } from '../abis/delegation-manager-abi.js';
 export { erc20TransferAmountEnforcerAbi } from '../abis/erc20-transfer-amount-enforcer-abi.js';
 export { universalDocumentAbi } from '../abis/universal-document-abi.js';

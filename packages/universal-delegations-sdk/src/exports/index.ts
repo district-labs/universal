@@ -21,6 +21,7 @@ export {
   encodeEnforcerERC20TransferAmount,
   getErc20TransferAmountEnforcerFromDelegation,
 } from '../enforcers/enforcer-erc20-transfer-amount.js';
+export { encodeExternalHookArgs } from '../enforcers/enforcer-external-hook.js';
 export { useDelegationExecute } from '../actions/core/use-delegation-execute.js';
 export { useDelegationStatus } from '../actions/core/use-delegation-status.js';
 export { useDisableDelegation } from '../actions/core/use-disable-delegation.js';

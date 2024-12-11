@@ -1,6 +1,8 @@
 export const universalDeployments = {
   // Test
   Erc20Mintable: '0x4C8Be898BdE148aE6f9B0AF86e7D2b5a0558A7d0',
+  // Periphery
+  Multicall: '0x7063f9cB3623B872f75B54E5bFAECf1FEe1699fc',
   // Universal Identity
   Resolver: '0xc675eE8dA6B4183f977a7e9F1C4589B20982b8C3',
   // Delegation Framework Core
