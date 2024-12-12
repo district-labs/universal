@@ -12,7 +12,6 @@ import { useSignErc20SwapDelegation } from 'universal-delegations-sdk';
 import type { TokenItem } from 'universal-types';
 import type { Address } from 'viem';
 import { useAccount, useSwitchChain } from 'wagmi';
-import { useWriteContracts } from 'wagmi/experimental';
 import { z } from 'zod';
 
 const formSchema = z.object({
@@ -40,9 +39,7 @@ type FormErc20SwapProps = {
 function FormErc20Swap({ defaultValues }: FormErc20SwapProps) {
   const { address } = useAccount();
   const { switchChain, isPending: isPendingSwitchChain } = useSwitchChain();
-  const { signAndSaveDelegationAsync, isSuccess } =
-    useSignErc20SwapDelegation();
-  const { writeContracts } = useWriteContracts();
+  const { signAndSaveDelegationAsync } = useSignErc20SwapDelegation();
 
   const { isValidChain, chainId, defaultChain } = useIsValidChain();
 

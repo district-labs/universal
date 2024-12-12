@@ -63,7 +63,10 @@ const delegationsRouter = new Hono()
       try {
         await Promise.all([
           // Process any necessary delegation side effects
-          processDelegation(delegation),
+          processDelegation({
+            chainId: delegation.chainId,
+            delegation,
+          }),
           // Save the delegation to the database
           insertDelegationDb(delegation),
         ]);

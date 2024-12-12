@@ -2,6 +2,7 @@ import type { Delegation, DelegationExecution } from 'universal-types';
 import {
   decodeEnforcerERC20TransferAmount,
   encodeDelegation,
+  encodeExternalCallEnforcerArgs,
   encodeSingleExecution,
   getErc20TransferAmountEnforcerFromDelegation,
   getExternalHookEnforcerFromDelegation,
@@ -26,7 +27,6 @@ function getDepositAaveV3HookData({
 }: { amount: bigint; delegator: Address; token: Address }): Hex {
   return encodeFunctionData({
     abi: multicallAbi,
-
     functionName: 'multicall',
     args: [
       [
@@ -71,10 +71,13 @@ export async function processLimitOrderDelegation({
   delegation.caveats[externalHookEnforcerIndex] = {
     ...externalHookEnforcer,
     // Update the args of the external hook enforcer to include the data for the Aave V3 deposit
-    args: getDepositAaveV3HookData({
-      amount,
-      token,
-      delegator: delegation.delegator,
+    args: encodeExternalCallEnforcerArgs({
+      target: universalDeployments.Multicall,
+      callData: getDepositAaveV3HookData({
+        amount,
+        token,
+        delegator: delegation.delegator,
+      }),
     }),
   };
 

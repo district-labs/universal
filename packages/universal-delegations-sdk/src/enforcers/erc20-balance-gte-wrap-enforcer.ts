@@ -3,19 +3,17 @@ import {
   type Hex,
   encodePacked,
   hexToBigInt,
-  parseUnits,
   sliceHex,
 } from 'viem';
 
-export function encodeERC20BalanceGteWrapEnforcerTerms(data: {
+export function encodeERC20BalanceGteWrapEnforcerTerms({
+  amount,
+  token,
+}: {
+  amount: bigint;
   token: Address;
-  amount: string;
-  decimals: number;
 }) {
-  return encodePacked(
-    ['address', 'uint256'],
-    [data.token, parseUnits(data.amount, data.decimals)],
-  );
+  return encodePacked(['address', 'uint256'], [token, amount]);
 }
 
 export function decodeERC20BalanceGteWrapEnforcerTerms(data: Hex) {

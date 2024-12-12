@@ -5,7 +5,7 @@ export type EncodeExternalHookArgsParams = {
   callData: Hex;
 };
 
-export function encodeExternalHookArgs({
+export function encodeExternalCallEnforcerArgs({
   target,
   callData,
 }: EncodeExternalHookArgsParams) {

@@ -16,7 +16,11 @@ export function insertDelegationDb({
 }: InsertDelegationDbParams) {
   return db.transaction(async (tx) => {
     // Insert the delegation
-    await tx.insert(delegationsDb).values(delegation).returning();
+    await tx
+      .insert(delegationsDb)
+      .values(delegation)
+      .returning()
+      .onConflictDoNothing();
 
     if (caveats.length > 0) {
       const caveatsWithDelegationHash = caveats.map((caveat) => ({
@@ -25,7 +29,11 @@ export function insertDelegationDb({
       }));
 
       // Insert the caveats
-      await tx.insert(caveatsDb).values(caveatsWithDelegationHash).returning();
+      await tx
+        .insert(caveatsDb)
+        .values(caveatsWithDelegationHash)
+        .returning()
+        .onConflictDoNothing();
     }
   });
 }

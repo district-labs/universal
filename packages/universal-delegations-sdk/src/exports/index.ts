@@ -29,7 +29,7 @@ export {
   encodeEnforcerERC20TransferAmount,
   getErc20TransferAmountEnforcerFromDelegation,
 } from '../enforcers/enforcer-erc20-transfer-amount.js';
-export { encodeExternalHookArgs } from '../enforcers/enforcer-external-hook.js';
+export { encodeExternalCallEnforcerArgs } from '../enforcers/enforcer-external-call.js';
 export { eip712DelegationTypes } from '../delegation/eip712-delegation-type.js';
 export { encodeDelegation } from '../delegation/encode-delegation.js';
 export {
@@ -41,6 +41,5 @@ export {
   decodeERC20BalanceGteWrapEnforcerTerms,
   encodeERC20BalanceGteWrapEnforcerTerms,
 } from '../enforcers/erc20-balance-gte-wrap-enforcer.js';
-export { encodeExternalHookEnforcerArgs } from '../enforcers/external-call-enforcer.js';
 export { encodeBatchExecution } from '../execution/encode-batch-execution.js';
 export { encodeSingleExecution } from '../execution/encode-single-execution.js';

@@ -138,3 +138,15 @@ export function encodeDelegation(delegation: Delegation): Hex {
     [[delegation]],
   );
 }
+
+export type EncodeExternalHookArgsParams = {
+  target: Address;
+  callData: Hex;
+};
+
+export function encodeExternalCallEnforcerArgs({
+  target,
+  callData,
+}: EncodeExternalHookArgsParams) {
+  return encodePacked(['address', 'bytes'], [target, callData]);
+}

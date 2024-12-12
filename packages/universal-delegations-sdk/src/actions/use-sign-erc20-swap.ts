@@ -8,7 +8,7 @@ import { useInsertDelegation } from '../api/actions/insert-delegation.js';
 import { eip712DelegationTypes } from '../delegation/eip712-delegation-type.js';
 import { getDelegationHash } from '../delegation/get-delegation-hash.js';
 import { encodeEnforcerERC20TransferAmount } from '../enforcers/enforcer-erc20-transfer-amount.js';
-import { encodeERC20BalanceGteWrapEnforcerTerms } from '../enforcers/erc20-balance-gte-wrap-enforcer.js';
+// import { encodeERC20BalanceGteWrapEnforcerTerms } from '../enforcers/erc20-balance-gte-wrap-enforcer.js';
 
 type SignDelegationParams = {
   chainId: number;
@@ -37,9 +37,9 @@ export function useSignErc20SwapDelegation() {
     tokenOut = zeroAddress,
     decimalsOut = 18,
     amountOut = '0',
-    tokenIn = zeroAddress,
-    decimalsIn = 18,
-    amountIn = '0',
+    // tokenIn = zeroAddress,
+    // decimalsIn = 18,
+    // amountIn = '0',
   }: SignDelegationParams) {
     const signature = await signTypedDataAsync({
       types: eip712DelegationTypes,
@@ -56,14 +56,13 @@ export function useSignErc20SwapDelegation() {
         authority: ROOT_AUTHORITY,
         salt: salt,
         caveats: [
-          {
-            enforcer: universalDeployments.ERC20BalanceGteWrapEnforcer,
-            terms: encodeERC20BalanceGteWrapEnforcerTerms({
-              token: tokenIn,
-              amount: amountIn,
-              decimals: decimalsIn,
-            }),
-          },
+          // {
+          //   enforcer: universalDeployments.ERC20BalanceGteWrapEnforcer,
+          //   terms: encodeERC20BalanceGteWrapEnforcerTerms({
+          //     token: tokenIn,
+          //     amount: parseUnits(amountIn, decimalsIn),
+          //   }),
+          // },
           {
             enforcer: universalDeployments.ERC20TransferAmountEnforcer,
             terms: encodeEnforcerERC20TransferAmount({
@@ -87,15 +86,14 @@ export function useSignErc20SwapDelegation() {
       salt,
       signature,
       caveats: [
-        {
-          enforcer: universalDeployments.ERC20BalanceGteWrapEnforcer,
-          terms: encodeERC20BalanceGteWrapEnforcerTerms({
-            token: tokenIn,
-            amount: amountIn,
-            decimals: decimalsIn,
-          }),
-          args: '0x',
-        },
+        // {
+        //   enforcer: universalDeployments.ERC20BalanceGteWrapEnforcer,
+        //   terms: encodeERC20BalanceGteWrapEnforcerTerms({
+        //     token: tokenIn,
+        //     amount: parseUnits(amountIn, decimalsIn),
+        //   }),
+        //   args: '0x',
+        // },
         {
           enforcer: universalDeployments.ERC20TransferAmountEnforcer,
           terms: encodeEnforcerERC20TransferAmount({
