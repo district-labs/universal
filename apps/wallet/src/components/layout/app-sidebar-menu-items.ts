@@ -7,6 +7,7 @@ import {
   KeySquare,
   LayoutList,
   Orbit,
+  Rotate3D,
   Search,
 } from 'lucide-react';
 
@@ -34,6 +35,11 @@ export const itemsCore = [
 ];
 
 export const itemsFinance = [
+  {
+    title: 'Swap',
+    url: '/finance/swap',
+    icon: Rotate3D,
+  },
   {
     title: 'Transfer',
     url: '/finance/transfer',

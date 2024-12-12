@@ -1,3 +1,5 @@
+import { zeroAddress } from 'viem';
+
 export const universalDeployments = {
   // Test
   Erc20Mintable: '0x4C8Be898BdE148aE6f9B0AF86e7D2b5a0558A7d0',
@@ -15,10 +17,12 @@ export const universalDeployments = {
   BlockNumberEnforcer: '0x32c454A3a7E54bAf6793995fF1F1b6b996c16519',
   DeployedEnforcer: '0x19B8BdF3354Af17a8cD9F35Db3E079Ce9864a10a',
   ERC20BalanceGteEnforcer: '0xA1AF62Da13E025E7E0bDc9294F98cD0fB907fC56',
+  ERC20BalanceGteWrapEnforcer: zeroAddress,
   ERC20TransferAmountEnforcer: '0x9Ec6bA1D261F32bA7D11935Af7014455414D32BA',
   ERC721BalanceGteEnforcer: '0xbdB11E994668e879e9dae7BddeaE757828CDBF41',
   ERC721TransferEnforcer: '0x1Abd29e4A8769Ee581aef8a0cFa688F20a5c355D',
   ERC1155BalanceGteEnforcer: '0x8aE8462A3cc592A0Bd96a8E14a9780B3C554F430',
+  ExternalCallEnforcer: zeroAddress,
   IdEnforcer: '0x1D14da69A0d3C7C65dbCA7001cAFf267384375F4',
   LimitedCallsEnforcer: '0xA10A29F7A15595d238875E18DE629964ca745119',
   NativeBalanceGteEnforcer: '0x029f9d80B228695611aD14d0665B2f5576E493E5',
