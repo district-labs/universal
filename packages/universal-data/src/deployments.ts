@@ -32,6 +32,6 @@ export const universalDeployments = {
   RedeemerEnforcer: '0xbD848E5861825754c809F5b813A72B50691A86A6',
   TimestampEnforcer: '0x675b4844E388e329354185cAcBC30E3F93456559',
   ValueLteEnforcer: '0x1f7EE6330cc76Bb26Cc490166CcAbf451234A578',
-  ERC20BalanceGteAfterAllEnforcer: '0x2AB6fed8C074D4Bf4668E46f78a97cCD1FC23686',
-  ExternalHookEnforcer: '0xF1dF0e6d2d6D307814A086cCdeBdcD1250C53df3',
+  ERC20BalanceGteAfterAllEnforcer: '0xCb9950cC1D78876BCf76bF0accAF3b092245A8B4',
+  ExternalHookEnforcer: '0xeE186Ed1b94700B8a92E3FEf4200dED7668E969A',
 } as const;
