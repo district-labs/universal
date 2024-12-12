@@ -28,6 +28,23 @@ export const stablecoinTokenList: TokenList = {
       },
     },
     {
+      chainId: 8453,
+      name: 'Prize USDC (Savings Account)',
+      symbol: 'przUSDC',
+      logoURI: 'https://app.cabana.fi/icons/przUSDC.svg',
+      address: '0x7f5C2b379b88499aC2B997Db583f8079503f25b9',
+      decimals: 6,
+    },
+    {
+      chainId: 8453,
+      name: 'Aave USDC (Yield Bearing)',
+      symbol: 'aUSDC',
+      logoURI:
+        'https://assets.coingecko.com/coins/images/14318/standard/aUSDC.e260d492.png?1696514006',
+      address: '0x4e65fE4DbA92790696d040ac24Aa414708F5c0AB',
+      decimals: 6,
+    },
+    {
       name: 'Dai Stablecoin',
       address: '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb',
       symbol: 'DAI',

@@ -12,7 +12,7 @@ export function getDelegationType(
     delegation.caveats.some(
       ({ enforcer }) =>
         enforcer.toLowerCase() ===
-        universalDeployments.ExternalHookEnforcer.toLowerCase(),
+        universalDeployments.ExternalCallEnforcer.toLowerCase(),
     )
   ) {
     return 'LimitOrder';

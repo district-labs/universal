@@ -66,7 +66,7 @@ export function getExternalHookEnforcerFromDelegation(delegation: Delegation) {
   const index = delegation.caveats.findIndex(
     ({ enforcer }) =>
       enforcer.toLowerCase() ===
-      universalDeployments.ExternalHookEnforcer.toLowerCase(),
+      universalDeployments.ExternalCallEnforcer.toLowerCase(),
   );
   if (index === -1) {
     throw NoEnforcerFoundError;
