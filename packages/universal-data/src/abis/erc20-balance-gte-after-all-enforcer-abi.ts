@@ -1,4 +1,4 @@
-export const erc20TransferAmountEnforcerAbi = [
+export const erc20BalanceGteWrapEnforcerAbi = [
   {
     type: 'function',
     name: 'afterAllHook',
@@ -40,12 +40,12 @@ export const erc20TransferAmountEnforcerAbi = [
     type: 'function',
     name: 'beforeAllHook',
     inputs: [
-      { name: '', type: 'bytes', internalType: 'bytes' },
+      { name: '_terms', type: 'bytes', internalType: 'bytes' },
       { name: '', type: 'bytes', internalType: 'bytes' },
       { name: '', type: 'bytes32', internalType: 'ModeCode' },
       { name: '', type: 'bytes', internalType: 'bytes' },
-      { name: '', type: 'bytes32', internalType: 'bytes32' },
-      { name: '', type: 'address', internalType: 'address' },
+      { name: '_delegationHash', type: 'bytes32', internalType: 'bytes32' },
+      { name: '_delegator', type: 'address', internalType: 'address' },
       { name: '', type: 'address', internalType: 'address' },
     ],
     outputs: [],
@@ -93,5 +93,22 @@ export const erc20TransferAmountEnforcerAbi = [
     inputs: [{ name: 'hashKey', type: 'bytes32', internalType: 'bytes32' }],
     outputs: [{ name: 'lock', type: 'bool', internalType: 'bool' }],
     stateMutability: 'view',
+  },
+  {
+    type: 'error',
+    name: 'BalanceNotGreaterOrEqualThan',
+    inputs: [
+      { name: 'balance', type: 'uint256', internalType: 'uint256' },
+      { name: 'expected', type: 'uint256', internalType: 'uint256' },
+    ],
+  },
+  { type: 'error', name: 'EnforcerIsLocked', inputs: [] },
+  {
+    type: 'error',
+    name: 'InvalidTermsLength',
+    inputs: [
+      { name: 'length', type: 'uint256', internalType: 'uint256' },
+      { name: 'expected', type: 'uint256', internalType: 'uint256' },
+    ],
   },
 ] as const;

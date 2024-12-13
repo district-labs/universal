@@ -62,6 +62,27 @@ export function getErc20TransferAmountEnforcerFromDelegation(
   return { erc20TransferAmountEnforcer, index };
 }
 
+export function getERC20BalanceGteWrapEnforcerFromDelegation(
+  delegation: Delegation,
+) {
+  const index = delegation.caveats.findIndex(
+    ({ enforcer }) =>
+      enforcer.toLowerCase() ===
+      universalDeployments.ERC20BalanceGteWrapEnforcer.toLowerCase(),
+  );
+  if (index === -1) {
+    throw NoEnforcerFoundError;
+  }
+
+  const erc20BalanceGteWrapEnforcer = delegation.caveats[index];
+
+  if (!erc20BalanceGteWrapEnforcer) {
+    throw NoEnforcerFoundError;
+  }
+
+  return { erc20BalanceGteWrapEnforcer, index };
+}
+
 export function getExternalHookEnforcerFromDelegation(delegation: Delegation) {
   const index = delegation.caveats.findIndex(
     ({ enforcer }) =>
@@ -149,4 +170,29 @@ export function encodeExternalCallEnforcerArgs({
   callData,
 }: EncodeExternalHookArgsParams) {
   return encodePacked(['address', 'bytes'], [target, callData]);
+}
+
+export function encodeERC20BalanceGteWrapEnforcerTerms({
+  amount,
+  token,
+}: {
+  amount: bigint;
+  token: Address;
+}) {
+  return encodePacked(['address', 'uint256'], [token, amount]);
+}
+
+export function decodeERC20BalanceGteWrapEnforcerTerms(data: Hex) {
+  // Addresses are 20 bytes, uint256 is 32 bytes
+  const addressSize = 20;
+  const uint256Size = 32;
+
+  // Decode `token` (first 20 bytes)
+  const token = sliceHex(data, 0, addressSize) as Address;
+
+  // Decode `amount` (next 32 bytes)
+  const amountHex = sliceHex(data, addressSize, addressSize + uint256Size);
+  const amount = hexToBigInt(amountHex);
+
+  return { token, amount };
 }

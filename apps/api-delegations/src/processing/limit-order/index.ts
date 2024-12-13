@@ -1,9 +1,11 @@
 import type { Delegation, DelegationExecution } from 'universal-types';
 import {
+  decodeERC20BalanceGteWrapEnforcerTerms,
   decodeEnforcerERC20TransferAmount,
   encodeDelegation,
   encodeExternalCallEnforcerArgs,
   encodeSingleExecution,
+  getERC20BalanceGteWrapEnforcerFromDelegation,
   getErc20TransferAmountEnforcerFromDelegation,
   getExternalHookEnforcerFromDelegation,
 } from './utils.js';
@@ -11,49 +13,12 @@ import { getResolverWalletClient } from '../../resolver/resolver-wallet-client.j
 import type { ValidChain } from 'universal-data';
 import {
   SINGLE_EXECUTION_MODE,
-  aaveV3PoolAbi,
   delegationManagerAbi,
+  multicallAbi,
   universalDeployments,
 } from 'universal-data';
-import { encodeFunctionData, type Address, type Hex, erc20Abi } from 'viem';
-import { multicallAbi } from 'universal-data';
-
-const AAVE_V3_POOL_BASE = '0xA238Dd80C259a72e81d7e4664a9801593F98d1c5';
-
-function getDepositAaveV3HookData({
-  amount,
-  delegator,
-  token,
-}: { amount: bigint; delegator: Address; token: Address }): Hex {
-  return encodeFunctionData({
-    abi: multicallAbi,
-    functionName: 'multicall',
-    args: [
-      [
-        // Approves the token to the Aave Pool
-        {
-          target: token,
-          value: 0n,
-          callData: encodeFunctionData({
-            abi: erc20Abi,
-            functionName: 'approve',
-            args: [AAVE_V3_POOL_BASE, amount],
-          }),
-        },
-        // Deposits the token to the Aave Pool on behalf of the delegator
-        {
-          target: AAVE_V3_POOL_BASE,
-          value: 0n,
-          callData: encodeFunctionData({
-            abi: aaveV3PoolAbi,
-            functionName: 'supply',
-            args: [token, amount, delegator, 0],
-          }),
-        },
-      ],
-    ],
-  });
-}
+import { encodeFunctionData, erc20Abi } from 'viem';
+import { getHookActions } from './get-actions.js';
 
 export async function processLimitOrderDelegation({
   chainId,
@@ -61,22 +26,35 @@ export async function processLimitOrderDelegation({
 }: { chainId: ValidChain['id']; delegation: Delegation }) {
   const { erc20TransferAmountEnforcer } =
     getErc20TransferAmountEnforcerFromDelegation(delegation);
-  const { token, amount } = decodeEnforcerERC20TransferAmount(
-    erc20TransferAmountEnforcer.terms,
-  );
+  const { token: tokenOut, amount: amountOut } =
+    decodeEnforcerERC20TransferAmount(erc20TransferAmountEnforcer.terms);
+
+  const { erc20BalanceGteWrapEnforcer } =
+    getERC20BalanceGteWrapEnforcerFromDelegation(delegation);
+
+  const { token: tokenIn, amount: amountIn } =
+    decodeERC20BalanceGteWrapEnforcerTerms(erc20BalanceGteWrapEnforcer.terms);
 
   const { externalHookEnforcer, index: externalHookEnforcerIndex } =
     getExternalHookEnforcerFromDelegation(delegation);
+
+  const { withdrawActions, depositActions } = getHookActions({
+    amountIn,
+    amountOut,
+    delegator: delegation.delegator,
+    tokenIn,
+    tokenOut,
+  });
 
   delegation.caveats[externalHookEnforcerIndex] = {
     ...externalHookEnforcer,
     // Update the args of the external hook enforcer to include the data for the Aave V3 deposit
     args: encodeExternalCallEnforcerArgs({
       target: universalDeployments.Multicall,
-      callData: getDepositAaveV3HookData({
-        amount,
-        token,
-        delegator: delegation.delegator,
+      callData: encodeFunctionData({
+        abi: multicallAbi,
+        functionName: 'multicall',
+        args: [[...withdrawActions, ...depositActions]],
       }),
     }),
   };
@@ -87,11 +65,11 @@ export async function processLimitOrderDelegation({
   // Set the delegation execution to transfer the delegator tokens to the multicall contract
   const execution: DelegationExecution = {
     value: 0n,
-    target: token,
+    target: tokenOut,
     calldata: encodeFunctionData({
       abi: erc20Abi,
       functionName: 'transfer',
-      args: [universalDeployments.Multicall, amount],
+      args: [universalDeployments.Multicall, amountOut],
     }),
   };
 
