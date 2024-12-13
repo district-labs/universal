@@ -83,5 +83,16 @@ export const stablecoinTokenList: TokenList = {
         },
       },
     },
+    {
+      chainId: 8453,
+      name: 'Compound USDC',
+      symbol: 'cUSDCv3',
+      logoURI: 'https://ethereum-optimism.github.io/data/USDC/logo.png',
+      address: '0xb125e6687d4313864e53df431d5425969c15eb2f',
+      decimals: 6,
+      extensions: {
+        protocol: 'compound-v3',
+      },
+    },
   ],
 };

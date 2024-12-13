@@ -44,10 +44,10 @@ export function getDepositAaveV3HookData({
 
 type GetWithdrawAaveV3HookDataReturnType = GetDepositAaveV3HookDataReturnType;
 export function getWithdrawAaveV3HookData({
-  amountIn,
+  amountOut,
   tokenIn,
 }: {
-  amountIn: bigint;
+  amountOut: bigint;
   tokenIn: Address;
 }): GetWithdrawAaveV3HookDataReturnType {
   return [
@@ -58,7 +58,7 @@ export function getWithdrawAaveV3HookData({
       callData: encodeFunctionData({
         abi: aaveV3PoolAbi,
         functionName: 'withdraw',
-        args: [tokenIn, amountIn, universalDeployments.Multicall],
+        args: [tokenIn, amountOut, universalDeployments.Multicall],
       }),
     },
   ];

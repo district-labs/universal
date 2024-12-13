@@ -65,7 +65,7 @@ function FormErc20Swap({ defaultValues }: FormErc20SwapProps) {
     if (formValues.tokenOut && formValues.tokenIn && formValues.amountOut) {
       form.setValue('amountIn', formValues.amountOut);
     } else {
-      form.setValue('amountIn', undefined);
+      form.setValue('amountIn', '');
     }
   }, [form, formValues.amountOut, formValues.tokenOut, formValues.tokenIn]);
 

@@ -9,6 +9,10 @@ import {
   getWithdrawPoolTogetherV5HookData,
 } from './protocols/pool-together-v5.js';
 import { getDepositUnderlyingAssetHookData } from './protocols/underlying-asset.js';
+import {
+  getDepositCompoundV3HookData,
+  getWithdrawCompoundV3HookData,
+} from './protocols/compound-v3.js';
 
 type HookActions = {
   target: Address;
@@ -53,17 +57,31 @@ export function getHookActions({
     throw new Error('Token not found');
   }
 
+  const tokenOutProtocol = tokenOutData.extensions?.protocol;
+
   // Withdraw actions
-  if (tokenOutData.extensions?.protocol === 'aave-v3') {
-    withdrawActions = getWithdrawAaveV3HookData({
-      amountIn,
-      tokenIn,
-    });
-  } else if (tokenOutData.extensions?.protocol === 'pool-together-v5') {
-    withdrawActions = getWithdrawPoolTogetherV5HookData({
-      amountOut,
-      tokenOut,
-    });
+  switch (tokenOutProtocol) {
+    case 'aave-v3':
+      withdrawActions = getWithdrawAaveV3HookData({
+        // Always use the underlying asset as the tokenIn for compound
+        tokenIn: underlyingAssetData.address as Address,
+        amountOut,
+      });
+      break;
+    case 'pool-together-v5':
+      withdrawActions = getWithdrawPoolTogetherV5HookData({
+        amountOut,
+        tokenOut,
+      });
+      break;
+    case 'compound-v3':
+      withdrawActions = getWithdrawCompoundV3HookData({
+        // Always use the underlying asset as the tokenIn for compound
+        tokenIn: underlyingAssetData.address as Address,
+
+        tokenOut,
+      });
+      break;
   }
 
   // If there are withdraw calls, the tokenOut should be replaced with the underlying asset
@@ -71,26 +89,39 @@ export function getHookActions({
     ? (underlyingAssetData.address as Address)
     : tokenOut;
 
+  const tokenInProtocol = tokenInData.extensions?.protocol;
   // Deposit actions
-  if (tokenInData.extensions?.protocol === 'aave-v3') {
-    depositActions = getDepositAaveV3HookData({
-      amountOut,
-      delegator,
-      tokenOut: updatedTokenOut,
-    });
-  } else if (tokenInData.extensions?.protocol === 'pool-together-v5') {
-    depositActions = getDepositPoolTogetherV5HookData({
-      amountOut,
-      delegator,
-      tokenIn,
-      tokenOut: updatedTokenOut,
-    });
-  } else if (!tokenInData.extensions?.protocol) {
-    depositActions = getDepositUnderlyingAssetHookData({
-      amountOut,
-      delegator,
-      tokenIn,
-    });
+  switch (tokenInProtocol) {
+    case 'aave-v3':
+      depositActions = getDepositAaveV3HookData({
+        amountOut,
+        delegator,
+        tokenOut: updatedTokenOut,
+      });
+      break;
+    case 'pool-together-v5':
+      depositActions = getDepositPoolTogetherV5HookData({
+        amountOut,
+        delegator,
+        tokenIn,
+        tokenOut: updatedTokenOut,
+      });
+      break;
+    case 'compound-v3':
+      depositActions = getDepositCompoundV3HookData({
+        amountOut,
+        delegator,
+        tokenIn,
+        tokenOut: updatedTokenOut,
+      });
+      break;
+    case undefined:
+      depositActions = getDepositUnderlyingAssetHookData({
+        amountIn,
+        delegator,
+        tokenIn,
+      });
+      break;
   }
 
   return {

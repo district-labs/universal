@@ -7,11 +7,11 @@ type GetDepositUnderlyingAssetHookDataReturnType = {
 }[];
 
 export function getDepositUnderlyingAssetHookData({
-  amountOut,
+  amountIn,
   delegator,
   tokenIn,
 }: {
-  amountOut: bigint;
+  amountIn: bigint;
   delegator: Address;
   tokenIn: Address;
 }): GetDepositUnderlyingAssetHookDataReturnType {
@@ -23,7 +23,7 @@ export function getDepositUnderlyingAssetHookData({
       callData: encodeFunctionData({
         abi: erc20Abi,
         functionName: 'transfer',
-        args: [delegator, amountOut],
+        args: [delegator, amountIn],
       }),
     },
   ];
