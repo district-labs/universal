@@ -14,6 +14,8 @@ interface Erc20SelectAndAmount {
   amountName?: string;
   tokenName?: string;
   disabled?: boolean;
+  amountDisabled?: boolean;
+  tokenSelectorDisabled?: boolean;
   setMaxAmount?: (value: string) => void;
 }
 
@@ -23,6 +25,8 @@ export function Erc20SelectAndAmount({
   label = 'Asset',
   amountName = 'amount',
   tokenName = 'token',
+  amountDisabled,
+  tokenSelectorDisabled,
   setMaxAmount,
 }: Erc20SelectAndAmount) {
   const { control } = useFormContext();
@@ -38,7 +42,7 @@ export function Erc20SelectAndAmount({
             <FormItem>
               <FormControl>
                 <Input
-                  disabled={disabled}
+                  disabled={disabled || amountDisabled}
                   id="amount"
                   className="block h-auto w-full flex-1 border-transparent bg-transparent py-1 pl-0 text-left font-bold text-5xl shadow-none placeholder:text-muted-foreground focus:border-transparent focus:ring-transparent focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-transparent"
                   placeholder="0.0"
@@ -52,11 +56,11 @@ export function Erc20SelectAndAmount({
         <FormField
           control={control}
           name={tokenName}
-          render={({ field, ...rest }) => (
+          render={({ field }) => (
             <FormItem className="flex flex-col justify-end">
               <FormControl>
                 <TokenSelector
-                  disabled={disabled}
+                  disabled={disabled || tokenSelectorDisabled}
                   tokenList={tokenList}
                   value={field.value}
                   onValueChange={field.onChange}
