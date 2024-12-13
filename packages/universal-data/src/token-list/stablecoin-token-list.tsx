@@ -41,9 +41,10 @@ export const stablecoinTokenList: TokenList = {
       address: '0x7f5C2b379b88499aC2B997Db583f8079503f25b9',
       decimals: 6,
       extensions: {
+        protocol: 'pool-together-v5',
         metadata: {
           protocol: 'PoolTogether',
-          type: 'Prize Savings Account',
+          type: 'Prize Savings',
           url: 'https://pooltogether.com',
           description: (
             <>
@@ -72,30 +73,13 @@ export const stablecoinTokenList: TokenList = {
       address: '0x4e65fE4DbA92790696d040ac24Aa414708F5c0AB',
       decimals: 6,
       extensions: {
+        protocol: 'aave-v3',
         metadata: {
           protocol: 'Aave',
           type: 'Yield Bearing',
           url: 'https://aave.com',
           description:
             'Aave USDC is a derivative of USDC, created after depositing into the Aave protocol. When you deposit your USDC into Aave, it gets lent out to others, and you earn fees paid by borrowers.',
-        },
-      },
-    },
-    {
-      chainId: 8453,
-      name: 'Compound USDC',
-      symbol: 'cUSDC',
-      logoURI:
-        'https://assets.coingecko.com/coins/images/9442/standard/Compound_USDC.png?1696509534',
-      address: '0xb125e6687d4313864e53df431d5425969c15eb2f',
-      decimals: 6,
-      extensions: {
-        metadata: {
-          protocol: 'Compound',
-          type: 'Yield Bearing',
-          url: 'https://compound.finance/',
-          description:
-            'Compound USDC is a derivative of USDC, created after depositing into the Compound protocol. When you deposit your USDC into Compound, it gets lent out to others, and you earn fees paid by borrowers.',
         },
       },
     },

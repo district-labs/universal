@@ -16,13 +16,21 @@ import { ERC20Balance } from '../onchain/erc20-balance';
 import { ExplorerAddressLink } from '../onchain/etherscan-address-link';
 import { LinkComponent } from '../ui/link-component';
 
-type AssetsListView = React.HTMLAttributes<HTMLElement>;
+type AssetsListView = React.HTMLAttributes<HTMLElement> & {
+  isMinimized?: boolean;
+};
 
-const AssetsListView = ({ className }: AssetsListView) => {
+const AssetsListView = ({ className, isMinimized }: AssetsListView) => {
   return (
     <div className={cn('space-y-0', className)}>
       {defaultTokenList.tokens.map((token) => {
-        return <AssetCard token={token} key={token.address} />;
+        return (
+          <AssetCard
+            token={token}
+            key={token.address}
+            isMinimized={isMinimized}
+          />
+        );
       })}
     </div>
   );
@@ -32,44 +40,62 @@ export { AssetsListView };
 
 type AssetCard = React.HTMLAttributes<HTMLElement> & {
   token: TokenItem;
+  isMinimized?: boolean;
 };
 
-const AssetCard = ({ className, token }: AssetCard) => {
+const AssetCard = ({ className, token, isMinimized }: AssetCard) => {
   return (
     <Dialog>
       <DialogTrigger asChild={true}>
-        <div
-          className={cn(
-            'flex cursor-pointer items-center justify-between rounded-xl p-3 transition-shadow hover:bg-neutral-50 hover:shadow-sm',
-            className,
-          )}
-        >
-          <div className="flex items-center gap-x-2">
+        {isMinimized ? (
+          <div className="flex cursor-pointer items-center justify-between gap-x-1 rounded-xl px-1 py-3 transition-shadow hover:bg-neutral-50 hover:shadow-sm">
+            <ERC20Balance
+              address={token.address as Address}
+              decimals={token.decimals}
+              className="font-semibold text-xs"
+            />
             <Image
               src={token.logoURI}
               alt={token.name}
               width={32}
               height={32}
-              className="size-6 rounded-full shadow-md"
+              className="size-4 rounded-full shadow-md"
             />
-            <div className="flex flex-col">
-              <span className="font-bold text-sm">
-                {token.symbol}{' '}
-                {token?.extensions?.metadata?.type ? (
-                  <span className="font-mono font-normal text-xs">
-                    ({token?.extensions?.metadata?.type})
-                  </span>
-                ) : null}
-              </span>
-              <span className="text-2xs text-gray-500">{token.name}</span>
-            </div>
           </div>
-          <ERC20Balance
-            address={token.address as Address}
-            decimals={token.decimals}
-            className="font-semibold text-sm"
-          />
-        </div>
+        ) : (
+          <div
+            className={cn(
+              'flex cursor-pointer items-center justify-between rounded-xl p-3 transition-shadow hover:bg-neutral-50 hover:shadow-sm',
+              className,
+            )}
+          >
+            <div className="flex items-center gap-x-2">
+              <Image
+                src={token.logoURI}
+                alt={token.name}
+                width={32}
+                height={32}
+                className="size-6 rounded-full shadow-md"
+              />
+              <div className="flex flex-col">
+                <span className="font-bold text-sm">
+                  {token.symbol}{' '}
+                  {token?.extensions?.metadata?.type ? (
+                    <span className="font-mono font-normal text-2xs">
+                      ({token?.extensions?.metadata?.type})
+                    </span>
+                  ) : null}
+                </span>
+                <span className="text-2xs text-gray-500">{token.name}</span>
+              </div>
+            </div>
+            <ERC20Balance
+              address={token.address as Address}
+              decimals={token.decimals}
+              className="font-semibold text-sm"
+            />
+          </div>
+        )}
       </DialogTrigger>
       <DialogContent className="w-full md:max-w-lg">
         <DialogHeader>
