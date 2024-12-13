@@ -1,20 +1,18 @@
 import { defaultChain } from '@/lib/chains';
-import { ExternalLink } from 'lucide-react';
-import type { HTMLAttributes } from 'react';
 import type { Address as AddressType, Chain } from 'viem';
 import { LinkComponent } from '../ui/link-component';
 
-interface AccountExplorerLinkAddressProps
-  extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
+type ExplorerAddressLinkProps = React.HTMLAttributes<HTMLElement> & {
   address?: AddressType | string;
   chain?: Chain;
-}
+};
 
-export const AccountExplorerLink = ({
+export const ExplorerAddressLink = ({
+  children,
   address,
   className,
   chain = defaultChain,
-}: AccountExplorerLinkAddressProps) => {
+}: ExplorerAddressLinkProps) => {
   const blockExplorerUrl = chain.blockExplorers?.default.url;
 
   if (blockExplorerUrl) {
@@ -24,7 +22,7 @@ export const AccountExplorerLink = ({
         className={className}
         href={`${blockExplorerUrl}/address/${address}`}
       >
-        <ExternalLink className="ml-1 inline-block size-4" />
+        {children}
       </LinkComponent>
     );
   }

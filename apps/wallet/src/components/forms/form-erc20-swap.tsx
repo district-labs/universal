@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
 import { defaultTokenList, useIsValidChain } from '@/lib/chains';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { ANY_DELEGATE, findToken, getDefaultTokenList } from 'universal-data';
 import { useSignErc20SwapDelegation } from 'universal-delegations-sdk';
@@ -44,7 +45,6 @@ function FormErc20Swap({ defaultValues }: FormErc20SwapProps) {
   const { isValidChain, chainId, defaultChain } = useIsValidChain();
 
   const tokenList = getDefaultTokenList({ chainId });
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,6 +58,16 @@ function FormErc20Swap({ defaultValues }: FormErc20SwapProps) {
       amountIn: defaultValues?.amountIn || undefined,
     },
   });
+
+  const formValues = form.watch();
+
+  useEffect(() => {
+    if (formValues.tokenOut && formValues.tokenIn && formValues.amountOut) {
+      form.setValue('amountIn', formValues.amountOut);
+    } else {
+      form.setValue('amountIn', undefined);
+    }
+  }, [form, formValues.amountOut, formValues.tokenOut, formValues.tokenIn]);
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     if (!isValidChain) {
@@ -103,6 +113,7 @@ function FormErc20Swap({ defaultValues }: FormErc20SwapProps) {
             amountName="amountIn"
             tokenName="tokenIn"
             tokenList={defaultTokenList}
+            amountDisabled={true}
           />
         </Card>
         {address && isValidChain && (
