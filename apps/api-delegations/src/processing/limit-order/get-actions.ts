@@ -45,8 +45,11 @@ export function getHookActions({
   const tokenOutData = stablecoinTokenList.tokens.find(
     (token) => token.address.toLowerCase() === tokenOut.toLowerCase(),
   );
+  const underlyingAssetData = stablecoinTokenList.tokens.find(
+    (token) => !token.extensions?.protocol,
+  );
 
-  if (!tokenInData || !tokenOutData) {
+  if (!tokenInData || !tokenOutData || !underlyingAssetData) {
     throw new Error('Token not found');
   }
 
@@ -63,23 +66,28 @@ export function getHookActions({
     });
   }
 
+  // If there are withdraw calls, the tokenOut should be replaced with the underlying asset
+  const updatedTokenOut = withdrawActions.length
+    ? (underlyingAssetData.address as Address)
+    : tokenOut;
+
   // Deposit actions
   if (tokenInData.extensions?.protocol === 'aave-v3') {
     depositActions = getDepositAaveV3HookData({
-      amountIn,
+      amountOut,
       delegator,
-      tokenOut,
+      tokenOut: updatedTokenOut,
     });
   } else if (tokenInData.extensions?.protocol === 'pool-together-v5') {
     depositActions = getDepositPoolTogetherV5HookData({
-      amountIn,
+      amountOut,
       delegator,
       tokenIn,
-      tokenOut,
+      tokenOut: updatedTokenOut,
     });
   } else if (!tokenInData.extensions?.protocol) {
     depositActions = getDepositUnderlyingAssetHookData({
-      amountIn,
+      amountOut,
       delegator,
       tokenIn,
     });

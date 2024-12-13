@@ -3,12 +3,12 @@ import { multicallAbi } from 'universal-data';
 import { compoundV3Abi } from 'universal-data';
 
 export function getDepositCompoundV3HookData({
-  amountIn,
+  amountOut,
   delegator,
   tokenOut,
   tokenIn,
 }: {
-  amountIn: bigint;
+  amountOut: bigint;
   delegator: Address;
   tokenIn: Address;
   tokenOut: Address;
@@ -25,7 +25,7 @@ export function getDepositCompoundV3HookData({
           callData: encodeFunctionData({
             abi: erc20Abi,
             functionName: 'approve',
-            args: [tokenIn, amountIn],
+            args: [tokenIn, amountOut],
           }),
         },
         // Deposits the token to the Compound Pool on behalf of the delegator
@@ -35,7 +35,7 @@ export function getDepositCompoundV3HookData({
           callData: encodeFunctionData({
             abi: compoundV3Abi,
             functionName: 'supplyTo',
-            args: [delegator, tokenOut, amountIn],
+            args: [delegator, tokenOut, amountOut],
           }),
         },
       ],

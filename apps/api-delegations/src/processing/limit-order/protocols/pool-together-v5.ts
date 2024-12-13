@@ -8,12 +8,12 @@ type GetDepositPoolTogetherV5HookDataReturnType = {
 }[];
 
 export function getDepositPoolTogetherV5HookData({
-  amountIn,
+  amountOut,
   delegator,
   tokenOut,
   tokenIn,
 }: {
-  amountIn: bigint;
+  amountOut: bigint;
   delegator: Address;
   tokenIn: Address;
   tokenOut: Address;
@@ -26,7 +26,7 @@ export function getDepositPoolTogetherV5HookData({
       callData: encodeFunctionData({
         abi: erc20Abi,
         functionName: 'approve',
-        args: [tokenIn, amountIn],
+        args: [tokenIn, amountOut],
       }),
     },
     // Deposits the token to the Prize vault on behalf of the delegator
@@ -36,7 +36,7 @@ export function getDepositPoolTogetherV5HookData({
       callData: encodeFunctionData({
         abi: poolTogetherV5Abi,
         functionName: 'deposit',
-        args: [amountIn, delegator],
+        args: [amountOut, delegator],
       }),
     },
   ];

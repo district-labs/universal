@@ -643,4 +643,14 @@ export const delegationManagerAbi = [
     name: 'StringTooLong',
     inputs: [{ name: 'str', type: 'string', internalType: 'string' }],
   },
+  {
+    type: 'error',
+    name: 'ExternalHookExecutionFailed',
+    inputs: [{ name: 'revertData', type: 'bytes', internalType: 'bytes' }],
+  },
+  {
+    type: 'error',
+    name: 'InvalidArgsLength',
+    inputs: [{ name: 'length', type: 'uint256', internalType: 'uint256' }],
+  },
 ] as const;

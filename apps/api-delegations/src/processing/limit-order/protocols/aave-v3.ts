@@ -10,11 +10,11 @@ type GetDepositAaveV3HookDataReturnType = {
 }[];
 
 export function getDepositAaveV3HookData({
-  amountIn,
+  amountOut,
   delegator,
   tokenOut,
 }: {
-  amountIn: bigint;
+  amountOut: bigint;
   delegator: Address;
   tokenOut: Address;
 }): GetDepositAaveV3HookDataReturnType {
@@ -26,7 +26,7 @@ export function getDepositAaveV3HookData({
       callData: encodeFunctionData({
         abi: erc20Abi,
         functionName: 'approve',
-        args: [AAVE_V3_POOL_BASE, amountIn],
+        args: [AAVE_V3_POOL_BASE, amountOut],
       }),
     },
     // Deposits the token to the Aave Pool on behalf of the delegator
@@ -36,7 +36,7 @@ export function getDepositAaveV3HookData({
       callData: encodeFunctionData({
         abi: aaveV3PoolAbi,
         functionName: 'supply',
-        args: [tokenOut, amountIn, delegator, 0],
+        args: [tokenOut, amountOut, delegator, 0],
       }),
     },
   ];

@@ -47,6 +47,9 @@ export function useSignErc20SwapDelegation() {
     decimalsIn,
     amountIn,
   }: SignDelegationParams) {
+    const amountInBigInt = parseUnits(amountIn, decimalsIn);
+    // The amountInMin is the amount in less 1 decimal place to avoid rounding errors
+    const amountInMin = amountInBigInt - 1n;
     const signature = await signTypedDataAsync({
       types: eip712DelegationTypes,
       primaryType: 'Delegation',
@@ -66,7 +69,7 @@ export function useSignErc20SwapDelegation() {
             enforcer: universalDeployments.ERC20BalanceGteWrapEnforcer,
             terms: encodeERC20BalanceGteWrapEnforcerTerms({
               token: tokenIn,
-              amount: parseUnits(amountIn, decimalsIn),
+              amount: amountInMin,
             }),
           },
           {
@@ -96,7 +99,7 @@ export function useSignErc20SwapDelegation() {
           enforcer: universalDeployments.ERC20BalanceGteWrapEnforcer,
           terms: encodeERC20BalanceGteWrapEnforcerTerms({
             token: tokenIn,
-            amount: parseUnits(amountIn, decimalsIn),
+            amount: amountInMin,
           }),
           args: '0x',
         },
