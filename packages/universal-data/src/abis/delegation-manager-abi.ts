@@ -603,6 +603,23 @@ export const delegationManagerAbi = [
     name: 'ECDSAInvalidSignatureS',
     inputs: [{ name: 's', type: 'bytes32', internalType: 'bytes32' }],
   },
+  {
+    type: 'error',
+    name: 'BalanceNotGreaterOrEqualThan',
+    inputs: [
+      { name: 'balance', type: 'uint256', internalType: 'uint256' },
+      { name: 'expected', type: 'uint256', internalType: 'uint256' },
+    ],
+  },
+  { type: 'error', name: 'EnforcerIsLocked', inputs: [] },
+  {
+    type: 'error',
+    name: 'InvalidTermsLength',
+    inputs: [
+      { name: 'length', type: 'uint256', internalType: 'uint256' },
+      { name: 'expected', type: 'uint256', internalType: 'uint256' },
+    ],
+  },
   { type: 'error', name: 'EmptySignature', inputs: [] },
   { type: 'error', name: 'EnforcedPause', inputs: [] },
   { type: 'error', name: 'ExpectedPause', inputs: [] },
