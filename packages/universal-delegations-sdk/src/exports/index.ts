@@ -24,12 +24,6 @@ export {
   useDelegationsApiClient,
   type DelegationsApiClient,
 } from '../api/client.js';
-export {
-  decodeEnforcerERC20TransferAmount,
-  encodeEnforcerERC20TransferAmount,
-  getErc20TransferAmountEnforcerFromDelegation,
-} from '../enforcers/enforcer-erc20-transfer-amount.js';
-export { encodeExternalCallEnforcerArgs } from '../enforcers/enforcer-external-call.js';
 export { eip712DelegationTypes } from '../delegation/eip712-delegation-type.js';
 export { encodeDelegation } from '../delegation/encode-delegation.js';
 export {
@@ -38,8 +32,15 @@ export {
   getDelegationHash,
 } from '../delegation/get-delegation-hash.js';
 export {
+  decodeEnforcerERC20TransferAmount,
+  encodeEnforcerERC20TransferAmount,
+  getErc20TransferAmountEnforcerFromDelegation,
+} from '../enforcers/enforcer-erc20-transfer-amount.js';
+export { encodeExternalCallEnforcerArgs } from '../enforcers/enforcer-external-call.js';
+export {
   decodeERC20BalanceGteWrapEnforcerTerms,
   encodeERC20BalanceGteWrapEnforcerTerms,
+  getERC20BalanceGteWrapEnforcerFromDelegation,
 } from '../enforcers/erc20-balance-gte-wrap-enforcer.js';
 export { encodeBatchExecution } from '../execution/encode-batch-execution.js';
 export { encodeSingleExecution } from '../execution/encode-single-execution.js';

@@ -87,11 +87,19 @@ export const stablecoinTokenList: TokenList = {
       chainId: 8453,
       name: 'Compound USDC',
       symbol: 'cUSDCv3',
-      logoURI: 'https://ethereum-optimism.github.io/data/USDC/logo.png',
+      logoURI:
+        'https://assets.coingecko.com/coins/images/9442/standard/Compound_USDC.png?1696509534',
       address: '0xb125e6687d4313864e53df431d5425969c15eb2f',
       decimals: 6,
       extensions: {
         protocol: 'compound-v3',
+        metadata: {
+          protocol: 'Compound',
+          type: 'Yield Bearing',
+          url: 'https://compound.finance',
+          description:
+            'Compound USDC is a derivative of USDC, created after depositing into the Compound protocol. When you deposit your USDC into Compound, it gets lent out to others, and you earn fees paid by borrowers.',
+        },
       },
     },
   ],

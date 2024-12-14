@@ -1,3 +1,5 @@
+import { universalDeployments } from 'universal-data';
+import type { Delegation, DelegationCaveat } from 'universal-types';
 import {
   type Address,
   type Hex,
@@ -29,4 +31,19 @@ export function decodeERC20BalanceGteWrapEnforcerTerms(data: Hex) {
   const amount = hexToBigInt(amountHex);
 
   return [token, BigInt(amount)] as const;
+}
+
+export function getERC20BalanceGteWrapEnforcerFromDelegation(
+  delegation: Delegation,
+): DelegationCaveat {
+  const erc20TransferAmountEnforcer = delegation.caveats.find(
+    ({ enforcer }) =>
+      enforcer.toLowerCase() ===
+      universalDeployments.ERC20BalanceGteWrapEnforcer.toLowerCase(),
+  );
+  if (!erc20TransferAmountEnforcer) {
+    throw new Error('No ERC20TransferAmountEnforcer found');
+  }
+
+  return erc20TransferAmountEnforcer;
 }
