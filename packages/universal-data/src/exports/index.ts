@@ -1,3 +1,8 @@
+export { aaveV3PoolAbi } from '../abis/aave-v3-pool-abi.js';
+export { compoundV3Abi } from '../abis/compound-v3-abi.js';
+export { poolTogetherV5Abi } from '../abis/pool-together-v5-abi.js';
+export { erc20BalanceGteWrapEnforcerAbi } from '../abis/erc20-balance-gte-after-all-enforcer-abi.js';
+export { multicallAbi } from '../abis/multicall-abi.js';
 export { delegationManagerAbi } from '../abis/delegation-manager-abi.js';
 export { erc20TransferAmountEnforcerAbi } from '../abis/erc20-transfer-amount-enforcer-abi.js';
 export { universalDocumentAbi } from '../abis/universal-document-abi.js';

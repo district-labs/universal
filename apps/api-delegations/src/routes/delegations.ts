@@ -10,6 +10,7 @@ import {
   postDelegationSchema,
 } from '../validation.js';
 import type { DelegationWithMetadata } from 'universal-types';
+import { processDelegation } from '../processing/process-delegation.js';
 
 const delegationsRouter = new Hono()
   // Get a delegation by its hash
@@ -51,23 +52,30 @@ const delegationsRouter = new Hono()
     zValidator('json', postDelegationSchema),
     // TODO: validate the signature of the delegation
     async (c) => {
-      const delegation = c.req.valid('json');
+      const rawDelegation = c.req.valid('json');
 
-      const format = JSON.parse(
-        JSON.stringify(delegation, (_key, value) =>
+      const delegation = JSON.parse(
+        JSON.stringify(rawDelegation, (_key, value) =>
           typeof value === 'bigint' ? value.toString() : value,
         ),
       );
 
-      // Save the delegation to the database
       try {
-        await insertDelegationDb(format);
+        await Promise.all([
+          // Process any necessary delegation side effects
+          processDelegation({
+            chainId: delegation.chainId,
+            delegation,
+          }),
+          // Save the delegation to the database
+          insertDelegationDb(delegation),
+        ]);
       } catch (error) {
         console.error(error);
         return c.json({ error: 'failed to save delegation' }, 500);
       }
 
-      return c.json({ delegation: format }, 200);
+      return c.json({ delegation }, 200);
     },
   )
   .patch(

@@ -10,6 +10,8 @@ import {
 import { cn } from '@/lib/utils';
 import { useCallback, useMemo, useState } from 'react';
 import type { TokenItem, TokenList } from 'universal-types';
+import type { Address } from 'viem';
+import { ERC20Balance } from '../onchain/erc20-balance';
 import { Button } from '../ui/button';
 import { DialogDescription, DialogTitle } from '../ui/dialog';
 
@@ -62,7 +64,7 @@ export function TokenSelector({
         type="button"
         variant={'outline'}
         className={cn(
-          'flex w-fit items-center gap-x-2 rounded-full py-2',
+          'flex w-fit items-center gap-x-2 rounded-full px-6 py-2',
           // className,
         )}
         onClick={() => (disabled ? undefined : setOpen(true))}
@@ -104,20 +106,27 @@ export function TokenSelector({
                 className="flex cursor-pointer"
                 onSelect={() => handleSelect(token)}
               >
-                <div className="flex items-center gap-x-2 p-2">
-                  <img
-                    width="32"
-                    height="32"
-                    alt={`${token.name} logo`}
-                    className="rounded-full"
-                    src={token.logoURI}
-                  />
-                  <div className="space-y-0.5">
-                    <h3 className="font-medium text-base">{token.name}</h3>
-                    <p className="text-muted-foreground text-xs">
-                      {token.symbol}
-                    </p>
+                <div className="flex w-full items-center justify-between gap-x-2 p-2">
+                  <div className="flex items-center gap-x-2">
+                    <img
+                      width="32"
+                      height="32"
+                      alt={`${token.name} logo`}
+                      className="rounded-full"
+                      src={token.logoURI}
+                    />
+                    <div className="space-y-0.5">
+                      <h3 className="font-medium text-base">{token.name}</h3>
+                      <p className="text-muted-foreground text-xs">
+                        {token.symbol}
+                      </p>
+                    </div>
                   </div>
+                  <ERC20Balance
+                    className="text-right font-medium text-xl"
+                    address={token.address as Address}
+                    decimals={token.decimals}
+                  />
                 </div>
               </CommandItem>
             ))}

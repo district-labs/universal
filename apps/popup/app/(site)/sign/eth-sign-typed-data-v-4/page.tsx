@@ -2,10 +2,10 @@
 import { RowBasic } from '@/components/row-basic';
 import { Toggle } from '@/components/toggle';
 import { Button } from '@/components/ui/button';
-import type { Delegation } from 'universal-types';
 import { useGetMessageChainId } from '@/lib/pop-up/hooks/use-get-message-chain-id';
 import { useMemo, useState } from 'react';
 import type { UniversalDID, VerificationRequest } from 'universal-identity-sdk';
+import type { Delegation } from 'universal-types';
 import type { TypedDataDefinition } from 'viem';
 import { ActionRequestFooter } from '../components/action-request-footer';
 import { ActionRequestHeader } from '../components/action-request-header';
@@ -65,7 +65,7 @@ export default function EthSignTypedDataV4Page() {
           />
         </span>
       </ActionRequestHeader>
-      <ActionRequestMain className="w-full px-4 py-4">
+      <ActionRequestMain className="w-full p-0">
         {viewModeAdvanced === false && (
           <DefaultRender
             chainId={chain?.id || 1}

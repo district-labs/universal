@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import type * as React from 'react';
 import type { Address } from 'viem';
-import { FormerErc20Transfer } from '../forms/form-erc20-transfer';
+import { FormErc20Transfer } from '../forms/form-erc20-transfer';
 
 type AccountTransferDialogProps = React.HTMLAttributes<HTMLElement> & {
   address: Address;
@@ -32,7 +32,7 @@ export const AccountTransferDialog = ({
             Transfer assets to another address.
           </DialogDescription>
         </DialogHeader>
-        <FormerErc20Transfer
+        <FormErc20Transfer
           defaultValues={{
             to: address,
             token,

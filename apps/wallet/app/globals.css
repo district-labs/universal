@@ -156,8 +156,9 @@
     @apply mb-3;
   }
 
-  .content a {
-    @apply text-blue-600 dark:text-blue-300 font-bold;
+  .content a,
+  .link {
+    @apply text-blue-600 hover:text-blue-700 dark:text-blue-300;
   }
 
   .smart-wallet-connect {
